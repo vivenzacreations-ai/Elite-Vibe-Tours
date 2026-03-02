@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elite Vibe Tours | Luxury Kashmir Travel</title>
     <meta name="description" content="Experience Kashmir Like Royalty. Luxury curated journeys, honeymoon packages, and premium family tours by Elite Vibe Tours, Srinagar.">
-    <meta name="keywords" content="Kashmir luxury travel, Srinagar tours, Dal Lake houseboat, Gulmarg luxury, Elite Vibe Tours">
     
-    <!-- Fonts: Playfair Display for elegant headings, Montserrat for premium body text -->
+    <!-- Premium Fonts: Playfair Display (Headings) & Montserrat (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -30,19 +28,33 @@
                     colors: {
                         navy: {
                             DEFAULT: '#0A1128',
-                            light: '#1A2542',
+                            light: '#141E3A',
                             dark: '#050914'
                         },
-                        charcoal: '#1F2937',
                         gold: {
                             light: '#F9E596',
                             DEFAULT: '#D4AF37',
                             dark: '#AA8C2C'
                         }
                     },
-                    backgroundImage: {
-                        'gold-gradient': 'linear-gradient(to right, #D4AF37, #F9E596, #D4AF37)',
-                        'dark-gradient': 'linear-gradient(to bottom, transparent, #0A1128)',
+                    animation: {
+                        'loading-bar': 'loading 2s ease-in-out forwards',
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'pulse-soft': 'pulseSoft 3s infinite',
+                    },
+                    keyframes: {
+                        loading: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(0)' }
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        pulseSoft: {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                            '50%': { transform: 'scale(1.05)', opacity: '0.8' }
+                        }
                     }
                 }
             }
@@ -50,13 +62,13 @@
     </script>
 
     <style>
-        /* Custom Styles & Utilities */
         body {
-            background-color: #0A1128;
+            background-color: #050914;
             color: #ffffff;
             overflow-x: hidden;
         }
 
+        /* Luxury Gradients & Textures */
         .text-gold-gradient {
             background: linear-gradient(to right, #D4AF37, #F9E596, #D4AF37);
             -webkit-background-clip: text;
@@ -66,49 +78,43 @@
             animation: shine 5s linear infinite;
         }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        /* Premium Glassmorphism */
+        .glass-panel {
+            background: rgba(20, 30, 58, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
-        .glass-panel {
-            background: rgba(26, 37, 66, 0.4);
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .glass-nav {
-            background: rgba(10, 17, 40, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Scroll Animations */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .reveal.active { opacity: 1; transform: translateY(0); }
         .reveal-delay-1 { transition-delay: 0.1s; }
         .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
+        /* Utilities */
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #050914; }
-        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 5px; }
-        ::-webkit-scrollbar-thumb:hover { background: #F9E596; }
-
-        /* Image Hover Zoom */
-        .img-zoom-container { overflow: hidden; }
-        .img-zoom { transition: transform 0.7s ease; }
-        .img-zoom-container:hover .img-zoom { transform: scale(1.08); }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
+        
+        .img-zoom-container { overflow: hidden; border-radius: 1rem; }
+        .img-zoom { transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .img-zoom-container:hover .img-zoom { transform: scale(1.05); }
 
         /* FAQ Accordion */
         .faq-content {
@@ -116,149 +122,163 @@
             overflow: hidden;
             transition: max-height 0.4s ease-out;
         }
+
+        /* Preloader */
+        #preloader { transition: opacity 0.5s ease-out, visibility 0.5s ease-out; }
+        .hide-preloader { opacity: 0; visibility: hidden; pointer-events: none; }
     </style>
 </head>
 <body class="antialiased selection:bg-gold selection:text-navy-dark">
 
-    <!-- Sticky Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 px-6 md:px-12 top-0">
+    <!-- Premium Loading Screen -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-navy-dark flex items-center justify-center">
+        <div class="flex flex-col items-center">
+            <div class="w-14 h-14 rounded-full border border-gold flex items-center justify-center bg-transparent text-gold font-serif font-bold text-2xl mb-6 shadow-[0_0_30px_rgba(212,175,55,0.2)]">EV</div>
+            <div class="w-64 h-[1px] bg-white/10 overflow-hidden relative">
+                <div class="absolute top-0 left-0 h-full w-full bg-gold-gradient animate-loading-bar origin-left"></div>
+            </div>
+            <p class="text-gold text-[10px] tracking-[0.3em] uppercase mt-4 opacity-70">Curating Luxury</p>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation (No initial animation, relies on scroll logic) -->
+    <nav id="navbar" class="fixed w-full z-40 transition-all duration-300 py-5 px-6 md:px-12 top-0 bg-transparent">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-full border-2 border-gold flex items-center justify-center bg-navy text-gold font-serif font-bold text-lg group-hover:bg-gold group-hover:text-navy transition-colors">
-                    EV
-                </div>
+                <div class="w-10 h-10 rounded-full border border-gold/50 flex items-center justify-center bg-navy/50 backdrop-blur-md text-gold font-serif font-semibold text-lg group-hover:bg-gold group-hover:text-navy transition-colors">EV</div>
                 <div class="flex flex-col">
                     <span class="font-serif text-xl tracking-wide text-white">Elite Vibe</span>
-                    <span class="text-[10px] tracking-[0.2em] text-gold uppercase">Tours</span>
+                    <span class="text-[9px] tracking-[0.2em] text-gold uppercase">Tours</span>
                 </div>
             </a>
 
             <!-- Desktop Menu -->
-            <div class="hidden lg:flex items-center gap-8">
-                <a href="#destinations" class="text-sm text-gray-300 hover:text-gold transition">Destinations</a>
-                <a href="#experiences" class="text-sm text-gray-300 hover:text-gold transition">Experiences</a>
-                <a href="#why-us" class="text-sm text-gray-300 hover:text-gold transition">Why Us</a>
-                <a href="#testimonials" class="text-sm text-gray-300 hover:text-gold transition">Reviews</a>
+            <div class="hidden lg:flex items-center gap-10">
+                <a href="#destinations" class="text-sm font-medium text-gray-300 hover:text-gold transition">Destinations</a>
+                <a href="#experiences" class="text-sm font-medium text-gray-300 hover:text-gold transition">Experiences</a>
+                <a href="#why-us" class="text-sm font-medium text-gray-300 hover:text-gold transition">Why Us</a>
             </div>
 
-            <!-- Contact & CTA -->
             <div class="hidden lg:flex items-center gap-6">
-                <div class="text-right">
-                    <p class="text-xs text-gray-400">Concierge Desk</p>
-                    <a href="tel:+919906174017" class="text-sm font-medium text-white hover:text-gold transition">+91 9906174017</a>
-                </div>
-                <a href="https://wa.me/919906174017" target="_blank" class="bg-gold hover:bg-gold-light text-navy-dark px-6 py-2.5 rounded-sm font-medium text-sm transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    Plan Your Journey
+                <a href="tel:+919541174017" class="text-sm font-medium text-white hover:text-gold transition flex items-center gap-2">
+                    <i data-lucide="phone-call" class="w-4 h-4 text-gold"></i>
+                    +91 9541174017
                 </a>
             </div>
 
             <!-- Mobile Menu Toggle -->
-            <button class="lg:hidden text-white hover:text-gold transition">
-                <i data-lucide="menu" class="w-6 h-6"></i>
+            <button id="mobile-menu-btn" class="lg:hidden text-white hover:text-gold transition z-50">
+                <i data-lucide="menu" class="w-7 h-7"></i>
             </button>
         </div>
     </nav>
 
+    <!-- Animated Mobile Slide-in Menu -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-navy-dark/80 backdrop-blur-md z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="mobile-menu" class="fixed top-0 right-0 w-[80%] max-w-sm h-full glass-panel z-50 transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] flex flex-col p-8 border-l border-white/10">
+        <div class="flex justify-end mb-12">
+            <button id="close-menu-btn" class="text-gray-400 hover:text-white transition">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+        </div>
+        <div class="flex flex-col gap-8 flex-1">
+            <a href="#destinations" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Destinations</a>
+            <a href="#experiences" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Experiences</a>
+            <a href="#why-us" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Why Us</a>
+            <a href="#faq" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">FAQ</a>
+        </div>
+        <div class="mt-auto">
+            <a href="tel:+919541174017" class="flex items-center gap-3 text-gold mb-4">
+                <i data-lucide="phone" class="w-5 h-5"></i>
+                <span class="font-medium">+91 9541174017</span>
+            </a>
+            <a href="https://wa.me/919541174017" target="_blank" class="w-full bg-[#25D366] text-white py-3 rounded-xl flex justify-center items-center gap-2 font-medium">
+                <i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp Concierge
+            </a>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
-        <!-- Background Video (Dal Lake placeholder using scenic lake video) -->
         <div class="absolute inset-0 w-full h-full z-0">
-            <div class="absolute inset-0 bg-navy-dark/40 z-10"></div> <!-- Dark Overlay -->
+            <div class="absolute inset-0 bg-navy-dark/50 z-10"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent z-10"></div>
-            <!-- Note: Using a reliable high quality Unsplash stock video URL simulating a serene lake/boat ride -->
             <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover scale-105">
                 <source src="https://cdn.coverr.co/videos/coverr-boat-on-a-lake-at-sunset-2615/1080p.mp4" type="video/mp4">
-                <!-- Fallback image if video fails to load -->
-                <img src="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Dal Lake Kashmir">
             </video>
         </div>
 
-        <!-- Hero Content -->
-        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto mt-20">
-            <span class="text-gold tracking-[0.3em] text-sm md:text-base uppercase mb-6 block reveal">Welcome to Paradise</span>
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif mb-6 leading-tight reveal reveal-delay-1 drop-shadow-2xl">
+        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto mt-16 hero-content opacity-0">
+            <span class="text-gold tracking-[0.3em] text-sm md:text-base uppercase mb-6 block">Welcome to Paradise</span>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif mb-6 leading-tight drop-shadow-2xl">
                 Experience Kashmir <br>
                 <span class="text-gold-gradient italic font-light">Like Royalty</span>
             </h1>
-            <p class="text-lg md:text-xl text-gray-200 font-light mb-12 max-w-2xl mx-auto reveal reveal-delay-2 drop-shadow-md">
-                Luxury Curated Journeys by Elite Vibe Tours. Discover the valley's most exclusive stays, private tours, and breathtaking landscapes.
+            <p class="text-lg md:text-xl text-gray-200 font-light mb-12 max-w-2xl mx-auto drop-shadow-md">
+                Luxury Curated Journeys by Elite Vibe Tours. Discover the valley's most exclusive stays and breathtaking landscapes.
             </p>
 
-            <!-- Glassmorphism Search Bar -->
-            <div class="glass-panel p-3 rounded-lg flex flex-col md:flex-row items-center gap-3 max-w-4xl mx-auto reveal reveal-delay-3 shadow-2xl">
-                <div class="flex-1 w-full flex items-center bg-white/5 rounded px-4 py-3 border border-white/10 hover:border-gold/50 transition">
+            <!-- Dynamic Glassmorphism Search Bar -->
+            <div class="glass-panel p-3 rounded-2xl flex flex-col md:flex-row items-center gap-3 max-w-4xl mx-auto shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-gold/30 transition">
                     <i data-lucide="map-pin" class="text-gold w-5 h-5 mr-3"></i>
-                    <select class="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer">
-                        <option value="" disabled selected class="text-gray-400">Where to?</option>
-                        <option value="srinagar" class="text-navy">Dal Lake, Srinagar</option>
-                        <option value="gulmarg" class="text-navy">Gulmarg Ski Resort</option>
-                        <option value="pahalgam" class="text-navy">Pahalgam Valley</option>
-                        <option value="sonmarg" class="text-navy">Sonmarg Glaciers</option>
+                    <select id="destination-select" class="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer">
+                        <option value="" disabled selected class="text-navy">Select Destination</option>
+                        <option value="Srinagar" class="text-navy">Dal Lake, Srinagar</option>
+                        <option value="Gulmarg" class="text-navy">Gulmarg Ski Resort</option>
+                        <option value="Pahalgam" class="text-navy">Pahalgam Valley</option>
+                        <option value="Sonmarg" class="text-navy">Sonmarg Glaciers</option>
                     </select>
                 </div>
-                <div class="flex-1 w-full flex items-center bg-white/5 rounded px-4 py-3 border border-white/10 hover:border-gold/50 transition">
+                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-gold/30 transition">
                     <i data-lucide="calendar" class="text-gold w-5 h-5 mr-3"></i>
-                    <input type="text" placeholder="Travel Dates" onfocus="(this.type='date')" class="bg-transparent border-none outline-none text-white w-full placeholder-gray-300">
+                    <input type="date" id="date-select" class="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer" style="color-scheme: dark;">
                 </div>
-                <button class="w-full md:w-auto bg-gold-gradient text-navy-dark px-8 py-3 rounded font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-                    Curate My Trip
+                <button id="create-trip-btn" class="w-full md:w-auto bg-gold hover:bg-gold-light text-navy-dark px-8 py-3.5 rounded-xl font-semibold transition flex items-center justify-center gap-2">
+                    Create My Trip
                 </button>
             </div>
         </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center animate-bounce">
-            <span class="text-[10px] text-gray-400 tracking-widest uppercase mb-2">Scroll</span>
-            <i data-lucide="chevron-down" class="text-gold w-5 h-5"></i>
-        </div>
     </header>
 
-    <!-- Curved Wave Divider -->
-    <div class="w-full overflow-hidden leading-none -mt-1 relative z-30 bg-navy">
-        <svg viewBox="0 0 1440 120" class="w-full h-[60px] md:h-[120px]" preserveAspectRatio="none">
-            <path d="M0,0 C320,100 420,0 740,60 C1060,120 1280,20 1440,80 L1440,120 L0,120 Z" fill="#0A1128"></path>
-        </svg>
-    </div>
-
-    <!-- Why Choose Us Section -->
-    <section id="why-us" class="py-20 bg-navy relative">
+    <!-- Why Choose Us -->
+    <section id="why-us" class="py-32 bg-navy relative">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            <div class="text-center mb-16 reveal">
-                <span class="text-gold text-sm tracking-widest uppercase mb-2 block">The Elite Standard</span>
+            <div class="text-center mb-20 reveal">
+                <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block">The Elite Standard</span>
                 <h2 class="text-4xl md:text-5xl font-serif">Why Choose Elite Vibe</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Feature 1 -->
-                <div class="p-8 border border-white/5 rounded-xl bg-navy-light/30 hover:bg-navy-light/60 transition-colors reveal text-center group">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-navy border border-gold/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-                        <i data-lucide="gem" class="text-gold w-8 h-8"></i>
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/40 hover:bg-navy-light/80 transition-colors reveal text-center group shadow-lg">
+                    <div class="w-16 h-16 mx-auto rounded-full glass-panel flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="gem" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3">Unmatched Luxury</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Exclusive access to premium houseboats, 5-star resorts, and high-end transportation.</p>
                 </div>
                 <!-- Feature 2 -->
-                <div class="p-8 border border-white/5 rounded-xl bg-navy-light/30 hover:bg-navy-light/60 transition-colors reveal reveal-delay-1 text-center group">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-navy border border-gold/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-                        <i data-lucide="map" class="text-gold w-8 h-8"></i>
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/40 hover:bg-navy-light/80 transition-colors reveal reveal-delay-1 text-center group shadow-lg">
+                    <div class="w-16 h-16 mx-auto rounded-full glass-panel flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="map" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3">Curated Itineraries</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Bespoke travel plans tailored specifically to your preferences, pace, and passions.</p>
                 </div>
                 <!-- Feature 3 -->
-                <div class="p-8 border border-white/5 rounded-xl bg-navy-light/30 hover:bg-navy-light/60 transition-colors reveal reveal-delay-2 text-center group">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-navy border border-gold/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-                        <i data-lucide="heart-handshake" class="text-gold w-8 h-8"></i>
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/40 hover:bg-navy-light/80 transition-colors reveal reveal-delay-2 text-center group shadow-lg">
+                    <div class="w-16 h-16 mx-auto rounded-full glass-panel flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="heart-handshake" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3">Honeymoon Experts</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Romantic setups, private dining, and secluded experiences crafted for couples.</p>
                 </div>
                 <!-- Feature 4 -->
-                <div class="p-8 border border-white/5 rounded-xl bg-navy-light/30 hover:bg-navy-light/60 transition-colors reveal reveal-delay-3 text-center group">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-navy border border-gold/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.1)]">
-                        <i data-lucide="shield-check" class="text-gold w-8 h-8"></i>
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/40 hover:bg-navy-light/80 transition-colors reveal reveal-delay-3 text-center group shadow-lg">
+                    <div class="w-16 h-16 mx-auto rounded-full glass-panel flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3">Safe & Seamless</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">24/7 concierge support, local expertise, and a flawless execution of your journey.</p>
@@ -267,283 +287,207 @@
         </div>
     </section>
 
-    <!-- Destinations Section -->
-    <section id="destinations" class="py-24 bg-navy-light relative">
+    <!-- Iconic Locations Section -->
+    <section id="destinations" class="py-32 bg-navy-dark relative border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
-                <div class="max-w-xl">
-                    <span class="text-gold text-sm tracking-widest uppercase mb-2 block">Iconic Locations</span>
-                    <h2 class="text-4xl md:text-5xl font-serif mb-4">Discover the Crown Jewels of Kashmir</h2>
-                    <p class="text-gray-400">From pristine alpine lakes to snow-capped peaks, explore handpicked destinations offering world-class luxury.</p>
-                </div>
-                <div class="mt-6 md:mt-0">
-                    <button class="border border-gold text-gold hover:bg-gold hover:text-navy px-6 py-2 rounded-sm transition-all text-sm font-medium">View All Destinations</button>
-                </div>
+            <div class="text-center mb-20 reveal">
+                <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block">Iconic Locations</span>
+                <h2 class="text-4xl md:text-5xl font-serif mb-4">Discover the Crown Jewels</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">From pristine alpine lakes to snow-capped peaks, explore handpicked destinations.</p>
             </div>
 
-            <!-- CSS Grid for Destinations -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Dal Lake (Large) -->
-                <div class="lg:col-span-2 relative h-[400px] rounded-xl overflow-hidden img-zoom-container cursor-pointer reveal group">
-                    <img src="https://images.unsplash.com/photo-1629225010698-3f5f3e9c1815?auto=format&fit=crop&q=80" alt="Dal Lake" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-                    <div class="absolute bottom-0 left-0 p-8 w-full">
+                <div class="lg:col-span-2 relative h-[450px] rounded-2xl img-zoom-container reveal group">
+                    <img src="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80" loading="lazy" alt="Dal Lake" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
                         <div class="flex justify-between items-end">
                             <div>
-                                <span class="bg-gold/20 text-gold text-xs px-3 py-1 rounded-full border border-gold/30 backdrop-blur-sm mb-3 inline-block">Heritage & Romance</span>
+                                <span class="bg-gold/20 text-gold text-xs px-3 py-1 rounded-full border border-gold/30 backdrop-blur-md mb-4 inline-block">Heritage & Romance</span>
                                 <h3 class="text-3xl font-serif mb-2">Dal Lake, Srinagar</h3>
-                                <p class="text-gray-300 max-w-md transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">Float on the mirror-like waters in a premium cedar-wood houseboat, surrounded by the Zabarwan mountains.</p>
+                                <p class="text-gray-300 max-w-md text-sm leading-relaxed mb-6">Float on the mirror-like waters in a premium cedar-wood houseboat, surrounded by the Zabarwan mountains.</p>
                             </div>
-                            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-gold group-hover:border-gold transition-colors">
-                                <i data-lucide="arrow-up-right" class="w-5 h-5 group-hover:text-navy"></i>
-                            </div>
+                        </div>
+                        <!-- Glass Morphism Let's Talk Button -->
+                        <div class="mt-auto">
+                            <button onclick="openLocationWA('Dal Lake, Srinagar')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:bg-white/10 transition-all flex items-center gap-2 w-fit group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Gulmarg -->
-                <div class="relative h-[400px] rounded-xl overflow-hidden img-zoom-container cursor-pointer reveal reveal-delay-1 group">
-                    <img src="https://images.unsplash.com/photo-1613554705597-2a4454bc5c47?auto=format&fit=crop&q=80" alt="Gulmarg" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-                    <div class="absolute bottom-0 left-0 p-8 w-full">
-                        <span class="bg-gold/20 text-gold text-xs px-3 py-1 rounded-full border border-gold/30 backdrop-blur-sm mb-3 inline-block">Winter Elite</span>
+                <div class="relative h-[450px] rounded-2xl img-zoom-container reveal reveal-delay-1 group">
+                    <img src="https://images.unsplash.com/photo-1651509094074-e8acaeb84d8f?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Gulmarg" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
+                        <span class="bg-gold/20 text-gold text-xs px-3 py-1 rounded-full border border-gold/30 backdrop-blur-md mb-4 w-fit">Winter Elite</span>
                         <h3 class="text-2xl font-serif mb-2">Gulmarg</h3>
-                        <p class="text-gray-300 text-sm transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">World-class skiing resorts and the iconic Gondola ride.</p>
+                        <p class="text-gray-300 text-sm mb-6">World-class skiing resorts and the iconic Gondola ride.</p>
+                        <button onclick="openLocationWA('Gulmarg')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:bg-white/10 transition-all flex items-center gap-2 w-fit group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
+                        </button>
                     </div>
                 </div>
 
                 <!-- Pahalgam -->
-                <div class="relative h-[400px] rounded-xl overflow-hidden img-zoom-container cursor-pointer reveal group">
-                    <img src="https://images.unsplash.com/photo-1625835266831-7e86e3f421a1?auto=format&fit=crop&q=80" alt="Pahalgam" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-                    <div class="absolute bottom-0 left-0 p-8 w-full">
-                        <span class="bg-gold/20 text-gold text-xs px-3 py-1 rounded-full border border-gold/30 backdrop-blur-sm mb-3 inline-block">Valley of Shepherds</span>
+                <div class="relative h-[450px] rounded-2xl img-zoom-container reveal group">
+                    <img src="https://images.unsplash.com/photo-1668173443752-bdec2fbb3c79?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Pahalgam" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
+                        <span class="bg-gold/20 text-gold text-xs px-3 py-1 rounded-full border border-gold/30 backdrop-blur-md mb-4 w-fit">Valley of Shepherds</span>
                         <h3 class="text-2xl font-serif mb-2">Pahalgam</h3>
-                        <p class="text-gray-300 text-sm transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">Lush meadows, pine forests, and premium riverside boutique stays.</p>
+                        <p class="text-gray-300 text-sm mb-6">Lush meadows, pine forests, and premium boutique stays.</p>
+                        <button onclick="openLocationWA('Pahalgam')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:bg-white/10 transition-all flex items-center gap-2 w-fit group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
+                        </button>
                     </div>
                 </div>
 
                 <!-- Sonmarg (Large) -->
-                <div class="lg:col-span-2 relative h-[400px] rounded-xl overflow-hidden img-zoom-container cursor-pointer reveal reveal-delay-1 group">
-                    <img src="https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&q=80" alt="Sonmarg" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-                    <div class="absolute bottom-0 left-0 p-8 w-full">
-                        <div class="flex justify-between items-end">
-                            <div>
-                                <span class="bg-gold/20 text-gold text-xs px-3 py-1 rounded-full border border-gold/30 backdrop-blur-sm mb-3 inline-block">Meadow of Gold</span>
-                                <h3 class="text-3xl font-serif mb-2">Sonmarg</h3>
-                                <p class="text-gray-300 max-w-md transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">Majestic glaciers, alpine serenity, and luxury glamping experiences beneath the stars.</p>
-                            </div>
-                            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-gold group-hover:border-gold transition-colors">
-                                <i data-lucide="arrow-up-right" class="w-5 h-5 group-hover:text-navy"></i>
-                            </div>
-                        </div>
+                <div class="lg:col-span-2 relative h-[450px] rounded-2xl img-zoom-container reveal reveal-delay-1 group">
+                    <img src="https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80" loading="lazy" alt="Sonmarg" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
+                        <span class="bg-gold/20 text-gold text-xs px-3 py-1 rounded-full border border-gold/30 backdrop-blur-md mb-4 w-fit">Meadow of Gold</span>
+                        <h3 class="text-3xl font-serif mb-2">Sonmarg</h3>
+                        <p class="text-gray-300 max-w-md text-sm leading-relaxed mb-6">Majestic glaciers, alpine serenity, and luxury glamping experiences beneath the stars.</p>
+                        <button onclick="openLocationWA('Sonmarg')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:bg-white/10 transition-all flex items-center gap-2 w-fit group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Signature Experiences Section -->
-    <section id="experiences" class="py-24 bg-navy relative border-t border-white/5">
+    <!-- Signature Experiences -->
+    <section id="experiences" class="py-32 bg-navy relative">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            <div class="text-center mb-16 reveal">
-                <span class="text-gold text-sm tracking-widest uppercase mb-2 block">Beyond Sightseeing</span>
-                <h2 class="text-4xl md:text-5xl font-serif mb-4">Signature Luxury Experiences</h2>
-                <div class="w-24 h-1 bg-gold mx-auto mt-6"></div>
+            <div class="text-center mb-20 reveal">
+                <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block">Beyond Sightseeing</span>
+                <h2 class="text-4xl md:text-5xl font-serif">Signature Luxury Experiences</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Exp 1 -->
-                <div class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 reveal">
-                    <img src="https://images.unsplash.com/photo-1542314831-c6a4d14eff4a?auto=format&fit=crop&q=80" alt="Dining" class="w-full h-48 object-cover rounded-lg mb-6">
-                    <h3 class="text-xl font-serif mb-2 text-gold">Alpine Private Dining</h3>
-                    <p class="text-gray-400 text-sm mb-4">Exclusive candlelight dinners set against the backdrop of snow-capped peaks or alongside the Dal Lake.</p>
-                    <a href="#" class="text-sm font-medium text-white hover:text-gold flex items-center gap-2">Discover More <i data-lucide="chevron-right" class="w-4 h-4"></i></a>
+                <div class="glass-panel p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal">
+                    <div class="img-zoom-container rounded-xl h-56 mb-6">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Dining" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="px-2 pb-4">
+                        <h3 class="text-xl font-serif mb-3 text-white">Alpine Private Dining</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Exclusive candlelight dinners set against the backdrop of snow-capped peaks or alongside the Dal Lake.</p>
+                    </div>
                 </div>
                 <!-- Exp 2 -->
-                <div class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 reveal reveal-delay-1">
-                    <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80" alt="Suite" class="w-full h-48 object-cover rounded-lg mb-6">
-                    <h3 class="text-xl font-serif mb-2 text-gold">Presidential Houseboats</h3>
-                    <p class="text-gray-400 text-sm mb-4">Stay in intricately carved, centuries-old styled luxury houseboats with modern 5-star amenities.</p>
-                    <a href="#" class="text-sm font-medium text-white hover:text-gold flex items-center gap-2">Discover More <i data-lucide="chevron-right" class="w-4 h-4"></i></a>
+                <div class="glass-panel p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal reveal-delay-1">
+                    <div class="img-zoom-container rounded-xl h-56 mb-6">
+                        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Suite" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="px-2 pb-4">
+                        <h3 class="text-xl font-serif mb-3 text-white">Presidential Houseboats</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Stay in intricately carved, centuries-old styled luxury houseboats with modern 5-star amenities.</p>
+                    </div>
                 </div>
                 <!-- Exp 3 -->
-                <div class="glass-panel p-6 rounded-xl hover:-translate-y-2 transition-transform duration-300 reveal reveal-delay-2">
-                    <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80" alt="Helicopter" class="w-full h-48 object-cover rounded-lg mb-6">
-                    <h3 class="text-xl font-serif mb-2 text-gold">Helicopter Tours</h3>
-                    <p class="text-gray-400 text-sm mb-4">Take to the skies for an unparalleled aerial view of the Kashmir valley, dropping into untouched locations.</p>
-                    <a href="#" class="text-sm font-medium text-white hover:text-gold flex items-center gap-2">Discover More <i data-lucide="chevron-right" class="w-4 h-4"></i></a>
+                <div class="glass-panel p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal reveal-delay-2">
+                    <div class="img-zoom-container rounded-xl h-56 mb-6">
+                        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Helicopter" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="px-2 pb-4">
+                        <h3 class="text-xl font-serif mb-3 text-white">Helicopter Tours</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Take to the skies for an unparalleled aerial view of the Kashmir valley, dropping into untouched locations.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Quiz / Call to Action Banner -->
-    <section class="py-20 relative overflow-hidden bg-gold">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&q=80')] mix-blend-overlay opacity-20 object-cover w-full h-full"></div>
-        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 text-navy-dark reveal">
-            <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6">Discover Your Kashmir Travel Persona</h2>
-            <p class="text-lg md:text-xl font-medium mb-8 max-w-2xl mx-auto">Are you a luxury seeker, an adventure enthusiast, or a romantic soul? Take our 60-second quiz to get a perfectly tailored itinerary.</p>
-            <button class="bg-navy-dark text-gold hover:bg-navy px-8 py-4 rounded-sm font-bold tracking-wide transition-colors shadow-xl flex items-center gap-3 mx-auto">
-                <i data-lucide="sparkles" class="w-5 h-5"></i>
-                Start The Quiz
-            </button>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="py-24 bg-navy relative">
-        <div class="max-w-7xl mx-auto px-6 md:px-12">
+    <!-- FAQ Accordion Section -->
+    <section id="faq" class="py-32 bg-navy-dark relative border-t border-white/5">
+        <div class="max-w-3xl mx-auto px-6">
             <div class="text-center mb-16 reveal">
-                <span class="text-gold text-sm tracking-widest uppercase mb-2 block">Guest Diaries</span>
-                <h2 class="text-4xl md:text-5xl font-serif mb-4">Tales of Royalty</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-navy-light/40 p-8 rounded-xl border border-white/5 relative reveal">
-                    <i data-lucide="quote" class="text-gold/20 w-16 h-16 absolute top-4 right-4"></i>
-                    <div class="flex text-gold mb-4">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    </div>
-                    <p class="text-gray-300 italic mb-6 relative z-10">"Elite Vibe Tours completely redefined luxury travel for us. Our honeymoon in Pahalgam felt straight out of a movie. The attention to detail, the private dining, the seamless transfers—flawless."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://i.pravatar.cc/150?img=32" alt="Guest" class="w-12 h-12 rounded-full border-2 border-gold">
-                        <div>
-                            <h4 class="font-medium text-white">Priya & Rahul Sharma</h4>
-                            <span class="text-xs text-gold">Honeymoon Package</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Testimonial 2 -->
-                <div class="bg-navy-light/40 p-8 rounded-xl border border-white/5 relative reveal reveal-delay-1">
-                    <i data-lucide="quote" class="text-gold/20 w-16 h-16 absolute top-4 right-4"></i>
-                    <div class="flex text-gold mb-4">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    </div>
-                    <p class="text-gray-300 italic mb-6 relative z-10">"Traveling with my family to Kashmir was a dream, but Elite Vibe made it effortless. The luxury houseboat experience on Dal Lake was the highlight of our year. Highly recommended!"</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://i.pravatar.cc/150?img=11" alt="Guest" class="w-12 h-12 rounded-full border-2 border-gold">
-                        <div>
-                            <h4 class="font-medium text-white">Anand Family</h4>
-                            <span class="text-xs text-gold">Premium Family Tour</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Testimonial 3 -->
-                <div class="bg-navy-light/40 p-8 rounded-xl border border-white/5 relative reveal reveal-delay-2 hidden lg:block">
-                    <i data-lucide="quote" class="text-gold/20 w-16 h-16 absolute top-4 right-4"></i>
-                    <div class="flex text-gold mb-4">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    </div>
-                    <p class="text-gray-300 italic mb-6 relative z-10">"The Concierge service is top-notch. From the moment we landed in Srinagar, everything was VIP. The Gulmarg ski resort arrangements were world-class."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://i.pravatar.cc/150?img=68" alt="Guest" class="w-12 h-12 rounded-full border-2 border-gold">
-                        <div>
-                            <h4 class="font-medium text-white">James & Sarah</h4>
-                            <span class="text-xs text-gold">International Travelers</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-20 bg-navy-light relative border-t border-white/5">
-        <div class="max-w-4xl mx-auto px-6">
-            <div class="text-center mb-12 reveal">
-                <h2 class="text-4xl font-serif mb-4">Frequently Asked Questions</h2>
-                <p class="text-gray-400">Everything you need to know about your luxury journey.</p>
+                <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block">Concierge Desk</span>
+                <h2 class="text-4xl font-serif">Frequently Asked Questions</h2>
             </div>
 
             <div class="space-y-4 reveal">
                 <!-- FAQ Item 1 -->
-                <div class="border border-white/10 rounded-lg overflow-hidden">
-                    <button class="faq-toggle w-full px-6 py-5 flex justify-between items-center bg-navy hover:bg-navy-dark transition-colors text-left">
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none">
                         <span class="font-medium text-lg">When is the best time to visit Kashmir?</span>
-                        <i data-lucide="plus" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center shrink-0">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        </div>
                     </button>
-                    <div class="faq-content bg-navy-dark/50">
-                        <p class="px-6 py-5 text-gray-400 text-sm leading-relaxed">Kashmir is beautiful year-round. For snow and skiing, December to March is ideal. For blooming gardens and pleasant weather (perfect for honeymoons), April to October is recommended. We curate experiences suitable for every season.</p>
+                    <div class="faq-content">
+                        <div class="px-8 pb-6 text-gray-400 text-sm leading-relaxed">
+                            Kashmir is beautiful year-round. For snow and skiing, December to March is ideal. For blooming gardens and pleasant weather (perfect for honeymoons), April to October is recommended. We curate experiences suitable for every season.
+                        </div>
                     </div>
                 </div>
 
                 <!-- FAQ Item 2 -->
-                <div class="border border-white/10 rounded-lg overflow-hidden">
-                    <button class="faq-toggle w-full px-6 py-5 flex justify-between items-center bg-navy hover:bg-navy-dark transition-colors text-left">
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none">
                         <span class="font-medium text-lg">Are the tours customizable?</span>
-                        <i data-lucide="plus" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center shrink-0">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        </div>
                     </button>
-                    <div class="faq-content bg-navy-dark/50">
-                        <p class="px-6 py-5 text-gray-400 text-sm leading-relaxed">Absolutely. Elite Vibe Tours specializes in bespoke travel. While we offer signature packages, every itinerary can be fully customized to match your pace, dietary preferences, and specific luxury requirements.</p>
+                    <div class="faq-content">
+                        <div class="px-8 pb-6 text-gray-400 text-sm leading-relaxed">
+                            Absolutely. Elite Vibe Tours specializes in bespoke travel. While we offer signature packages, every itinerary can be fully customized to match your pace, dietary preferences, and specific luxury requirements.
+                        </div>
                     </div>
                 </div>
 
                 <!-- FAQ Item 3 -->
-                <div class="border border-white/10 rounded-lg overflow-hidden">
-                    <button class="faq-toggle w-full px-6 py-5 flex justify-between items-center bg-navy hover:bg-navy-dark transition-colors text-left">
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none">
                         <span class="font-medium text-lg">Is Kashmir safe for luxury travelers?</span>
-                        <i data-lucide="plus" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center shrink-0">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        </div>
                     </button>
-                    <div class="faq-content bg-navy-dark/50">
-                        <p class="px-6 py-5 text-gray-400 text-sm leading-relaxed">Yes. We prioritize your safety and comfort above all else. Our ground team is locally based, highly experienced, and provides 24/7 support throughout your journey, ensuring a completely seamless and secure experience.</p>
+                    <div class="faq-content">
+                        <div class="px-8 pb-6 text-gray-400 text-sm leading-relaxed">
+                            Yes. We prioritize your safety and comfort above all else. Our ground team is locally based, highly experienced, and provides 24/7 support throughout your journey, ensuring a completely seamless and secure experience.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Map Section -->
-    <section class="h-[400px] w-full relative reveal grayscale hover:grayscale-0 transition-all duration-1000">
-        <!-- Overlay to ensure it fits the design until hovered/clicked -->
-        <div class="absolute inset-0 bg-navy/40 pointer-events-none z-10"></div>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105676.81977717477!2d74.72088656127117!3d34.10651167440369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38e18f2f28328003%3A0xf510d29d332d72!2sSrinagar!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-navy-dark pt-20 pb-10 px-6 md:px-12 border-t border-gold/20 relative overflow-hidden">
-        <!-- Background Monogram Element -->
+    <!-- Footer (Minimal Luxury) -->
+    <footer class="bg-navy pt-24 pb-10 px-6 md:px-12 border-t border-white/5 relative overflow-hidden">
         <div class="absolute -bottom-20 -right-20 text-[250px] font-serif font-bold text-white/[0.02] select-none pointer-events-none">EV</div>
         
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10 mb-16">
-            
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 relative z-10 mb-20">
             <!-- Brand -->
             <div>
-                <a href="#" class="flex items-center gap-3 mb-6">
-                    <div class="w-12 h-12 rounded-full border-2 border-gold flex items-center justify-center bg-navy text-gold font-serif font-bold text-xl">EV</div>
+                <a href="#" class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 rounded-full border border-gold flex items-center justify-center bg-transparent text-gold font-serif font-bold text-xl">EV</div>
                     <div class="flex flex-col">
                         <span class="font-serif text-2xl tracking-wide text-white">Elite Vibe</span>
                         <span class="text-xs tracking-[0.2em] text-gold uppercase">Tours</span>
                     </div>
                 </a>
-                <p class="text-gray-400 text-sm mb-6 leading-relaxed">Curating the finest luxury travel experiences in the heart of Kashmir. Your journey into paradise begins here.</p>
+                <p class="text-gray-400 text-sm leading-relaxed mb-8 max-w-sm">Curating the finest luxury travel experiences in the heart of Kashmir. Your journey into paradise begins here.</p>
                 <div class="flex gap-4">
-                    <a href="#" class="w-10 h-10 rounded-full bg-navy-light flex items-center justify-center text-white hover:bg-gold hover:text-navy transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-navy-light flex items-center justify-center text-white hover:bg-gold hover:text-navy transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-navy-light flex items-center justify-center text-white hover:bg-gold hover:text-navy transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:border-gold hover:text-gold transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:border-gold hover:text-gold transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
                 </div>
             </div>
 
             <!-- Quick Links -->
-            <div>
-                <h4 class="font-serif text-xl mb-6 text-white">Journeys</h4>
-                <ul class="space-y-3">
+            <div class="lg:ml-auto">
+                <h4 class="font-serif text-xl mb-8 text-white">Journeys</h4>
+                <ul class="space-y-4">
                     <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Honeymoon Packages</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Family Retreats</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Winter Ski Expeditions</a></li>
@@ -551,121 +495,185 @@
                 </ul>
             </div>
 
-            <!-- Contact Info -->
-            <div>
-                <h4 class="font-serif text-xl mb-6 text-white">Contact Us</h4>
-                <ul class="space-y-4">
-                    <li class="flex items-start gap-3">
+            <!-- Contact Info (Emails removed per request) -->
+            <div class="lg:ml-auto">
+                <h4 class="font-serif text-xl mb-8 text-white">Contact Us</h4>
+                <ul class="space-y-6">
+                    <li class="flex items-start gap-4">
                         <i data-lucide="map-pin" class="w-5 h-5 text-gold shrink-0 mt-0.5"></i>
                         <span class="text-gray-400 text-sm leading-relaxed">Srinagar, Jammu & Kashmir<br>India, 190001</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <i data-lucide="phone" class="w-5 h-5 text-gold shrink-0"></i>
-                        <div class="flex flex-col">
+                    <li class="flex items-start gap-4">
+                        <i data-lucide="phone" class="w-5 h-5 text-gold shrink-0 mt-0.5"></i>
+                        <div class="flex flex-col gap-2">
                             <a href="tel:+919906174017" class="text-gray-400 hover:text-white text-sm transition-colors">+91 9906174017</a>
                             <a href="tel:+919541174017" class="text-gray-400 hover:text-white text-sm transition-colors">+91 9541174017</a>
                         </div>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <i data-lucide="mail" class="w-5 h-5 text-gold shrink-0"></i>
-                        <a href="mailto:concierge@elitevibetours.com" class="text-gray-400 hover:text-white text-sm transition-colors">concierge@elitevibetours.com</a>
-                    </li>
                 </ul>
-            </div>
-
-            <!-- Newsletter -->
-            <div>
-                <h4 class="font-serif text-xl mb-6 text-white">The Elite List</h4>
-                <p class="text-gray-400 text-sm mb-4">Subscribe to receive exclusive travel insights and early access to our premium packages.</p>
-                <form class="flex flex-col gap-3">
-                    <input type="email" placeholder="Email Address" class="bg-navy border border-white/10 px-4 py-3 rounded text-sm text-white focus:outline-none focus:border-gold transition-colors">
-                    <button type="submit" class="bg-gold hover:bg-gold-light text-navy-dark font-semibold py-3 rounded transition-colors text-sm">Subscribe</button>
-                </form>
             </div>
         </div>
 
-        <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
-            <p class="text-gray-500 text-xs">© 2026 Elite Vibe Tours. All rights reserved.</p>
-            <div class="flex gap-6 text-xs text-gray-500">
-                <a href="#" class="hover:text-gold transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-gold transition-colors">Terms of Service</a>
+        <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+            <p class="text-gray-600 text-xs">© 2026 Elite Vibe Tours. All rights reserved.</p>
+            <div class="flex gap-6 text-xs text-gray-600">
+                <a href="#" class="hover:text-gray-300 transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-300 transition-colors">Terms of Service</a>
             </div>
         </div>
     </footer>
 
-    <!-- Sticky WhatsApp CTA -->
-    <a href="https://wa.me/919906174017" target="_blank" class="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#128C7E] text-white p-4 rounded-full shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center justify-center group">
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.441-1.273.607-1.446c.127-.133.358-.2.579-.2.072 0 .141 0 .204.005.152.011.334-.055.518.39.213.518.687 1.679.749 1.802.062.124.104.269.021.436-.083.167-.124.271-.249.42-.125.148-.266.331-.379.438-.125.118-.255.247-.114.492.141.244.625.996 1.341 1.625.924.814 1.666 1.071 1.914 1.19.248.118.393.102.539-.06.146-.162.628-.731.794-.983.166-.252.332-.211.554-.128.221.083 1.411.667 1.652.787.241.121.402.182.46.282.059.099.059.576-.085.981z"></path>
-            <path d="M12.031 2C6.48 2 2 6.48 2 12.031c0 1.96.539 3.844 1.553 5.467L2 22l4.639-1.523A9.974 9.974 0 0 0 12.031 22c5.551 0 10.031-4.48 10.031-10.031C22.062 6.48 17.582 2 12.031 2zm0 18.25c-1.637 0-3.238-.423-4.636-1.222l-.333-.191-3.085 1.013 1.026-3.003-.209-.333A8.252 8.252 0 0 1 3.75 12.031c0-4.566 3.715-8.281 8.281-8.281 4.566 0 8.281 3.715 8.281 8.281 0 4.566-3.715 8.281-8.281 8.281z"></path>
-        </svg>
-        <span class="absolute right-16 bg-white text-navy-dark px-3 py-1.5 rounded text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">Chat with Concierge</span>
-    </a>
+    <!-- Sticky Floating Action Buttons -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+        <!-- Call Us Pill -->
+        <a href="tel:+919541174017" class="glass-pill rounded-full px-5 py-3 flex items-center gap-3 text-white hover:bg-white/10 transition-all shadow-[0_8px_32px_rgba(0,0,0,0.3)] group">
+            <i data-lucide="phone" class="w-4 h-4 text-gold group-hover:animate-bounce"></i> 
+            <span class="text-sm font-medium pr-1">Call Us Directly</span>
+        </a>
+        
+        <!-- Premium Glass WhatsApp Icon -->
+        <a href="https://wa.me/919541174017" target="_blank" class="w-16 h-16 rounded-full glass-panel flex items-center justify-center text-[#25D366] hover:text-white hover:bg-[#25D366] transition-all duration-300 animate-pulse-soft shadow-[0_8px_32px_rgba(37,211,102,0.2)]">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.441-1.273.607-1.446c.127-.133.358-.2.579-.2.072 0 .141 0 .204.005.152.011.334-.055.518.39.213.518.687 1.679.749 1.802.062.124.104.269.021.436-.083.167-.124.271-.249.42-.125.148-.266.331-.379.438-.125.118-.255.247-.114.492.141.244.625.996 1.341 1.625.924.814 1.666 1.071 1.914 1.19.248.118.393.102.539-.06.146-.162.628-.731.794-.983.166-.252.332-.211.554-.128.221.083 1.411.667 1.652.787.241.121.402.182.46.282.059.099.059.576-.085.981z"></path>
+                <path d="M12.031 2C6.48 2 2 6.48 2 12.031c0 1.96.539 3.844 1.553 5.467L2 22l4.639-1.523A9.974 9.974 0 0 0 12.031 22c5.551 0 10.031-4.48 10.031-10.031C22.062 6.48 17.582 2 12.031 2zm0 18.25c-1.637 0-3.238-.423-4.636-1.222l-.333-.191-3.085 1.013 1.026-3.003-.209-.333A8.252 8.252 0 0 1 3.75 12.031c0-4.566 3.715-8.281 8.281-8.281 4.566 0 8.281 3.715 8.281 8.281 0 4.566-3.715 8.281-8.281 8.281z"></path>
+            </svg>
+        </a>
+    </div>
 
-    <!-- JavaScript -->
+    <!-- JavaScript Interactions -->
     <script>
-        // Initialize Lucide Icons
+        // 1. Initialize Lucide Icons
         lucide.createIcons();
 
-        // Navbar Scroll Effect
+        // 2. Preloader Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.classList.add('hide-preloader');
+                
+                // Trigger hero animation after preloader
+                document.querySelector('.hero-content').classList.add('animate-fade-in-up');
+            }, 1800); // 1.8 seconds loading screen
+        });
+
+        // 3. Header Sticky Blur Logic
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                navbar.classList.add('glass-nav', 'py-2');
-                navbar.classList.remove('py-4');
+                navbar.classList.add('glass-panel', 'py-3');
+                navbar.classList.remove('bg-transparent', 'py-5');
             } else {
-                navbar.classList.remove('glass-nav', 'py-2');
-                navbar.classList.add('py-4');
+                navbar.classList.remove('glass-panel', 'py-3');
+                navbar.classList.add('bg-transparent', 'py-5');
             }
         });
 
-        // Intersection Observer for Scroll Animations
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.15
-        };
+        // 4. "Create My Trip" Dynamic WhatsApp Generator
+        document.getElementById('create-trip-btn').addEventListener('click', () => {
+            const destSelect = document.getElementById('destination-select');
+            const destValue = destSelect.value;
+            const dateValue = document.getElementById('date-select').value;
+            
+            let message = "Hi, I want to plan a luxury trip to Kashmir. Please share details.";
+            
+            if (destValue) {
+                const destText = destSelect.options[destSelect.selectedIndex].text;
+                if (dateValue) {
+                    message = `Hi Elite Vibe Tours, I would like to plan a trip to ${destText}. I want to visit from ${dateValue}. Please assist me with a curated package.`;
+                } else {
+                    message = `Hi Elite Vibe Tours, I would like to plan a trip to ${destText}. Please assist me with a curated package.`;
+                }
+            }
+            
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/919541174017?text=${encodedMessage}`, '_blank');
+        });
 
+        // 5. "Let's Talk" Dynamic WhatsApp (Iconic Locations)
+        function openLocationWA(locationName) {
+            const message = `Hi, when is the best time to visit ${locationName}?`;
+            window.open(`https://wa.me/919541174017?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // 6. Mobile Animated Menu Logic
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isOpen = !mobileMenu.classList.contains('translate-x-full');
+            
+            if (isOpen) {
+                // Close
+                mobileMenu.classList.add('translate-x-full');
+                mobileOverlay.classList.remove('opacity-100');
+                mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+                
+                // Reset stagger animation
+                mobileLinks.forEach(link => {
+                    link.classList.remove('opacity-100', 'translate-x-0');
+                    link.classList.add('opacity-0', 'translate-x-4');
+                });
+            } else {
+                // Open
+                mobileMenu.classList.remove('translate-x-full');
+                mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                mobileOverlay.classList.add('opacity-100');
+                
+                // Stagger animate links
+                mobileLinks.forEach((link, index) => {
+                    setTimeout(() => {
+                        link.classList.remove('opacity-0', 'translate-x-4');
+                        link.classList.add('opacity-100', 'translate-x-0');
+                    }, 200 + (index * 100));
+                });
+            }
+        }
+
+        mobileBtn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
+        mobileOverlay.addEventListener('click', toggleMenu);
+        
+        // Auto-close menu on link click
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // 7. Scroll Reveal Animation
+        const observerOptions = { threshold: 0.15 };
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    observer.unobserve(entry.target); // Run once
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach((element) => {
+        document.querySelectorAll('.reveal').forEach(element => {
             observer.observe(element);
         });
 
-        // FAQ Accordion Logic
-        document.querySelectorAll('.faq-toggle').addEventListener('click', function() {
-            console.log('clicked')
-        });
-
+        // 8. Strict FAQ Accordion (One open at a time)
         const faqToggles = document.querySelectorAll('.faq-toggle');
         faqToggles.forEach(toggle => {
             toggle.addEventListener('click', () => {
                 const content = toggle.nextElementSibling;
                 const icon = toggle.querySelector('.faq-icon');
-                
-                // Close all other open FAQs
+                const isOpen = content.style.maxHeight;
+
+                // Close all others
                 document.querySelectorAll('.faq-content').forEach(otherContent => {
-                    if (otherContent !== content && otherContent.style.maxHeight) {
-                        otherContent.style.maxHeight = null;
-                        otherContent.previousElementSibling.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
-                    }
+                    otherContent.style.maxHeight = null;
+                    otherContent.previousElementSibling.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
                 });
 
-                if (content.style.maxHeight) {
-                    // Close current
-                    content.style.maxHeight = null;
-                    icon.style.transform = 'rotate(0deg)';
-                } else {
-                    // Open current
+                // Toggle current
+                if (!isOpen) {
                     content.style.maxHeight = content.scrollHeight + "px";
-                    icon.style.transform = 'rotate(45deg)';
+                    icon.style.transform = 'rotate(180deg)';
                 }
             });
         });
