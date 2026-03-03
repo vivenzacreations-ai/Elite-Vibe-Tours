@@ -9,7 +9,7 @@
     <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,13 +38,12 @@
                         }
                     },
                     animation: {
-                        'spin-slow': 'spin 8s linear infinite',
-                        'spin-reverse': 'spinReverse 12s linear infinite',
+                        'pulse-soft': 'pulseSoft 3s infinite',
                     },
                     keyframes: {
-                        spinReverse: {
-                            '0%': { transform: 'rotate(360deg)' },
-                            '100%': { transform: 'rotate(0deg)' }
+                        pulseSoft: {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                            '50%': { transform: 'scale(1.05)', opacity: '0.8' }
                         }
                     }
                 }
@@ -59,110 +58,100 @@
             overflow-x: hidden;
         }
 
-        /* --- UNIMAGINABLE VIBRANT LOADING PORTAL --- */
-        #vibrant-preloader {
+        /* --- CINEMATIC PRELOADER ANIMATIONS --- */
+        #premium-preloader {
             position: fixed;
             inset: 0;
-            z-index: 9999;
-            background: #010205;
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            transition: opacity 1s cubic-bezier(0.77, 0, 0.175, 1), transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-
-        .portal-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 1s ease;
-        }
-
-        /* Glowing Orbs */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(40px);
-            mix-blend-mode: screen;
-            opacity: 0.8;
-            animation-play-state: running;
-        }
-        .orb-1 {
-            width: 250px; height: 250px;
-            background: radial-gradient(circle, #8A2BE2, transparent 70%);
-            top: -20px; left: -20px;
-            animation: orbFloat 6s ease-in-out infinite alternate;
-        }
-        .orb-2 {
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, #00FFFF, transparent 70%);
-            bottom: -10px; right: -10px;
-            animation: orbFloat 5s ease-in-out infinite alternate-reverse;
-        }
-        .orb-3 {
-            width: 280px; height: 280px;
-            background: radial-gradient(circle, #FF00FF, transparent 70%);
-            top: 20px; right: 20px;
-            animation: pulseSoft 4s ease-in-out infinite alternate;
-        }
-        
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 40px) scale(1.2); }
-        }
-
-        .portal-text {
-            position: relative;
-            z-index: 10;
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            color: white;
-            text-shadow: 0 0 20px rgba(255,255,255,0.5);
-            animation: textFocus 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-
-        @keyframes textFocus {
-            0% { filter: blur(20px); opacity: 0; letter-spacing: 0.5em; transform: scale(1.2); }
-            100% { filter: blur(0px); opacity: 1; letter-spacing: 0.2em; transform: scale(1); }
-        }
-
-        /* Exit Animation Classes */
-        .preloader-exit {
-            opacity: 0 !important;
             pointer-events: none;
         }
-        .portal-explode {
-            transform: scale(15) !important;
-            opacity: 0;
+
+        .curtain {
+            position: absolute;
+            top: 0;
+            width: 50vw;
+            height: 100vh;
+            background-color: #03050a;
+            z-index: 1001;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .curtain-left { left: 0; transform-origin: left; }
+        .curtain-right { right: 0; transform-origin: right; }
+
+        .loader-content {
+            position: relative;
+            z-index: 1002;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
         }
 
+        .loader-title {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+            animation: textReveal 1s cubic-bezier(0.77, 0, 0.175, 1) 0.2s forwards;
+            background: linear-gradient(to right, #D4AF37, #F9E596, #D4AF37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
-        /* --- LIQUID GLASS HEADER (Motion restored, Blur removed) --- */
+        .loader-line {
+            width: 0;
+            height: 1px;
+            background-color: #D4AF37;
+            margin-top: 1.5rem;
+            animation: lineDraw 1s cubic-bezier(0.77, 0, 0.175, 1) 0.8s forwards;
+        }
+
+        .loader-subtitle {
+            opacity: 0;
+            letter-spacing: 0;
+            animation: subFadeIn 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) 1.2s forwards;
+        }
+
+        @keyframes textReveal {
+            to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        }
+        @keyframes lineDraw {
+            to { width: 120px; }
+        }
+        @keyframes subFadeIn {
+            to { opacity: 1; letter-spacing: 0.4em; }
+        }
+
+        .loader-exit-content {
+            opacity: 0;
+            transform: scale(1.1);
+            filter: blur(10px);
+        }
+        .loader-exit-curtain-left { transform: translateX(-100%); }
+        .loader-exit-curtain-right { transform: translateX(100%); }
+
+
+        /* --- LIQUID GLASS HEADER --- */
         .brand-bar {
             background: linear-gradient(to right, #041e8c, #5512d9, #0b4cf2);
             box-shadow: 0 2px 15px rgba(0,0,0,0.6);
         }
 
         .liquid-glass-header {
-            background: rgba(255, 255, 255, 0.08);
-            /* Saturated & fisheye filter applied, NO BLUR */
+            background: rgba(255, 255, 255, 0.10);
+            /* Blur removed, kept saturate and fisheye url */
             backdrop-filter: saturate(145%) url(#fisheye-lens-filter);
             -webkit-backdrop-filter: saturate(145%) url(#fisheye-lens-filter);
             border: 1px solid rgba(255, 255, 255, 0.25);
             box-shadow:
-                inset 0 4px 30px rgba(255,255,255,0.05),
-                0 4px 30px rgba(0,0,0,0.5);
+                inset 0 4px 30px rgba(0,0,0,0.1),
+                0 2px 30px rgba(0,0,0,0.8);
         }
 
         .glassy-menu-button {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: saturate(180%);
+            backdrop-filter: blur(9px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 9999px;
             padding: 0.75rem;
@@ -177,88 +166,6 @@
 
         .glassy-menu-button:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* --- VIBRANT TACTILE BUTTONS (Matches uploaded image design) --- */
-        .tactile-btn {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.8rem 1.5rem;
-            border-radius: 9999px;
-            color: white;
-            font-weight: 600;
-            font-family: 'Montserrat', sans-serif;
-            text-decoration: none;
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
-            cursor: pointer;
-            overflow: hidden;
-        }
-        
-        .tactile-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-        }
-
-        .tactile-btn:active {
-            transform: translateY(1px) scale(0.98);
-        }
-
-        /* Inner divider line based on image */
-        .tactile-btn::after {
-            content: '';
-            position: absolute;
-            right: 3rem; /* distance for the 'icon' section */
-            top: 15%;
-            height: 70%;
-            width: 1px;
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* The Violet/Purple button (Call Us) */
-        .btn-violet {
-            background: linear-gradient(135deg, #9D4EDD, #5A189A);
-            box-shadow: 
-                inset 0 2px 4px rgba(255, 255, 255, 0.5), /* Top inner highlight */
-                inset 0 -3px 5px rgba(0, 0, 0, 0.3), /* Bottom inner shadow */
-                0 10px 20px -5px rgba(90, 24, 154, 0.8); /* Vibrant outer glow */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .btn-violet:hover {
-            box-shadow: 
-                inset 0 2px 4px rgba(255, 255, 255, 0.6),
-                inset 0 -3px 5px rgba(0, 0, 0, 0.3),
-                0 15px 25px -5px rgba(90, 24, 154, 1);
-        }
-
-        /* The Green button (WhatsApp) */
-        .btn-green {
-            background: linear-gradient(135deg, #10B981, #059669);
-            box-shadow: 
-                inset 0 2px 4px rgba(255, 255, 255, 0.5),
-                inset 0 -3px 5px rgba(0, 0, 0, 0.3),
-                0 10px 20px -5px rgba(16, 185, 129, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .btn-green::after {
-            display: none; /* No divider for the circular icon button */
-        }
-        .btn-green:hover {
-            box-shadow: 
-                inset 0 2px 4px rgba(255, 255, 255, 0.6),
-                inset 0 -3px 5px rgba(0, 0, 0, 0.3),
-                0 15px 25px -5px rgba(16, 185, 129, 1);
-        }
-
-        /* Icon container inside button */
-        .btn-icon-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.2);
-            border-radius: 8px;
-            padding: 4px;
         }
 
         /* --- REST OF STYLES --- */
@@ -273,6 +180,19 @@
 
         @keyframes shine { to { background-position: 200% center; } }
 
+        .glass-panel {
+            background: rgba(20, 30, 58, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
+        }
+
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -280,6 +200,7 @@
         }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
 
         .hero-content {
             opacity: 0;
@@ -298,6 +219,12 @@
         .img-zoom-container { overflow: hidden; border-radius: 1rem; }
         .img-zoom { transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .img-zoom-container:hover .img-zoom { transform: scale(1.05); }
+
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-gold selection:text-navy-dark">
@@ -320,17 +247,23 @@
         </filter>
     </svg>
 
-    <!-- UNIMAGINABLE VIBRANT PRELOADER -->
-    <div id="vibrant-preloader">
-        <div class="portal-container" id="portal-container">
-            <div class="orb orb-1"></div>
-            <div class="orb orb-2"></div>
-            <div class="orb orb-3"></div>
-            <div class="portal-text">ELITE VIBE</div>
+    <!-- THE ULTIMATE CINEMATIC PRELOADER -->
+    <div id="premium-preloader">
+        <div class="curtain curtain-left" id="curtain-l"></div>
+        <div class="curtain curtain-right" id="curtain-r"></div>
+        
+        <div class="loader-content" id="loader-content">
+            <h1 class="loader-title font-serif text-4xl md:text-6xl lg:text-7xl font-bold tracking-[0.2em] uppercase text-center leading-tight">
+                Elite Vibe
+            </h1>
+            <div class="loader-line"></div>
+            <span class="loader-subtitle mt-6 text-[10px] md:text-xs text-white uppercase font-light">
+                Curating Kashmiri Royalty
+            </span>
         </div>
     </div>
 
-    <!-- LIQUID GLASS HEADER (No Blur, Constant Motion Restored) -->
+    <!-- LIQUID GLASS HEADER (No Blur, No Animation) -->
     <div class="fixed top-0 z-40 flex flex-col items-center w-full">
         <!-- Brand Tag Line -->
         <div class="w-full brand-bar text-center text-xs md:text-sm font-semibold py-2 tracking-wide text-white">
@@ -349,14 +282,15 @@
 
                     <!-- Desktop Menu -->
                     <nav class="hidden md:flex space-x-10 text-gray-300 font-medium text-sm tracking-wide">
-                        <a href="#destinations" class="hover:text-cyan-400 transition-colors">Destinations</a>
-                        <a href="#experiences" class="hover:text-cyan-400 transition-colors">Experiences</a>
-                        <a href="#why-us" class="hover:text-cyan-400 transition-colors">Why Us</a>
+                        <a href="#destinations" class="hover:text-gold transition-colors">Destinations</a>
+                        <a href="#experiences" class="hover:text-gold transition-colors">Experiences</a>
+                        <a href="#why-us" class="hover:text-gold transition-colors">Why Us</a>
+                        <a href="#faq" class="hover:text-gold transition-colors">FAQ</a>
                     </nav>
 
                     <!-- Mobile Menu Button -->
                     <button id="mobile-menu-btn" class="md:hidden glassy-menu-button">
-                        <i data-lucide="menu" class="w-5 h-5 text-white"></i>
+                        <i data-lucide="menu" class="w-5 h-5"></i>
                     </button>
                 </div>
             </header>
@@ -365,21 +299,25 @@
 
     <!-- Animated Mobile Slide-in Menu -->
     <div id="mobile-overlay" class="fixed inset-0 bg-navy-dark/90 backdrop-blur-md z-[60] opacity-0 pointer-events-none transition-opacity duration-300"></div>
-    <div id="mobile-menu" class="fixed top-0 right-0 w-[80%] max-w-sm h-full liquid-glass-header !bg-[#03050a]/95 z-[70] transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] flex flex-col p-8 border-l border-gold/20 rounded-none">
+    <div id="mobile-menu" class="fixed top-0 right-0 w-[80%] max-w-sm h-full liquid-glass-header !bg-[#03050a]/90 z-[70] transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] flex flex-col p-8 border-l border-gold/20 rounded-none">
         <div class="flex justify-end mb-12">
             <button id="close-menu-btn" class="text-gold hover:text-white transition">
                 <i data-lucide="x" class="w-8 h-8"></i>
             </button>
         </div>
         <div class="flex flex-col gap-8 flex-1">
-            <a href="#destinations" class="mobile-link text-2xl font-serif text-white hover:text-cyan-400 transition opacity-0 translate-x-4">Destinations</a>
-            <a href="#experiences" class="mobile-link text-2xl font-serif text-white hover:text-cyan-400 transition opacity-0 translate-x-4">Experiences</a>
-            <a href="#why-us" class="mobile-link text-2xl font-serif text-white hover:text-cyan-400 transition opacity-0 translate-x-4">Why Us</a>
+            <a href="#destinations" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Destinations</a>
+            <a href="#experiences" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Experiences</a>
+            <a href="#why-us" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Why Us</a>
+            <a href="#faq" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">FAQ</a>
         </div>
-        <div class="mt-auto flex flex-col gap-4">
-            <a href="tel:+919541174017" class="tactile-btn btn-violet w-full justify-center">
-                <div class="btn-icon-wrapper"><i data-lucide="phone" class="w-4 h-4"></i></div>
-                +91 9541174017
+        <div class="mt-auto">
+            <a href="tel:+919541174017" class="flex items-center gap-3 text-gold mb-4">
+                <i data-lucide="phone" class="w-5 h-5"></i>
+                <span class="font-medium">+91 9541174017</span>
+            </a>
+            <a href="https://wa.me/919541174017" target="_blank" class="w-full bg-[#25D366] text-white py-3 rounded-xl flex justify-center items-center gap-2 font-medium hover:bg-[#1DA851] transition-colors">
+                <i data-lucide="message-circle" class="w-5 h-5"></i> WhatsApp Concierge
             </a>
         </div>
     </div>
@@ -387,8 +325,8 @@
     <!-- Hero Section -->
     <header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 w-full h-full z-0">
-            <div class="absolute inset-0 bg-[#03050a]/40 z-10"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-[#03050a] via-transparent to-transparent z-10"></div>
+            <div class="absolute inset-0 bg-navy-dark/40 z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-transparent to-transparent z-10"></div>
             <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover scale-105">
                 <source src="https://cdn.coverr.co/videos/coverr-boat-on-a-lake-at-sunset-2615/1080p.mp4" type="video/mp4">
             </video>
@@ -404,10 +342,10 @@
                 Luxury Curated Journeys by Elite Vibe Tours. Discover the valley's most exclusive stays and breathtaking landscapes.
             </p>
 
-            <!-- Dynamic Search Bar -->
-            <div class="liquid-glass-header p-3 rounded-2xl flex flex-col md:flex-row items-center gap-3 max-w-4xl mx-auto backdrop-blur-md">
-                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-cyan-400/30 transition">
-                    <i data-lucide="map-pin" class="text-cyan-400 w-5 h-5 mr-3"></i>
+            <!-- Dynamic Glassmorphism Search Bar -->
+            <div class="liquid-glass-header p-3 rounded-2xl flex flex-col md:flex-row items-center gap-3 max-w-4xl mx-auto">
+                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-gold/30 transition">
+                    <i data-lucide="map-pin" class="text-gold w-5 h-5 mr-3"></i>
                     <select id="destination-select" class="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer">
                         <option value="" disabled selected class="text-white">Select Destination</option>
                         <option value="Srinagar" class="text-navy">Dal Lake, Srinagar</option>
@@ -416,12 +354,11 @@
                         <option value="Sonmarg" class="text-navy">Sonmarg Glaciers</option>
                     </select>
                 </div>
-                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-cyan-400/30 transition">
-                    <i data-lucide="calendar" class="text-cyan-400 w-5 h-5 mr-3"></i>
+                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-gold/30 transition">
+                    <i data-lucide="calendar" class="text-gold w-5 h-5 mr-3"></i>
                     <input type="date" id="date-select" class="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer" style="color-scheme: dark;">
                 </div>
-                <button id="create-trip-btn" class="tactile-btn btn-violet w-full md:w-auto h-full px-8 py-4">
-                    <div class="btn-icon-wrapper"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
+                <button id="create-trip-btn" class="w-full md:w-auto bg-gold hover:bg-gold-light text-navy-dark px-8 py-3.5 rounded-xl font-bold tracking-wide transition flex items-center justify-center gap-2">
                     Create My Trip
                 </button>
             </div>
@@ -429,7 +366,7 @@
     </header>
 
     <!-- Why Choose Us -->
-    <section id="why-us" class="py-32 bg-[#03050a] relative">
+    <section id="why-us" class="py-32 bg-navy-dark relative">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             <div class="text-center mb-20 reveal">
                 <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block font-semibold">The Elite Standard</span>
@@ -438,33 +375,33 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Feature 1 -->
-                <div class="p-8 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors reveal text-center group shadow-lg">
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors reveal text-center group shadow-lg">
                     <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="gem" class="text-cyan-400 w-6 h-6"></i>
+                        <i data-lucide="gem" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3 text-white">Unmatched Luxury</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Exclusive access to premium houseboats, 5-star resorts, and high-end transportation.</p>
                 </div>
                 <!-- Feature 2 -->
-                <div class="p-8 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors reveal reveal-delay-1 text-center group shadow-lg">
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors reveal reveal-delay-1 text-center group shadow-lg">
                     <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="map" class="text-cyan-400 w-6 h-6"></i>
+                        <i data-lucide="map" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3 text-white">Curated Itineraries</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Bespoke travel plans tailored specifically to your preferences, pace, and passions.</p>
                 </div>
                 <!-- Feature 3 -->
-                <div class="p-8 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors reveal reveal-delay-1 text-center group shadow-lg">
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors reveal reveal-delay-2 text-center group shadow-lg">
                     <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="heart-handshake" class="text-cyan-400 w-6 h-6"></i>
+                        <i data-lucide="heart-handshake" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3 text-white">Honeymoon Experts</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Romantic setups, private dining, and secluded experiences crafted for couples.</p>
                 </div>
                 <!-- Feature 4 -->
-                <div class="p-8 border border-white/5 rounded-2xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors reveal reveal-delay-1 text-center group shadow-lg">
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors reveal reveal-delay-3 text-center group shadow-lg">
                     <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="shield-check" class="text-cyan-400 w-6 h-6"></i>
+                        <i data-lucide="shield-check" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3 text-white">Safe & Seamless</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">24/7 concierge support, local expertise, and a flawless execution of your journey.</p>
@@ -473,11 +410,187 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#010205] pt-24 pb-10 px-6 md:px-12 border-t border-white/5 relative overflow-hidden">
-        <div class="absolute -bottom-20 -right-20 text-[250px] font-serif font-bold text-white/[0.01] select-none pointer-events-none">EV</div>
+    <!-- Iconic Locations Section -->
+    <section id="destinations" class="py-32 bg-[#020308] relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="text-center mb-20 reveal">
+                <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block font-semibold">Iconic Locations</span>
+                <h2 class="text-4xl md:text-5xl font-serif mb-4">Discover the Crown Jewels</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">From pristine alpine lakes to snow-capped peaks, explore handpicked destinations.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dal Lake (Large) -->
+                <div class="lg:col-span-2 relative h-[450px] rounded-2xl img-zoom-container reveal group">
+                    <img src="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80" loading="lazy" alt="Dal Lake" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="bg-gold/10 text-gold text-xs px-4 py-1.5 rounded-full border border-gold/30 mb-4 inline-block font-medium">Heritage & Romance</span>
+                                <h3 class="text-3xl font-serif mb-2">Dal Lake, Srinagar</h3>
+                                <p class="text-gray-300 max-w-md text-sm leading-relaxed mb-6">Float on the mirror-like waters in a premium cedar-wood houseboat, surrounded by the Zabarwan mountains.</p>
+                            </div>
+                        </div>
+                        <div class="mt-auto">
+                            <button onclick="openLocationWA('Dal Lake, Srinagar')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-all flex items-center gap-2 w-fit">
+                                <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gulmarg -->
+                <div class="relative h-[450px] rounded-2xl img-zoom-container reveal reveal-delay-1 group">
+                    <img src="https://images.unsplash.com/photo-1651509094074-e8acaeb84d8f?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Gulmarg" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
+                        <span class="bg-gold/10 text-gold text-xs px-4 py-1.5 rounded-full border border-gold/30 mb-4 w-fit font-medium">Winter Elite</span>
+                        <h3 class="text-2xl font-serif mb-2">Gulmarg</h3>
+                        <p class="text-gray-300 text-sm mb-6">World-class skiing resorts and the iconic Gondola ride.</p>
+                        <button onclick="openLocationWA('Gulmarg')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-all flex items-center gap-2 w-fit">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pahalgam -->
+                <div class="relative h-[450px] rounded-2xl img-zoom-container reveal group">
+                    <img src="https://images.unsplash.com/photo-1668173443752-bdec2fbb3c79?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Pahalgam" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
+                        <span class="bg-gold/10 text-gold text-xs px-4 py-1.5 rounded-full border border-gold/30 mb-4 w-fit font-medium">Valley of Shepherds</span>
+                        <h3 class="text-2xl font-serif mb-2">Pahalgam</h3>
+                        <p class="text-gray-300 text-sm mb-6">Lush meadows, pine forests, and premium boutique stays.</p>
+                        <button onclick="openLocationWA('Pahalgam')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-all flex items-center gap-2 w-fit">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sonmarg (Large) -->
+                <div class="lg:col-span-2 relative h-[450px] rounded-2xl img-zoom-container reveal reveal-delay-1 group">
+                    <img src="https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80" loading="lazy" alt="Sonmarg" class="w-full h-full object-cover img-zoom">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
+                        <span class="bg-gold/10 text-gold text-xs px-4 py-1.5 rounded-full border border-gold/30 mb-4 w-fit font-medium">Meadow of Gold</span>
+                        <h3 class="text-3xl font-serif mb-2">Sonmarg</h3>
+                        <p class="text-gray-300 max-w-md text-sm leading-relaxed mb-6">Majestic glaciers, alpine serenity, and luxury glamping experiences beneath the stars.</p>
+                        <button onclick="openLocationWA('Sonmarg')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-all flex items-center gap-2 w-fit">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signature Experiences -->
+    <section id="experiences" class="py-32 bg-navy-dark relative">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="text-center mb-20 reveal">
+                <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block font-semibold">Beyond Sightseeing</span>
+                <h2 class="text-4xl md:text-5xl font-serif">Signature Luxury Experiences</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Exp 1 -->
+                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal">
+                    <div class="img-zoom-container rounded-xl h-60 mb-6">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Dining" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="px-2 pb-4">
+                        <h3 class="text-xl font-serif mb-3 text-gold">Alpine Private Dining</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Exclusive candlelight dinners set against the backdrop of snow-capped peaks or alongside the Dal Lake.</p>
+                    </div>
+                </div>
+                <!-- Exp 2 -->
+                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal reveal-delay-1">
+                    <div class="img-zoom-container rounded-xl h-60 mb-6">
+                        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Suite" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="px-2 pb-4">
+                        <h3 class="text-xl font-serif mb-3 text-gold">Presidential Houseboats</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Stay in intricately carved, centuries-old styled luxury houseboats with modern 5-star amenities.</p>
+                    </div>
+                </div>
+                <!-- Exp 3 -->
+                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal reveal-delay-2">
+                    <div class="img-zoom-container rounded-xl h-60 mb-6">
+                        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Helicopter" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="px-2 pb-4">
+                        <h3 class="text-xl font-serif mb-3 text-gold">Helicopter Tours</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Take to the skies for an unparalleled aerial view of the Kashmir valley, dropping into untouched locations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section id="faq" class="py-32 bg-[#020308] relative border-t border-white/5">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block font-semibold">Concierge Desk</span>
+                <h2 class="text-4xl font-serif">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-4 reveal">
+                <!-- FAQ Item 1 -->
+                <div class="liquid-glass-header rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors">
+                        <span class="font-medium text-lg text-white">When is the best time to visit Kashmir?</span>
+                        <div class="w-8 h-8 rounded-full border border-gold/40 flex items-center justify-center shrink-0">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content">
+                        <div class="px-8 pb-6 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+                            Kashmir is beautiful year-round. For snow and skiing, December to March is ideal. For blooming gardens and pleasant weather (perfect for honeymoons), April to October is recommended. We curate experiences suitable for every season.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="liquid-glass-header rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors">
+                        <span class="font-medium text-lg text-white">Are the tours customizable?</span>
+                        <div class="w-8 h-8 rounded-full border border-gold/40 flex items-center justify-center shrink-0">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content">
+                        <div class="px-8 pb-6 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+                            Absolutely. Elite Vibe Tours specializes in bespoke travel. While we offer signature packages, every itinerary can be fully customized to match your pace, dietary preferences, and specific luxury requirements.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="liquid-glass-header rounded-2xl overflow-hidden">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors">
+                        <span class="font-medium text-lg text-white">Is Kashmir safe for luxury travelers?</span>
+                        <div class="w-8 h-8 rounded-full border border-gold/40 flex items-center justify-center shrink-0">
+                            <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
+                        </div>
+                    </button>
+                    <div class="faq-content">
+                        <div class="px-8 pb-6 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+                            Yes. We prioritize your safety and comfort above all else. Our ground team is locally based, highly experienced, and provides 24/7 support throughout your journey, ensuring a completely seamless and secure experience.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Minimal Luxury) -->
+    <footer class="bg-navy-dark pt-24 pb-10 px-6 md:px-12 border-t border-white/5 relative overflow-hidden">
+        <div class="absolute -bottom-20 -right-20 text-[250px] font-serif font-bold text-white/[0.02] select-none pointer-events-none">EV</div>
         
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 relative z-10 mb-20">
+            <!-- Brand -->
             <div>
                 <a href="#" class="flex items-center gap-3 mb-8">
                     <div class="w-12 h-12 rounded-full border border-gold flex items-center justify-center bg-transparent text-gold font-serif font-bold text-xl">EV</div>
@@ -487,47 +600,62 @@
                     </div>
                 </a>
                 <p class="text-gray-400 text-sm leading-relaxed mb-8 max-w-sm">Curating the finest luxury travel experiences in the heart of Kashmir. Your journey into paradise begins here.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:border-gold hover:text-gold transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:border-gold hover:text-gold transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                </div>
             </div>
+
+            <!-- Quick Links -->
             <div class="lg:ml-auto">
                 <h4 class="font-serif text-xl mb-8 text-white">Journeys</h4>
                 <ul class="space-y-4">
-                    <li><a href="#" class="text-gray-400 hover:text-cyan-400 text-sm transition-colors">Honeymoon Packages</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-cyan-400 text-sm transition-colors">Family Retreats</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-cyan-400 text-sm transition-colors">Winter Ski Expeditions</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Honeymoon Packages</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Family Retreats</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Winter Ski Expeditions</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Corporate Offsites</a></li>
                 </ul>
             </div>
+
+            <!-- Contact Info -->
             <div class="lg:ml-auto">
                 <h4 class="font-serif text-xl mb-8 text-white">Contact Us</h4>
                 <ul class="space-y-6">
                     <li class="flex items-start gap-4">
-                        <i data-lucide="map-pin" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i>
+                        <i data-lucide="map-pin" class="w-5 h-5 text-gold shrink-0 mt-0.5"></i>
                         <span class="text-gray-400 text-sm leading-relaxed">Srinagar, Jammu & Kashmir<br>India, 190001</span>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <i data-lucide="phone" class="w-5 h-5 text-gold shrink-0 mt-0.5"></i>
+                        <div class="flex flex-col gap-2">
+                            <a href="tel:+919906174017" class="text-gray-400 hover:text-white text-sm transition-colors">+91 9906174017</a>
+                            <a href="tel:+919541174017" class="text-gray-400 hover:text-white text-sm transition-colors">+91 9541174017</a>
+                        </div>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="border-t border-white/5 pt-8 flex justify-center items-center gap-4 relative z-10">
+
+        <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
             <p class="text-gray-600 text-xs">© 2026 Elite Vibe Tours. All rights reserved.</p>
+            <div class="flex gap-6 text-xs text-gray-600">
+                <a href="#" class="hover:text-gray-300 transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-300 transition-colors">Terms of Service</a>
+            </div>
         </div>
     </footer>
 
-    <!-- VIBRANT STICKY FLOATING ACTION BUTTONS (Matched to Image) -->
-    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-4">
-        
-        <!-- Call Us Pill Button -->
-        <a href="tel:+919541174017" class="tactile-btn btn-violet shadow-2xl">
-            <div class="btn-icon-wrapper">
-                <i data-lucide="phone" class="w-4 h-4 text-white"></i>
-            </div>
-            <span class="text-base tracking-wide pr-8">Call Us</span>
-            <div class="absolute right-4 top-1/2 -translate-y-1/2">
-                <i data-lucide="chevron-down" class="w-5 h-5 opacity-70"></i>
-            </div>
+    <!-- Sticky Floating Action Buttons -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
+        <!-- Call Us Pill -->
+        <a href="tel:+919541174017" class="glass-pill rounded-full px-5 py-3 flex items-center gap-3 text-white hover:border-gold transition-all shadow-xl group">
+            <i data-lucide="phone" class="w-4 h-4 text-gold group-hover:animate-bounce"></i> 
+            <span class="text-sm font-medium pr-1">Call Us Directly</span>
         </a>
         
-        <!-- WhatsApp Square/Pill Button -->
-        <a href="https://wa.me/919541174017" target="_blank" class="tactile-btn btn-green !p-3 shadow-2xl">
-            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <!-- Premium Glass WhatsApp Icon -->
+        <a href="https://wa.me/919541174017" target="_blank" class="w-16 h-16 rounded-full liquid-glass-header flex items-center justify-center text-[#25D366] hover:text-white hover:bg-[#25D366] transition-all duration-300 animate-pulse-soft shadow-2xl">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.441-1.273.607-1.446c.127-.133.358-.2.579-.2.072 0 .141 0 .204.005.152.011.334-.055.518.39.213.518.687 1.679.749 1.802.062.124.104.269.021.436-.083.167-.124.271-.249.42-.125.148-.266.331-.379.438-.125.118-.255.247-.114.492.141.244.625.996 1.341 1.625.924.814 1.666 1.071 1.914 1.19.248.118.393.102.539-.06.146-.162.628-.731.794-.983.166-.252.332-.211.554-.128.221.083 1.411.667 1.652.787.241.121.402.182.46.282.059.099.059.576-.085.981z"></path>
                 <path d="M12.031 2C6.48 2 2 6.48 2 12.031c0 1.96.539 3.844 1.553 5.467L2 22l4.639-1.523A9.974 9.974 0 0 0 12.031 22c5.551 0 10.031-4.48 10.031-10.031C22.062 6.48 17.582 2 12.031 2zm0 18.25c-1.637 0-3.238-.423-4.636-1.222l-.333-.191-3.085 1.013 1.026-3.003-.209-.333A8.252 8.252 0 0 1 3.75 12.031c0-4.566 3.715-8.281 8.281-8.281 4.566 0 8.281 3.715 8.281 8.281 0 4.566-3.715 8.281-8.281 8.281z"></path>
             </svg>
@@ -539,48 +667,44 @@
         // 1. Initialize Lucide Icons
         lucide.createIcons();
 
-        // 2. Liquid Glass Motion Loop
-        document.addEventListener("DOMContentLoaded", () => {
-            const turbulence = document.getElementById("turbulence");
-            let time = 0;
-            function animateLiquid() {
-                const bfX = 0.01 + Math.sin(time) * 0.003;
-                const bfY = 0.03 + Math.cos(time * 0.5) * 0.003;
-                turbulence.setAttribute("baseFrequency", `${bfX} ${bfY}`);
-                time += 0.008; // speed of rippling
-                requestAnimationFrame(animateLiquid);
-            }
-            animateLiquid();
-        });
-
-        // 3. Vibrant Preloader Logic
+        // 2. Cinematic Preloader Logic
         window.addEventListener('load', () => {
+            // Wait for internal animations (2.5 seconds total)
             setTimeout(() => {
-                const portalContainer = document.getElementById('portal-container');
-                const preloader = document.getElementById('vibrant-preloader');
+                const loaderContent = document.getElementById('loader-content');
+                const curtainL = document.getElementById('curtain-l');
+                const curtainR = document.getElementById('curtain-r');
+                const preloader = document.getElementById('premium-preloader');
                 
-                // Explode the portal (scales up massive to act as a transition)
-                portalContainer.classList.add('portal-explode');
+                // Fade out text, zoom slightly
+                loaderContent.classList.add('loader-exit-content');
                 
+                // Slide curtains open
                 setTimeout(() => {
-                    preloader.classList.add('preloader-exit');
+                    curtainL.classList.add('loader-exit-curtain-left');
+                    curtainR.classList.add('loader-exit-curtain-right');
                     
                     // Trigger Hero fade in
                     document.getElementById('hero-content').classList.add('active');
 
-                    setTimeout(() => { preloader.remove(); }, 1000);
-                }, 800); 
+                    // Remove preloader from DOM entirely after animation
+                    setTimeout(() => {
+                        preloader.remove();
+                    }, 1200);
 
-            }, 2500); // Duration the portal spins before opening
+                }, 400); // 0.4s after text starts blurring
+
+            }, 2500); // Wait 2.5 seconds showing the loader
         });
 
-        // 4. "Create My Trip" Dynamic WhatsApp
+        // 3. "Create My Trip" Dynamic WhatsApp Generator
         document.getElementById('create-trip-btn').addEventListener('click', () => {
             const destSelect = document.getElementById('destination-select');
             const destValue = destSelect.value;
             const dateValue = document.getElementById('date-select').value;
             
             let message = "Hi, I want to plan a luxury trip to Kashmir. Please share details.";
+            
             if (destValue) {
                 const destText = destSelect.options[destSelect.selectedIndex].text;
                 if (dateValue) {
@@ -589,10 +713,18 @@
                     message = `Hi Elite Vibe Tours, I would like to plan a trip to ${destText}. Please assist me with a curated package.`;
                 }
             }
-            window.open(`https://wa.me/919541174017?text=${encodeURIComponent(message)}`, '_blank');
+            
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/919541174017?text=${encodedMessage}`, '_blank');
         });
 
-        // 5. Mobile Menu Logic
+        // 4. "Let's Talk" Dynamic WhatsApp (Iconic Locations)
+        function openLocationWA(locationName) {
+            const message = `Hi, when is the best time to visit ${locationName}?`;
+            window.open(`https://wa.me/919541174017?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // 5. Mobile Animated Menu Logic
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const closeBtn = document.getElementById('close-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -601,18 +733,25 @@
 
         function toggleMenu() {
             const isOpen = !mobileMenu.classList.contains('translate-x-full');
+            
             if (isOpen) {
+                // Close
                 mobileMenu.classList.add('translate-x-full');
                 mobileOverlay.classList.remove('opacity-100');
                 mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+                
+                // Reset stagger animation
                 mobileLinks.forEach(link => {
                     link.classList.remove('opacity-100', 'translate-x-0');
                     link.classList.add('opacity-0', 'translate-x-4');
                 });
             } else {
+                // Open
                 mobileMenu.classList.remove('translate-x-full');
                 mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
                 mobileOverlay.classList.add('opacity-100');
+                
+                // Stagger animate links
                 mobileLinks.forEach((link, index) => {
                     setTimeout(() => {
                         link.classList.remove('opacity-0', 'translate-x-4');
@@ -625,7 +764,11 @@
         mobileBtn.addEventListener('click', toggleMenu);
         closeBtn.addEventListener('click', toggleMenu);
         mobileOverlay.addEventListener('click', toggleMenu);
-        mobileLinks.forEach(link => { link.addEventListener('click', toggleMenu); });
+        
+        // Auto-close menu on link click
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
 
         // 6. Scroll Reveal Animation
         const observerOptions = { threshold: 0.15 };
@@ -638,23 +781,31 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach(element => { observer.observe(element); });
+        document.querySelectorAll('.reveal').forEach(element => {
+            observer.observe(element);
+        });
+
+        // 7. Strict FAQ Accordion (One open at a time)
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('.faq-icon');
+                const isOpen = content.style.maxHeight;
+
+                // Close all others
+                document.querySelectorAll('.faq-content').forEach(otherContent => {
+                    otherContent.style.maxHeight = null;
+                    otherContent.previousElementSibling.querySelector('.faq-icon').style.transform = 'rotate(0deg)';
+                });
+
+                // Toggle current
+                if (!isOpen) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
     </script>
 </body>
-</html>            background: linear-gradient(to right, #D4AF37, #F9E596, #D4AF37);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            background-size: 200% auto;
-            animation: shine 5s linear infinite;
-        }
-
-        @keyframes shine { to { background-position: 200% center; } }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        .reveal-delay-1 { transition-d
+</html>
