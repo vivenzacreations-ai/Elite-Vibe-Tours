@@ -84,8 +84,8 @@
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(212, 175, 55, 0.05), rgba(255, 255, 255, 0.02));
             background-size: 200% 200%;
             animation: liquidBgShift 8s ease-in-out infinite;
-            backdrop-filter: blur(12px) saturate(145%) url(#fisheye-lens-filter);
-            -webkit-backdrop-filter: blur(12px) saturate(145%) url(#fisheye-lens-filter);
+            backdrop-filter: blur(0px) saturate(145%) url(#fisheye-lens-filter);
+            -webkit-backdrop-filter: blur(0px) saturate(145%) url(#fisheye-lens-filter);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             box-shadow: inset 0 2px 20px rgba(255,255,255,0.05), 0 10px 30px rgba(0,0,0,0.5);
@@ -678,8 +678,7 @@
 
         function toggleMenu() {
             const isOpen = !mobileMenu.classList.contains('translate-x-full');
-            
-            if (isOpen) {
+            link.classLisif (isOpen) {
                 // Close
                 mobileMenu.classList.add('translate-x-full');
                 mobileOverlay.classList.remove('opacity-100');
