@@ -36,15 +36,6 @@
                             DEFAULT: '#D4AF37',
                             dark: '#AA8C2C'
                         }
-                    },
-                    animation: {
-                        'pulse-soft': 'pulseSoft 2s infinite',
-                    },
-                    keyframes: {
-                        pulseSoft: {
-                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
-                            '50%': { transform: 'scale(1.05)', opacity: '0.9' }
-                        }
                     }
                 }
             }
@@ -83,20 +74,27 @@
             to { transform: rotate(360deg); }
         }
 
-        /* --- LIQUID GLASS HEADER --- */
+        /* --- LIQUID GLASS HEADER (CONSTANT MOTION) --- */
         .brand-bar {
             background: linear-gradient(to right, #041e8c, #5512d9, #0b4cf2);
             box-shadow: 0 2px 15px rgba(0,0,0,0.6);
         }
 
         .liquid-glass-header {
-            background: rgba(255, 255, 255, 0.10);
-            backdrop-filter: saturate(145%) url(#fisheye-lens-filter);
-            -webkit-backdrop-filter: saturate(145%) url(#fisheye-lens-filter);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow:
-                inset 0 4px 30px rgba(0,0,0,0.1),
-                0 2px 30px rgba(0,0,0,0.8);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(212, 175, 55, 0.05), rgba(255, 255, 255, 0.02));
+            background-size: 200% 200%;
+            animation: liquidBgShift 8s ease-in-out infinite;
+            backdrop-filter: blur(12px) saturate(145%) url(#fisheye-lens-filter);
+            -webkit-backdrop-filter: blur(12px) saturate(145%) url(#fisheye-lens-filter);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: inset 0 2px 20px rgba(255,255,255,0.05), 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        @keyframes liquidBgShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .glassy-menu-button {
@@ -116,6 +114,28 @@
 
         .glassy-menu-button:hover {
             background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- FLOATING GLASS BUTTONS (LUXURY GLASSMORPHISM) --- */
+        .floating-glass-btn {
+            background: linear-gradient(135deg, rgba(10, 17, 40, 0.6), rgba(3, 5, 10, 0.8));
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.6), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.15), 
+                inset 0 -1px 1px rgba(212, 175, 55, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .floating-glass-btn:hover {
+            background: linear-gradient(135deg, rgba(20, 30, 60, 0.7), rgba(10, 15, 30, 0.9));
+            border-color: rgba(212, 175, 55, 0.8);
+            box-shadow: 
+                0 12px 40px rgba(212, 175, 55, 0.25), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
         }
 
         /* --- REST OF STYLES --- */
@@ -182,21 +202,14 @@
 </head>
 <body class="antialiased selection:bg-gold selection:text-navy-dark">
 
-    <!-- Fisheye Filter (Required for Liquid Glass Header) -->
+    <!-- Animated Fisheye Filter (Creates Constant Liquid Motion) -->
     <svg style="position:absolute;width:0;height:0;z-index:-1;">
         <filter id="fisheye-lens-filter">
-            <feTurbulence id="turbulence"
-                type="fractalNoise"
-                baseFrequency="0.01 0.04"
-                numOctaves="1"
-                seed="2"
-                result="noise"/>
-            <feDisplacementMap
-                in="SourceGraphic"
-                in2="noise"
-                scale="100"
-                xChannelSelector="R"
-                yChannelSelector="G"/>
+            <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0.015 0.025" numOctaves="2" seed="2" result="noise">
+                <!-- SMIL Animation for constant distortion shift -->
+                <animate attributeName="baseFrequency" dur="12s" values="0.015 0.025; 0.025 0.045; 0.015 0.025" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
     </svg>
 
@@ -274,7 +287,6 @@
             </video>
         </div>
 
-        <!-- Added pt-[140px] to ensure it aligns perfectly below the fixed header -->
         <div class="relative z-20 text-center px-4 max-w-5xl mx-auto pt-[140px] pb-12 hero-content w-full flex flex-col items-center justify-center" id="hero-content">
             <span class="text-gold tracking-[0.4em] text-xs md:text-sm uppercase mb-6 block font-medium">Welcome to Paradise</span>
             <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif mb-6 leading-tight drop-shadow-2xl">
@@ -589,18 +601,18 @@
         </div>
     </footer>
 
-    <!-- REPOSITIONED & REFINED ACTION BUTTONS (Bottom Center) -->
-    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-row items-center justify-center gap-3 w-max max-w-[95vw]">
+    <!-- REPOSITIONED & REFINED GLASSMORPHISM ACTION BUTTONS -->
+    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-row items-center justify-center gap-4 w-max max-w-[95vw]">
         
         <!-- Premium Glass Call Button -->
-        <a href="tel:+919541174017" class="liquid-glass-header border border-gold/50 rounded-full px-5 h-[48px] flex items-center justify-center gap-2.5 text-white hover:bg-gold/15 transition-all duration-300 shadow-[0_4px_25px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] group whitespace-nowrap">
-            <i data-lucide="phone" class="w-[18px] h-[18px] text-gold group-hover:animate-bounce"></i> 
-            <span class="text-sm font-medium pr-1 tracking-wide">Call Us</span>
+        <a href="tel:+919541174017" class="floating-glass-btn rounded-full px-7 h-[56px] flex items-center justify-center gap-3 text-white group whitespace-nowrap">
+            <i data-lucide="phone" class="w-5 h-5 text-gold group-hover:animate-bounce"></i> 
+            <span class="font-serif italic tracking-[0.08em] text-[16px] text-gold-light pr-1">Call Concierge</span>
         </a>
         
         <!-- Premium Glass WhatsApp Icon -->
-        <a href="https://wa.me/919541174017" target="_blank" class="w-[48px] h-[48px] rounded-full liquid-glass-header border border-gold/50 flex items-center justify-center text-[#25D366] hover:text-white hover:bg-[#25D366] transition-all duration-300 hover:border-[#25D366] shadow-[0_4px_25px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] shrink-0 animate-pulse-soft">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <a href="https://wa.me/919541174017" target="_blank" class="w-[56px] h-[56px] rounded-full floating-glass-btn flex items-center justify-center text-[#25D366] hover:text-[#25D366] shrink-0">
+            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.441-1.273.607-1.446c.127-.133.358-.2.579-.2.072 0 .141 0 .204.005.152.011.334-.055.518.39.213.518.687 1.679.749 1.802.062.124.104.269.021.436-.083.167-.124.271-.249.42-.125.148-.266.331-.379.438-.125.118-.255.247-.114.492.141.244.625.996 1.341 1.625.924.814 1.666 1.071 1.914 1.19.248.118.393.102.539-.06.146-.162.628-.731.794-.983.166-.252.332-.211.554-.128.221.083 1.411.667 1.652.787.241.121.402.182.46.282.059.099.059.576-.085.981z"></path>
                 <path d="M12.031 2C6.48 2 2 6.48 2 12.031c0 1.96.539 3.844 1.553 5.467L2 22l4.639-1.523A9.974 9.974 0 0 0 12.031 22c5.551 0 10.031-4.48 10.031-10.031C22.062 6.48 17.582 2 12.031 2zm0 18.25c-1.637 0-3.238-.423-4.636-1.222l-.333-.191-3.085 1.013 1.026-3.003-.209-.333A8.252 8.252 0 0 1 3.75 12.031c0-4.566 3.715-8.281 8.281-8.281 4.566 0 8.281 3.715 8.281 8.281 0 4.566-3.715 8.281-8.281 8.281z"></path>
             </svg>
