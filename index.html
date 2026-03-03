@@ -38,12 +38,12 @@
                         }
                     },
                     animation: {
-                        'pulse-soft': 'pulseSoft 3s infinite',
+                        'pulse-soft': 'pulseSoft 2s infinite',
                     },
                     keyframes: {
                         pulseSoft: {
                             '0%, 100%': { transform: 'scale(1)', opacity: '1' },
-                            '50%': { transform: 'scale(1.05)', opacity: '0.8' }
+                            '50%': { transform: 'scale(1.05)', opacity: '0.9' }
                         }
                     }
                 }
@@ -58,79 +58,30 @@
             overflow-x: hidden;
         }
 
-        /* --- CINEMATIC PRELOADER ANIMATIONS --- */
+        /* --- FAST, PREMIUM PRELOADER --- */
         #premium-preloader {
             position: fixed;
             inset: 0;
-            z-index: 1000;
+            z-index: 9999;
+            background-color: #03050a;
             display: flex;
             align-items: center;
             justify-content: center;
-            pointer-events: none;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .curtain {
-            position: absolute;
-            top: 0;
-            width: 50vw;
-            height: 100vh;
-            background-color: #03050a;
-            z-index: 1001;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-        .curtain-left { left: 0; transform-origin: left; }
-        .curtain-right { right: 0; transform-origin: right; }
-
-        .loader-content {
-            position: relative;
-            z-index: 1002;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+        .loader-ring {
+            width: 48px;
+            height: 48px;
+            border: 2px solid rgba(212, 175, 55, 0.15);
+            border-top-color: #D4AF37;
+            border-radius: 50%;
+            animation: spinFast 0.6s linear infinite;
         }
 
-        .loader-title {
-            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-            animation: textReveal 1s cubic-bezier(0.77, 0, 0.175, 1) 0.2s forwards;
-            background: linear-gradient(to right, #D4AF37, #F9E596, #D4AF37);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        @keyframes spinFast {
+            to { transform: rotate(360deg); }
         }
-
-        .loader-line {
-            width: 0;
-            height: 1px;
-            background-color: #D4AF37;
-            margin-top: 1.5rem;
-            animation: lineDraw 1s cubic-bezier(0.77, 0, 0.175, 1) 0.8s forwards;
-        }
-
-        .loader-subtitle {
-            opacity: 0;
-            letter-spacing: 0;
-            animation: subFadeIn 1.2s cubic-bezier(0.215, 0.61, 0.355, 1) 1.2s forwards;
-        }
-
-        @keyframes textReveal {
-            to { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-        }
-        @keyframes lineDraw {
-            to { width: 120px; }
-        }
-        @keyframes subFadeIn {
-            to { opacity: 1; letter-spacing: 0.4em; }
-        }
-
-        .loader-exit-content {
-            opacity: 0;
-            transform: scale(1.1);
-            filter: blur(10px);
-        }
-        .loader-exit-curtain-left { transform: translateX(-100%); }
-        .loader-exit-curtain-right { transform: translateX(100%); }
-
 
         /* --- LIQUID GLASS HEADER --- */
         .brand-bar {
@@ -140,7 +91,6 @@
 
         .liquid-glass-header {
             background: rgba(255, 255, 255, 0.10);
-            /* Blur removed, kept saturate and fisheye url */
             backdrop-filter: saturate(145%) url(#fisheye-lens-filter);
             -webkit-backdrop-filter: saturate(145%) url(#fisheye-lens-filter);
             border: 1px solid rgba(255, 255, 255, 0.25);
@@ -161,7 +111,7 @@
             align-items: center;
             justify-content: center;
             color: white;
-            transition: 0.3s ease;
+            transition: 0.2s ease;
         }
 
         .glassy-menu-button:hover {
@@ -193,19 +143,21 @@
             backdrop-filter: blur(8px);
         }
 
+        /* Faster Reveal Animations */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-1 { transition-delay: 0.05s; }
+        .reveal-delay-2 { transition-delay: 0.1s; }
+        .reveal-delay-3 { transition-delay: 0.15s; }
 
         .hero-content {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s;
         }
         .hero-content.active {
             opacity: 1;
@@ -217,13 +169,14 @@
         ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
         
         .img-zoom-container { overflow: hidden; border-radius: 1rem; }
-        .img-zoom { transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .img-zoom-container:hover .img-zoom { transform: scale(1.05); }
+        /* Faster Image Zoom */
+        .img-zoom { transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .img-zoom-container:hover .img-zoom { transform: scale(1.04); }
 
         .faq-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease-out;
+            transition: max-height 0.3s ease-out;
         }
     </style>
 </head>
@@ -247,24 +200,13 @@
         </filter>
     </svg>
 
-    <!-- THE ULTIMATE CINEMATIC PRELOADER -->
+    <!-- FAST PREMIUM PRELOADER -->
     <div id="premium-preloader">
-        <div class="curtain curtain-left" id="curtain-l"></div>
-        <div class="curtain curtain-right" id="curtain-r"></div>
-        
-        <div class="loader-content" id="loader-content">
-            <h1 class="loader-title font-serif text-4xl md:text-6xl lg:text-7xl font-bold tracking-[0.2em] uppercase text-center leading-tight">
-                Elite Vibe
-            </h1>
-            <div class="loader-line"></div>
-            <span class="loader-subtitle mt-6 text-[10px] md:text-xs text-white uppercase font-light">
-                Curating Kashmiri Royalty
-            </span>
-        </div>
+        <div class="loader-ring"></div>
     </div>
 
-    <!-- LIQUID GLASS HEADER (No Blur, No Animation) -->
-    <div class="fixed top-0 z-40 flex flex-col items-center w-full">
+    <!-- LIQUID GLASS HEADER -->
+    <div class="fixed top-0 z-40 flex flex-col items-center w-full" id="main-header">
         <!-- Brand Tag Line -->
         <div class="w-full brand-bar text-center text-xs md:text-sm font-semibold py-2 tracking-wide text-white">
             ✨ Elite Vibe Tours – Not Just a Name. It’s a Legacy.
@@ -282,10 +224,10 @@
 
                     <!-- Desktop Menu -->
                     <nav class="hidden md:flex space-x-10 text-gray-300 font-medium text-sm tracking-wide">
-                        <a href="#destinations" class="hover:text-gold transition-colors">Destinations</a>
-                        <a href="#experiences" class="hover:text-gold transition-colors">Experiences</a>
-                        <a href="#why-us" class="hover:text-gold transition-colors">Why Us</a>
-                        <a href="#faq" class="hover:text-gold transition-colors">FAQ</a>
+                        <a href="#destinations" class="hover:text-gold transition-colors duration-200">Destinations</a>
+                        <a href="#experiences" class="hover:text-gold transition-colors duration-200">Experiences</a>
+                        <a href="#why-us" class="hover:text-gold transition-colors duration-200">Why Us</a>
+                        <a href="#faq" class="hover:text-gold transition-colors duration-200">FAQ</a>
                     </nav>
 
                     <!-- Mobile Menu Button -->
@@ -299,20 +241,20 @@
 
     <!-- Animated Mobile Slide-in Menu -->
     <div id="mobile-overlay" class="fixed inset-0 bg-navy-dark/90 backdrop-blur-md z-[60] opacity-0 pointer-events-none transition-opacity duration-300"></div>
-    <div id="mobile-menu" class="fixed top-0 right-0 w-[80%] max-w-sm h-full liquid-glass-header !bg-[#03050a]/90 z-[70] transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] flex flex-col p-8 border-l border-gold/20 rounded-none">
+    <div id="mobile-menu" class="fixed top-0 right-0 w-[80%] max-w-sm h-full liquid-glass-header !bg-[#03050a]/90 z-[70] transform translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] flex flex-col p-8 border-l border-gold/20 rounded-none">
         <div class="flex justify-end mb-12">
-            <button id="close-menu-btn" class="text-gold hover:text-white transition">
+            <button id="close-menu-btn" class="text-gold hover:text-white transition-colors">
                 <i data-lucide="x" class="w-8 h-8"></i>
             </button>
         </div>
         <div class="flex flex-col gap-8 flex-1">
-            <a href="#destinations" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Destinations</a>
-            <a href="#experiences" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Experiences</a>
-            <a href="#why-us" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">Why Us</a>
-            <a href="#faq" class="mobile-link text-2xl font-serif text-white hover:text-gold transition opacity-0 translate-x-4">FAQ</a>
+            <a href="#destinations" class="mobile-link text-2xl font-serif text-white hover:text-gold transition-all duration-300 opacity-0 translate-x-4">Destinations</a>
+            <a href="#experiences" class="mobile-link text-2xl font-serif text-white hover:text-gold transition-all duration-300 opacity-0 translate-x-4">Experiences</a>
+            <a href="#why-us" class="mobile-link text-2xl font-serif text-white hover:text-gold transition-all duration-300 opacity-0 translate-x-4">Why Us</a>
+            <a href="#faq" class="mobile-link text-2xl font-serif text-white hover:text-gold transition-all duration-300 opacity-0 translate-x-4">FAQ</a>
         </div>
         <div class="mt-auto">
-            <a href="tel:+919541174017" class="flex items-center gap-3 text-gold mb-4">
+            <a href="tel:+919541174017" class="flex items-center gap-3 text-gold mb-4 hover:text-white transition-colors">
                 <i data-lucide="phone" class="w-5 h-5"></i>
                 <span class="font-medium">+91 9541174017</span>
             </a>
@@ -323,7 +265,7 @@
     </div>
 
     <!-- Hero Section -->
-    <header class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+    <header class="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 w-full h-full z-0">
             <div class="absolute inset-0 bg-navy-dark/40 z-10"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-transparent to-transparent z-10"></div>
@@ -332,7 +274,8 @@
             </video>
         </div>
 
-        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto mt-24 hero-content" id="hero-content">
+        <!-- Added pt-[140px] to ensure it aligns perfectly below the fixed header -->
+        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto pt-[140px] pb-12 hero-content w-full flex flex-col items-center justify-center" id="hero-content">
             <span class="text-gold tracking-[0.4em] text-xs md:text-sm uppercase mb-6 block font-medium">Welcome to Paradise</span>
             <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif mb-6 leading-tight drop-shadow-2xl">
                 Experience Kashmir <br>
@@ -343,8 +286,8 @@
             </p>
 
             <!-- Dynamic Glassmorphism Search Bar -->
-            <div class="liquid-glass-header p-3 rounded-2xl flex flex-col md:flex-row items-center gap-3 max-w-4xl mx-auto">
-                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-gold/30 transition">
+            <div class="liquid-glass-header p-3 rounded-2xl flex flex-col md:flex-row items-center gap-3 w-full max-w-4xl mx-auto">
+                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-gold/30 transition-colors duration-300">
                     <i data-lucide="map-pin" class="text-gold w-5 h-5 mr-3"></i>
                     <select id="destination-select" class="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer">
                         <option value="" disabled selected class="text-white">Select Destination</option>
@@ -354,11 +297,12 @@
                         <option value="Sonmarg" class="text-navy">Sonmarg Glaciers</option>
                     </select>
                 </div>
-                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-gold/30 transition">
+                <div class="flex-1 w-full flex items-center bg-white/5 rounded-xl px-4 py-3.5 border border-transparent hover:border-gold/30 transition-colors duration-300">
                     <i data-lucide="calendar" class="text-gold w-5 h-5 mr-3"></i>
                     <input type="date" id="date-select" class="bg-transparent border-none outline-none text-white w-full appearance-none cursor-pointer" style="color-scheme: dark;">
                 </div>
-                <button id="create-trip-btn" class="w-full md:w-auto bg-gold hover:bg-gold-light text-navy-dark px-8 py-3.5 rounded-xl font-bold tracking-wide transition flex items-center justify-center gap-2">
+                <!-- Enhanced Eye-catching Button -->
+                <button id="create-trip-btn" class="w-full md:w-auto bg-gold text-navy-dark px-8 py-3.5 rounded-xl font-bold tracking-wide flex items-center justify-center gap-2 border border-transparent shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.7)] hover:-translate-y-1 hover:border-white/50 transition-all duration-300 transform">
                     Create My Trip
                 </button>
             </div>
@@ -366,41 +310,41 @@
     </header>
 
     <!-- Why Choose Us -->
-    <section id="why-us" class="py-32 bg-navy-dark relative">
+    <section id="why-us" class="py-24 bg-navy-dark relative">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            <div class="text-center mb-20 reveal">
+            <div class="text-center mb-16 reveal">
                 <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block font-semibold">The Elite Standard</span>
                 <h2 class="text-4xl md:text-5xl font-serif">Why Choose Elite Vibe</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Feature 1 -->
-                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors reveal text-center group shadow-lg">
-                    <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors duration-300 reveal text-center group shadow-lg">
+                    <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i data-lucide="gem" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3 text-white">Unmatched Luxury</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Exclusive access to premium houseboats, 5-star resorts, and high-end transportation.</p>
                 </div>
                 <!-- Feature 2 -->
-                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors reveal reveal-delay-1 text-center group shadow-lg">
-                    <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors duration-300 reveal reveal-delay-1 text-center group shadow-lg">
+                    <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i data-lucide="map" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3 text-white">Curated Itineraries</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Bespoke travel plans tailored specifically to your preferences, pace, and passions.</p>
                 </div>
                 <!-- Feature 3 -->
-                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors reveal reveal-delay-2 text-center group shadow-lg">
-                    <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors duration-300 reveal reveal-delay-2 text-center group shadow-lg">
+                    <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i data-lucide="heart-handshake" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3 text-white">Honeymoon Experts</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">Romantic setups, private dining, and secluded experiences crafted for couples.</p>
                 </div>
                 <!-- Feature 4 -->
-                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors reveal reveal-delay-3 text-center group shadow-lg">
-                    <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div class="p-8 border border-white/5 rounded-2xl bg-navy-light/20 hover:bg-navy-light/60 transition-colors duration-300 reveal reveal-delay-3 text-center group shadow-lg">
+                    <div class="w-16 h-16 mx-auto rounded-full liquid-glass-header flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                         <i data-lucide="shield-check" class="text-gold w-6 h-6"></i>
                     </div>
                     <h3 class="text-xl font-serif mb-3 text-white">Safe & Seamless</h3>
@@ -411,9 +355,9 @@
     </section>
 
     <!-- Iconic Locations Section -->
-    <section id="destinations" class="py-32 bg-[#020308] relative border-t border-white/5">
+    <section id="destinations" class="py-24 bg-[#020308] relative border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            <div class="text-center mb-20 reveal">
+            <div class="text-center mb-16 reveal">
                 <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block font-semibold">Iconic Locations</span>
                 <h2 class="text-4xl md:text-5xl font-serif mb-4">Discover the Crown Jewels</h2>
                 <p class="text-gray-400 max-w-2xl mx-auto">From pristine alpine lakes to snow-capped peaks, explore handpicked destinations.</p>
@@ -423,7 +367,7 @@
                 <!-- Dal Lake (Large) -->
                 <div class="lg:col-span-2 relative h-[450px] rounded-2xl img-zoom-container reveal group">
                     <img src="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80" loading="lazy" alt="Dal Lake" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100"></div>
                     <div class="absolute inset-0 p-8 flex flex-col justify-end">
                         <div class="flex justify-between items-end">
                             <div>
@@ -433,7 +377,7 @@
                             </div>
                         </div>
                         <div class="mt-auto">
-                            <button onclick="openLocationWA('Dal Lake, Srinagar')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-all flex items-center gap-2 w-fit">
+                            <button onclick="openLocationWA('Dal Lake, Srinagar')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-colors duration-300 flex items-center gap-2 w-fit">
                                 <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
                             </button>
                         </div>
@@ -443,12 +387,12 @@
                 <!-- Gulmarg -->
                 <div class="relative h-[450px] rounded-2xl img-zoom-container reveal reveal-delay-1 group">
                     <img src="https://images.unsplash.com/photo-1651509094074-e8acaeb84d8f?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Gulmarg" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100"></div>
                     <div class="absolute inset-0 p-8 flex flex-col justify-end">
                         <span class="bg-gold/10 text-gold text-xs px-4 py-1.5 rounded-full border border-gold/30 mb-4 w-fit font-medium">Winter Elite</span>
                         <h3 class="text-2xl font-serif mb-2">Gulmarg</h3>
                         <p class="text-gray-300 text-sm mb-6">World-class skiing resorts and the iconic Gondola ride.</p>
-                        <button onclick="openLocationWA('Gulmarg')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-all flex items-center gap-2 w-fit">
+                        <button onclick="openLocationWA('Gulmarg')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-colors duration-300 flex items-center gap-2 w-fit">
                             <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
                         </button>
                     </div>
@@ -457,12 +401,12 @@
                 <!-- Pahalgam -->
                 <div class="relative h-[450px] rounded-2xl img-zoom-container reveal group">
                     <img src="https://images.unsplash.com/photo-1668173443752-bdec2fbb3c79?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Pahalgam" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100"></div>
                     <div class="absolute inset-0 p-8 flex flex-col justify-end">
                         <span class="bg-gold/10 text-gold text-xs px-4 py-1.5 rounded-full border border-gold/30 mb-4 w-fit font-medium">Valley of Shepherds</span>
                         <h3 class="text-2xl font-serif mb-2">Pahalgam</h3>
                         <p class="text-gray-300 text-sm mb-6">Lush meadows, pine forests, and premium boutique stays.</p>
-                        <button onclick="openLocationWA('Pahalgam')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-all flex items-center gap-2 w-fit">
+                        <button onclick="openLocationWA('Pahalgam')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-colors duration-300 flex items-center gap-2 w-fit">
                             <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
                         </button>
                     </div>
@@ -471,12 +415,12 @@
                 <!-- Sonmarg (Large) -->
                 <div class="lg:col-span-2 relative h-[450px] rounded-2xl img-zoom-container reveal reveal-delay-1 group">
                     <img src="https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80" loading="lazy" alt="Sonmarg" class="w-full h-full object-cover img-zoom">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#020308] via-[#020308]/40 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100"></div>
                     <div class="absolute inset-0 p-8 flex flex-col justify-end">
                         <span class="bg-gold/10 text-gold text-xs px-4 py-1.5 rounded-full border border-gold/30 mb-4 w-fit font-medium">Meadow of Gold</span>
                         <h3 class="text-3xl font-serif mb-2">Sonmarg</h3>
                         <p class="text-gray-300 max-w-md text-sm leading-relaxed mb-6">Majestic glaciers, alpine serenity, and luxury glamping experiences beneath the stars.</p>
-                        <button onclick="openLocationWA('Sonmarg')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-all flex items-center gap-2 w-fit">
+                        <button onclick="openLocationWA('Sonmarg')" class="glass-pill px-6 py-2.5 rounded-full text-sm font-medium text-white hover:border-gold hover:text-gold transition-colors duration-300 flex items-center gap-2 w-fit">
                             <i data-lucide="message-circle" class="w-4 h-4"></i> Let's Talk
                         </button>
                     </div>
@@ -486,16 +430,16 @@
     </section>
 
     <!-- Signature Experiences -->
-    <section id="experiences" class="py-32 bg-navy-dark relative">
+    <section id="experiences" class="py-24 bg-navy-dark relative">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
-            <div class="text-center mb-20 reveal">
+            <div class="text-center mb-16 reveal">
                 <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block font-semibold">Beyond Sightseeing</span>
                 <h2 class="text-4xl md:text-5xl font-serif">Signature Luxury Experiences</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Exp 1 -->
-                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal">
+                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-300 reveal">
                     <div class="img-zoom-container rounded-xl h-60 mb-6">
                         <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Dining" class="w-full h-full object-cover img-zoom">
                     </div>
@@ -505,7 +449,7 @@
                     </div>
                 </div>
                 <!-- Exp 2 -->
-                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal reveal-delay-1">
+                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-300 reveal reveal-delay-1">
                     <div class="img-zoom-container rounded-xl h-60 mb-6">
                         <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Suite" class="w-full h-full object-cover img-zoom">
                     </div>
@@ -515,7 +459,7 @@
                     </div>
                 </div>
                 <!-- Exp 3 -->
-                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-500 reveal reveal-delay-2">
+                <div class="liquid-glass-header p-4 rounded-2xl hover:-translate-y-2 transition-transform duration-300 reveal reveal-delay-2">
                     <div class="img-zoom-container rounded-xl h-60 mb-6">
                         <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80" loading="lazy" alt="Helicopter" class="w-full h-full object-cover img-zoom">
                     </div>
@@ -529,7 +473,7 @@
     </section>
 
     <!-- FAQ Accordion Section -->
-    <section id="faq" class="py-32 bg-[#020308] relative border-t border-white/5">
+    <section id="faq" class="py-24 bg-[#020308] relative border-t border-white/5">
         <div class="max-w-3xl mx-auto px-6">
             <div class="text-center mb-16 reveal">
                 <span class="text-gold text-xs tracking-[0.2em] uppercase mb-4 block font-semibold">Concierge Desk</span>
@@ -539,7 +483,7 @@
             <div class="space-y-4 reveal">
                 <!-- FAQ Item 1 -->
                 <div class="liquid-glass-header rounded-2xl overflow-hidden">
-                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors duration-200">
                         <span class="font-medium text-lg text-white">When is the best time to visit Kashmir?</span>
                         <div class="w-8 h-8 rounded-full border border-gold/40 flex items-center justify-center shrink-0">
                             <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
@@ -554,7 +498,7 @@
 
                 <!-- FAQ Item 2 -->
                 <div class="liquid-glass-header rounded-2xl overflow-hidden">
-                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors duration-200">
                         <span class="font-medium text-lg text-white">Are the tours customizable?</span>
                         <div class="w-8 h-8 rounded-full border border-gold/40 flex items-center justify-center shrink-0">
                             <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
@@ -569,7 +513,7 @@
 
                 <!-- FAQ Item 3 -->
                 <div class="liquid-glass-header rounded-2xl overflow-hidden">
-                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors">
+                    <button class="faq-toggle w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none hover:bg-white/5 transition-colors duration-200">
                         <span class="font-medium text-lg text-white">Is Kashmir safe for luxury travelers?</span>
                         <div class="w-8 h-8 rounded-full border border-gold/40 flex items-center justify-center shrink-0">
                             <i data-lucide="chevron-down" class="w-5 h-5 text-gold transform transition-transform duration-300 faq-icon"></i>
@@ -586,10 +530,10 @@
     </section>
 
     <!-- Footer (Minimal Luxury) -->
-    <footer class="bg-navy-dark pt-24 pb-10 px-6 md:px-12 border-t border-white/5 relative overflow-hidden">
+    <footer class="bg-navy-dark pt-20 pb-10 px-6 md:px-12 border-t border-white/5 relative overflow-hidden">
         <div class="absolute -bottom-20 -right-20 text-[250px] font-serif font-bold text-white/[0.02] select-none pointer-events-none">EV</div>
         
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 relative z-10 mb-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 relative z-10 mb-16">
             <!-- Brand -->
             <div>
                 <a href="#" class="flex items-center gap-3 mb-8">
@@ -601,35 +545,35 @@
                 </a>
                 <p class="text-gray-400 text-sm leading-relaxed mb-8 max-w-sm">Curating the finest luxury travel experiences in the heart of Kashmir. Your journey into paradise begins here.</p>
                 <div class="flex gap-4">
-                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:border-gold hover:text-gold transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:border-gold hover:text-gold transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:border-gold hover:text-gold transition-colors duration-300"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:border-gold hover:text-gold transition-colors duration-300"><i data-lucide="facebook" class="w-4 h-4"></i></a>
                 </div>
             </div>
 
             <!-- Quick Links -->
             <div class="lg:ml-auto">
-                <h4 class="font-serif text-xl mb-8 text-white">Journeys</h4>
+                <h4 class="font-serif text-xl mb-6 text-white">Journeys</h4>
                 <ul class="space-y-4">
-                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Honeymoon Packages</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Family Retreats</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Winter Ski Expeditions</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors">Corporate Offsites</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors duration-200">Honeymoon Packages</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors duration-200">Family Retreats</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors duration-200">Winter Ski Expeditions</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-gold text-sm transition-colors duration-200">Corporate Offsites</a></li>
                 </ul>
             </div>
 
             <!-- Contact Info -->
             <div class="lg:ml-auto">
-                <h4 class="font-serif text-xl mb-8 text-white">Contact Us</h4>
-                <ul class="space-y-6">
+                <h4 class="font-serif text-xl mb-6 text-white">Contact Us</h4>
+                <ul class="space-y-5">
                     <li class="flex items-start gap-4">
                         <i data-lucide="map-pin" class="w-5 h-5 text-gold shrink-0 mt-0.5"></i>
                         <span class="text-gray-400 text-sm leading-relaxed">Srinagar, Jammu & Kashmir<br>India, 190001</span>
                     </li>
                     <li class="flex items-start gap-4">
                         <i data-lucide="phone" class="w-5 h-5 text-gold shrink-0 mt-0.5"></i>
-                        <div class="flex flex-col gap-2">
-                            <a href="tel:+919906174017" class="text-gray-400 hover:text-white text-sm transition-colors">+91 9906174017</a>
-                            <a href="tel:+919541174017" class="text-gray-400 hover:text-white text-sm transition-colors">+91 9541174017</a>
+                        <div class="flex flex-col gap-1.5">
+                            <a href="tel:+919906174017" class="text-gray-400 hover:text-white text-sm transition-colors duration-200">+91 9906174017</a>
+                            <a href="tel:+919541174017" class="text-gray-400 hover:text-white text-sm transition-colors duration-200">+91 9541174017</a>
                         </div>
                     </li>
                 </ul>
@@ -639,23 +583,24 @@
         <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
             <p class="text-gray-600 text-xs">© 2026 Elite Vibe Tours. All rights reserved.</p>
             <div class="flex gap-6 text-xs text-gray-600">
-                <a href="#" class="hover:text-gray-300 transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-gray-300 transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-gray-300 transition-colors duration-200">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-300 transition-colors duration-200">Terms of Service</a>
             </div>
         </div>
     </footer>
 
-    <!-- Sticky Floating Action Buttons -->
-    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
-        <!-- Call Us Pill -->
-        <a href="tel:+919541174017" class="glass-pill rounded-full px-5 py-3 flex items-center gap-3 text-white hover:border-gold transition-all shadow-xl group">
-            <i data-lucide="phone" class="w-4 h-4 text-gold group-hover:animate-bounce"></i> 
-            <span class="text-sm font-medium pr-1">Call Us Directly</span>
+    <!-- REPOSITIONED & REFINED ACTION BUTTONS (Bottom Center) -->
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-row items-center justify-center gap-3 w-max max-w-[95vw]">
+        
+        <!-- Premium Glass Call Button -->
+        <a href="tel:+919541174017" class="liquid-glass-header border border-gold/50 rounded-full px-5 h-[48px] flex items-center justify-center gap-2.5 text-white hover:bg-gold/15 transition-all duration-300 shadow-[0_4px_25px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] group whitespace-nowrap">
+            <i data-lucide="phone" class="w-[18px] h-[18px] text-gold group-hover:animate-bounce"></i> 
+            <span class="text-sm font-medium pr-1 tracking-wide">Call Us</span>
         </a>
         
         <!-- Premium Glass WhatsApp Icon -->
-        <a href="https://wa.me/919541174017" target="_blank" class="w-16 h-16 rounded-full liquid-glass-header flex items-center justify-center text-[#25D366] hover:text-white hover:bg-[#25D366] transition-all duration-300 animate-pulse-soft shadow-2xl">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <a href="https://wa.me/919541174017" target="_blank" class="w-[48px] h-[48px] rounded-full liquid-glass-header border border-gold/50 flex items-center justify-center text-[#25D366] hover:text-white hover:bg-[#25D366] transition-all duration-300 hover:border-[#25D366] shadow-[0_4px_25px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] shrink-0 animate-pulse-soft">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.441-1.273.607-1.446c.127-.133.358-.2.579-.2.072 0 .141 0 .204.005.152.011.334-.055.518.39.213.518.687 1.679.749 1.802.062.124.104.269.021.436-.083.167-.124.271-.249.42-.125.148-.266.331-.379.438-.125.118-.255.247-.114.492.141.244.625.996 1.341 1.625.924.814 1.666 1.071 1.914 1.19.248.118.393.102.539-.06.146-.162.628-.731.794-.983.166-.252.332-.211.554-.128.221.083 1.411.667 1.652.787.241.121.402.182.46.282.059.099.059.576-.085.981z"></path>
                 <path d="M12.031 2C6.48 2 2 6.48 2 12.031c0 1.96.539 3.844 1.553 5.467L2 22l4.639-1.523A9.974 9.974 0 0 0 12.031 22c5.551 0 10.031-4.48 10.031-10.031C22.062 6.48 17.582 2 12.031 2zm0 18.25c-1.637 0-3.238-.423-4.636-1.222l-.333-.191-3.085 1.013 1.026-3.003-.209-.333A8.252 8.252 0 0 1 3.75 12.031c0-4.566 3.715-8.281 8.281-8.281 4.566 0 8.281 3.715 8.281 8.281 0 4.566-3.715 8.281-8.281 8.281z"></path>
             </svg>
@@ -667,34 +612,22 @@
         // 1. Initialize Lucide Icons
         lucide.createIcons();
 
-        // 2. Cinematic Preloader Logic
+        // 2. Fast Minimal Preloader Logic
         window.addEventListener('load', () => {
-            // Wait for internal animations (2.5 seconds total)
+            // Super fast 300ms delay to ensure smooth first paint, then fade out
             setTimeout(() => {
-                const loaderContent = document.getElementById('loader-content');
-                const curtainL = document.getElementById('curtain-l');
-                const curtainR = document.getElementById('curtain-r');
                 const preloader = document.getElementById('premium-preloader');
                 
-                // Fade out text, zoom slightly
-                loaderContent.classList.add('loader-exit-content');
+                // Fade out
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
                 
-                // Slide curtains open
-                setTimeout(() => {
-                    curtainL.classList.add('loader-exit-curtain-left');
-                    curtainR.classList.add('loader-exit-curtain-right');
-                    
-                    // Trigger Hero fade in
-                    document.getElementById('hero-content').classList.add('active');
+                // Trigger Hero fade in
+                document.getElementById('hero-content').classList.add('active');
 
-                    // Remove preloader from DOM entirely after animation
-                    setTimeout(() => {
-                        preloader.remove();
-                    }, 1200);
-
-                }, 400); // 0.4s after text starts blurring
-
-            }, 2500); // Wait 2.5 seconds showing the loader
+                // Remove from DOM
+                setTimeout(() => { preloader.remove(); }, 300);
+            }, 300); 
         });
 
         // 3. "Create My Trip" Dynamic WhatsApp Generator
@@ -751,12 +684,12 @@
                 mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
                 mobileOverlay.classList.add('opacity-100');
                 
-                // Stagger animate links
+                // Stagger animate links (Faster execution)
                 mobileLinks.forEach((link, index) => {
                     setTimeout(() => {
                         link.classList.remove('opacity-0', 'translate-x-4');
                         link.classList.add('opacity-100', 'translate-x-0');
-                    }, 200 + (index * 100));
+                    }, 100 + (index * 70));
                 });
             }
         }
@@ -770,8 +703,8 @@
             link.addEventListener('click', toggleMenu);
         });
 
-        // 6. Scroll Reveal Animation
-        const observerOptions = { threshold: 0.15 };
+        // 6. Scroll Reveal Animation (Faster Intersections)
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
