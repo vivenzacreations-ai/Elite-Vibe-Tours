@@ -109,11 +109,13 @@
         let currentView = 'home';
         let selectedProductId = null;
         let toastTimeout;
+        let orderSubmitted = false;
 
         // --- CORE FUNCTIONS ---
         function navigate(view, productId = null) {
             currentView = view;
             if (productId) selectedProductId = productId;
+            if (view !== 'checkout') orderSubmitted = false; // Reset checkout flow if leaving
             window.scrollTo(0, 0);
             render();
         }
@@ -156,6 +158,52 @@
                 badge.classList.remove('hidden');
             } else {
                 badge.classList.add('hidden');
+            }
+        }
+
+        // --- BACKEND INTEGRATION ---
+        async function submitOrder(event) {
+            event.preventDefault(); // Stop page refresh
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.innerText = "Saving Order...";
+            submitBtn.disabled = true;
+
+            // Grab the user data AND dynamically pull cart items
+            const productNames = cart.map(item => `${item.name} (x${item.quantity})`).join(', ');
+            const orderInfo = {
+                customerName: document.getElementById('customerName').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value,
+                productName: productNames || "Website Order", 
+                price: "$" + getCartTotal().toFixed(2)
+            };
+
+            try {
+                // Send data directly to your server
+                const response = await fetch('https://my-store-backend-uoou.onrender.com/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderInfo)
+                });
+
+                if (response.ok) {
+                    showToast("Details securely saved! Please complete your payment.");
+                    
+                    // Transition to PayPal phase
+                    orderSubmitted = true;
+                    render(); 
+                } else {
+                    showToast("Error saving order. Please try again.");
+                }
+            } catch (error) {
+                console.error("Database connection failed:", error);
+                showToast("Network error. Please check your connection.");
+            } finally {
+                if(submitBtn) {
+                    submitBtn.innerText = "Submit Details & Pay";
+                    submitBtn.disabled = false;
+                }
             }
         }
 
@@ -208,7 +256,10 @@
                 content.innerHTML = renderCart();
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
-                initPayPal();
+                // Only initialize PayPal AFTER form is submitted successfully
+                if (orderSubmitted) {
+                    initPayPal();
+                }
             }
         }
 
@@ -358,8 +409,30 @@
                         </div>
                         <div class="w-full h-[1px] bg-gray-200 mb-8"></div>
                         
-                        <!-- PayPal injects buttons here -->
-                        <div id="paypal-button-container" class="min-h-[150px] flex items-center justify-center z-0 relative"></div>
+                        <!-- STEP 1: Customer Form -->
+                        <form id="checkout-form" onsubmit="submitOrder(event)" class="${orderSubmitted ? 'hidden' : 'block'} space-y-5">
+                            <div>
+                                <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Full Name</label>
+                                <input type="text" id="customerName" required class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="Jane Doe">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Email</label>
+                                <input type="email" id="email" required class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="jane@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Shipping Address</label>
+                                <textarea id="address" required rows="3" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="123 Luxury Lane..."></textarea>
+                            </div>
+                            <button type="submit" id="submit-btn" class="w-full bg-black text-white uppercase tracking-widest text-sm font-semibold py-4 mt-4 hover:bg-gray-800 transition-colors">
+                                Submit Details & Pay
+                            </button>
+                        </form>
+
+                        <!-- STEP 2: PayPal injects buttons here (Hidden until form submits) -->
+                        <div id="payment-section" class="${orderSubmitted ? 'block' : 'hidden'} fade-in">
+                            <p class="text-center text-xs text-gray-500 mb-6 uppercase tracking-widest">Complete Your Payment</p>
+                            <div id="paypal-button-container" class="min-h-[150px] flex items-center justify-center z-0 relative"></div>
+                        </div>
                     </div>
 
                     <div class="text-center">
@@ -394,6 +467,7 @@
                     return actions.order.capture().then(function(details) {
                         // Payment was successful
                         cart = []; // Empty cart
+                        orderSubmitted = false; // Reset state for future orders
                         updateCartBadge();
                         
                         // Show success message with buyer's name
