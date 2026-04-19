@@ -12,8 +12,6 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <!-- PayPal JS SDK (Using Client ID) -->
-    <!-- Note: Secret keys (EDdSwVTbCOaviaiov1rtcrzu9sOH_LWwDCFMpsBGxl7Ua81qzCkrcUAZ_bdW-9I6BMXls4DoNvvuHZw_) 
-         are for server-side REST API calls only. The JS SDK only requires the Client-ID to process payments. -->
     <script src="https://www.paypal.com/sdk/js?client-id=AYJ4VDgjnXPXTXGv4v5kHJ_96Z3m47mudvWC4UNBMfBdViaKhNwwUZ-eJZhpx6MjjOPZGYN0IafzfS8f&currency=USD"></script>
 
     <style>
@@ -45,7 +43,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-gray-200">
+<body class="min-h-screen flex flex-col selection:bg-gray-200 relative">
 
     <!-- Header -->
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-100 z-40">
@@ -66,12 +64,24 @@
     </header>
 
     <!-- Main Content Area -->
-    <main id="app-content" class="flex-grow pb-24"></main>
+    <main id="app-content" class="flex-grow pb-32"></main>
 
-    <!-- Custom Toast Notification -->
+    <!-- Custom Toast Notification (Kept for Payment Errors) -->
     <div id="toast" class="fixed bottom-6 right-6 bg-black text-white px-6 py-4 shadow-xl z-50 flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
-        <i class="ph ph-check text-lg"></i>
+        <i class="ph ph-warning text-lg"></i>
         <span id="toast-msg" class="font-light tracking-wide text-sm"></span>
+    </div>
+
+    <!-- Sticky Cart Pill -->
+    <div id="cart-pill" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black text-white rounded-full px-6 py-3 shadow-2xl z-40 flex items-center gap-4 transition-all duration-500 translate-y-32 opacity-0 pointer-events-none">
+        <div class="flex items-center gap-2">
+            <i class="ph ph-shopping-bag text-xl"></i>
+            <span id="cart-pill-text" class="text-sm font-medium tracking-wide"></span>
+        </div>
+        <div class="w-[1px] h-4 bg-gray-600"></div>
+        <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase hover:text-gray-300 transition-colors font-semibold">
+            View Cart
+        </button>
     </div>
 
     <!-- Custom Modal -->
@@ -115,6 +125,7 @@
             currentView = view;
             if (productId) selectedProductId = productId;
             window.scrollTo(0, 0);
+            updateCartUI(); // Hide/show pill based on view
             render();
         }
 
@@ -130,14 +141,27 @@
                 cart.push({ ...product, quantity: 1 });
             }
             
-            updateCartBadge();
-            showToast(`Added ${product.name} to cart.`);
+            updateCartUI();
+            render(); // Re-render to update the button colors instantly
         }
 
         function removeFromCart(productId) {
             cart = cart.filter(item => item.id !== productId);
-            updateCartBadge();
+            updateCartUI();
             render();
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartUI();
+                    render();
+                }
+            }
         }
 
         function getCartTotal() {
@@ -148,8 +172,11 @@
             return cart.reduce((sum, item) => sum + item.quantity, 0);
         }
 
-        function updateCartBadge() {
+        function updateCartUI() {
             const count = getCartCount();
+            const total = getCartTotal();
+            
+            // 1. Update Header Badge
             const badge = document.getElementById('cart-badge');
             if (count > 0) {
                 badge.textContent = count;
@@ -157,6 +184,47 @@
             } else {
                 badge.classList.add('hidden');
             }
+
+            // 2. Update Sticky Pill
+            const pill = document.getElementById('cart-pill');
+            const pillText = document.getElementById('cart-pill-text');
+            
+            // Show pill only if there are items AND we are not already on the cart/checkout page
+            if (count > 0 && currentView !== 'cart' && currentView !== 'checkout') {
+                pillText.textContent = `${count} item${count !== 1 ? 's' : ''} • $${total.toFixed(2)}`;
+                pill.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+            } else {
+                pill.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+            }
+        }
+
+        // --- BACKEND TRACKING ---
+        function saveCheckoutData() {
+            if (cart.length === 0) return;
+            
+            const customerName = document.getElementById('customerName')?.value || "";
+            const email = document.getElementById('email')?.value || "";
+            const address = document.getElementById('address')?.value || "";
+            
+            const productNames = cart.map(item => `${item.name} (x${item.quantity})`).join(', ');
+            const orderInfo = {
+                customerName: customerName,
+                email: email,
+                address: address,
+                productName: productNames || "Website Order", 
+                price: "$" + getCartTotal().toFixed(2)
+            };
+
+            fetch('https://my-store-backend-3cj5.onrender.com/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderInfo)
+            }).catch(error => console.error("Database tracking failed:", error));
+        }
+
+        function proceedToCheckout() {
+            saveCheckoutData(); // Sends finalized products to server immediately
+            navigate('checkout');
         }
 
         // --- UI UTILITIES ---
@@ -178,7 +246,6 @@
             const modal = document.getElementById('modal');
             document.getElementById('modal-msg').textContent = message;
             modal.classList.remove('hidden');
-            // Small delay to allow display:block to apply before animating opacity
             setTimeout(() => {
                 modal.classList.remove('opacity-0', 'pointer-events-none');
                 modal.classList.add('opacity-100');
@@ -208,27 +275,38 @@
                 content.innerHTML = renderCart();
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
-                initPayPal(); // Init PayPal immediately on checkout view
+                initPayPal(); 
             }
         }
 
         function renderHome() {
-            let gridHtml = PRODUCTS.map(p => `
-                <div class="group cursor-pointer flex flex-col" onclick="navigate('product', ${p.id})">
-                    <div class="aspect-[4/5] bg-[#F7F7F7] w-full mb-6 overflow-hidden flex items-center justify-center text-gray-300 transition-colors duration-500 group-hover:bg-[#EFEFEF]">
-                        <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-light tracking-widest text-xs uppercase text-gray-500">
-                            View Details
-                        </span>
+            let gridHtml = PRODUCTS.map(p => {
+                const inCart = cart.find(item => item.id === p.id);
+                
+                // Dynamic styling: Solid black if in cart, transparent outline if not
+                const btnClass = inCart 
+                    ? "mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-black bg-black text-white transition-all duration-300"
+                    : "mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-gray-300 text-gray-700 hover:bg-black hover:text-white hover:border-black transition-all duration-300";
+                
+                const btnText = inCart ? `In Cart (${inCart.quantity})` : "Add to Cart";
+
+                return `
+                    <div class="group cursor-pointer flex flex-col" onclick="navigate('product', ${p.id})">
+                        <div class="aspect-[4/5] bg-[#F7F7F7] w-full mb-6 overflow-hidden flex items-center justify-center text-gray-300 transition-colors duration-500 group-hover:bg-[#EFEFEF]">
+                            <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-light tracking-widest text-xs uppercase text-gray-500">
+                                View Details
+                            </span>
+                        </div>
+                        <div class="flex flex-col items-center text-center flex-1">
+                            <h3 class="text-sm md:text-base tracking-wider uppercase text-gray-900 mb-2 font-medium">${p.name}</h3>
+                            <p class="text-gray-500 text-sm mb-6 font-light">$${p.price.toFixed(2)}</p>
+                            <button onclick="addToCart(${p.id}, event)" class="${btnClass}">
+                                ${btnText}
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex flex-col items-center text-center flex-1">
-                        <h3 class="text-sm md:text-base tracking-wider uppercase text-gray-900 mb-2 font-medium">${p.name}</h3>
-                        <p class="text-gray-500 text-sm mb-6 font-light">$${p.price.toFixed(2)}</p>
-                        <button onclick="addToCart(${p.id}, event)" class="mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-gray-300 text-gray-700 hover:bg-black hover:text-white hover:border-black transition-all duration-300">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             return `
                 <div class="max-w-5xl mx-auto px-4 py-12 fade-in">
@@ -242,6 +320,13 @@
         function renderProduct() {
             const p = PRODUCTS.find(item => item.id === selectedProductId);
             if (!p) return '';
+
+            const inCart = cart.find(item => item.id === p.id);
+            const btnClass = inCart 
+                ? "bg-gray-800 text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 transition-colors duration-300 w-full mb-6"
+                : "bg-black text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 hover:bg-gray-800 transition-colors duration-300 w-full mb-6";
+            
+            const btnText = inCart ? `Add More (${inCart.quantity} In Cart)` : "Add to Cart";
 
             return `
                 <div class="max-w-5xl mx-auto px-4 py-12 fade-in">
@@ -265,8 +350,8 @@
                             
                             <p class="text-gray-600 leading-relaxed font-light mb-12 text-lg">${p.description}</p>
                             
-                            <button onclick="addToCart(${p.id})" class="bg-black text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 hover:bg-gray-800 transition-colors duration-300 w-full mb-6">
-                                Add to Cart
+                            <button onclick="addToCart(${p.id})" class="${btnClass}">
+                                ${btnText}
                             </button>
                             
                             <div class="border-t border-gray-100 pt-6 mt-6">
@@ -304,8 +389,14 @@
                         <div class="w-16 h-24 md:w-20 md:h-28 bg-[#F7F7F7] flex items-center justify-center shrink-0 text-[10px] text-gray-400 uppercase tracking-widest text-center px-1">Img</div>
                         <div>
                             <h4 class="font-serif tracking-wider text-base md:text-lg mb-1">${item.name}</h4>
-                            <p class="text-gray-500 text-sm font-light mb-2">$${item.price.toFixed(2)} each</p>
-                            <p class="text-gray-400 text-xs tracking-widest uppercase">Qty: ${item.quantity}</p>
+                            <p class="text-gray-500 text-sm font-light mb-3">$${item.price.toFixed(2)}</p>
+                            
+                            <!-- Quantity Controls -->
+                            <div class="flex items-center gap-3">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-black hover:text-black transition-colors">-</button>
+                                <span class="text-sm font-medium w-4 text-center">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-black hover:text-black transition-colors">+</button>
+                            </div>
                         </div>
                     </div>
                     <div class="flex flex-col items-end gap-4 md:gap-6">
@@ -338,7 +429,7 @@
                             Taxes and shipping calculated at checkout
                         </p>
                         
-                        <button onclick="navigate('checkout')" class="bg-black text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-gray-800 transition-colors duration-300 w-full md:w-auto">
+                        <button onclick="proceedToCheckout()" class="bg-black text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-gray-800 transition-colors duration-300 w-full md:w-auto">
                             Proceed to Checkout
                         </button>
                     </div>
@@ -358,22 +449,20 @@
                         </div>
                         <div class="w-full h-[1px] bg-gray-200 mb-8"></div>
                         
-                        <!-- Combined Form: Data + Instant PayPal Checkout -->
                         <form id="checkout-form" class="space-y-5" onsubmit="event.preventDefault();">
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Full Name</label>
-                                <input type="text" id="customerName" required class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="Jane Doe">
+                                <input type="text" id="customerName" required onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="Jane Doe">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Email</label>
-                                <input type="email" id="email" required class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="jane@example.com">
+                                <input type="email" id="email" required onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="jane@example.com">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Shipping Address</label>
-                                <textarea id="address" required rows="3" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="123 Luxury Lane..."></textarea>
+                                <textarea id="address" required rows="3" onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="123 Luxury Lane..."></textarea>
                             </div>
                             
-                            <!-- PayPal Button perfectly integrated into the form -->
                             <div class="pt-4 relative z-0">
                                 <div id="paypal-button-container" class="min-h-[55px]"></div>
                             </div>
@@ -396,57 +485,31 @@
                 return;
             }
 
-            container.innerHTML = ''; // Clear just in case
+            container.innerHTML = ''; 
             
             paypal.Buttons({
-                style: {
-                    color: 'black',
-                    shape: 'rect',
-                    label: 'pay',
-                    height: 55
-                },
+                style: { color: 'black', shape: 'rect', label: 'pay', height: 55 },
                 onClick: function(data, actions) {
-                    // 1. Validate the HTML5 form instantly
                     const form = document.getElementById('checkout-form');
                     if (!form.checkValidity()) {
-                        form.reportValidity(); // Displays the native browser "Required" popup
-                        return actions.reject(); // Stops PayPal window from opening
+                        form.reportValidity(); 
+                        return actions.reject(); 
                     }
-                    return actions.resolve(); // Allows PayPal window to open
+                    return actions.resolve(); 
                 },
                 createOrder: function(data, actions) {
-                    // 2. Form is valid! Fire data to your backend instantly in the background.
-                    const productNames = cart.map(item => `${item.name} (x${item.quantity})`).join(', ');
-                    const orderInfo = {
-                        customerName: document.getElementById('customerName').value,
-                        email: document.getElementById('email').value,
-                        address: document.getElementById('address').value,
-                        productName: productNames || "Website Order", 
-                        price: "$" + getCartTotal().toFixed(2)
-                    };
+                    saveCheckoutData(); // Ensure the absolute final typed data is sent right before payment processing
 
-                    fetch('https://my-store-backend-uoou.onrender.com/api/checkout', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(orderInfo)
-                    }).catch(error => console.error("Database tracking failed:", error));
-
-                    // 3. Concurrently, open the actual PayPal invoice popup immediately
                     return actions.order.create({
                         purchase_units: [{
-                            amount: {
-                                value: getCartTotal().toFixed(2)
-                            }
+                            amount: { value: getCartTotal().toFixed(2) }
                         }]
                     });
                 },
                 onApprove: function(data, actions) {
                     return actions.order.capture().then(function(details) {
-                        // Payment was successful
-                        cart = []; // Empty cart
-                        updateCartBadge();
-                        
-                        // Show success message with buyer's name
+                        cart = []; 
+                        updateCartUI();
                         const buyerName = details.payer.name.given_name;
                         showModal(`Thank you for your elegant purchase, ${buyerName}. Your order from Marina & Elévia has been successfully confirmed and processed securely.`);
                     });
@@ -459,6 +522,7 @@
         }
 
         // Initialize App
+        updateCartUI();
         render();
     </script>
 </body>
