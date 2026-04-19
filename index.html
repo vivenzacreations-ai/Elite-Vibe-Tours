@@ -43,59 +43,62 @@
         ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-gray-200 relative">
+<body class="min-h-screen flex flex-col selection:bg-[#f8d7d7] relative">
 
     <!-- Header -->
-    <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-100 z-40">
+    <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
         <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between">
-            <div class="w-12"></div> <!-- Spacer -->
+            
+            <!-- Moved Cart to Top Left inside square #E1B786 box -->
+            <div class="w-12 flex justify-start">
+                <button onclick="navigate('cart')" class="w-10 h-10 bg-[#E1B786] flex items-center justify-center relative text-gray-900 hover:opacity-80 transition-opacity rounded-sm shadow-sm">
+                    <i class="ph ph-shopping-cart text-xl"></i>
+                    <span id="cart-badge" class="hidden absolute -top-2 -right-2 bg-[#D30000] text-white text-[10px] font-bold w-[20px] h-[20px] flex items-center justify-center rounded-full border-2 border-white">
+                        0
+                    </span>
+                </button>
+            </div>
             
             <h1 onclick="navigate('home')" class="text-2xl md:text-3xl font-serif tracking-widest uppercase cursor-pointer text-center flex-1 hover:opacity-80 transition-opacity">
-                Marina & Elévia
+                <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
             </h1>
             
-            <button onclick="navigate('cart')" class="w-12 flex justify-end relative text-gray-800 hover:text-black transition-colors">
-                <i class="ph ph-shopping-cart text-2xl"></i>
-                <span id="cart-badge" class="hidden absolute -top-1 -right-2 bg-black text-white text-[10px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full">
-                    0
-                </span>
-            </button>
+            <div class="w-12"></div> <!-- Spacer on right for perfect centering -->
         </div>
     </header>
 
     <!-- Main Content Area -->
     <main id="app-content" class="flex-grow pb-32"></main>
 
-    <!-- Custom Toast Notification (Kept for Payment Errors) -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-black text-white px-6 py-4 shadow-xl z-50 flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-[#D30000] text-white px-6 py-4 shadow-xl z-50 flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
         <i class="ph ph-warning text-lg"></i>
         <span id="toast-msg" class="font-light tracking-wide text-sm"></span>
     </div>
 
-    <!-- Sticky Cart Pill -->
-    <div id="cart-pill" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black text-white rounded-full px-6 py-3 shadow-2xl z-40 flex items-center gap-4 transition-all duration-500 translate-y-32 opacity-0 pointer-events-none">
-        <div class="flex items-center gap-2">
-            <i class="ph ph-shopping-bag text-xl"></i>
-            <span id="cart-pill-text" class="text-sm font-medium tracking-wide"></span>
+    <!-- Sticky Cart Pill - Now wider, red, and entirely clickable to Checkout -->
+    <div id="cart-pill" onclick="proceedToCheckout()" class="cursor-pointer fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#D30000] text-white rounded-full px-8 md:px-12 py-4 shadow-2xl z-40 flex items-center justify-between w-[90%] max-w-sm transition-all duration-500 translate-y-32 opacity-0 pointer-events-none hover:bg-[#a00000]">
+        <div class="flex items-center gap-3">
+            <i class="ph ph-shopping-bag text-2xl"></i>
+            <span id="cart-pill-text" class="text-base font-medium tracking-wide"></span>
         </div>
-        <div class="w-[1px] h-4 bg-gray-600"></div>
-        <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase hover:text-gray-300 transition-colors font-semibold">
-            View Cart
-        </button>
+        <div class="text-sm tracking-widest uppercase font-semibold flex items-center gap-2">
+            Checkout <i class="ph ph-arrow-right text-lg"></i>
+        </div>
     </div>
 
     <!-- Custom Modal -->
     <div id="modal" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
         <div class="bg-white p-10 max-w-md w-full border border-gray-100 shadow-2xl text-center relative fade-in">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-black transition-colors">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-[#D30000] transition-colors">
                 <i class="ph ph-x text-xl"></i>
             </button>
-            <div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
+            <div class="w-16 h-16 bg-[#D30000] text-white rounded-full flex items-center justify-center mx-auto mb-6">
                 <i class="ph ph-check text-3xl"></i>
             </div>
             <h3 class="text-2xl font-serif tracking-widest uppercase mb-4 text-gray-900">Order Confirmed</h3>
             <p id="modal-msg" class="text-gray-600 mb-8 font-light leading-relaxed"></p>
-            <button onclick="closeModal()" class="bg-black text-white uppercase tracking-widest text-xs font-semibold py-4 w-full hover:bg-gray-800 transition-colors">
+            <button onclick="closeModal()" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 w-full hover:bg-[#a00000] transition-colors">
                 Continue Shopping
             </button>
         </div>
@@ -284,10 +287,10 @@
             let gridHtml = PRODUCTS.map(p => {
                 const inCart = cart.find(item => item.id === p.id);
                 
-                // Dynamic styling: Solid black if in cart, transparent outline if not
+                // Dynamic styling: Solid red if in cart, transparent outline if not
                 const btnClass = inCart 
-                    ? "mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-black bg-black text-white transition-all duration-300"
-                    : "mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-gray-300 text-gray-700 hover:bg-black hover:text-white hover:border-black transition-all duration-300";
+                    ? "mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-[#D30000] bg-[#D30000] text-white transition-all duration-300"
+                    : "mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300";
                 
                 const btnText = inCart ? `In Cart (${inCart.quantity})` : "Add to Cart";
 
@@ -309,9 +312,10 @@
                 `;
             }).join('');
 
+            // Added Responsive grid for desktop: md:grid-cols-3 lg:grid-cols-4
             return `
-                <div class="max-w-5xl mx-auto px-4 py-12 fade-in">
-                    <div class="grid grid-cols-2 gap-x-6 gap-y-16 md:gap-x-12">
+                <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-16 md:gap-x-8">
                         ${gridHtml}
                     </div>
                 </div>
@@ -324,14 +328,14 @@
 
             const inCart = cart.find(item => item.id === p.id);
             const btnClass = inCart 
-                ? "bg-gray-800 text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 transition-colors duration-300 w-full mb-6"
-                : "bg-black text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 hover:bg-gray-800 transition-colors duration-300 w-full mb-6";
+                ? "bg-[#a00000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 transition-colors duration-300 w-full mb-6"
+                : "bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 hover:bg-[#a00000] transition-colors duration-300 w-full mb-6";
             
             const btnText = inCart ? `Add More (${inCart.quantity} In Cart)` : "Add to Cart";
 
             return `
                 <div class="max-w-5xl mx-auto px-4 py-12 fade-in">
-                    <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-black mb-12 transition-colors group">
+                    <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-12 transition-colors group">
                         <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
                         Back to Collection
                     </button>
@@ -347,7 +351,7 @@
                             <h2 class="text-3xl md:text-4xl font-serif uppercase tracking-widest mb-4 text-gray-900">${p.name}</h2>
                             <p class="text-2xl text-gray-600 mb-8 font-light">$${p.price.toFixed(2)}</p>
                             
-                            <div class="w-12 h-[1px] bg-black mb-8"></div>
+                            <div class="w-12 h-[1px] bg-[#D30000] mb-8"></div>
                             
                             <p class="text-gray-600 leading-relaxed font-light mb-12 text-lg">${p.description}</p>
                             
@@ -376,7 +380,7 @@
                         <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-16">Your Cart</h2>
                         <div class="text-center py-20 bg-gray-50 border border-gray-100">
                             <p class="text-gray-500 mb-6 font-light text-lg">Your selected items will appear here.</p>
-                            <button onclick="navigate('home')" class="text-black uppercase tracking-widest text-sm border-b border-black pb-1 hover:text-gray-600 hover:border-gray-600 transition-colors">
+                            <button onclick="navigate('home')" class="text-[#D30000] uppercase tracking-widest text-sm border-b border-[#D30000] pb-1 hover:text-[#a00000] hover:border-[#a00000] transition-colors">
                                 Continue Shopping
                             </button>
                         </div>
@@ -394,14 +398,14 @@
                             
                             <!-- Quantity Controls -->
                             <div class="flex items-center gap-3">
-                                <button onclick="updateQuantity(${item.id}, -1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-black hover:text-black transition-colors">-</button>
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-[#D30000] hover:text-[#D30000] transition-colors">-</button>
                                 <span class="text-sm font-medium w-4 text-center">${item.quantity}</span>
-                                <button onclick="updateQuantity(${item.id}, 1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-black hover:text-black transition-colors">+</button>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-[#D30000] hover:text-[#D30000] transition-colors">+</button>
                             </div>
                         </div>
                     </div>
                     <div class="flex flex-col items-end gap-4 md:gap-6">
-                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-black transition-colors" title="Remove item">
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-[#D30000] transition-colors" title="Remove item">
                             <i class="ph ph-trash text-lg"></i>
                         </button>
                         <p class="font-medium text-base md:text-lg">$${(item.price * item.quantity).toFixed(2)}</p>
@@ -430,7 +434,7 @@
                             Taxes and shipping calculated at checkout
                         </p>
                         
-                        <button onclick="proceedToCheckout()" class="bg-black text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-gray-800 transition-colors duration-300 w-full md:w-auto">
+                        <button onclick="proceedToCheckout()" class="bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-[#a00000] transition-colors duration-300 w-full md:w-auto">
                             Proceed to Checkout
                         </button>
                     </div>
@@ -453,15 +457,15 @@
                         <form id="checkout-form" class="space-y-5" onsubmit="event.preventDefault();">
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Full Name</label>
-                                <input type="text" id="customerName" required onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="Jane Doe">
+                                <input type="text" id="customerName" required onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="Jane Doe">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Email</label>
-                                <input type="email" id="email" required onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="jane@example.com">
+                                <input type="email" id="email" required onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="jane@example.com">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Shipping Address</label>
-                                <textarea id="address" required rows="3" onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-black transition-colors" placeholder="123 Luxury Lane..."></textarea>
+                                <textarea id="address" required rows="3" onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="123 Luxury Lane..."></textarea>
                             </div>
                             
                             <div class="pt-4 relative z-0">
@@ -470,9 +474,9 @@
                         </form>
                     </div>
 
-                    <div class="text-center">
-                        <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-black transition-colors duration-300 border-b border-transparent hover:border-black pb-1">
-                            Cancel & Return to Cart
+                    <div class="text-center mt-6">
+                        <button onclick="navigate('home')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Products Section
                         </button>
                     </div>
                 </div>
