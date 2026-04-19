@@ -215,6 +215,7 @@
                 price: "$" + getCartTotal().toFixed(2)
             };
 
+            // Connects precisely to the requested Live Render API endpoint
             fetch('https://my-store-backend-3cj5.onrender.com/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -223,7 +224,7 @@
         }
 
         function proceedToCheckout() {
-            saveCheckoutData(); // Sends finalized products to server immediately
+            saveCheckoutData(); // Sends finalized products to server immediately on button click
             navigate('checkout');
         }
 
