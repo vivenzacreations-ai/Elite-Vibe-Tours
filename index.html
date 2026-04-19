@@ -205,33 +205,22 @@
             }
         }
 
-        // --- BACKEND TRACKING ---
-        function saveCheckoutData() {
-            if (cart.length === 0) return;
-            
-            const customerName = document.getElementById('customerName')?.value || "";
-            const email = document.getElementById('email')?.value || "";
-            const address = document.getElementById('address')?.value || "";
-            
-            const productNames = cart.map(item => `${item.name} (x${item.quantity})`).join(', ');
-            const orderInfo = {
-                customerName: customerName,
-                email: email,
-                address: address,
-                productName: productNames || "Website Order", 
-                price: "$" + getCartTotal().toFixed(2)
-            };
+        // --- FORMSPREE INTEGRATION ---
+        function submitOrderToFormspree() {
+            const form = document.getElementById('checkout-form');
+            if (!form) return;
 
-            // Connects precisely to the requested Live Render API endpoint
-            fetch('https://my-store-backend-3cj5.onrender.com/api/checkout', {
+            // Submit using native FormData
+            fetch('https://formspree.io/f/xaqajroq', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderInfo)
-            }).catch(error => console.error("Database tracking failed:", error));
+                headers: { 
+                    'Accept': 'application/json'
+                },
+                body: new FormData(form)
+            }).catch(error => console.error("Formspree submission failed:", error));
         }
 
         function proceedToCheckout() {
-            saveCheckoutData(); // Sends finalized products to server immediately on button click
             navigate('checkout');
         }
 
@@ -455,6 +444,9 @@
         }
 
         function renderCheckout() {
+            const productNames = cart.map(item => `${item.name} (Qty: ${item.quantity})`).join(' | ');
+            const totalPaid = "$" + getCartTotal().toFixed(2);
+
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-10 text-gray-900">Secure Checkout</h2>
@@ -462,22 +454,26 @@
                     <div class="bg-gray-50 p-6 md:p-8 rounded-sm mb-8 border border-gray-100 shadow-sm">
                         <div class="flex justify-between mb-6 text-lg text-gray-800">
                             <span class="font-light tracking-wide">Total Amount</span>
-                            <span class="font-semibold">$${getCartTotal().toFixed(2)} USD</span>
+                            <span class="font-semibold">${totalPaid} USD</span>
                         </div>
                         <div class="w-full h-[1px] bg-gray-200 mb-8"></div>
                         
                         <form id="checkout-form" class="space-y-5" onsubmit="event.preventDefault();">
+                            <!-- Hidden inputs for Formspree to capture order details automatically -->
+                            <input type="hidden" name="Order Details" value="${productNames}">
+                            <input type="hidden" name="Total Paid" value="${totalPaid}">
+
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Full Name</label>
-                                <input type="text" id="customerName" required onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="Jane Doe">
+                                <input type="text" id="customerName" name="Full Name" required class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="Jane Doe">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Email</label>
-                                <input type="email" id="email" required onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="jane@example.com">
+                                <input type="email" id="email" name="Email" required class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="jane@example.com">
                             </div>
                             <div>
                                 <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Shipping Address</label>
-                                <textarea id="address" required rows="3" onblur="saveCheckoutData()" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="123 Luxury Lane..."></textarea>
+                                <textarea id="address" name="Shipping Address" required rows="3" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="123 Luxury Lane..."></textarea>
                             </div>
                             
                             <div class="pt-4 relative z-0">
@@ -515,8 +511,6 @@
                     return actions.resolve(); 
                 },
                 createOrder: function(data, actions) {
-                    saveCheckoutData(); // Ensure the absolute final typed data is sent right before payment processing
-
                     return actions.order.create({
                         purchase_units: [{
                             amount: { value: getCartTotal().toFixed(2) }
@@ -525,6 +519,10 @@
                 },
                 onApprove: function(data, actions) {
                     return actions.order.capture().then(function(details) {
+                        
+                        // Send details to Formspree silently right after payment is approved!
+                        submitOrderToFormspree();
+                        
                         cart = []; 
                         updateCartUI();
                         const buyerName = details.payer.name.given_name;
