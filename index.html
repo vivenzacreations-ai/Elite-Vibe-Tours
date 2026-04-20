@@ -287,65 +287,15 @@
         }
 
         // --- GLOBAL LOCATION & SEARCHABLE DROPDOWNS API ---
-        
-        // Reusable UI builder for searchable dropdowns
-        function setupSearchableInput(inputId, dropdownId, loaderId, dataList, onSelectCallback) {
-            const input = document.getElementById(inputId);
-            const dropdown = document.getElementById(dropdownId);
-            if(!input || !dropdown) return;
-
-            const renderList = (items) => {
-                dropdown.innerHTML = '';
-                if (items.length === 0) {
-                    dropdown.innerHTML = '<div class="p-3 text-xs text-gray-500">No results found</div>';
-                }
-                items.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'p-3 text-sm hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-0 text-gray-800';
-                    div.textContent = item.label;
-                    div.onclick = () => {
-                        input.value = item.label;
-                        input.dataset.value = item.value;
-                        dropdown.classList.add('hidden');
-                        if(onSelectCallback) onSelectCallback(item.value);
-                    };
-                    dropdown.appendChild(div);
-                });
-            };
-
-            input.onfocus = () => {
-                dropdown.classList.remove('hidden');
-                renderList(dataList);
-            };
-            input.oninput = (e) => {
-                dropdown.classList.remove('hidden');
-                const val = e.target.value.toLowerCase();
-                renderList(dataList.filter(d => d.label.toLowerCase().includes(val)));
-            };
-            
-            document.addEventListener('click', (e) => {
-                if(!input.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.classList.add('hidden');
-                }
-            });
-        }
-
         async function setupLocationAPI() {
-            const countryInput = document.getElementById('country-input');
-            const countryLoader = document.getElementById('country-loader');
-            const stateInput = document.getElementById('state-input');
-            const stateLoader = document.getElementById('state-loader');
-            const cityInput = document.getElementById('city-input');
-            const cityLoader = document.getElementById('city-loader');
-            const phoneInput = document.getElementById('phoneCode-input');
-            const phoneLoader = document.getElementById('phoneCode-loader');
+            const countrySelect = document.getElementById('country');
+            const stateSelect = document.getElementById('state');
+            const citySelect = document.getElementById('city');
+            const phoneCodeSelect = document.getElementById('phoneCode');
 
-            if(!countryInput) return;
+            if(!countrySelect) return;
 
             try {
-                countryLoader.classList.remove('hidden');
-                phoneLoader.classList.remove('hidden');
-
                 const [countriesRes, codesRes] = await Promise.all([
                     fetch('https://countriesnow.space/api/v0.1/countries'),
                     fetch('https://countriesnow.space/api/v0.1/countries/codes')
@@ -353,73 +303,84 @@
                 const countriesData = await countriesRes.json();
                 const codesData = await codesRes.json();
 
-                countryLoader.classList.add('hidden');
-                phoneLoader.classList.add('hidden');
+                countrySelect.innerHTML = '<option value="" disabled selected>Select Country</option>';
+                countriesData.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.country;
+                    opt.textContent = c.country;
+                    countrySelect.appendChild(opt);
+                });
 
-                // Map API data to label/value objects
-                const countryList = countriesData.data.map(c => ({ label: c.country, value: c.country }));
-                const codeList = codesData.data.map(c => ({ label: `${c.name} (${c.dial_code})`, value: c.dial_code }));
+                phoneCodeSelect.innerHTML = '<option value="" disabled selected>Code</option>';
+                codesData.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.dial_code;
+                    opt.textContent = `${c.name} (${c.dial_code})`;
+                    phoneCodeSelect.appendChild(opt);
+                });
 
-                // Default Phone Code to US
-                if(phoneInput) {
-                    phoneInput.value = "United States (+1)";
-                    phoneInput.dataset.value = "+1";
-                }
+                // Default to US
+                const defaultCode = codesData.data.find(c => c.code === 'US');
+                if (defaultCode) phoneCodeSelect.value = defaultCode.dial_code;
 
-                setupSearchableInput('phoneCode-input', 'phoneCode-dropdown', 'phoneCode-loader', codeList);
-
-                // Setup Country Selection
-                setupSearchableInput('country-input', 'country-dropdown', 'country-loader', countryList, async (selectedCountry) => {
-                    // Reset Sub-levels
-                    stateInput.value = '';
-                    stateInput.dataset.value = '';
-                    cityInput.value = '';
-                    cityInput.dataset.value = '';
+                countrySelect.addEventListener('change', async (e) => {
+                    const country = e.target.value;
+                    stateSelect.innerHTML = '<option value="">Loading states...</option>';
+                    citySelect.innerHTML = '<option value="" disabled selected>Select City</option>'; 
                     
-                    stateLoader.classList.remove('hidden');
                     try {
                         const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
-                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country: selectedCountry})
+                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country})
                         });
                         const data = await res.json();
-                        stateLoader.classList.add('hidden');
                         
-                        const stateList = data.data?.states?.map(s => ({ label: s.name, value: s.name })) || [];
-                        if (stateList.length === 0) stateInput.placeholder = "N/A (No states)";
-                        else stateInput.placeholder = "Search State...";
-                        
-                        // Setup State Selection
-                        setupSearchableInput('state-input', 'state-dropdown', 'state-loader', stateList, async (selectedState) => {
-                            cityInput.value = '';
-                            cityInput.dataset.value = '';
-                            cityLoader.classList.remove('hidden');
-                            
-                            try {
-                                const cRes = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
-                                    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country: selectedCountry, state: selectedState})
-                                });
-                                const cData = await cRes.json();
-                                cityLoader.classList.add('hidden');
-                                
-                                const cityList = cData.data?.map(c => ({ label: c, value: c })) || [];
-                                if (cityList.length === 0) cityInput.placeholder = "N/A (No cities)";
-                                else cityInput.placeholder = "Search City...";
-                                
-                                setupSearchableInput('city-input', 'city-dropdown', 'city-loader', cityList);
-                                
-                            } catch (e) {
-                                cityLoader.classList.add('hidden');
-                            }
+                        stateSelect.innerHTML = '<option value="" disabled selected>Select State</option>';
+                        if(data.data && data.data.states && data.data.states.length > 0) {
+                            data.data.states.forEach(s => {
+                                const opt = document.createElement('option');
+                                opt.value = s.name; opt.textContent = s.name;
+                                stateSelect.appendChild(opt);
+                            });
+                        } else {
+                            stateSelect.innerHTML = '<option value="N/A">N/A (No states available)</option>';
+                        }
+                    } catch (err) {
+                        stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
+                    }
+                });
+
+                stateSelect.addEventListener('change', async (e) => {
+                    const state = e.target.value;
+                    const country = countrySelect.value;
+                    citySelect.innerHTML = '<option value="">Loading cities...</option>';
+                    
+                    try {
+                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country, state})
                         });
-                    } catch (e) {
-                        stateLoader.classList.add('hidden');
+                        const data = await res.json();
+                        
+                        citySelect.innerHTML = '<option value="" disabled selected>Select City</option>';
+                        if(data.data && data.data.length > 0) {
+                            data.data.forEach(c => {
+                                const opt = document.createElement('option');
+                                opt.value = c; opt.textContent = c;
+                                citySelect.appendChild(opt);
+                            });
+                        } else {
+                            citySelect.innerHTML = '<option value="N/A">N/A (No cities available)</option>';
+                        }
+                    } catch (err) {
+                        citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
                     }
                 });
 
             } catch (e) {
                 console.warn("Location API fallback active.");
-                if(countryLoader) countryLoader.classList.add('hidden');
-                if(phoneLoader) phoneLoader.classList.add('hidden');
+                countrySelect.outerHTML = '<input type="text" id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Country">';
+                stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
+                citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
+                phoneCodeSelect.outerHTML = '<input type="text" id="phoneCode" required class="w-24 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900" placeholder="+1">';
             }
         }
 
@@ -668,19 +629,30 @@
                         ${cartHtml}
                     </div>
                     
-                    <div class="flex flex-col items-end">
-                        <div class="flex justify-between w-full md:w-1/2 mb-2 text-gray-500 text-sm">
-                            <span class="uppercase tracking-widest">Subtotal</span>
+                    <div class="flex flex-col items-end w-full md:w-1/2 ml-auto mb-8">
+                        <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                            <span class="tracking-wide">Subtotal</span>
+                            <span class="line-through">$${getCartOriginalTotal().toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-green-600 text-sm font-medium">
+                            <span class="tracking-wide">Savings</span>
+                            <span>-$${(getCartOriginalTotal() - getCartTotal()).toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                            <span class="tracking-wide">Shipping</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-4 text-gray-500 text-sm border-b border-gray-100 pb-4">
+                            <span class="tracking-wide">Tax</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div class="flex justify-between w-full text-gray-900 text-xl font-serif">
+                            <span class="uppercase tracking-widest">Total</span>
                             <span>$${getCartTotal().toFixed(2)}</span>
                         </div>
-                        <div class="flex justify-between w-full md:w-1/2 mb-8 text-gray-900 text-xl font-serif">
-                            <span class="uppercase tracking-widest">Estimated Total</span>
-                            <span>$${getCartTotal().toFixed(2)}</span>
-                        </div>
-                        <p class="text-xs text-gray-400 mb-8 tracking-widest uppercase text-right w-full">
-                            Taxes and shipping calculated at checkout
-                        </p>
+                    </div>
                         
+                    <div class="flex justify-end">
                         <button onclick="proceedToCheckout()" class="bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-[#a00000] transition-colors duration-300 w-full md:w-auto">
                             Proceed to Checkout
                         </button>
@@ -691,20 +663,40 @@
 
         function renderCheckout() {
             const totalPaid = "$" + getCartTotal().toFixed(2);
+            const originalTotal = "$" + getCartOriginalTotal().toFixed(2);
+            const savings = "$" + (getCartOriginalTotal() - getCartTotal()).toFixed(2);
 
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     
                     <div class="bg-gray-50 p-6 md:p-10 rounded-sm mb-8 border border-gray-100 shadow-sm relative overflow-visible">
-                        <div class="flex justify-between mb-8 text-lg text-gray-800">
-                            <span class="font-light tracking-wide">Total Amount</span>
-                            <span class="font-semibold">${totalPaid} USD</span>
+                        
+                        <div class="flex flex-col w-full mb-8">
+                            <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                                <span class="tracking-wide">Subtotal</span>
+                                <span class="line-through">${originalTotal}</span>
+                            </div>
+                            <div class="flex justify-between w-full mb-2 text-green-600 text-sm font-medium">
+                                <span class="tracking-wide">Savings</span>
+                                <span>-${savings}</span>
+                            </div>
+                            <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                                <span class="tracking-wide">Shipping</span>
+                                <span>$0.00</span>
+                            </div>
+                            <div class="flex justify-between w-full mb-4 text-gray-500 text-sm border-b border-gray-200 pb-4">
+                                <span class="tracking-wide">Tax</span>
+                                <span>$0.00</span>
+                            </div>
+                            <div class="flex justify-between w-full text-gray-900 text-xl font-serif">
+                                <span class="uppercase tracking-widest">Total Amount</span>
+                                <span>${totalPaid} USD</span>
+                            </div>
                         </div>
-                        <div class="w-full h-[1px] bg-gray-200 mb-10"></div>
                         
                         <!-- STEP 1: Delivery Details -->
                         <div id="delivery-step" class="transition-opacity duration-300">
-                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Delivery Details</h2>
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900 border-t border-gray-200 pt-8">Delivery Details</h2>
                             
                             <form id="delivery-form" class="space-y-8" onsubmit="handleDeliverySubmit(event)">
                                 <div>
@@ -719,13 +711,10 @@
                                     </div>
                                     <div>
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number *</label>
-                                        <div class="flex relative">
-                                            <!-- Custom Searchable Dropdown for Phone Code -->
-                                            <div class="relative w-32 mr-2">
-                                                <input type="text" id="phoneCode-input" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-text pr-4" placeholder="Code">
-                                                <div id="phoneCode-loader" class="absolute right-0 top-2 hidden"><i class="ph ph-spinner animate-spin text-[#D30000]"></i></div>
-                                                <div id="phoneCode-dropdown" class="absolute w-64 bg-white border border-gray-100 shadow-xl max-h-48 overflow-y-auto hidden z-50 top-full mt-1 left-0"></div>
-                                            </div>
+                                        <div class="flex">
+                                            <select id="phoneCode" required class="w-28 md:w-32 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer mr-2 text-sm overflow-hidden">
+                                                <option value="" disabled selected>Code</option>
+                                            </select>
                                             <input type="tel" id="phone" required autocomplete="off" class="flex-1 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="(555) 000-0000">
                                         </div>
                                     </div>
@@ -737,34 +726,25 @@
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-8">
-                                    <!-- Searchable Country -->
-                                    <div class="col-span-2 md:col-span-1 relative">
+                                    <div class="col-span-2 md:col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Country *</label>
-                                        <div class="relative">
-                                            <input type="text" id="country-input" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300 pr-6" placeholder="Search Country...">
-                                            <div id="country-loader" class="absolute right-0 top-2 hidden"><i class="ph ph-spinner animate-spin text-[#D30000]"></i></div>
-                                            <div id="country-dropdown" class="absolute w-full bg-white border border-gray-100 shadow-xl max-h-48 overflow-y-auto hidden z-50 top-full mt-1"></div>
-                                        </div>
+                                        <select id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Loading...</option>
+                                        </select>
                                     </div>
                                     
-                                    <!-- Searchable State -->
-                                    <div class="col-span-2 md:col-span-1 relative">
+                                    <div class="col-span-2 md:col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">State / Province *</label>
-                                        <div class="relative">
-                                            <input type="text" id="state-input" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300 pr-6" placeholder="Select Country First">
-                                            <div id="state-loader" class="absolute right-0 top-2 hidden"><i class="ph ph-spinner animate-spin text-[#D30000]"></i></div>
-                                            <div id="state-dropdown" class="absolute w-full bg-white border border-gray-100 shadow-xl max-h-48 overflow-y-auto hidden z-50 top-full mt-1"></div>
-                                        </div>
+                                        <select id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Select Country First</option>
+                                        </select>
                                     </div>
                                     
-                                    <!-- Searchable City -->
-                                    <div class="col-span-1 relative">
+                                    <div class="col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">City *</label>
-                                        <div class="relative">
-                                            <input type="text" id="city-input" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300 pr-6" placeholder="Select State First">
-                                            <div id="city-loader" class="absolute right-0 top-2 hidden"><i class="ph ph-spinner animate-spin text-[#D30000]"></i></div>
-                                            <div id="city-dropdown" class="absolute w-full bg-white border border-gray-100 shadow-xl max-h-48 overflow-y-auto hidden z-50 top-full mt-1"></div>
-                                        </div>
+                                        <select id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Select State First</option>
+                                        </select>
                                     </div>
 
                                     <div class="col-span-1">
@@ -878,45 +858,28 @@
                     document.getElementById('paypal-ui-container').classList.remove('hidden');
                     document.getElementById('payment-waiting').classList.add('hidden');
                 },
-                createOrder: async function(data, actions) {
+                createOrder: function(data, actions) {
                     const productNames = cart.map(item => `${item.name} (Qty: ${item.quantity})`).join(', ');
-                    
-                    // Capture dataset values from custom searchable dropdowns, fallback to inputs
-                    const cInput = document.getElementById('country-input');
-                    const sInput = document.getElementById('state-input');
-                    const cityIn = document.getElementById('city-input');
-                    const codeIn = document.getElementById('phoneCode-input');
 
                     const orderInfo = {
                         customerName: document.getElementById('customerName').value,
                         email: document.getElementById('email').value,
-                        phone: (codeIn?.dataset?.value || "") + " " + document.getElementById('phone').value,
+                        phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
                         address: document.getElementById('address').value,
-                        city: cityIn?.value || "",
-                        state: sInput?.value || "",
+                        city: document.getElementById('city').value,
+                        state: document.getElementById('state').value,
                         zip: document.getElementById('zip').value,
-                        country: cInput?.value || "",
+                        country: document.getElementById('country').value,
                         productName: productNames || "Website Order", 
                         price: "$" + getCartTotal().toFixed(2)
                     };
 
-                    try {
-                        const response = await fetch('https://my-store-backend-mauve.vercel.app/api/checkout', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(orderInfo)
-                        });
-
-                        if (!response.ok) throw new Error("Server rejected data connection.");
-                    } catch (error) {
-                        console.error("Vercel Database connection failed:", error);
-                        showToast("Failed to connect to secure server. Please check your connection.");
-                        
-                        // Re-enable UI on fail
-                        document.getElementById('paypal-ui-container').classList.remove('hidden');
-                        document.getElementById('payment-waiting').classList.add('hidden');
-                        throw error; 
-                    }
+                    // Send data silently in background WITHOUT awaiting, to prevent PayPal timeout blocks
+                    fetch('https://my-store-backend-mauve.vercel.app/api/checkout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(orderInfo)
+                    }).catch(error => console.error("Vercel Database tracking failed:", error));
 
                     return actions.order.create({
                         purchase_units: [{
