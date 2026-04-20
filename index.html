@@ -62,7 +62,7 @@
                 <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
             </h1>
             
-            <!-- Clean Cart Icon (No square background, animates fill on click) -->
+            <!-- Clean Cart Icon -->
             <div class="flex-shrink-0">
                 <button id="cart-icon-btn" onclick="handleCartClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 transition-colors">
                     <i id="cart-icon" class="ph ph-shopping-cart text-2xl transition-colors duration-200"></i>
@@ -84,7 +84,7 @@
         <span id="toast-msg" class="font-light tracking-wide text-sm"></span>
     </div>
 
-    <!-- Solid White Sticky Cart Bar (Full Width, No Rounding, No Glassmorphism) -->
+    <!-- Solid White Sticky Cart Bar -->
     <div id="cart-pill" class="fixed bottom-0 left-0 w-full bg-white text-gray-900 border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] px-6 md:px-12 py-4 z-40 flex items-center justify-between transition-transform duration-500 translate-y-full">
         <div class="flex items-center gap-3">
             <i class="ph ph-shopping-bag text-2xl text-[#D30000]"></i>
@@ -113,16 +113,16 @@
     </div>
 
     <script>
-        // --- MOCK PRODUCT DATA (Enhanced with Badges & Urgency/FOMO Stats) ---
+        // --- MOCK PRODUCT DATA ---
         const PRODUCTS = [
-            { id: 1, name: "Silk Crepe Blouse", price: 145.00, badge: "TRENDING", sold: 940, left: 2, description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening." },
-            { id: 2, name: "Wide-Leg Trousers", price: 180.00, badge: "HOT", sold: 1250, left: 4, description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride." },
-            { id: 3, name: "Cashmere Wrap Coat", price: 395.00, badge: null, sold: 410, left: 3, description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication." },
-            { id: 4, name: "Leather Crossbody", price: 210.00, badge: null, sold: 865, left: 1, description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap." },
-            { id: 5, name: "Linen Midi Dress", price: 165.00, badge: null, sold: 620, left: 5, description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt." },
-            { id: 6, name: "Gold Hoop Earrings", price: 85.00, badge: null, sold: 1800, left: 6, description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear." },
-            { id: 7, name: "Suede Pointed Mules", price: 155.00, badge: null, sold: 530, left: 2, description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort." },
-            { id: 8, name: "Ribbed Knit Sweater", price: 125.00, badge: null, sold: 790, left: 3, description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness." }
+            { id: 1, name: "Silk Crepe Blouse", price: 145.00, originalPrice: 180.00, description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening." },
+            { id: 2, name: "Wide-Leg Trousers", price: 180.00, originalPrice: 220.00, description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride." },
+            { id: 3, name: "Cashmere Wrap Coat", price: 395.00, originalPrice: 450.00, description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication." },
+            { id: 4, name: "Leather Crossbody", price: 210.00, originalPrice: 260.00, description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap." },
+            { id: 5, name: "Linen Midi Dress", price: 165.00, originalPrice: 195.00, description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt." },
+            { id: 6, name: "Gold Hoop Earrings", price: 85.00, originalPrice: 110.00, description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear." },
+            { id: 7, name: "Suede Pointed Mules", price: 155.00, originalPrice: 190.00, description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort." },
+            { id: 8, name: "Ribbed Knit Sweater", price: 125.00, originalPrice: 150.00, description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness." }
         ];
 
         // --- STATE ---
@@ -145,7 +145,6 @@
 
         function handleCartClick() {
             const icon = document.getElementById('cart-icon');
-            // Animate fill logic
             icon.classList.remove('ph');
             icon.classList.add('ph-fill', 'text-[#D30000]');
             setTimeout(() => {
@@ -168,7 +167,7 @@
             }
             
             updateCartUI();
-            updateAllButtons(); // Updates DOM dynamically without fading page
+            updateAllButtons();
         }
 
         function removeFromCart(productId) {
@@ -191,39 +190,47 @@
             }
         }
 
-        // Dynamically updates all add-to-cart buttons on the page to prevent re-render animation
         function updateAllButtons() {
             if (currentView === 'cart') {
-                render(); // Cart view requires full list re-render
+                render(); 
                 return;
             }
             
-            PRODUCTS.forEach(p => {
-                const btnContainer = document.getElementById(`btn-container-${p.id}`);
-                if (btnContainer) {
-                    btnContainer.innerHTML = getButtonHTML(p);
+            if (currentView === 'product') {
+                const btnContainer = document.getElementById(`btn-container-${selectedProductId}`);
+                const p = PRODUCTS.find(item => item.id === selectedProductId);
+                if (btnContainer && p) {
+                    btnContainer.innerHTML = getButtonHTML(p, 'large');
                 }
-            });
+            } else if (currentView === 'home') {
+                PRODUCTS.forEach(p => {
+                    const btnContainer = document.getElementById(`btn-container-${p.id}`);
+                    if (btnContainer) {
+                        btnContainer.innerHTML = getButtonHTML(p, 'normal');
+                    }
+                });
+            }
         }
 
-        function getButtonHTML(p) {
+        function getButtonHTML(p, size = 'normal') {
             const inCart = cart.find(item => item.id === p.id);
+            const heightClass = size === 'large' ? 'h-[54px] text-sm' : 'h-[42px] text-xs';
+            
             if (inCart) {
-                // Completely Red Solid Button state with Minus and Plus controls
                 return `
-                    <div class="mt-4 w-full flex items-center justify-between border border-[#D30000] bg-[#D30000] text-white transition-all duration-300 shadow-md h-[42px]">
-                        <button onclick="updateQuantity(${p.id}, -1, event)" class="w-12 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
-                            <i class="ph ph-minus font-bold text-sm"></i>
+                    <div class="mt-4 w-full flex items-center justify-between border border-[#D30000] bg-[#D30000] text-white transition-all duration-300 shadow-md ${heightClass}">
+                        <button onclick="updateQuantity(${p.id}, -1, event)" class="w-14 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
+                            <i class="ph ph-minus font-bold"></i>
                         </button>
-                        <span class="text-xs font-semibold tracking-widest select-none">${inCart.quantity} IN CART</span>
-                        <button onclick="updateQuantity(${p.id}, 1, event)" class="w-12 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
-                            <i class="ph ph-plus font-bold text-sm"></i>
+                        <span class="font-semibold tracking-widest select-none">${inCart.quantity} IN CART</span>
+                        <button onclick="updateQuantity(${p.id}, 1, event)" class="w-14 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
+                            <i class="ph ph-plus font-bold"></i>
                         </button>
                     </div>
                 `;
             } else {
                 return `
-                    <button onclick="addToCart(${p.id}, event)" class="mt-4 w-full h-[42px] uppercase tracking-widest text-xs font-semibold border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300">
+                    <button onclick="addToCart(${p.id}, event)" class="mt-4 w-full ${heightClass} uppercase tracking-widest font-semibold border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300">
                         Add to Cart
                     </button>
                 `;
@@ -242,7 +249,6 @@
             const count = getCartCount();
             const total = getCartTotal();
             
-            // Update Header Badge
             const badge = document.getElementById('cart-badge');
             if (count > 0) {
                 badge.textContent = count;
@@ -251,12 +257,10 @@
                 badge.classList.add('hidden');
             }
 
-            // Update Solid Sticky Bar
             const pill = document.getElementById('cart-pill');
             const pillText = document.getElementById('cart-pill-text');
             
             if (count > 0 && currentView !== 'cart' && currentView !== 'checkout') {
-                // Minimize/hide if viewing a specific product on a large desktop monitor
                 if (currentView === 'product' && window.innerWidth >= 1024) {
                     pill.classList.add('translate-y-full');
                 } else {
@@ -272,6 +276,32 @@
             navigate('checkout');
         }
 
+        // --- SLIDER LOGIC ---
+        function scrollSlider(direction) {
+            const slider = document.getElementById('product-slider');
+            const width = slider.clientWidth;
+            const maxIndex = 2; // 3 images (0, 1, 2)
+            
+            let currentIndex = Math.round(slider.scrollLeft / width);
+            let nextIndex = currentIndex + direction;
+            
+            // Loop functionality
+            if (nextIndex > maxIndex) nextIndex = 0;
+            if (nextIndex < 0) nextIndex = maxIndex;
+            
+            slider.scrollTo({ left: nextIndex * width, behavior: 'smooth' });
+        }
+
+        function updateSliderDots(slider) {
+            const width = slider.clientWidth;
+            if (width === 0) return;
+            const index = Math.round(slider.scrollLeft / width);
+            document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+                dot.classList.toggle('bg-[#D30000]', i === index);
+                dot.classList.toggle('bg-gray-300', i !== index);
+            });
+        }
+
         // --- GLOBAL LOCATION API INTEGRATION ---
         async function setupLocationAPI() {
             const countrySelect = document.getElementById('country');
@@ -282,7 +312,6 @@
             if(!countrySelect) return;
 
             try {
-                // Fetch Countries & Phone Codes concurrently
                 const [countriesRes, codesRes] = await Promise.all([
                     fetch('https://countriesnow.space/api/v0.1/countries'),
                     fetch('https://countriesnow.space/api/v0.1/countries/codes')
@@ -290,7 +319,6 @@
                 const countriesData = await countriesRes.json();
                 const codesData = await codesRes.json();
 
-                // Populate Countries
                 countrySelect.innerHTML = '<option value="" disabled selected>Select Country</option>';
                 countriesData.data.forEach(c => {
                     const opt = document.createElement('option');
@@ -299,7 +327,6 @@
                     countrySelect.appendChild(opt);
                 });
 
-                // Populate Phone Dial Codes
                 phoneCodeSelect.innerHTML = '<option value="" disabled selected>Code</option>';
                 codesData.data.forEach(c => {
                     const opt = document.createElement('option');
@@ -308,11 +335,10 @@
                     phoneCodeSelect.appendChild(opt);
                 });
 
-                // Listen for Country Change -> Fetch States
                 countrySelect.addEventListener('change', async (e) => {
                     const country = e.target.value;
                     stateSelect.innerHTML = '<option value="">Loading states...</option>';
-                    citySelect.innerHTML = '<option value="" disabled selected>Select City</option>'; // reset city
+                    citySelect.innerHTML = '<option value="" disabled selected>Select City</option>'; 
                     
                     try {
                         const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
@@ -335,7 +361,6 @@
                     }
                 });
 
-                // Listen for State Change -> Fetch Cities
                 stateSelect.addEventListener('change', async (e) => {
                     const state = e.target.value;
                     const country = countrySelect.value;
@@ -363,8 +388,7 @@
                 });
 
             } catch (e) {
-                console.warn("Location API blocked or failed, using ultra-reliable text fallback.");
-                // Graceful degradation: Turn selects into inputs so user can always checkout
+                console.warn("Location API blocked or failed, using text fallback.");
                 countrySelect.outerHTML = '<input type="text" id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Country">';
                 stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
                 citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
@@ -381,16 +405,30 @@
                 return;
             }
 
-            // Animate Button leftwards and fill it entirely
             const btn = document.getElementById('next-btn');
             btn.classList.add('-translate-x-12', 'bg-[#D30000]', 'scale-105');
             btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
             
             setTimeout(() => {
                 document.getElementById('delivery-step').classList.add('hidden');
+                document.getElementById('delivery-back').classList.add('hidden');
+                
                 document.getElementById('payment-step').classList.remove('hidden');
+                document.getElementById('payment-back').classList.remove('hidden');
                 initPayPal();
             }, 700);
+        }
+
+        function goBackToDelivery() {
+            document.getElementById('payment-step').classList.add('hidden');
+            document.getElementById('payment-back').classList.add('hidden');
+            
+            document.getElementById('delivery-step').classList.remove('hidden');
+            document.getElementById('delivery-back').classList.remove('hidden');
+            
+            const btn = document.getElementById('next-btn');
+            btn.classList.remove('-translate-x-12', 'bg-[#D30000]', 'scale-105');
+            btn.innerHTML = `Next <i class="ph ph-arrow-right ml-2 text-lg"></i>`;
         }
 
         // --- UI UTILITIES ---
@@ -428,13 +466,6 @@
             }, 300);
         }
 
-        function updateSliderIndicator(index) {
-            document.querySelectorAll('.slider-dot').forEach((dot, i) => {
-                dot.classList.toggle('bg-[#D30000]', i === index);
-                dot.classList.toggle('bg-gray-300', i !== index);
-            });
-        }
-
         // --- RENDERING ---
         function render() {
             const content = document.getElementById('app-content');
@@ -448,41 +479,39 @@
                 content.innerHTML = renderCart();
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
-                setupLocationAPI(); // Trigger API loading immediately when view is injected
+                setupLocationAPI(); 
             }
         }
 
         function renderHome() {
+            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-[10px] md:text-xs"></i>').join('');
+            
             let gridHtml = PRODUCTS.map(p => {
                 return `
                     <div class="group cursor-pointer flex flex-col relative" onclick="navigate('product', ${p.id})">
-                        
-                        <!-- Badges -->
-                        ${p.badge ? `<div class="absolute top-3 left-3 bg-[#D30000] text-white text-[9px] font-bold tracking-widest px-2 py-1 uppercase z-10 shadow-sm">${p.badge}</div>` : ''}
-                        
-                        <div class="aspect-[4/5] bg-[#F7F7F7] w-full mb-6 overflow-hidden flex items-center justify-center text-gray-300 transition-colors duration-500 group-hover:bg-[#EFEFEF]">
+                        <div class="aspect-[4/5] bg-[#F7F7F7] w-full mb-4 overflow-hidden flex items-center justify-center text-gray-300 transition-colors duration-500 group-hover:bg-[#EFEFEF]">
                             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-light tracking-widest text-xs uppercase text-gray-500">
                                 View Details
                             </span>
                         </div>
                         
                         <div class="flex flex-col items-center text-center flex-1">
-                            <h3 class="text-sm md:text-base tracking-wider uppercase text-gray-900 mb-2 font-medium">${p.name}</h3>
-                            <p class="text-gray-500 text-sm mb-4 font-light">$${p.price.toFixed(2)}</p>
+                            <h3 class="text-sm md:text-base tracking-wider uppercase text-gray-900 mb-1 font-medium">${p.name}</h3>
+                            <div class="flex justify-center text-[#D30000] mb-2 gap-[1px]">
+                                ${starsHTML}
+                            </div>
+                            <p class="text-gray-900 text-sm mb-4 font-medium">
+                                <span class="line-through text-gray-400 font-light mr-2">$${p.originalPrice.toFixed(2)}</span>
+                                $${p.price.toFixed(2)}
+                            </p>
                             
-                            <!-- FOMO, Urgency & Free Shipping cluster -->
                             <div class="w-full mt-auto flex flex-col items-center" onclick="event.stopPropagation()">
-                                <div class="flex items-center justify-center gap-3 mb-2">
-                                    <span class="text-[9px] font-bold tracking-widest text-[#D30000] uppercase"><i class="ph ph-fire mr-1 text-sm align-text-bottom"></i>${p.sold}+ SOLD</span>
-                                    <span class="text-[9px] font-bold tracking-widest text-orange-500 uppercase"><i class="ph ph-clock mr-1 text-sm align-text-bottom"></i>ONLY ${p.left} LEFT</span>
-                                </div>
                                 <p class="text-[9px] uppercase tracking-widest font-bold text-green-600 mb-1">FREE SHIPPING</p>
                                 
                                 <div id="btn-container-${p.id}" class="w-full">
-                                    ${getButtonHTML(p)}
+                                    ${getButtonHTML(p, 'normal')}
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 `;
@@ -500,6 +529,8 @@
         function renderProduct() {
             const p = PRODUCTS.find(item => item.id === selectedProductId);
             if (!p) return '';
+            
+            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-sm md:text-base"></i>').join('');
 
             return `
                 <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
@@ -512,32 +543,44 @@
                         
                         <!-- Premium CSS Slider -->
                         <div class="flex-1 w-full relative group">
-                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm">
-                                <div class="min-w-full aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center flex items-center justify-center relative">
+                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm" onscroll="updateSliderDots(this)">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center flex items-center justify-center relative">
                                    <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 1</span>
                                 </div>
-                                <div class="min-w-full aspect-[4/5] md:aspect-[3/4] bg-[#EFEFEF] snap-center flex items-center justify-center relative">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#EFEFEF] snap-center flex items-center justify-center relative">
                                    <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 2</span>
                                 </div>
-                                <div class="min-w-full aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center flex items-center justify-center relative">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center flex items-center justify-center relative">
                                    <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 3</span>
                                 </div>
                             </div>
                             
                             <!-- Slider Controls -->
-                            <button onclick="document.getElementById('product-slider').scrollBy({left: -window.innerWidth, behavior: 'smooth'})" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                            <button onclick="scrollSlider(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10">
                                 <i class="ph ph-caret-left text-xl"></i>
                             </button>
-                            <button onclick="document.getElementById('product-slider').scrollBy({left: window.innerWidth, behavior: 'smooth'})" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                            <button onclick="scrollSlider(1)" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10">
                                 <i class="ph ph-caret-right text-xl"></i>
                             </button>
                             
-                            <p class="text-center text-[10px] uppercase tracking-widest text-gray-400 mt-4"><i class="ph ph-arrows-out-line-horizontal align-middle"></i> Swipe to view more</p>
+                            <!-- Pagination Dots -->
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                <div class="slider-dot w-2 h-2 rounded-full bg-[#D30000] transition-colors"></div>
+                                <div class="slider-dot w-2 h-2 rounded-full bg-gray-300 transition-colors"></div>
+                                <div class="slider-dot w-2 h-2 rounded-full bg-gray-300 transition-colors"></div>
+                            </div>
                         </div>
                         
                         <div class="flex-1 flex flex-col py-8 lg:sticky lg:top-32 h-fit">
-                            <h2 class="text-3xl md:text-4xl font-serif uppercase tracking-widest mb-4 text-gray-900">${p.name}</h2>
-                            <p class="text-2xl text-gray-600 mb-8 font-light">$${p.price.toFixed(2)}</p>
+                            <h2 class="text-3xl md:text-4xl font-serif uppercase tracking-widest mb-3 text-gray-900">${p.name}</h2>
+                            <div class="flex items-center text-[#D30000] mb-4 gap-[2px]">
+                                ${starsHTML}
+                                <span class="text-gray-400 text-xs ml-2 uppercase tracking-widest">Reviews</span>
+                            </div>
+                            <p class="text-2xl text-gray-900 mb-8 font-medium">
+                                <span class="line-through text-gray-400 font-light mr-3 text-xl">$${p.originalPrice.toFixed(2)}</span>
+                                $${p.price.toFixed(2)}
+                            </p>
                             
                             <div class="w-12 h-[1px] bg-[#D30000] mb-8"></div>
                             
@@ -545,7 +588,7 @@
                             
                             <p class="text-[10px] uppercase tracking-widest font-bold text-green-600 mb-1">FREE WORLDWIDE SHIPPING</p>
                             <div id="btn-container-${p.id}" class="w-full mb-6">
-                                ${getButtonHTML(p)}
+                                ${getButtonHTML(p, 'large')}
                             </div>
                             
                             <div class="border-t border-gray-100 pt-6 mt-6">
@@ -730,9 +773,15 @@
 
                     </div>
 
-                    <div class="text-center mt-6">
+                    <div id="delivery-back" class="text-center mt-6">
                         <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
                             <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Cart
+                        </button>
+                    </div>
+                    
+                    <div id="payment-back" class="text-center mt-6 hidden">
+                        <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
                         </button>
                     </div>
                 </div>
