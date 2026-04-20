@@ -12,8 +12,6 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <!-- PayPal JS SDK (Using Client ID) -->
-    <!-- Note: Your Secret Key (EI76kB5DyelxmJe2eTC5ddsV5l4aUyd7Ge7p6FgzmhEHuXwGXGPJHoawsLV679qaVU-T0eIL-sG29M8D) 
-         should NEVER be put in this frontend file for security reasons. The JS SDK only requires the Client-ID to process payments. -->
     <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
     <style>
@@ -39,6 +37,9 @@
         }
 
         /* Hide scrollbar for cleaner look */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
@@ -50,7 +51,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-[#f8d7d7] relative">
+<body class="min-h-screen flex flex-col selection:bg-[#f8d7d7] relative overflow-x-hidden">
 
     <!-- Header -->
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
@@ -112,16 +113,16 @@
     </div>
 
     <script>
-        // --- MOCK PRODUCT DATA ---
+        // --- MOCK PRODUCT DATA (Enhanced with Badges & Urgency/FOMO Stats) ---
         const PRODUCTS = [
-            { id: 1, name: "Silk Crepe Blouse", price: 145.00, description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening." },
-            { id: 2, name: "Wide-Leg Trousers", price: 180.00, description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride." },
-            { id: 3, name: "Cashmere Wrap Coat", price: 395.00, description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication." },
-            { id: 4, name: "Leather Crossbody", price: 210.00, description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap." },
-            { id: 5, name: "Linen Midi Dress", price: 165.00, description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt." },
-            { id: 6, name: "Gold Hoop Earrings", price: 85.00, description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear." },
-            { id: 7, name: "Suede Pointed Mules", price: 155.00, description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort." },
-            { id: 8, name: "Ribbed Knit Sweater", price: 125.00, description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness." }
+            { id: 1, name: "Silk Crepe Blouse", price: 145.00, badge: "TRENDING", sold: 940, left: 2, description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening." },
+            { id: 2, name: "Wide-Leg Trousers", price: 180.00, badge: "HOT", sold: 1250, left: 4, description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride." },
+            { id: 3, name: "Cashmere Wrap Coat", price: 395.00, badge: null, sold: 410, left: 3, description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication." },
+            { id: 4, name: "Leather Crossbody", price: 210.00, badge: null, sold: 865, left: 1, description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap." },
+            { id: 5, name: "Linen Midi Dress", price: 165.00, badge: null, sold: 620, left: 5, description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt." },
+            { id: 6, name: "Gold Hoop Earrings", price: 85.00, badge: null, sold: 1800, left: 6, description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear." },
+            { id: 7, name: "Suede Pointed Mules", price: 155.00, badge: null, sold: 530, left: 2, description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort." },
+            { id: 8, name: "Ribbed Knit Sweater", price: 125.00, badge: null, sold: 790, left: 3, description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness." }
         ];
 
         // --- STATE ---
@@ -208,20 +209,21 @@
         function getButtonHTML(p) {
             const inCart = cart.find(item => item.id === p.id);
             if (inCart) {
+                // Completely Red Solid Button state with Minus and Plus controls
                 return `
-                    <div class="mt-auto w-full flex items-center justify-between border border-[#D30000] bg-white transition-all duration-300">
-                        <button onclick="updateQuantity(${p.id}, -1, event)" class="w-12 py-3 text-[#D30000] hover:bg-[#f8d7d7] flex items-center justify-center transition-colors">
+                    <div class="mt-4 w-full flex items-center justify-between border border-[#D30000] bg-[#D30000] text-white transition-all duration-300 shadow-md h-[42px]">
+                        <button onclick="updateQuantity(${p.id}, -1, event)" class="w-12 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
                             <i class="ph ph-minus font-bold text-sm"></i>
                         </button>
-                        <span class="text-xs font-semibold tracking-widest text-[#D30000] select-none">${inCart.quantity} IN CART</span>
-                        <button onclick="updateQuantity(${p.id}, 1, event)" class="w-12 py-3 text-[#D30000] hover:bg-[#f8d7d7] flex items-center justify-center transition-colors">
+                        <span class="text-xs font-semibold tracking-widest select-none">${inCart.quantity} IN CART</span>
+                        <button onclick="updateQuantity(${p.id}, 1, event)" class="w-12 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
                             <i class="ph ph-plus font-bold text-sm"></i>
                         </button>
                     </div>
                 `;
             } else {
                 return `
-                    <button onclick="addToCart(${p.id}, event)" class="mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300">
+                    <button onclick="addToCart(${p.id}, event)" class="mt-4 w-full h-[42px] uppercase tracking-widest text-xs font-semibold border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300">
                         Add to Cart
                     </button>
                 `;
@@ -254,7 +256,7 @@
             const pillText = document.getElementById('cart-pill-text');
             
             if (count > 0 && currentView !== 'cart' && currentView !== 'checkout') {
-                // Minimize if viewing a specific product on a large desktop
+                // Minimize/hide if viewing a specific product on a large desktop monitor
                 if (currentView === 'product' && window.innerWidth >= 1024) {
                     pill.classList.add('translate-y-full');
                 } else {
@@ -270,6 +272,106 @@
             navigate('checkout');
         }
 
+        // --- GLOBAL LOCATION API INTEGRATION ---
+        async function setupLocationAPI() {
+            const countrySelect = document.getElementById('country');
+            const stateSelect = document.getElementById('state');
+            const citySelect = document.getElementById('city');
+            const phoneCodeSelect = document.getElementById('phoneCode');
+
+            if(!countrySelect) return;
+
+            try {
+                // Fetch Countries & Phone Codes concurrently
+                const [countriesRes, codesRes] = await Promise.all([
+                    fetch('https://countriesnow.space/api/v0.1/countries'),
+                    fetch('https://countriesnow.space/api/v0.1/countries/codes')
+                ]);
+                const countriesData = await countriesRes.json();
+                const codesData = await codesRes.json();
+
+                // Populate Countries
+                countrySelect.innerHTML = '<option value="" disabled selected>Select Country</option>';
+                countriesData.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.country;
+                    opt.textContent = c.country;
+                    countrySelect.appendChild(opt);
+                });
+
+                // Populate Phone Dial Codes
+                phoneCodeSelect.innerHTML = '<option value="" disabled selected>Code</option>';
+                codesData.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.dial_code;
+                    opt.textContent = `${c.code} (${c.dial_code})`;
+                    phoneCodeSelect.appendChild(opt);
+                });
+
+                // Listen for Country Change -> Fetch States
+                countrySelect.addEventListener('change', async (e) => {
+                    const country = e.target.value;
+                    stateSelect.innerHTML = '<option value="">Loading states...</option>';
+                    citySelect.innerHTML = '<option value="" disabled selected>Select City</option>'; // reset city
+                    
+                    try {
+                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country})
+                        });
+                        const data = await res.json();
+                        
+                        stateSelect.innerHTML = '<option value="" disabled selected>Select State</option>';
+                        if(data.data && data.data.states && data.data.states.length > 0) {
+                            data.data.states.forEach(s => {
+                                const opt = document.createElement('option');
+                                opt.value = s.name; opt.textContent = s.name;
+                                stateSelect.appendChild(opt);
+                            });
+                        } else {
+                            stateSelect.innerHTML = '<option value="N/A">N/A (No states available)</option>';
+                        }
+                    } catch (err) {
+                        stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
+                    }
+                });
+
+                // Listen for State Change -> Fetch Cities
+                stateSelect.addEventListener('change', async (e) => {
+                    const state = e.target.value;
+                    const country = countrySelect.value;
+                    citySelect.innerHTML = '<option value="">Loading cities...</option>';
+                    
+                    try {
+                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country, state})
+                        });
+                        const data = await res.json();
+                        
+                        citySelect.innerHTML = '<option value="" disabled selected>Select City</option>';
+                        if(data.data && data.data.length > 0) {
+                            data.data.forEach(c => {
+                                const opt = document.createElement('option');
+                                opt.value = c; opt.textContent = c;
+                                citySelect.appendChild(opt);
+                            });
+                        } else {
+                            citySelect.innerHTML = '<option value="N/A">N/A (No cities available)</option>';
+                        }
+                    } catch (err) {
+                        citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
+                    }
+                });
+
+            } catch (e) {
+                console.warn("Location API blocked or failed, using ultra-reliable text fallback.");
+                // Graceful degradation: Turn selects into inputs so user can always checkout
+                countrySelect.outerHTML = '<input type="text" id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Country">';
+                stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
+                citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
+                phoneCodeSelect.outerHTML = '<input type="text" id="phoneCode" class="w-16 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900" placeholder="+1">';
+            }
+        }
+
         // --- CHECKOUT FORM LOGIC ---
         function handleDeliverySubmit(event) {
             event.preventDefault();
@@ -279,16 +381,16 @@
                 return;
             }
 
-            // Animate Button leftwards and fill
+            // Animate Button leftwards and fill it entirely
             const btn = document.getElementById('next-btn');
-            btn.classList.add('-translate-x-8', 'bg-[#D30000]', 'scale-105');
-            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-xl"></i>`;
+            btn.classList.add('-translate-x-12', 'bg-[#D30000]', 'scale-105');
+            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
             
             setTimeout(() => {
                 document.getElementById('delivery-step').classList.add('hidden');
                 document.getElementById('payment-step').classList.remove('hidden');
                 initPayPal();
-            }, 600);
+            }, 700);
         }
 
         // --- UI UTILITIES ---
@@ -326,6 +428,13 @@
             }, 300);
         }
 
+        function updateSliderIndicator(index) {
+            document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+                dot.classList.toggle('bg-[#D30000]', i === index);
+                dot.classList.toggle('bg-gray-300', i !== index);
+            });
+        }
+
         // --- RENDERING ---
         function render() {
             const content = document.getElementById('app-content');
@@ -339,25 +448,41 @@
                 content.innerHTML = renderCart();
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
+                setupLocationAPI(); // Trigger API loading immediately when view is injected
             }
         }
 
         function renderHome() {
             let gridHtml = PRODUCTS.map(p => {
                 return `
-                    <div class="group cursor-pointer flex flex-col" onclick="navigate('product', ${p.id})">
+                    <div class="group cursor-pointer flex flex-col relative" onclick="navigate('product', ${p.id})">
+                        
+                        <!-- Badges -->
+                        ${p.badge ? `<div class="absolute top-3 left-3 bg-[#D30000] text-white text-[9px] font-bold tracking-widest px-2 py-1 uppercase z-10 shadow-sm">${p.badge}</div>` : ''}
+                        
                         <div class="aspect-[4/5] bg-[#F7F7F7] w-full mb-6 overflow-hidden flex items-center justify-center text-gray-300 transition-colors duration-500 group-hover:bg-[#EFEFEF]">
                             <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-light tracking-widest text-xs uppercase text-gray-500">
                                 View Details
                             </span>
                         </div>
+                        
                         <div class="flex flex-col items-center text-center flex-1">
                             <h3 class="text-sm md:text-base tracking-wider uppercase text-gray-900 mb-2 font-medium">${p.name}</h3>
-                            <p class="text-gray-500 text-sm mb-6 font-light">$${p.price.toFixed(2)}</p>
+                            <p class="text-gray-500 text-sm mb-4 font-light">$${p.price.toFixed(2)}</p>
                             
-                            <div id="btn-container-${p.id}" class="w-full mt-auto" onclick="event.stopPropagation()">
-                                ${getButtonHTML(p)}
+                            <!-- FOMO, Urgency & Free Shipping cluster -->
+                            <div class="w-full mt-auto flex flex-col items-center" onclick="event.stopPropagation()">
+                                <div class="flex items-center justify-center gap-3 mb-2">
+                                    <span class="text-[9px] font-bold tracking-widest text-[#D30000] uppercase"><i class="ph ph-fire mr-1 text-sm align-text-bottom"></i>${p.sold}+ SOLD</span>
+                                    <span class="text-[9px] font-bold tracking-widest text-orange-500 uppercase"><i class="ph ph-clock mr-1 text-sm align-text-bottom"></i>ONLY ${p.left} LEFT</span>
+                                </div>
+                                <p class="text-[9px] uppercase tracking-widest font-bold text-green-600 mb-1">FREE SHIPPING</p>
+                                
+                                <div id="btn-container-${p.id}" class="w-full">
+                                    ${getButtonHTML(p)}
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 `;
@@ -385,21 +510,29 @@
                     
                     <div class="flex flex-col md:flex-row gap-12 lg:gap-16">
                         
-                        <!-- 3 Image Grid System -->
-                        <div class="flex-1 flex flex-col gap-4">
-                            <!-- Hero Image -->
-                            <div class="w-full aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] flex items-center justify-center">
-                               <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 1</span>
-                            </div>
-                            <!-- Detail Images -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="w-full aspect-[4/5] bg-[#F7F7F7] flex items-center justify-center">
-                                    <span class="text-gray-400 font-light tracking-widest uppercase text-xs">Image 2</span>
+                        <!-- Premium CSS Slider -->
+                        <div class="flex-1 w-full relative group">
+                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm">
+                                <div class="min-w-full aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 1</span>
                                 </div>
-                                <div class="w-full aspect-[4/5] bg-[#F7F7F7] flex items-center justify-center">
-                                    <span class="text-gray-400 font-light tracking-widest uppercase text-xs">Image 3</span>
+                                <div class="min-w-full aspect-[4/5] md:aspect-[3/4] bg-[#EFEFEF] snap-center flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 2</span>
+                                </div>
+                                <div class="min-w-full aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 3</span>
                                 </div>
                             </div>
+                            
+                            <!-- Slider Controls -->
+                            <button onclick="document.getElementById('product-slider').scrollBy({left: -window.innerWidth, behavior: 'smooth'})" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                                <i class="ph ph-caret-left text-xl"></i>
+                            </button>
+                            <button onclick="document.getElementById('product-slider').scrollBy({left: window.innerWidth, behavior: 'smooth'})" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                                <i class="ph ph-caret-right text-xl"></i>
+                            </button>
+                            
+                            <p class="text-center text-[10px] uppercase tracking-widest text-gray-400 mt-4"><i class="ph ph-arrows-out-line-horizontal align-middle"></i> Swipe to view more</p>
                         </div>
                         
                         <div class="flex-1 flex flex-col py-8 lg:sticky lg:top-32 h-fit">
@@ -410,6 +543,7 @@
                             
                             <p class="text-gray-600 leading-relaxed font-light mb-12 text-lg">${p.description}</p>
                             
+                            <p class="text-[10px] uppercase tracking-widest font-bold text-green-600 mb-1">FREE WORLDWIDE SHIPPING</p>
                             <div id="btn-container-${p.id}" class="w-full mb-6">
                                 ${getButtonHTML(p)}
                             </div>
@@ -535,7 +669,13 @@
                                     </div>
                                     <div>
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number *</label>
-                                        <input type="tel" id="phone" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="+1 (555) 000-0000">
+                                        <div class="flex">
+                                            <!-- Phone code loads from API dynamically -->
+                                            <select id="phoneCode" required class="w-24 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer mr-2">
+                                                <option value="" disabled selected>Code</option>
+                                            </select>
+                                            <input type="tel" id="phone" required class="flex-1 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="(555) 000-0000">
+                                        </div>
                                     </div>
                                 </div>
 
@@ -547,22 +687,22 @@
                                 <div class="grid grid-cols-2 gap-6">
                                     <div class="col-span-2 md:col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Country *</label>
+                                        <!-- Real world countries load from API dynamically -->
                                         <select id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer">
-                                            <option value="" disabled selected>Select</option>
-                                            <option value="US">United States</option>
-                                            <option value="CA">Canada</option>
-                                            <option value="UK">United Kingdom</option>
-                                            <option value="AU">Australia</option>
-                                            <option value="EU">Europe</option>
+                                            <option value="" disabled selected>Loading...</option>
                                         </select>
                                     </div>
                                     <div class="col-span-2 md:col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">State / Province *</label>
-                                        <input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="NY">
+                                        <select id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer">
+                                            <option value="" disabled selected>Select Country First</option>
+                                        </select>
                                     </div>
                                     <div class="col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">City *</label>
-                                        <input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="New York">
+                                        <select id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer">
+                                            <option value="" disabled selected>Select State First</option>
+                                        </select>
                                     </div>
                                     <div class="col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Postal / Zip *</label>
@@ -570,8 +710,8 @@
                                     </div>
                                 </div>
                                 
-                                <div class="pt-8 flex justify-end">
-                                    <button type="submit" id="next-btn" class="bg-black text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[140px]">
+                                <div class="pt-10 flex justify-center">
+                                    <button type="submit" id="next-btn" class="bg-black text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px]">
                                         Next <i class="ph ph-arrow-right ml-2 text-lg"></i>
                                     </button>
                                 </div>
@@ -617,7 +757,7 @@
                     const orderInfo = {
                         customerName: document.getElementById('customerName').value,
                         email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value,
+                        phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
                         address: document.getElementById('address').value,
                         city: document.getElementById('city').value,
                         state: document.getElementById('state').value,
