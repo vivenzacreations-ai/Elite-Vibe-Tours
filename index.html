@@ -43,6 +43,11 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+        
+        /* Form Autofill cleanup */
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-[#f8d7d7] relative">
@@ -51,18 +56,16 @@
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
         <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between">
             
-            <!-- Spacer on left to guarantee perfect center alignment on desktop -->
-            <div class="flex-1 flex justify-start"></div>
-            
-            <h1 onclick="navigate('home')" class="text-2xl md:text-3xl font-serif tracking-widest uppercase cursor-pointer text-center flex-shrink-0 hover:opacity-80 transition-opacity">
+            <!-- Logo adjusted to the left -->
+            <h1 onclick="navigate('home')" class="text-2xl md:text-3xl font-serif tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
                 <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
             </h1>
             
-            <!-- Cart Moved to Top Right inside square #E1B786 box -->
-            <div class="flex-1 flex justify-end">
-                <button onclick="navigate('cart')" class="w-10 h-10 bg-[#E1B786] flex items-center justify-center relative text-gray-900 hover:opacity-80 transition-opacity rounded-sm shadow-sm">
-                    <i class="ph ph-shopping-cart text-xl"></i>
-                    <span id="cart-badge" class="hidden absolute -top-2 -right-2 bg-[#D30000] text-white text-[10px] font-bold w-[20px] h-[20px] flex items-center justify-center rounded-full border-2 border-white">
+            <!-- Clean Cart Icon (No square background, animates fill on click) -->
+            <div class="flex-shrink-0">
+                <button id="cart-icon-btn" onclick="handleCartClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 transition-colors">
+                    <i id="cart-icon" class="ph ph-shopping-cart text-2xl transition-colors duration-200"></i>
+                    <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-[#D30000] text-white text-[10px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full">
                         0
                     </span>
                 </button>
@@ -80,15 +83,15 @@
         <span id="toast-msg" class="font-light tracking-wide text-sm"></span>
     </div>
 
-    <!-- Sticky Cart Pill - Glassmorphism Transparent with White Outline -->
-    <div id="cart-pill" onclick="proceedToCheckout()" class="cursor-pointer fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/40 backdrop-blur-lg border border-white/60 text-gray-900 rounded-full px-8 md:px-12 py-4 shadow-2xl z-40 flex items-center justify-between w-[90%] max-w-sm transition-all duration-500 translate-y-32 opacity-0 pointer-events-none hover:bg-white/60">
+    <!-- Solid White Sticky Cart Bar (Full Width, No Rounding, No Glassmorphism) -->
+    <div id="cart-pill" class="fixed bottom-0 left-0 w-full bg-white text-gray-900 border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] px-6 md:px-12 py-4 z-40 flex items-center justify-between transition-transform duration-500 translate-y-full">
         <div class="flex items-center gap-3">
             <i class="ph ph-shopping-bag text-2xl text-[#D30000]"></i>
-            <span id="cart-pill-text" class="text-base font-medium tracking-wide"></span>
+            <span id="cart-pill-text" class="text-sm md:text-base font-medium tracking-wide"></span>
         </div>
-        <div class="text-sm tracking-widest uppercase font-semibold flex items-center gap-2 text-[#D30000]">
+        <button onclick="proceedToCheckout()" class="text-xs md:text-sm tracking-widest uppercase font-semibold flex items-center gap-2 text-white bg-[#D30000] px-6 py-3 hover:bg-[#a00000] transition-colors shadow-md">
             Checkout <i class="ph ph-arrow-right text-lg"></i>
-        </div>
+        </button>
     </div>
 
     <!-- Custom Modal -->
@@ -127,13 +130,28 @@
         let selectedProductId = null;
         let toastTimeout;
 
+        // Ensure resizing window properly evaluates large-screen cart logic
+        window.addEventListener('resize', () => { updateCartUI(); });
+
         // --- CORE FUNCTIONS ---
         function navigate(view, productId = null) {
             currentView = view;
             if (productId) selectedProductId = productId;
             window.scrollTo(0, 0);
-            updateCartUI(); // Hide/show pill based on view
+            updateCartUI(); 
             render();
+        }
+
+        function handleCartClick() {
+            const icon = document.getElementById('cart-icon');
+            // Animate fill logic
+            icon.classList.remove('ph');
+            icon.classList.add('ph-fill', 'text-[#D30000]');
+            setTimeout(() => {
+                icon.classList.remove('ph-fill', 'text-[#D30000]');
+                icon.classList.add('ph');
+                navigate('cart');
+            }, 150);
         }
 
         function addToCart(productId, event) {
@@ -149,16 +167,17 @@
             }
             
             updateCartUI();
-            render(); // Re-render to update the button colors instantly
+            updateAllButtons(); // Updates DOM dynamically without fading page
         }
 
         function removeFromCart(productId) {
             cart = cart.filter(item => item.id !== productId);
             updateCartUI();
-            render();
+            updateAllButtons();
         }
 
-        function updateQuantity(productId, delta) {
+        function updateQuantity(productId, delta, event) {
+            if(event) event.stopPropagation();
             const item = cart.find(i => i.id === productId);
             if (item) {
                 item.quantity += delta;
@@ -166,8 +185,46 @@
                     removeFromCart(productId);
                 } else {
                     updateCartUI();
-                    render();
+                    updateAllButtons();
                 }
+            }
+        }
+
+        // Dynamically updates all add-to-cart buttons on the page to prevent re-render animation
+        function updateAllButtons() {
+            if (currentView === 'cart') {
+                render(); // Cart view requires full list re-render
+                return;
+            }
+            
+            PRODUCTS.forEach(p => {
+                const btnContainer = document.getElementById(`btn-container-${p.id}`);
+                if (btnContainer) {
+                    btnContainer.innerHTML = getButtonHTML(p);
+                }
+            });
+        }
+
+        function getButtonHTML(p) {
+            const inCart = cart.find(item => item.id === p.id);
+            if (inCart) {
+                return `
+                    <div class="mt-auto w-full flex items-center justify-between border border-[#D30000] bg-white transition-all duration-300">
+                        <button onclick="updateQuantity(${p.id}, -1, event)" class="w-12 py-3 text-[#D30000] hover:bg-[#f8d7d7] flex items-center justify-center transition-colors">
+                            <i class="ph ph-minus font-bold text-sm"></i>
+                        </button>
+                        <span class="text-xs font-semibold tracking-widest text-[#D30000] select-none">${inCart.quantity} IN CART</span>
+                        <button onclick="updateQuantity(${p.id}, 1, event)" class="w-12 py-3 text-[#D30000] hover:bg-[#f8d7d7] flex items-center justify-center transition-colors">
+                            <i class="ph ph-plus font-bold text-sm"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                return `
+                    <button onclick="addToCart(${p.id}, event)" class="mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300">
+                        Add to Cart
+                    </button>
+                `;
             }
         }
 
@@ -183,7 +240,7 @@
             const count = getCartCount();
             const total = getCartTotal();
             
-            // 1. Update Header Badge
+            // Update Header Badge
             const badge = document.getElementById('cart-badge');
             if (count > 0) {
                 badge.textContent = count;
@@ -192,21 +249,46 @@
                 badge.classList.add('hidden');
             }
 
-            // 2. Update Sticky Pill
+            // Update Solid Sticky Bar
             const pill = document.getElementById('cart-pill');
             const pillText = document.getElementById('cart-pill-text');
             
-            // Show pill only if there are items AND we are not already on the cart/checkout page
             if (count > 0 && currentView !== 'cart' && currentView !== 'checkout') {
-                pillText.textContent = `${count} item${count !== 1 ? 's' : ''} • $${total.toFixed(2)}`;
-                pill.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+                // Minimize if viewing a specific product on a large desktop
+                if (currentView === 'product' && window.innerWidth >= 1024) {
+                    pill.classList.add('translate-y-full');
+                } else {
+                    pillText.textContent = `${count} ITEM${count !== 1 ? 'S' : ''}  |  $${total.toFixed(2)}`;
+                    pill.classList.remove('translate-y-full');
+                }
             } else {
-                pill.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+                pill.classList.add('translate-y-full');
             }
         }
 
         function proceedToCheckout() {
             navigate('checkout');
+        }
+
+        // --- CHECKOUT FORM LOGIC ---
+        function handleDeliverySubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('delivery-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Animate Button leftwards and fill
+            const btn = document.getElementById('next-btn');
+            btn.classList.add('-translate-x-8', 'bg-[#D30000]', 'scale-105');
+            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-xl"></i>`;
+            
+            setTimeout(() => {
+                document.getElementById('delivery-step').classList.add('hidden');
+                document.getElementById('payment-step').classList.remove('hidden');
+                initPayPal();
+            }, 600);
         }
 
         // --- UI UTILITIES ---
@@ -257,21 +339,11 @@
                 content.innerHTML = renderCart();
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
-                initPayPal(); 
             }
         }
 
         function renderHome() {
             let gridHtml = PRODUCTS.map(p => {
-                const inCart = cart.find(item => item.id === p.id);
-                
-                // Dynamic styling: Solid red if in cart, transparent outline if not
-                const btnClass = inCart 
-                    ? "mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-[#D30000] bg-[#D30000] text-white transition-all duration-300"
-                    : "mt-auto w-full uppercase tracking-widest text-xs font-semibold py-3 border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300";
-                
-                const btnText = inCart ? `In Cart (${inCart.quantity})` : "Add to Cart";
-
                 return `
                     <div class="group cursor-pointer flex flex-col" onclick="navigate('product', ${p.id})">
                         <div class="aspect-[4/5] bg-[#F7F7F7] w-full mb-6 overflow-hidden flex items-center justify-center text-gray-300 transition-colors duration-500 group-hover:bg-[#EFEFEF]">
@@ -282,15 +354,15 @@
                         <div class="flex flex-col items-center text-center flex-1">
                             <h3 class="text-sm md:text-base tracking-wider uppercase text-gray-900 mb-2 font-medium">${p.name}</h3>
                             <p class="text-gray-500 text-sm mb-6 font-light">$${p.price.toFixed(2)}</p>
-                            <button onclick="addToCart(${p.id}, event)" class="${btnClass}">
-                                ${btnText}
-                            </button>
+                            
+                            <div id="btn-container-${p.id}" class="w-full mt-auto" onclick="event.stopPropagation()">
+                                ${getButtonHTML(p)}
+                            </div>
                         </div>
                     </div>
                 `;
             }).join('');
 
-            // Added Responsive grid for desktop: md:grid-cols-3 lg:grid-cols-4
             return `
                 <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-16 md:gap-x-8">
@@ -304,28 +376,33 @@
             const p = PRODUCTS.find(item => item.id === selectedProductId);
             if (!p) return '';
 
-            const inCart = cart.find(item => item.id === p.id);
-            const btnClass = inCart 
-                ? "bg-[#a00000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 transition-colors duration-300 w-full mb-6"
-                : "bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-8 hover:bg-[#a00000] transition-colors duration-300 w-full mb-6";
-            
-            const btnText = inCart ? `Add More (${inCart.quantity} In Cart)` : "Add to Cart";
-
             return `
-                <div class="max-w-5xl mx-auto px-4 py-12 fade-in">
+                <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
                     <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-12 transition-colors group">
                         <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
                         Back to Collection
                     </button>
                     
-                    <div class="flex flex-col md:flex-row gap-12 lg:gap-24">
-                        <div class="flex-1">
-                            <div class="w-full aspect-[3/4] bg-[#F7F7F7] flex items-center justify-center">
-                               <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Large Image Placeholder</span>
+                    <div class="flex flex-col md:flex-row gap-12 lg:gap-16">
+                        
+                        <!-- 3 Image Grid System -->
+                        <div class="flex-1 flex flex-col gap-4">
+                            <!-- Hero Image -->
+                            <div class="w-full aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] flex items-center justify-center">
+                               <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 1</span>
+                            </div>
+                            <!-- Detail Images -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="w-full aspect-[4/5] bg-[#F7F7F7] flex items-center justify-center">
+                                    <span class="text-gray-400 font-light tracking-widest uppercase text-xs">Image 2</span>
+                                </div>
+                                <div class="w-full aspect-[4/5] bg-[#F7F7F7] flex items-center justify-center">
+                                    <span class="text-gray-400 font-light tracking-widest uppercase text-xs">Image 3</span>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="flex-1 flex flex-col justify-center py-8">
+                        <div class="flex-1 flex flex-col py-8 lg:sticky lg:top-32 h-fit">
                             <h2 class="text-3xl md:text-4xl font-serif uppercase tracking-widest mb-4 text-gray-900">${p.name}</h2>
                             <p class="text-2xl text-gray-600 mb-8 font-light">$${p.price.toFixed(2)}</p>
                             
@@ -333,9 +410,9 @@
                             
                             <p class="text-gray-600 leading-relaxed font-light mb-12 text-lg">${p.description}</p>
                             
-                            <button onclick="addToCart(${p.id})" class="${btnClass}">
-                                ${btnText}
-                            </button>
+                            <div id="btn-container-${p.id}" class="w-full mb-6">
+                                ${getButtonHTML(p)}
+                            </div>
                             
                             <div class="border-t border-gray-100 pt-6 mt-6">
                                 <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between mb-2">
@@ -373,16 +450,16 @@
             let cartHtml = cart.map(item => `
                 <div class="py-8 flex items-center justify-between border-b border-gray-100 last:border-0">
                     <div class="flex items-center gap-4 md:gap-6">
-                        <div class="w-16 h-24 md:w-20 md:h-28 bg-[#F7F7F7] flex items-center justify-center shrink-0 text-[10px] text-gray-400 uppercase tracking-widest text-center px-1">Img</div>
+                        <div class="w-20 h-28 md:w-24 md:h-32 bg-[#F7F7F7] flex items-center justify-center shrink-0 text-[10px] text-gray-400 uppercase tracking-widest text-center px-1">Img</div>
                         <div>
                             <h4 class="font-serif tracking-wider text-base md:text-lg mb-1">${item.name}</h4>
                             <p class="text-gray-500 text-sm font-light mb-3">$${item.price.toFixed(2)}</p>
                             
-                            <!-- Quantity Controls -->
-                            <div class="flex items-center gap-3">
-                                <button onclick="updateQuantity(${item.id}, -1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-[#D30000] hover:text-[#D30000] transition-colors">-</button>
-                                <span class="text-sm font-medium w-4 text-center">${item.quantity}</span>
-                                <button onclick="updateQuantity(${item.id}, 1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 hover:border-[#D30000] hover:text-[#D30000] transition-colors">+</button>
+                            <!-- Quantity Controls inside Cart -->
+                            <div class="flex items-center border border-gray-300 w-fit">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-[#D30000] transition-colors"><i class="ph ph-minus text-xs"></i></button>
+                                <span class="text-xs font-medium w-6 text-center select-none">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-[#D30000] transition-colors"><i class="ph ph-plus text-xs"></i></button>
                             </div>
                         </div>
                     </div>
@@ -429,43 +506,93 @@
         }
 
         function renderCheckout() {
-            const productNames = cart.map(item => `${item.name} (Qty: ${item.quantity})`).join(' | ');
             const totalPaid = "$" + getCartTotal().toFixed(2);
 
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
-                    <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-10 text-gray-900">Secure Checkout</h2>
                     
-                    <div class="bg-gray-50 p-6 md:p-8 rounded-sm mb-8 border border-gray-100 shadow-sm">
-                        <div class="flex justify-between mb-6 text-lg text-gray-800">
+                    <div class="bg-gray-50 p-6 md:p-10 rounded-sm mb-8 border border-gray-100 shadow-sm relative overflow-hidden">
+                        <div class="flex justify-between mb-8 text-lg text-gray-800">
                             <span class="font-light tracking-wide">Total Amount</span>
                             <span class="font-semibold">${totalPaid} USD</span>
                         </div>
-                        <div class="w-full h-[1px] bg-gray-200 mb-8"></div>
+                        <div class="w-full h-[1px] bg-gray-200 mb-10"></div>
                         
-                        <form id="checkout-form" class="space-y-5" onsubmit="event.preventDefault();">
-                            <div>
-                                <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Full Name</label>
-                                <input type="text" id="customerName" required class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="Jane Doe">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Email</label>
-                                <input type="email" id="email" required class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="jane@example.com">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium tracking-widest uppercase text-gray-700 mb-2">Shipping Address</label>
-                                <textarea id="address" required rows="3" class="w-full border border-gray-300 px-4 py-3 bg-white focus:outline-none focus:border-[#D30000] transition-colors" placeholder="123 Luxury Lane..."></textarea>
-                            </div>
+                        <!-- STEP 1: Delivery Details -->
+                        <div id="delivery-step" class="transition-opacity duration-300">
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Delivery Details</h2>
                             
-                            <div class="pt-4 relative z-0">
+                            <form id="delivery-form" class="space-y-6" onsubmit="handleDeliverySubmit(event)">
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Email (For Tracking) *</label>
+                                    <input type="email" id="email" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="jane@example.com">
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Full Name *</label>
+                                        <input type="text" id="customerName" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Jane Doe">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number *</label>
+                                        <input type="tel" id="phone" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="+1 (555) 000-0000">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Street Address *</label>
+                                    <input type="text" id="address" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="123 Luxury Lane">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div class="col-span-2 md:col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Country *</label>
+                                        <select id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer">
+                                            <option value="" disabled selected>Select</option>
+                                            <option value="US">United States</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="UK">United Kingdom</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="EU">Europe</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-span-2 md:col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">State / Province *</label>
+                                        <input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="NY">
+                                    </div>
+                                    <div class="col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">City *</label>
+                                        <input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="New York">
+                                    </div>
+                                    <div class="col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Postal / Zip *</label>
+                                        <input type="text" id="zip" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="10001">
+                                    </div>
+                                </div>
+                                
+                                <div class="pt-8 flex justify-end">
+                                    <button type="submit" id="next-btn" class="bg-black text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[140px]">
+                                        Next <i class="ph ph-arrow-right ml-2 text-lg"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- STEP 2: Payment Details -->
+                        <div id="payment-step" class="hidden fade-in">
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Secure Payment</h2>
+                            <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method</p>
+                            
+                            <div class="relative z-0">
                                 <div id="paypal-button-container" class="min-h-[55px]"></div>
                             </div>
-                        </form>
+                        </div>
+
                     </div>
 
                     <div class="text-center mt-6">
-                        <button onclick="navigate('home')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Products Section
+                        <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Cart
                         </button>
                     </div>
                 </div>
@@ -475,7 +602,7 @@
         function initPayPal() {
             const container = document.getElementById('paypal-button-container');
             if (!window.paypal) {
-                container.innerHTML = '<p class="text-red-500 text-sm">Failed to load PayPal gateway. Check connection.</p>';
+                container.innerHTML = '<p class="text-[#D30000] text-sm text-center py-4">Failed to load secure gateway. Please refresh.</p>';
                 return;
             }
 
@@ -483,26 +610,24 @@
             
             paypal.Buttons({
                 style: { color: 'black', shape: 'rect', label: 'pay', height: 55 },
-                onClick: function(data, actions) {
-                    const form = document.getElementById('checkout-form');
-                    if (!form.checkValidity()) {
-                        form.reportValidity(); 
-                        return actions.reject(); 
-                    }
-                    return actions.resolve(); 
-                },
                 createOrder: async function(data, actions) {
-                    // Gather all form and cart data
+                    
+                    // 1. Gather comprehensive form and cart data
                     const productNames = cart.map(item => `${item.name} (Qty: ${item.quantity})`).join(', ');
                     const orderInfo = {
                         customerName: document.getElementById('customerName').value,
                         email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
                         address: document.getElementById('address').value,
+                        city: document.getElementById('city').value,
+                        state: document.getElementById('state').value,
+                        zip: document.getElementById('zip').value,
+                        country: document.getElementById('country').value,
                         productName: productNames || "Website Order", 
                         price: "$" + getCartTotal().toFixed(2)
                     };
 
-                    // Send data to the new Vercel backend BEFORE opening PayPal
+                    // 2. Transmit Delivery Data to Vercel Backend before unlocking PayPal
                     try {
                         const response = await fetch('https://my-store-backend-mauve.vercel.app/api/checkout', {
                             method: 'POST',
@@ -511,15 +636,15 @@
                         });
 
                         if (!response.ok) {
-                            throw new Error("Server responded with an error.");
+                            throw new Error("Server rejected data connection.");
                         }
                     } catch (error) {
-                        console.error("Database connection failed:", error);
-                        showToast("Failed to connect to the server. Please check your connection.");
-                        throw error; // Prevents the PayPal popup from continuing
+                        console.error("Vercel Database connection failed:", error);
+                        showToast("Failed to connect to secure server. Please check your connection.");
+                        throw error; // Halts the PayPal popup if database tracking fails
                     }
 
-                    // If server success, proceed to create the PayPal order
+                    // 3. Initiate the PayPal order
                     return actions.order.create({
                         purchase_units: [{
                             amount: { value: getCartTotal().toFixed(2) }
@@ -530,6 +655,7 @@
                     return actions.order.capture().then(function(details) {
                         cart = []; 
                         updateCartUI();
+                        updateAllButtons();
                         const buyerName = details.payer.name.given_name;
                         showModal(`Thank you for your elegant purchase, ${buyerName}. Your order from Marina & Elévia has been successfully confirmed and processed securely.`);
                     });
