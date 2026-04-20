@@ -91,8 +91,8 @@
             <i class="ph ph-shopping-bag text-2xl text-[#D30000]"></i>
             <span id="cart-pill-text" class="text-sm md:text-base font-medium tracking-wide"></span>
         </div>
-        <button onclick="proceedToCheckout()" class="text-xs md:text-sm tracking-widest uppercase font-semibold flex items-center gap-2 text-white bg-[#D30000] px-6 py-3 hover:bg-[#a00000] transition-colors shadow-md">
-            Checkout <i class="ph ph-arrow-right text-lg"></i>
+        <button onclick="navigate('cart')" class="text-xs md:text-sm tracking-widest uppercase font-semibold flex items-center gap-2 text-white bg-[#D30000] px-6 py-3 hover:bg-[#a00000] transition-colors shadow-md">
+            View in Cart <i class="ph ph-arrow-right text-lg"></i>
         </button>
     </div>
 
@@ -227,6 +227,10 @@
 
         function getCartCount() {
             return cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+        
+        function getCartOriginalTotal() {
+            return cart.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
         }
 
         function updateCartUI() {
@@ -763,7 +767,7 @@
 
                         <!-- STEP 2: Payment Details -->
                         <div id="payment-step" class="hidden fade-in">
-                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Secure Payment</h2>
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900 border-t border-gray-200 pt-8">Secure Payment</h2>
                             
                             <div id="paypal-ui-container">
                                 <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method below to complete the order of ${totalPaid}</p>
