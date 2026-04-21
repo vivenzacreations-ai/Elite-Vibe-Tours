@@ -539,7 +539,7 @@
         }
 
         // --- CHECKOUT FORM LOGIC & FIREBASE ---
-        async function handleDeliverySubmit(event) {
+        function handleDeliverySubmit(event) {
             event.preventDefault();
             const form = document.getElementById('delivery-form');
             if (!form.checkValidity()) {
@@ -576,13 +576,10 @@
                 createdAt: serverTimestamp()
             };
 
-            try {
-                // Save directly to user's Firebase database
-                await addDoc(collection(db, "delivery_orders"), orderData);
-                console.log("Order saved to secure Firebase.");
-            } catch (error) {
-                console.error("Firebase Database error:", error);
-            }
+            // Fire and forget Firebase save (doesn't block the UI transition)
+            addDoc(collection(db, "delivery_orders"), orderData)
+                .then(() => console.log("Order saved to secure Firebase."))
+                .catch(error => console.error("Firebase Database error:", error));
             
             setTimeout(() => {
                 document.getElementById('delivery-step').classList.add('hidden');
