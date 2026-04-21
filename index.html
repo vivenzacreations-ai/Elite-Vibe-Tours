@@ -87,6 +87,7 @@
 
     <!-- Main Content Area -->
     <main id="app-content" class="flex-grow pb-32"></main>
+
     <!-- Custom Modal -->
     <div id="modal" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
         <div class="bg-white p-10 max-w-md w-full border border-gray-100 shadow-2xl text-center relative fade-in">
@@ -111,7 +112,42 @@
         <p class="text-xs text-gray-500 tracking-widest uppercase">Opening your secure email client</p>
     </div>
 
-    <script>
+    <!-- Solid White Sticky Cart Bar -->
+    <div id="cart-pill" class="fixed bottom-0 left-0 w-full bg-white text-gray-900 border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] px-6 md:px-12 py-4 z-40 flex items-center justify-between transition-transform duration-500 translate-y-full">
+        <div class="flex items-center gap-3">
+            <i class="ph ph-shopping-bag text-2xl text-[#D30000]"></i>
+            <span id="cart-pill-text" class="text-sm md:text-base font-medium tracking-wide"></span>
+        </div>
+        <button onclick="navigate('cart')" class="text-xs md:text-sm tracking-widest uppercase font-semibold flex items-center gap-2 text-white bg-[#D30000] px-6 py-3 hover:bg-[#a00000] transition-colors shadow-md">
+            View in Cart <i class="ph ph-arrow-right text-lg"></i>
+        </button>
+    </div>
+
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-[#D30000] text-white px-6 py-4 shadow-xl z-50 flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <i class="ph ph-warning text-lg"></i>
+        <span id="toast-msg" class="font-light tracking-wide text-sm"></span>
+    </div>
+
+    <!-- Application Script -->
+    <script type="module">
+        // --- FIREBASE INTEGRATION ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // User provided Firebase Config
+        const firebaseConfig = {
+          apiKey: "AIzaSyD4qy5YuvvNyghccthEOm-D3DaCgB3LNbk",
+          authDomain: "form-info-221b0.firebaseapp.com",
+          projectId: "form-info-221b0",
+          storageBucket: "form-info-221b0.firebasestorage.app",
+          messagingSenderId: "640135037047",
+          appId: "1:640135037047:web:26762e57d31e8c46c98672"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         // --- MOCK PRODUCT DATA ---
         const PRODUCTS = [
             { 
@@ -226,21 +262,17 @@
             const overlay = document.getElementById('help-overlay');
             overlay.classList.remove('hidden');
             
-            // Small delay to allow display block to apply before animating opacity
             setTimeout(() => {
                 overlay.classList.remove('opacity-0', 'pointer-events-none');
                 overlay.classList.add('opacity-100', 'pointer-events-auto');
             }, 10);
 
-            // Wait 3 seconds, then redirect and normalize
             setTimeout(() => {
                 window.location.href = "mailto:marina.elevia@gmail.com";
                 
-                // Fade out the overlay
                 overlay.classList.remove('opacity-100', 'pointer-events-auto');
                 overlay.classList.add('opacity-0', 'pointer-events-none');
                 
-                // Hide completely after fade transition completes
                 setTimeout(() => {
                     overlay.classList.add('hidden');
                 }, 300);
@@ -393,7 +425,6 @@
             let currentIndex = Math.round(slider.scrollLeft / width);
             let nextIndex = currentIndex + direction;
             
-            // Loop functionality
             if (nextIndex > maxIndex) nextIndex = 0;
             if (nextIndex < 0) nextIndex = maxIndex;
             
@@ -443,7 +474,6 @@
                     phoneCodeSelect.appendChild(opt);
                 });
 
-                // Default to US
                 const defaultCode = codesData.data.find(c => c.code === 'US');
                 if (defaultCode) phoneCodeSelect.value = defaultCode.dial_code;
 
@@ -508,8 +538,8 @@
             }
         }
 
-        // --- CHECKOUT FORM LOGIC ---
-        function handleDeliverySubmit(event) {
+        // --- CHECKOUT FORM LOGIC & FIREBASE ---
+        async function handleDeliverySubmit(event) {
             event.preventDefault();
             const form = document.getElementById('delivery-form');
             if (!form.checkValidity()) {
@@ -517,13 +547,42 @@
                 return;
             }
             
-            // Save email for Thank You page
             finalCustomerEmail = document.getElementById('email').value;
 
             // Animate Button RIGHTWARDS and fill it entirely
             const btn = document.getElementById('next-btn');
             btn.classList.add('translate-x-12', 'bg-[#D30000]', 'scale-105');
             btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
+            
+            // Collect order payload for Firebase
+            const orderData = {
+                customerDetails: {
+                    name: document.getElementById('customerName').value,
+                    email: finalCustomerEmail,
+                    phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    country: document.getElementById('country').value,
+                    state: document.getElementById('state').value,
+                    city: document.getElementById('city').value,
+                    zip: document.getElementById('zip').value
+                },
+                cart: cart.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity
+                })),
+                totalPrice: getCartTotal(),
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                // Save directly to user's Firebase database
+                await addDoc(collection(db, "delivery_orders"), orderData);
+                console.log("Order saved to secure Firebase.");
+            } catch (error) {
+                console.error("Firebase Database error:", error);
+            }
             
             setTimeout(() => {
                 document.getElementById('delivery-step').classList.add('hidden');
@@ -532,7 +591,7 @@
                 document.getElementById('payment-step').classList.remove('hidden');
                 document.getElementById('payment-back').classList.remove('hidden');
                 initPayPal();
-            }, 700);
+            }, 600);
         }
 
         function goBackToDelivery() {
@@ -560,6 +619,16 @@
                 toast.classList.remove('opacity-100');
                 toast.classList.add('opacity-0', 'pointer-events-none');
             }, 3000);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                navigate('home');
+            }, 300);
         }
 
         // --- RENDERING ---
@@ -998,39 +1067,15 @@
                         return actions.reject(); 
                     }
                     
-                    // Display "Waiting for payment" overlay
                     document.getElementById('paypal-ui-container').classList.add('hidden');
                     document.getElementById('payment-waiting').classList.remove('hidden');
                     return actions.resolve(); 
                 },
                 onCancel: function (data) {
-                    // Reset UI if customer closes PayPal window without paying
                     document.getElementById('paypal-ui-container').classList.remove('hidden');
                     document.getElementById('payment-waiting').classList.add('hidden');
                 },
                 createOrder: function(data, actions) {
-                    const productNames = cart.map(item => `${item.name} (Qty: ${item.quantity})`).join(', ');
-
-                    const orderInfo = {
-                        customerName: document.getElementById('customerName').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
-                        address: document.getElementById('address').value,
-                        city: document.getElementById('city').value,
-                        state: document.getElementById('state').value,
-                        zip: document.getElementById('zip').value,
-                        country: document.getElementById('country').value,
-                        productName: productNames || "Website Order", 
-                        price: "$" + getCartTotal().toFixed(2)
-                    };
-
-                    // Send data silently in background WITHOUT awaiting, to prevent PayPal timeout blocks
-                    fetch('https://my-store-backend-mauve.vercel.app/api/checkout', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(orderInfo)
-                    }).catch(error => console.error("Vercel Database tracking failed:", error));
-
                     return actions.order.create({
                         purchase_units: [{
                             amount: { value: getCartTotal().toFixed(2) }
@@ -1053,6 +1098,20 @@
                 }
             }).render('#paypal-button-container');
         }
+
+        // --- BIND GLOBALS FOR MODULE SCRIPT ---
+        window.navigate = navigate;
+        window.handleHelpClick = handleHelpClick;
+        window.handleCartClick = handleCartClick;
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+        window.proceedToCheckout = proceedToCheckout;
+        window.scrollSlider = scrollSlider;
+        window.updateSliderDots = updateSliderDots;
+        window.handleDeliverySubmit = handleDeliverySubmit;
+        window.goBackToDelivery = goBackToDelivery;
+        window.closeModal = closeModal;
 
         // Initialize App
         updateCartUI();
