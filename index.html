@@ -58,15 +58,14 @@
 
     <!-- Header -->
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
-        <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between">
+        <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-end w-full gap-4 md:gap-8">
             
-            <div class="flex-1 flex justify-start"></div>
-            
-            <h1 onclick="navigate('home')" class="text-2xl md:text-3xl font-serif tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
+            <!-- Logo adjusted to the right & smaller -->
+            <h1 onclick="navigate('home')" class="text-xl md:text-2xl font-serif tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
                 <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
             </h1>
             
-            <div class="flex-1 flex justify-end items-center gap-3 md:gap-5">
+            <div class="flex items-center justify-end gap-3 md:gap-5 border-l border-gray-200 pl-4 md:pl-8">
                 <!-- Help / Support Icon -->
                 <button onclick="handleHelpClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 hover:text-[#D30000] transition-colors" title="Contact Support">
                     <i class="ph ph-headset text-2xl"></i>
@@ -485,8 +484,24 @@
                     phoneCodeSelect.appendChild(opt);
                 });
 
+                // Default to US & dynamic limits
+                window.updatePhoneLimit = function(selectElem) {
+                    const phoneInput = document.getElementById('phone');
+                    if(!phoneInput) return;
+                    const code = selectElem.value;
+                    const lengthMap = { '+91': 10, '+1': 10, '+44': 10, '+61': 9 };
+                    phoneInput.maxLength = lengthMap[code] || 15;
+                };
+
                 const defaultCode = codesData.data.find(c => c.code === 'US');
-                if (defaultCode) phoneCodeSelect.value = defaultCode.dial_code;
+                if (defaultCode) {
+                    phoneCodeSelect.value = defaultCode.dial_code;
+                    window.updatePhoneLimit(phoneCodeSelect);
+                }
+
+                phoneCodeSelect.addEventListener('change', function() {
+                    window.updatePhoneLimit(this);
+                });
 
                 countrySelect.addEventListener('change', async (e) => {
                     const country = e.target.value;
@@ -922,7 +937,7 @@
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     
-                    <div class="bg-gray-50 p-6 md:p-10 rounded-sm mb-8 border border-gray-100 shadow-sm relative overflow-visible">
+                    <div class="bg-gray-50 p-6 md:px-10 md:pt-10 md:pb-6 rounded-sm mb-2 border border-gray-100 shadow-sm relative overflow-visible">
                         
                         <!-- Delivery Step Breakdown -->
                         <div id="checkout-breakdown" class="flex flex-col w-full mb-8">
@@ -964,34 +979,23 @@
                         <div id="delivery-step" class="transition-opacity duration-300">
                             <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900 border-t border-gray-200 pt-8">Delivery Details</h2>
                             
-                            <form id="delivery-form" class="space-y-8" onsubmit="handleDeliverySubmit(event)">
+                            <form id="delivery-form" class="space-y-6" onsubmit="handleDeliverySubmit(event)">
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Full Name *</label>
+                                    <input type="text" id="customerName" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Jane Doe">
+                                </div>
+
                                 <div>
                                     <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Email (For Tracking) *</label>
                                     <input type="email" id="email" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="jane@example.com">
                                 </div>
                                 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div>
-                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Full Name *</label>
-                                        <input type="text" id="customerName" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Jane Doe">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number *</label>
-                                        <div class="flex">
-                                            <select id="phoneCode" required class="w-28 md:w-32 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer mr-2 text-sm overflow-hidden">
-                                                <option value="" disabled selected>Code</option>
-                                            </select>
-                                            <input type="tel" id="phone" required autocomplete="off" class="flex-1 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="(555) 000-0000">
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div>
                                     <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Street Address *</label>
                                     <input type="text" id="address" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="123 Luxury Lane">
                                 </div>
 
-                                <div class="grid grid-cols-2 gap-8">
+                                <div class="grid grid-cols-2 gap-6">
                                     <div class="col-span-2 md:col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Country *</label>
                                         <select id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
@@ -1018,8 +1022,18 @@
                                         <input type="text" id="zip" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="10001">
                                     </div>
                                 </div>
+
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number *</label>
+                                    <div class="flex items-end w-full overflow-hidden">
+                                        <select id="phoneCode" required class="w-24 md:w-28 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer mr-2 text-xs md:text-sm shrink-0">
+                                            <option value="" disabled selected>Code</option>
+                                        </select>
+                                        <input type="tel" id="phone" required autocomplete="off" oninput="this.value=this.value.replace(/[^0-9]/g,'')" class="min-w-0 flex-1 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="0000000000">
+                                    </div>
+                                </div>
                                 
-                                <div class="pt-10 flex justify-center overflow-visible">
+                                <div class="pt-6 flex justify-center overflow-visible">
                                     <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px] shadow-lg">
                                         Next <i class="ph ph-arrow-right ml-2 text-lg"></i>
                                     </button>
@@ -1032,28 +1046,28 @@
                             <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Secure Payment</h2>
                             
                             <div id="paypal-ui-container">
-                                <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method below to complete the order</p>
-                                <div class="relative z-0">
-                                    <div id="paypal-button-container" class="min-h-[55px]"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div id="delivery-back" class="text-center mt-6">
-                        <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Cart
-                        </button>
-                    </div>
-                    
-                    <div id="payment-back" class="text-center mt-6 hidden">
-                        <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
-                        </button>
-                    </div>
-                </div>
-            `;
+            setTimeout(() => {
+                // Hide top notification
+                topNotif.classList.remove('translate-y-0', 'opacity-100');
+                topNotif.classList.add('-translate-y-32', 'opacity-0', 'pointer-events-none');
+                
+                // Hide entire breakdown for cleaner payment view
+                document.getElementById('checkout-breakdown').classList.add('hidden');
+                
+                // Swap views
+                document.getElementById('delivery-step').classList.add('hidden');
+                document.getElementById('delivery-back').classList.add('hidden');
+                
+                const waitingHeader = document.getElementById('checkout-waiting-header');
+                waitingHeader.classList.remove('hidden');
+                waitingHeader.classList.add('flex');
+                
+                document.getElementById('payment-step').classList.remove('hidden');
+                document.getElementById('payment-back').classList.remove('hidden');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                initPayPal();
+            }, 2500);
         }
 
         function renderThankYou() {
