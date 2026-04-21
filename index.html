@@ -99,14 +99,94 @@
     <script>
         // --- MOCK PRODUCT DATA ---
         const PRODUCTS = [
-            { id: 1, name: "Silk Crepe Blouse", price: 145.00, originalPrice: 180.00, rating: 4.9, reviews: 342, description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening." },
-            { id: 2, name: "Wide-Leg Trousers", price: 180.00, originalPrice: 220.00, rating: 4.8, reviews: 215, description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride." },
-            { id: 3, name: "Cashmere Wrap Coat", price: 395.00, originalPrice: 450.00, rating: 5.0, reviews: 189, description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication." },
-            { id: 4, name: "Leather Crossbody", price: 210.00, originalPrice: 260.00, rating: 4.7, reviews: 420, description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap." },
-            { id: 5, name: "Linen Midi Dress", price: 165.00, originalPrice: 195.00, rating: 4.8, reviews: 156, description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt." },
-            { id: 6, name: "Gold Hoop Earrings", price: 85.00, originalPrice: 110.00, rating: 4.9, reviews: 512, description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear." },
-            { id: 7, name: "Suede Pointed Mules", price: 155.00, originalPrice: 190.00, rating: 4.6, reviews: 134, description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort." },
-            { id: 8, name: "Ribbed Knit Sweater", price: 125.00, originalPrice: 150.00, rating: 4.8, reviews: 298, description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness." }
+            { 
+                id: 1, name: "Silk Crepe Blouse", price: 145.00, originalPrice: 180.00, rating: 4.9, reviews: 342, 
+                description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening.",
+                reviewsList: [
+                    { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The silk is of the highest quality and it drapes beautifully. A wardrobe staple." },
+                    { author: "Sarah M.", rating: 5, text: "I've worn this to work and to dinner dates. Extremely versatile and feels luxurious against the skin." },
+                    { author: "Jessica T.", rating: 4, text: "Beautiful blouse. The button detailing adds such a chic touch. Looks far more expensive than it is." },
+                    { author: "Amanda C.", rating: 5, text: "Fits perfectly. I get compliments every time I wear it. I want it in every color." },
+                    { author: "Chloe R.", rating: 5, text: "Worth every penny. The craftsmanship is flawless, no loose threads anywhere." }
+                ]
+            },
+            { 
+                id: 2, name: "Wide-Leg Trousers", price: 180.00, originalPrice: 220.00, rating: 4.8, reviews: 215, 
+                description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride.",
+                reviewsList: [
+                    { author: "Michelle K.", rating: 5, text: "Flawless fit. They make me look so tall and elegant. Highly recommend!" },
+                    { author: "Lauren B.", rating: 5, text: "The wool blend is lightweight but beautifully structured. Perfect for the office." },
+                    { author: "Diana P.", rating: 4, text: "Best trousers I own. The front pleats lay perfectly flat." },
+                    { author: "Rachel W.", rating: 5, text: "Elegant and incredibly comfortable. They drape exactly like the photos show." },
+                    { author: "Sophia L.", rating: 5, text: "Incredible tailoring. They hug the waist perfectly while remaining flowy at the bottom." }
+                ]
+            },
+            { 
+                id: 3, name: "Cashmere Wrap Coat", price: 395.00, originalPrice: 450.00, rating: 5.0, reviews: 189, 
+                description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication.",
+                reviewsList: [
+                    { author: "Olivia S.", rating: 5, text: "A literal dream coat. It is so soft it feels like a cloud." },
+                    { author: "Emily D.", rating: 5, text: "Incredibly warm but not bulky at all. It elevates literally any outfit I throw it over." },
+                    { author: "Claire H.", rating: 5, text: "The wrap style is very flattering. The cashmere quality is comparable to designer coats twice the price." },
+                    { author: "Victoria G.", rating: 5, text: "I feel like a million bucks wearing this. Highly recommend investing in this piece." },
+                    { author: "Natasha R.", rating: 5, text: "Stunning. The oversized lapels give it such a chic, model-off-duty vibe." }
+                ]
+            },
+            { 
+                id: 4, name: "Leather Crossbody", price: 210.00, originalPrice: 260.00, rating: 4.7, reviews: 420, 
+                description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap.",
+                reviewsList: [
+                    { author: "Isabella F.", rating: 5, text: "The leather smells amazing and is so buttery. Perfect size for my everyday essentials." },
+                    { author: "Megan J.", rating: 4, text: "Hardware feels very premium. The strap is easily adjustable." },
+                    { author: "Grace K.", rating: 5, text: "A timeless piece. I get stopped and asked where my bag is from constantly." },
+                    { author: "Taylor B.", rating: 5, text: "Goes with literally every outfit I own. It holds its shape perfectly." },
+                    { author: "Haley N.", rating: 4, text: "Beautiful minimalist design. The magnetic closure is very strong and secure." }
+                ]
+            },
+            { 
+                id: 5, name: "Linen Midi Dress", price: 165.00, originalPrice: 195.00, rating: 4.8, reviews: 156, 
+                description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt.",
+                reviewsList: [
+                    { author: "Emma T.", rating: 5, text: "So breezy and comfortable for summer. The linen is thick and high quality, not see-through at all." },
+                    { author: "Lily A.", rating: 5, text: "Very flattering cut. The tiered skirt flows beautifully when you walk." },
+                    { author: "Mia P.", rating: 4, text: "Received so many compliments on my vacation in Italy. My new go-to dress." },
+                    { author: "Avery C.", rating: 5, text: "Washes beautifully. True to size and incredibly elegant for brunch or dinner." },
+                    { author: "Harper L.", rating: 5, text: "Absolutely love the subtle V-neckline. So effortlessly romantic." }
+                ]
+            },
+            { 
+                id: 6, name: "Gold Hoop Earrings", price: 85.00, originalPrice: 110.00, rating: 4.9, reviews: 512, 
+                description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear.",
+                reviewsList: [
+                    { author: "Zoe M.", rating: 5, text: "I wear them every single day. They don't irritate my sensitive ears at all." },
+                    { author: "Nora D.", rating: 5, text: "Perfect size, not too heavy, and they look very expensive." },
+                    { author: "Riley S.", rating: 5, text: "Hasn't tarnished at all even after wearing them in the shower by accident." },
+                    { author: "Aria W.", rating: 4, text: "The perfect everyday hoop. The gold color is a beautiful, rich hue." },
+                    { author: "Evelyn K.", rating: 5, text: "Very secure clasp. I never worry about losing them. Highly recommend." }
+                ]
+            },
+            { 
+                id: 7, name: "Suede Pointed Mules", price: 155.00, originalPrice: 190.00, rating: 4.6, reviews: 134, 
+                description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort.",
+                reviewsList: [
+                    { author: "Layla F.", rating: 5, text: "Walked all day in these with zero blisters. The suede is buttery soft." },
+                    { author: "Aubrey G.", rating: 4, text: "Very chic pointed toe. It elongates the leg beautifully." },
+                    { author: "Penelope H.", rating: 5, text: "True to size. They elevate any simple jeans-and-tee outfit immediately." },
+                    { author: "Stella J.", rating: 4, text: "The slight heel is the perfect height. Great quality for the price." },
+                    { author: "Hannah V.", rating: 5, text: "Received so many compliments at the office. Very sleek and professional." }
+                ]
+            },
+            { 
+                id: 8, name: "Ribbed Knit Sweater", price: 125.00, originalPrice: 150.00, rating: 4.8, reviews: 298, 
+                description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness.",
+                reviewsList: [
+                    { author: "Samantha Q.", rating: 5, text: "Literally the coziest thing in my closet. It feels like wearing a warm hug." },
+                    { author: "Madison E.", rating: 5, text: "Love the slouchy, effortless look. It drapes beautifully off the shoulder." },
+                    { author: "Brooklyn R.", rating: 4, text: "Washes really well and hasn't pilled at all. Perfect thickness." },
+                    { author: "Allison B.", rating: 5, text: "I want it in every single color. The knit is so plush and high quality." },
+                    { author: "Savannah T.", rating: 5, text: "My absolute favorite fall staple. Looks great tucked into high-waisted trousers." }
+                ]
+            }
         ];
 
         // --- STATE ---
@@ -504,6 +584,22 @@
             
             const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-sm md:text-base"></i>').join('');
 
+            const reviewsHTML = p.reviewsList.map(review => {
+                const reviewStars = Array(5).fill(0).map((_, i) => 
+                    `<i class="${i < review.rating ? 'ph-fill' : 'ph'} ph-star text-[#D30000] text-sm"></i>`
+                ).join('');
+                return `
+                    <div class="border-b border-gray-100 pb-8 pt-8 last:border-0 last:pb-0">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-medium text-gray-900 tracking-wide">${review.author}</span>
+                            <div class="flex gap-[2px]">${reviewStars}</div>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest text-green-600 font-bold mb-3 block">Verified Buyer</span>
+                        <p class="text-gray-600 font-light leading-relaxed text-sm md:text-base">${review.text}</p>
+                    </div>
+                `;
+            }).join('');
+
             return `
                 <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
                     <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-12 transition-colors group">
@@ -572,6 +668,16 @@
                                     <span>Returns</span> <span>Within 30 Days</span>
                                 </p>
                             </div>
+                            
+                            <!-- Customer Reviews Section -->
+                            <div class="mt-16 pt-10 border-t border-gray-900">
+                                <h3 class="text-xl font-serif uppercase tracking-widest mb-2 text-gray-900">Customer Reviews</h3>
+                                <p class="text-sm text-gray-500 mb-6 tracking-wide">Based on ${p.reviews} reviews</p>
+                                <div>
+                                    ${reviewsHTML}
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
