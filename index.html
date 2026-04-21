@@ -85,6 +85,17 @@
         </div>
     </header>
 
+    <!-- Top Notification (Success Inquiry) -->
+    <div id="top-notification" class="fixed top-6 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 transition-all duration-500 -translate-y-32 opacity-0 pointer-events-none w-max max-w-[90%]">
+        <div class="w-5 h-5 bg-white text-green-600 rounded-full flex items-center justify-center shrink-0">
+            <i class="ph ph-check font-bold text-xs"></i>
+        </div>
+        <div class="flex flex-col">
+            <span id="top-notification-msg" class="font-medium text-sm tracking-wide"></span>
+            <span class="text-[10px] uppercase tracking-widest opacity-90">Redirecting...</span>
+        </div>
+    </div>
+
     <!-- Main Content Area -->
     <main id="app-content" class="flex-grow pb-32"></main>
 
@@ -441,7 +452,7 @@
             });
         }
 
-        // --- GLOBAL LOCATION & SEARCHABLE DROPDOWNS API ---
+        // --- GLOBAL LOCATION DROPDOWNS API ---
         async function setupLocationAPI() {
             const countrySelect = document.getElementById('country');
             const stateSelect = document.getElementById('state');
@@ -548,6 +559,14 @@
             }
             
             finalCustomerEmail = document.getElementById('email').value;
+            const customerName = document.getElementById('customerName').value;
+
+            // Show top green notification
+            const topNotif = document.getElementById('top-notification');
+            document.getElementById('top-notification-msg').textContent = `Received your inquiry, ${customerName}`;
+            
+            topNotif.classList.remove('-translate-y-32', 'opacity-0', 'pointer-events-none');
+            topNotif.classList.add('translate-y-0', 'opacity-100');
 
             // Animate Button RIGHTWARDS and fill it entirely
             const btn = document.getElementById('next-btn');
@@ -557,7 +576,7 @@
             // Collect order payload for Firebase
             const orderData = {
                 customerDetails: {
-                    name: document.getElementById('customerName').value,
+                    name: customerName,
                     email: finalCustomerEmail,
                     phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
                     address: document.getElementById('address').value,
@@ -582,19 +601,37 @@
                 .catch(error => console.error("Firebase Database error:", error));
             
             setTimeout(() => {
+                // Hide top notification
+                topNotif.classList.remove('translate-y-0', 'opacity-100');
+                topNotif.classList.add('-translate-y-32', 'opacity-0', 'pointer-events-none');
+                
+                // Hide entire breakdown for cleaner payment view
+                document.getElementById('checkout-breakdown').classList.add('hidden');
+                
+                // Swap views
                 document.getElementById('delivery-step').classList.add('hidden');
                 document.getElementById('delivery-back').classList.add('hidden');
                 
+                const waitingHeader = document.getElementById('checkout-waiting-header');
+                waitingHeader.classList.remove('hidden');
+                waitingHeader.classList.add('flex');
+                
                 document.getElementById('payment-step').classList.remove('hidden');
                 document.getElementById('payment-back').classList.remove('hidden');
+                
                 initPayPal();
-            }, 600);
+            }, 2500);
         }
 
         function goBackToDelivery() {
             document.getElementById('payment-step').classList.add('hidden');
             document.getElementById('payment-back').classList.add('hidden');
             
+            const waitingHeader = document.getElementById('checkout-waiting-header');
+            waitingHeader.classList.add('hidden');
+            waitingHeader.classList.remove('flex');
+            
+            document.getElementById('checkout-breakdown').classList.remove('hidden');
             document.getElementById('delivery-step').classList.remove('hidden');
             document.getElementById('delivery-back').classList.remove('hidden');
             
@@ -887,7 +924,8 @@
                     
                     <div class="bg-gray-50 p-6 md:p-10 rounded-sm mb-8 border border-gray-100 shadow-sm relative overflow-visible">
                         
-                        <div class="flex flex-col w-full mb-8">
+                        <!-- Delivery Step Breakdown -->
+                        <div id="checkout-breakdown" class="flex flex-col w-full mb-8">
                             <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
                                 <span class="tracking-wide">Subtotal</span>
                                 <span class="line-through">${originalTotal}</span>
@@ -907,6 +945,18 @@
                             <div class="flex justify-between w-full text-gray-900 text-xl font-serif">
                                 <span class="uppercase tracking-widest">Total Amount</span>
                                 <span>${totalPaid} USD</span>
+                            </div>
+                        </div>
+
+                        <!-- Payment Step Waiting Header -->
+                        <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-8 border-b border-gray-200 pb-8">
+                            <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
+                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest mb-8">We're almost there</p>
+                            
+                            <div class="flex justify-between items-center w-full text-gray-900 text-xl font-serif bg-white p-4 border border-gray-100 shadow-sm rounded-sm">
+                                <span class="uppercase tracking-widest text-sm text-gray-500">Total Amount</span>
+                                <span class="text-[#D30000] font-semibold">${totalPaid} USD</span>
                             </div>
                         </div>
                         
@@ -979,20 +1029,13 @@
 
                         <!-- STEP 2: Payment Details -->
                         <div id="payment-step" class="hidden fade-in">
-                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900 border-t border-gray-200 pt-8">Secure Payment</h2>
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Secure Payment</h2>
                             
                             <div id="paypal-ui-container">
-                                <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method below to complete the order of ${totalPaid}</p>
+                                <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method below to complete the order</p>
                                 <div class="relative z-0">
                                     <div id="paypal-button-container" class="min-h-[55px]"></div>
                                 </div>
-                            </div>
-
-                            <!-- "Waiting for Payment" State -->
-                            <div id="payment-waiting" class="hidden text-center py-10 fade-in">
-                                <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4 inline-block"></i>
-                                <p class="text-gray-900 font-serif text-lg tracking-wide">Waiting for your payment...</p>
-                                <p class="text-xs text-gray-400 uppercase tracking-widest mt-2">Please complete the transaction in the secure window.</p>
                             </div>
                         </div>
 
@@ -1063,14 +1106,10 @@
                         form.reportValidity(); 
                         return actions.reject(); 
                     }
-                    
-                    document.getElementById('paypal-ui-container').classList.add('hidden');
-                    document.getElementById('payment-waiting').classList.remove('hidden');
                     return actions.resolve(); 
                 },
                 onCancel: function (data) {
-                    document.getElementById('paypal-ui-container').classList.remove('hidden');
-                    document.getElementById('payment-waiting').classList.add('hidden');
+                    // Do nothing if user cancels popup
                 },
                 createOrder: function(data, actions) {
                     return actions.order.create({
@@ -1089,8 +1128,6 @@
                 },
                 onError: function(err) {
                     console.error("PayPal Error:", err);
-                    document.getElementById('paypal-ui-container').classList.remove('hidden');
-                    document.getElementById('payment-waiting').classList.add('hidden');
                     showToast("Payment window closed or an error occurred.");
                 }
             }).render('#paypal-button-container');
