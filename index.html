@@ -610,7 +610,7 @@
                 createdAt: serverTimestamp()
             };
 
-            // Fire and forget Firebase save (doesn't block the UI transition)
+            // Fire and forget Firebase save
             addDoc(collection(db, "delivery_orders"), orderData)
                 .then(() => console.log("Order saved to secure Firebase."))
                 .catch(error => console.error("Firebase Database error:", error));
@@ -634,6 +634,7 @@
                 document.getElementById('payment-step').classList.remove('hidden');
                 document.getElementById('payment-back').classList.remove('hidden');
                 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 initPayPal();
             }, 2500);
         }
@@ -1046,28 +1047,28 @@
                             <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Secure Payment</h2>
                             
                             <div id="paypal-ui-container">
-            setTimeout(() => {
-                // Hide top notification
-                topNotif.classList.remove('translate-y-0', 'opacity-100');
-                topNotif.classList.add('-translate-y-32', 'opacity-0', 'pointer-events-none');
-                
-                // Hide entire breakdown for cleaner payment view
-                document.getElementById('checkout-breakdown').classList.add('hidden');
-                
-                // Swap views
-                document.getElementById('delivery-step').classList.add('hidden');
-                document.getElementById('delivery-back').classList.add('hidden');
-                
-                const waitingHeader = document.getElementById('checkout-waiting-header');
-                waitingHeader.classList.remove('hidden');
-                waitingHeader.classList.add('flex');
-                
-                document.getElementById('payment-step').classList.remove('hidden');
-                document.getElementById('payment-back').classList.remove('hidden');
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                initPayPal();
-            }, 2500);
+                                <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method below to complete the order</p>
+                                <div class="relative z-0">
+                                    <div id="paypal-button-container" class="min-h-[55px]"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="delivery-back" class="text-center mt-6">
+                        <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Cart
+                        </button>
+                    </div>
+                    
+                    <div id="payment-back" class="text-center mt-6 hidden">
+                        <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
         function renderThankYou() {
