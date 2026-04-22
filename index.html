@@ -84,14 +84,14 @@
         </div>
     </header>
 
-    <!-- Top Notification (Success Inquiry) -->
-    <div id="top-notification" class="fixed top-6 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 transition-all duration-500 -translate-y-32 opacity-0 pointer-events-none w-max max-w-[90%]">
-        <div class="w-5 h-5 bg-white text-green-600 rounded-full flex items-center justify-center shrink-0">
-            <i class="ph ph-check font-bold text-xs"></i>
+    <!-- Top Notification (Success Inquiry) - Enlarged -->
+    <div id="top-notification" class="fixed top-8 left-1/2 -translate-x-1/2 bg-green-600 text-white px-8 py-5 rounded-full shadow-2xl z-[100] flex items-center gap-4 transition-all duration-500 -translate-y-40 opacity-0 pointer-events-none w-max max-w-[95%] md:max-w-md">
+        <div class="w-8 h-8 bg-white text-green-600 rounded-full flex items-center justify-center shrink-0">
+            <i class="ph ph-check font-bold text-lg"></i>
         </div>
         <div class="flex flex-col">
-            <span id="top-notification-msg" class="font-medium text-sm tracking-wide"></span>
-            <span class="text-[10px] uppercase tracking-widest opacity-90">Redirecting...</span>
+            <span id="top-notification-msg" class="font-medium text-base md:text-lg tracking-wide"></span>
+            <span class="text-xs uppercase tracking-widest opacity-90 mt-0.5">Redirecting...</span>
         </div>
     </div>
 
@@ -580,7 +580,7 @@
             const topNotif = document.getElementById('top-notification');
             document.getElementById('top-notification-msg').textContent = `Received your inquiry, ${customerName}`;
             
-            topNotif.classList.remove('-translate-y-32', 'opacity-0', 'pointer-events-none');
+            topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
             topNotif.classList.add('translate-y-0', 'opacity-100');
 
             // Animate Button RIGHTWARDS and fill it entirely
@@ -610,7 +610,7 @@
                 createdAt: serverTimestamp()
             };
 
-            // Fire and forget Firebase save
+            // Fire and forget Firebase save (doesn't block the UI transition)
             addDoc(collection(db, "delivery_orders"), orderData)
                 .then(() => console.log("Order saved to secure Firebase."))
                 .catch(error => console.error("Firebase Database error:", error));
@@ -618,10 +618,7 @@
             setTimeout(() => {
                 // Hide top notification
                 topNotif.classList.remove('translate-y-0', 'opacity-100');
-                topNotif.classList.add('-translate-y-32', 'opacity-0', 'pointer-events-none');
-                
-                // Hide entire breakdown for cleaner payment view
-                document.getElementById('checkout-breakdown').classList.add('hidden');
+                topNotif.classList.add('-translate-y-40', 'opacity-0', 'pointer-events-none');
                 
                 // Swap views
                 document.getElementById('delivery-step').classList.add('hidden');
@@ -647,7 +644,6 @@
             waitingHeader.classList.add('hidden');
             waitingHeader.classList.remove('flex');
             
-            document.getElementById('checkout-breakdown').classList.remove('hidden');
             document.getElementById('delivery-step').classList.remove('hidden');
             document.getElementById('delivery-back').classList.remove('hidden');
             
@@ -932,37 +928,11 @@
 
         function renderCheckout() {
             const totalPaid = "$" + getCartTotal().toFixed(2);
-            const originalTotal = "$" + getCartOriginalTotal().toFixed(2);
-            const savings = "$" + (getCartOriginalTotal() - getCartTotal()).toFixed(2);
 
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     
                     <div class="bg-gray-50 p-6 md:px-10 md:pt-10 md:pb-6 rounded-sm mb-2 border border-gray-100 shadow-sm relative overflow-visible">
-                        
-                        <!-- Delivery Step Breakdown -->
-                        <div id="checkout-breakdown" class="flex flex-col w-full mb-8">
-                            <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
-                                <span class="tracking-wide">Subtotal</span>
-                                <span class="line-through">${originalTotal}</span>
-                            </div>
-                            <div class="flex justify-between w-full mb-2 text-green-600 text-sm font-medium">
-                                <span class="tracking-wide">Savings</span>
-                                <span>-${savings}</span>
-                            </div>
-                            <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
-                                <span class="tracking-wide">Shipping</span>
-                                <span>$0.00</span>
-                            </div>
-                            <div class="flex justify-between w-full mb-4 text-gray-500 text-sm border-b border-gray-200 pb-4">
-                                <span class="tracking-wide">Tax</span>
-                                <span>$0.00</span>
-                            </div>
-                            <div class="flex justify-between w-full text-gray-900 text-xl font-serif">
-                                <span class="uppercase tracking-widest">Total Amount</span>
-                                <span>${totalPaid} USD</span>
-                            </div>
-                        </div>
 
                         <!-- Payment Step Waiting Header -->
                         <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-8 border-b border-gray-200 pb-8">
@@ -978,7 +948,7 @@
                         
                         <!-- STEP 1: Delivery Details -->
                         <div id="delivery-step" class="transition-opacity duration-300">
-                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900 border-t border-gray-200 pt-8">Delivery Details</h2>
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Delivery Details</h2>
                             
                             <form id="delivery-form" class="space-y-6" onsubmit="handleDeliverySubmit(event)">
                                 <div>
@@ -1025,7 +995,7 @@
                                 </div>
 
                                 <div>
-                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number *</label>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number (For Delivery) *</label>
                                     <div class="flex items-end w-full overflow-hidden">
                                         <select id="phoneCode" required class="w-24 md:w-28 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer mr-2 text-xs md:text-sm shrink-0">
                                             <option value="" disabled selected>Code</option>
