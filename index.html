@@ -14,6 +14,9 @@
     <!-- PayPal JS SDK (Using Client ID) -->
     <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
+    <!-- QR Code Generator JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
         
@@ -52,6 +55,12 @@
         
         /* Enforces strict 1-image per swipe */
         .snap-always { scroll-snap-stop: always; }
+        
+        /* Make generated QR code centered and responsive */
+        #qrcode-container img, #qrcode-container canvas {
+            margin: 0 auto;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-[#f8d7d7] relative overflow-x-hidden">
@@ -217,23 +226,13 @@
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
 
-        // --- CRYPTO MAP DATA ---
+        // --- CRYPTO MAP DATA (Only Addresses needed now) ---
         const CRYPTO_ASSETS = {
             'Ethereum': {
-                address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
-                tokens: {
-                    'USDT': 'image_d2b45f.png',
-                    'USDC': 'image_d2b1b7.png',
-                    'ETH': 'image_d2b47e.png'
-                }
+                address: '0x6Fc3681E7b082278dDab90686f048B04117C332c'
             },
             'Solana': {
-                address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy',
-                tokens: {
-                    'USDT': 'image_d2b498.png',
-                    'USDC': 'image_d2b1b1.png',
-                    'SOL': 'image_d2b4fc.png'
-                }
+                address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy'
             }
         };
 
@@ -466,7 +465,7 @@
             fomoHideTimeout = setTimeout(() => {
                 popup.classList.remove('translate-y-0', 'opacity-100');
                 popup.classList.add('translate-y-40', 'opacity-0');
-            }, 3000); // Reduced to 3 seconds display time for faster cycling
+            }, 3000); // 3 seconds display time
         }
 
         let fomoCount = 0;
@@ -582,6 +581,25 @@
             setTimeout(() => {
                 navigate('crypto-payment');
             }, 300);
+        }
+
+        // --- DYNAMIC QR CODE GENERATOR ---
+        function generateQRCode() {
+            const assetInfo = CRYPTO_ASSETS[cryptoNetwork];
+            const address = assetInfo.address;
+            const container = document.getElementById('qrcode-container');
+            
+            if (container) {
+                container.innerHTML = ''; // Clear any existing code
+                new QRCode(container, {
+                    text: address,
+                    width: 220,
+                    height: 220,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.M
+                });
+            }
         }
 
         // --- GLOBAL LOCATION DROPDOWNS API ---
@@ -840,6 +858,8 @@
                 setupLocationAPI(); 
             } else if (currentView === 'crypto-payment') {
                 content.innerHTML = renderCryptoPayment();
+                // Trigger QR Code generation after HTML is loaded into DOM
+                setTimeout(generateQRCode, 50); 
             } else if (currentView === 'thankyou') {
                 content.innerHTML = renderThankYou();
             }
@@ -1207,7 +1227,6 @@
         function renderCryptoPayment() {
             const assetInfo = CRYPTO_ASSETS[cryptoNetwork];
             const address = assetInfo.address;
-            const qrImage = assetInfo.tokens[cryptoToken];
             const amount = window.currentCryptoAmount;
 
             return `
@@ -1221,7 +1240,8 @@
                         <h2 class="text-2xl font-serif text-gray-900 mb-6">Send ${amount} ${cryptoToken}</h2>
                         
                         <div class="bg-gray-50 p-4 rounded-xl mb-6 inline-block border border-gray-100">
-                            <img src="${qrImage}" alt="${cryptoToken} QR Code" class="w-48 h-48 md:w-64 md:h-64 object-contain rounded-lg">
+                            <!-- Dynamic QR Code Container -->
+                            <div id="qrcode-container" class="w-48 h-48 md:w-64 md:h-64 flex items-center justify-center"></div>
                         </div>
                         
                         <div class="mb-8">
