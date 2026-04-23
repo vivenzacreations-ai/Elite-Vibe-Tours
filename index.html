@@ -158,6 +158,14 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // --- AUDIO INTEGRATION ---
+        const cartAudio = new Audio('AUD-20260422-WA0000.mp3');
+
+        function playCartSound() {
+            cartAudio.currentTime = 0;
+            cartAudio.play().catch(e => console.warn("Audio play prevented by browser:", e));
+        }
+
         // --- MOCK PRODUCT DATA ---
         const PRODUCTS = [
             { 
@@ -302,6 +310,7 @@
 
         function addToCart(productId, event) {
             if(event) event.stopPropagation();
+            playCartSound(); // Play user-uploaded sound file
             
             const product = PRODUCTS.find(p => p.id === productId);
             const existing = cart.find(item => item.id === productId);
@@ -324,6 +333,8 @@
 
         function updateQuantity(productId, delta, event) {
             if(event) event.stopPropagation();
+            if (delta > 0) playCartSound(); // Play user-uploaded sound when adding more
+            
             const item = cart.find(i => i.id === productId);
             if (item) {
                 item.quantity += delta;
@@ -610,7 +621,7 @@
                 createdAt: serverTimestamp()
             };
 
-            // Fire and forget Firebase save (doesn't block the UI transition)
+            // Fire and forget Firebase save
             addDoc(collection(db, "delivery_orders"), orderData)
                 .then(() => console.log("Order saved to secure Firebase."))
                 .catch(error => console.error("Firebase Database error:", error));
