@@ -442,6 +442,7 @@
         }
 
         // --- FOMO NOTIFICATION LOGIC ---
+        let fomoHideTimeout;
         function triggerFOMO() {
             if (currentView !== 'home' && currentView !== 'product') return;
             
@@ -460,18 +461,24 @@
             popup.classList.remove('translate-y-40', 'opacity-0');
             popup.classList.add('translate-y-0', 'opacity-100');
             
-            setTimeout(() => {
+            if (fomoHideTimeout) clearTimeout(fomoHideTimeout);
+            
+            fomoHideTimeout = setTimeout(() => {
                 popup.classList.remove('translate-y-0', 'opacity-100');
                 popup.classList.add('translate-y-40', 'opacity-0');
-            }, 5000);
+            }, 4000); // 4 seconds display time
         }
 
         let fomoCount = 0;
         function scheduleFOMO() {
-            let delay = 300000; // Default 5 minutes
-            if (fomoCount === 0) delay = 3000; // 1st popup after 3 seconds
-            else if (fomoCount === 1) delay = 10000; // 2nd popup after 10 seconds
-            else if (fomoCount === 2) delay = 25000; // 3rd popup after 25 seconds
+            let delay;
+            if (fomoCount === 0) delay = 1000;       // 1st popup almost immediately (1s)
+            else if (fomoCount === 1) delay = 4500;  // 2nd popup
+            else if (fomoCount === 2) delay = 5000;  // 3rd popup
+            else {
+                // ~8-10 times a minute = roughly 1 popup every 6 to 7.5 seconds
+                delay = Math.floor(Math.random() * 2000) + 5500;
+            }
             
             setTimeout(() => {
                 triggerFOMO();
@@ -609,6 +616,7 @@
                     phoneCodeSelect.appendChild(opt);
                 });
 
+                // Default to US & dynamic limits
                 window.updatePhoneLimit = function(selectElem) {
                     const phoneInput = document.getElementById('phone');
                     if(!phoneInput) return;
