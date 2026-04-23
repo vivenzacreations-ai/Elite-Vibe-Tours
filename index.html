@@ -14,9 +14,6 @@
     <!-- PayPal JS SDK (Using Client ID) -->
     <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
-    <!-- QR Code Generator JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
         
@@ -55,12 +52,6 @@
         
         /* Enforces strict 1-image per swipe */
         .snap-always { scroll-snap-stop: always; }
-        
-        /* Make generated QR code centered and responsive */
-        #qrcode-container img, #qrcode-container canvas {
-            margin: 0 auto;
-            border-radius: 8px;
-        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-[#f8d7d7] relative overflow-x-hidden">
@@ -93,7 +84,7 @@
         </div>
     </header>
 
-    <!-- Top Notification (Success Inquiry) - Enlarged -->
+    <!-- Top Notification (Success Inquiry) -->
     <div id="top-notification" class="fixed top-8 left-1/2 -translate-x-1/2 bg-green-600 text-white px-8 py-5 rounded-full shadow-2xl z-[100] flex items-center gap-4 transition-all duration-500 -translate-y-40 opacity-0 pointer-events-none w-max max-w-[95%] md:max-w-md">
         <div class="w-8 h-8 bg-white text-green-600 rounded-full flex items-center justify-center shrink-0">
             <i class="ph ph-check font-bold text-lg"></i>
@@ -148,14 +139,12 @@
     <!-- Crypto Payment Modal -->
     <div id="crypto-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
         <div class="bg-white max-w-sm w-full rounded-md shadow-2xl relative fade-in overflow-hidden">
-            
             <div class="p-6 border-b border-gray-100">
                 <button onclick="closeCryptoPopup()" class="absolute top-6 right-6 text-gray-400 hover:text-[#D30000] transition-colors">
                     <i class="ph ph-x text-xl"></i>
                 </button>
                 <h3 class="text-lg font-serif tracking-widest uppercase text-gray-900">Select Network & Token</h3>
             </div>
-
             <div id="crypto-modal-content" class="p-6">
                 <!-- Rendered dynamically via JS -->
             </div>
@@ -226,13 +215,23 @@
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
 
-        // --- CRYPTO MAP DATA (Only Addresses needed now) ---
+        // --- CRYPTO MAP DATA (With Exact Filenames) ---
         const CRYPTO_ASSETS = {
             'Ethereum': {
-                address: '0x6Fc3681E7b082278dDab90686f048B04117C332c'
+                address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
+                tokens: {
+                    'USDT': './eth-usdt.jpg',
+                    'USDC': './ethereum-usdc.jpg',
+                    'ETH': './ethereum-eth.png'
+                }
             },
             'Solana': {
-                address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy'
+                address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy',
+                tokens: {
+                    'USDT': './solana-usdt.jpg',
+                    'USDC': './solana-usdc.jpg',
+                    'SOL': './Solana-sol.jpg'
+                }
             }
         };
 
@@ -465,18 +464,17 @@
             fomoHideTimeout = setTimeout(() => {
                 popup.classList.remove('translate-y-0', 'opacity-100');
                 popup.classList.add('translate-y-40', 'opacity-0');
-            }, 3000); // 3 seconds display time
+            }, 3000); 
         }
 
         let fomoCount = 0;
         function scheduleFOMO() {
             let delay;
-            if (fomoCount === 0) delay = 1000;       // 1st popup very quickly (1s)
-            else if (fomoCount === 1) delay = 3500;  // 2nd popup (3.5s later)
-            else if (fomoCount === 2) delay = 4000;  // 3rd popup (4s later)
-            else if (fomoCount === 3) delay = 4500;  // 4th popup (4.5s later)
+            if (fomoCount === 0) delay = 1000;       
+            else if (fomoCount === 1) delay = 3500;  
+            else if (fomoCount === 2) delay = 4000;  
+            else if (fomoCount === 3) delay = 4500;  
             else {
-                // High frequency: roughly 1 popup every 5.5 to 7.5 seconds (~8-10 per min)
                 delay = Math.floor(Math.random() * 2000) + 5500;
             }
             
@@ -581,25 +579,6 @@
             setTimeout(() => {
                 navigate('crypto-payment');
             }, 300);
-        }
-
-        // --- DYNAMIC QR CODE GENERATOR ---
-        function generateQRCode() {
-            const assetInfo = CRYPTO_ASSETS[cryptoNetwork];
-            const address = assetInfo.address;
-            const container = document.getElementById('qrcode-container');
-            
-            if (container) {
-                container.innerHTML = ''; // Clear any existing code
-                new QRCode(container, {
-                    text: address,
-                    width: 220,
-                    height: 220,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.M
-                });
-            }
         }
 
         // --- GLOBAL LOCATION DROPDOWNS API ---
@@ -858,8 +837,6 @@
                 setupLocationAPI(); 
             } else if (currentView === 'crypto-payment') {
                 content.innerHTML = renderCryptoPayment();
-                // Trigger QR Code generation after HTML is loaded into DOM
-                setTimeout(generateQRCode, 50); 
             } else if (currentView === 'thankyou') {
                 content.innerHTML = renderThankYou();
             }
@@ -1227,6 +1204,7 @@
         function renderCryptoPayment() {
             const assetInfo = CRYPTO_ASSETS[cryptoNetwork];
             const address = assetInfo.address;
+            const qrImage = assetInfo.tokens[cryptoToken];
             const amount = window.currentCryptoAmount;
 
             return `
@@ -1240,8 +1218,7 @@
                         <h2 class="text-2xl font-serif text-gray-900 mb-6">Send ${amount} ${cryptoToken}</h2>
                         
                         <div class="bg-gray-50 p-4 rounded-xl mb-6 inline-block border border-gray-100">
-                            <!-- Dynamic QR Code Container -->
-                            <div id="qrcode-container" class="w-48 h-48 md:w-64 md:h-64 flex items-center justify-center"></div>
+                            <img src="${qrImage}" alt="${cryptoToken} QR Code" class="w-48 h-48 md:w-64 md:h-64 object-contain rounded-lg">
                         </div>
                         
                         <div class="mb-8">
