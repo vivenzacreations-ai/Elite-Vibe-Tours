@@ -6,7 +6,7 @@
     <title>Marina & Elévia</title>
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>a
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -15,7 +15,7 @@
     <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -58,10 +58,10 @@
 
     <!-- Header -->
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
-        <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-end w-full gap-4 md:gap-8">
+        <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between w-full gap-4">
             
-            <!-- Logo adjusted to the right & smaller -->
-            <h1 onclick="navigate('home')" class="text-xl md:text-2xl font-serif tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
+            <!-- Logo -->
+            <h1 onclick="navigate('home')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
                 <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
             </h1>
             
@@ -510,17 +510,22 @@
             }, 5000);
         }
 
+        let fomoCount = 0;
         function scheduleFOMO() {
-            // Randomized interval between 30 and 60 seconds
-            const delay = Math.floor(Math.random() * 30000) + 30000;
+            let delay = 300000; // Default 5 minutes
+            if (fomoCount === 0) delay = 3000; // 1st popup after 3 seconds
+            else if (fomoCount === 1) delay = 10000; // 2nd popup after 10 seconds
+            else if (fomoCount === 2) delay = 25000; // 3rd popup after 25 seconds
+            
             setTimeout(() => {
                 triggerFOMO();
+                fomoCount++;
                 scheduleFOMO();
             }, delay);
         }
 
-        // Initialize FOMO loop after initial 5 seconds
-        setTimeout(scheduleFOMO, 5000);
+        // Initialize FOMO loop
+        scheduleFOMO();
 
         // --- GLOBAL LOCATION DROPDOWNS API ---
         async function setupLocationAPI() {
@@ -1003,8 +1008,6 @@
 
         function renderCheckout() {
             const totalPaid = "$" + getCartTotal().toFixed(2);
-            const originalTotal = "$" + getCartOriginalTotal().toFixed(2);
-            const savings = "$" + (getCartOriginalTotal() - getCartTotal()).toFixed(2);
 
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
@@ -1025,35 +1028,7 @@
                         
                         <!-- STEP 1: Delivery Details -->
                         <div id="delivery-step" class="transition-opacity duration-300">
-                            
-                            <div id="checkout-breakdown" class="flex flex-col w-full mb-8">
-                                <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
-                                    <span class="tracking-wide">Original Subtotal</span>
-                                    <span class="line-through">${originalTotal}</span>
-                                </div>
-                                <div class="flex justify-between w-full mb-2 text-gray-800 text-sm font-medium">
-                                    <span class="tracking-wide">Price</span>
-                                    <span>${totalPaid}</span>
-                                </div>
-                                <div class="flex justify-between w-full mb-2 text-green-600 text-sm font-medium">
-                                    <span class="tracking-wide">Savings</span>
-                                    <span>-${savings}</span>
-                                </div>
-                                <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
-                                    <span class="tracking-wide">Shipping</span>
-                                    <span>$0.00</span>
-                                </div>
-                                <div class="flex justify-between w-full mb-4 text-gray-500 text-sm border-b border-gray-200 pb-4">
-                                    <span class="tracking-wide">Tax</span>
-                                    <span>$0.00</span>
-                                </div>
-                                <div class="flex justify-between w-full text-gray-900 text-xl font-serif">
-                                    <span class="uppercase tracking-widest">Total Amount</span>
-                                    <span>${totalPaid} USD</span>
-                                </div>
-                            </div>
-                            
-                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900 border-t border-gray-200 pt-8">Delivery Details</h2>
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Delivery Details</h2>
                             
                             <form id="delivery-form" class="space-y-6" onsubmit="handleDeliverySubmit(event)">
                                 <div>
