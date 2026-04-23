@@ -60,7 +60,7 @@
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
         <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between w-full gap-4">
             
-            <!-- Logo -->
+            <!-- Logo adjusted to the right & smaller -->
             <h1 onclick="navigate('home')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
                 <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
             </h1>
@@ -136,6 +136,23 @@
         </div>
     </div>
 
+    <!-- Crypto Payment Modal -->
+    <div id="crypto-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
+        <div class="bg-white max-w-sm w-full rounded-md shadow-2xl relative fade-in overflow-hidden">
+            
+            <div class="p-6 border-b border-gray-100">
+                <button onclick="closeCryptoPopup()" class="absolute top-6 right-6 text-gray-400 hover:text-[#D30000] transition-colors">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+                <h3 class="text-lg font-serif tracking-widest uppercase text-gray-900">Select Network & Token</h3>
+            </div>
+
+            <div id="crypto-modal-content" class="p-6">
+                <!-- Rendered dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
     <!-- Support Redirect Loading Overlay -->
     <div id="help-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center z-[60] transition-opacity duration-300 opacity-0 pointer-events-none hidden">
         <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-6"></i>
@@ -166,7 +183,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // User provided Firebase Config
         const firebaseConfig = {
           apiKey: "AIzaSyD4qy5YuvvNyghccthEOm-D3DaCgB3LNbk",
           authDomain: "form-info-221b0.firebaseapp.com",
@@ -189,94 +205,14 @@
 
         // --- MOCK PRODUCT DATA ---
         const PRODUCTS = [
-            { 
-                id: 1, name: "Silk Crepe Blouse", price: 145.00, originalPrice: 180.00, rating: 4.9, reviews: 342, 
-                description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening.",
-                reviewsList: [
-                    { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The silk is of the highest quality and it drapes beautifully. A wardrobe staple." },
-                    { author: "Sarah M.", rating: 5, text: "I've worn this to work and to dinner dates. Extremely versatile and feels luxurious against the skin." },
-                    { author: "Jessica T.", rating: 4, text: "Beautiful blouse. The button detailing adds such a chic touch. Looks far more expensive than it is." },
-                    { author: "Amanda C.", rating: 5, text: "Fits perfectly. I get compliments every time I wear it. I want it in every color." },
-                    { author: "Chloe R.", rating: 5, text: "Worth every penny. The craftsmanship is flawless, no loose threads anywhere." }
-                ]
-            },
-            { 
-                id: 2, name: "Wide-Leg Trousers", price: 180.00, originalPrice: 220.00, rating: 4.8, reviews: 215, 
-                description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride.",
-                reviewsList: [
-                    { author: "Michelle K.", rating: 5, text: "Flawless fit. They make me look so tall and elegant. Highly recommend!" },
-                    { author: "Lauren B.", rating: 5, text: "The wool blend is lightweight but beautifully structured. Perfect for the office." },
-                    { author: "Diana P.", rating: 4, text: "Best trousers I own. The front pleats lay perfectly flat." },
-                    { author: "Rachel W.", rating: 5, text: "Elegant and incredibly comfortable. They drape exactly like the photos show." },
-                    { author: "Sophia L.", rating: 5, text: "Incredible tailoring. They hug the waist perfectly while remaining flowy at the bottom." }
-                ]
-            },
-            { 
-                id: 3, name: "Cashmere Wrap Coat", price: 395.00, originalPrice: 450.00, rating: 5.0, reviews: 189, 
-                description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication.",
-                reviewsList: [
-                    { author: "Olivia S.", rating: 5, text: "A literal dream coat. It is so soft it feels like a cloud." },
-                    { author: "Emily D.", rating: 5, text: "Incredibly warm but not bulky at all. It elevates literally any outfit I throw it over." },
-                    { author: "Claire H.", rating: 5, text: "The wrap style is very flattering. The cashmere quality is comparable to designer coats twice the price." },
-                    { author: "Victoria G.", rating: 5, text: "I feel like a million bucks wearing this. Highly recommend investing in this piece." },
-                    { author: "Natasha R.", rating: 5, text: "Stunning. The oversized lapels give it such a chic, model-off-duty vibe." }
-                ]
-            },
-            { 
-                id: 4, name: "Leather Crossbody", price: 210.00, originalPrice: 260.00, rating: 4.7, reviews: 420, 
-                description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap.",
-                reviewsList: [
-                    { author: "Isabella F.", rating: 5, text: "The leather smells amazing and is so buttery. Perfect size for my everyday essentials." },
-                    { author: "Megan J.", rating: 4, text: "Hardware feels very premium. The strap is easily adjustable." },
-                    { author: "Grace K.", rating: 5, text: "A timeless piece. I get stopped and asked where my bag is from constantly." },
-                    { author: "Taylor B.", rating: 5, text: "Goes with literally every outfit I own. It holds its shape perfectly." },
-                    { author: "Haley N.", rating: 4, text: "Beautiful minimalist design. The magnetic closure is very strong and secure." }
-                ]
-            },
-            { 
-                id: 5, name: "Linen Midi Dress", price: 165.00, originalPrice: 195.00, rating: 4.8, reviews: 156, 
-                description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt.",
-                reviewsList: [
-                    { author: "Emma T.", rating: 5, text: "So breezy and comfortable for summer. The linen is thick and high quality, not see-through at all." },
-                    { author: "Lily A.", rating: 5, text: "Very flattering cut. The tiered skirt flows beautifully when you walk." },
-                    { author: "Mia P.", rating: 4, text: "Received so many compliments on my vacation in Italy. My new go-to dress." },
-                    { author: "Avery C.", rating: 5, text: "Washes beautifully. True to size and incredibly elegant for brunch or dinner." },
-                    { author: "Harper L.", rating: 5, text: "Absolutely love the subtle V-neckline. So effortlessly romantic." }
-                ]
-            },
-            { 
-                id: 6, name: "Gold Hoop Earrings", price: 85.00, originalPrice: 110.00, rating: 4.9, reviews: 512, 
-                description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear.",
-                reviewsList: [
-                    { author: "Zoe M.", rating: 5, text: "I wear them every single day. They don't irritate my sensitive ears at all." },
-                    { author: "Nora D.", rating: 5, text: "Perfect size, not too heavy, and they look very expensive." },
-                    { author: "Riley S.", rating: 5, text: "Hasn't tarnished at all even after wearing them in the shower by accident." },
-                    { author: "Aria W.", rating: 4, text: "The perfect everyday hoop. The gold color is a beautiful, rich hue." },
-                    { author: "Evelyn K.", rating: 5, text: "Very secure clasp. I never worry about losing them. Highly recommend." }
-                ]
-            },
-            { 
-                id: 7, name: "Suede Pointed Mules", price: 155.00, originalPrice: 190.00, rating: 4.6, reviews: 134, 
-                description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort.",
-                reviewsList: [
-                    { author: "Layla F.", rating: 5, text: "Walked all day in these with zero blisters. The suede is buttery soft." },
-                    { author: "Aubrey G.", rating: 4, text: "Very chic pointed toe. It elongates the leg beautifully." },
-                    { author: "Penelope H.", rating: 5, text: "True to size. They elevate any simple jeans-and-tee outfit immediately." },
-                    { author: "Stella J.", rating: 4, text: "The slight heel is the perfect height. Great quality for the price." },
-                    { author: "Hannah V.", rating: 5, text: "Received so many compliments at the office. Very sleek and professional." }
-                ]
-            },
-            { 
-                id: 8, name: "Ribbed Knit Sweater", price: 125.00, originalPrice: 150.00, rating: 4.8, reviews: 298, 
-                description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness.",
-                reviewsList: [
-                    { author: "Samantha Q.", rating: 5, text: "Literally the coziest thing in my closet. It feels like wearing a warm hug." },
-                    { author: "Madison E.", rating: 5, text: "Love the slouchy, effortless look. It drapes beautifully off the shoulder." },
-                    { author: "Brooklyn R.", rating: 4, text: "Washes really well and hasn't pilled at all. Perfect thickness." },
-                    { author: "Allison B.", rating: 5, text: "I want it in every single color. The knit is so plush and high quality." },
-                    { author: "Savannah T.", rating: 5, text: "My absolute favorite fall staple. Looks great tucked into high-waisted trousers." }
-                ]
-            }
+            { id: 1, name: "Silk Crepe Blouse", price: 145.00, originalPrice: 180.00, rating: 4.9, reviews: 342, description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening.", reviewsList: [{ author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The silk is of the highest quality and it drapes beautifully. A wardrobe staple." }, { author: "Sarah M.", rating: 5, text: "I've worn this to work and to dinner dates. Extremely versatile and feels luxurious against the skin." }, { author: "Jessica T.", rating: 4, text: "Beautiful blouse. The button detailing adds such a chic touch. Looks far more expensive than it is." }, { author: "Amanda C.", rating: 5, text: "Fits perfectly. I get compliments every time I wear it. I want it in every color." }, { author: "Chloe R.", rating: 5, text: "Worth every penny. The craftsmanship is flawless, no loose threads anywhere." }] },
+            { id: 2, name: "Wide-Leg Trousers", price: 180.00, originalPrice: 220.00, rating: 4.8, reviews: 215, description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride.", reviewsList: [{ author: "Michelle K.", rating: 5, text: "Flawless fit. They make me look so tall and elegant. Highly recommend!" }, { author: "Lauren B.", rating: 5, text: "The wool blend is lightweight but beautifully structured. Perfect for the office." }, { author: "Diana P.", rating: 4, text: "Best trousers I own. The front pleats lay perfectly flat." }, { author: "Rachel W.", rating: 5, text: "Elegant and incredibly comfortable. They drape exactly like the photos show." }, { author: "Sophia L.", rating: 5, text: "Incredible tailoring. They hug the waist perfectly while remaining flowy at the bottom." }] },
+            { id: 3, name: "Cashmere Wrap Coat", price: 395.00, originalPrice: 450.00, rating: 5.0, reviews: 189, description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication.", reviewsList: [{ author: "Olivia S.", rating: 5, text: "A literal dream coat. It is so soft it feels like a cloud." }, { author: "Emily D.", rating: 5, text: "Incredibly warm but not bulky at all. It elevates literally any outfit I throw it over." }, { author: "Claire H.", rating: 5, text: "The wrap style is very flattering. The cashmere quality is comparable to designer coats twice the price." }, { author: "Victoria G.", rating: 5, text: "I feel like a million bucks wearing this. Highly recommend investing in this piece." }, { author: "Natasha R.", rating: 5, text: "Stunning. The oversized lapels give it such a chic, model-off-duty vibe." }] },
+            { id: 4, name: "Leather Crossbody", price: 210.00, originalPrice: 260.00, rating: 4.7, reviews: 420, description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap.", reviewsList: [{ author: "Isabella F.", rating: 5, text: "The leather smells amazing and is so buttery. Perfect size for my everyday essentials." }, { author: "Megan J.", rating: 4, text: "Hardware feels very premium. The strap is easily adjustable." }, { author: "Grace K.", rating: 5, text: "A timeless piece. I get stopped and asked where my bag is from constantly." }, { author: "Taylor B.", rating: 5, text: "Goes with literally every outfit I own. It holds its shape perfectly." }, { author: "Haley N.", rating: 4, text: "Beautiful minimalist design. The magnetic closure is very strong and secure." }] },
+            { id: 5, name: "Linen Midi Dress", price: 165.00, originalPrice: 195.00, rating: 4.8, reviews: 156, description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt.", reviewsList: [{ author: "Emma T.", rating: 5, text: "So breezy and comfortable for summer. The linen is thick and high quality, not see-through at all." }, { author: "Lily A.", rating: 5, text: "Very flattering cut. The tiered skirt flows beautifully when you walk." }, { author: "Mia P.", rating: 4, text: "Received so many compliments on my vacation in Italy. My new go-to dress." }, { author: "Avery C.", rating: 5, text: "Washes beautifully. True to size and incredibly elegant for brunch or dinner." }, { author: "Harper L.", rating: 5, text: "Absolutely love the subtle V-neckline. So effortlessly romantic." }] },
+            { id: 6, name: "Gold Hoop Earrings", price: 85.00, originalPrice: 110.00, rating: 4.9, reviews: 512, description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear.", reviewsList: [{ author: "Zoe M.", rating: 5, text: "I wear them every single day. They don't irritate my sensitive ears at all." }, { author: "Nora D.", rating: 5, text: "Perfect size, not too heavy, and they look very expensive." }, { author: "Riley S.", rating: 5, text: "Hasn't tarnished at all even after wearing them in the shower by accident." }, { author: "Aria W.", rating: 4, text: "The perfect everyday hoop. The gold color is a beautiful, rich hue." }, { author: "Evelyn K.", rating: 5, text: "Very secure clasp. I never worry about losing them. Highly recommend." }] },
+            { id: 7, name: "Suede Pointed Mules", price: 155.00, originalPrice: 190.00, rating: 4.6, reviews: 134, description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort.", reviewsList: [{ author: "Layla F.", rating: 5, text: "Walked all day in these with zero blisters. The suede is buttery soft." }, { author: "Aubrey G.", rating: 4, text: "Very chic pointed toe. It elongates the leg beautifully." }, { author: "Penelope H.", rating: 5, text: "True to size. They elevate any simple jeans-and-tee outfit immediately." }, { author: "Stella J.", rating: 4, text: "The slight heel is the perfect height. Great quality for the price." }, { author: "Hannah V.", rating: 5, text: "Received so many compliments at the office. Very sleek and professional." }] },
+            { id: 8, name: "Ribbed Knit Sweater", price: 125.00, originalPrice: 150.00, rating: 4.8, reviews: 298, description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness.", reviewsList: [{ author: "Samantha Q.", rating: 5, text: "Literally the coziest thing in my closet. It feels like wearing a warm hug." }, { author: "Madison E.", rating: 5, text: "Love the slouchy, effortless look. It drapes beautifully off the shoulder." }, { author: "Brooklyn R.", rating: 4, text: "Washes really well and hasn't pilled at all. Perfect thickness." }, { author: "Allison B.", rating: 5, text: "I want it in every single color. The knit is so plush and high quality." }, { author: "Savannah T.", rating: 5, text: "My absolute favorite fall staple. Looks great tucked into high-waisted trousers." }] }
         ];
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
@@ -287,6 +223,12 @@
         let selectedProductId = null;
         let toastTimeout;
         let finalCustomerEmail = '';
+        
+        // Crypto State
+        let cryptoNetwork = 'Ethereum';
+        let cryptoToken = 'ETH';
+        // Mock static exchange rates relative to USD for display purposes
+        const CRYPTO_RATES = { 'ETH': 3100, 'SOL': 140, 'USDT': 1, 'USDC': 1 };
 
         window.addEventListener('resize', () => { updateCartUI(); });
 
@@ -302,21 +244,15 @@
         function handleHelpClick() {
             const overlay = document.getElementById('help-overlay');
             overlay.classList.remove('hidden');
-            
             setTimeout(() => {
                 overlay.classList.remove('opacity-0', 'pointer-events-none');
                 overlay.classList.add('opacity-100', 'pointer-events-auto');
             }, 10);
-
             setTimeout(() => {
                 window.location.href = "mailto:marina.elevia@gmail.com";
-                
                 overlay.classList.remove('opacity-100', 'pointer-events-auto');
                 overlay.classList.add('opacity-0', 'pointer-events-none');
-                
-                setTimeout(() => {
-                    overlay.classList.add('hidden');
-                }, 300);
+                setTimeout(() => { overlay.classList.add('hidden'); }, 300);
             }, 3000);
         }
 
@@ -333,7 +269,7 @@
 
         function addToCart(productId, event) {
             if(event) event.stopPropagation();
-            playCartSound(); // Play user-uploaded sound file
+            playCartSound(); 
             
             const product = PRODUCTS.find(p => p.id === productId);
             const existing = cart.find(item => item.id === productId);
@@ -356,7 +292,7 @@
 
         function updateQuantity(productId, delta, event) {
             if(event) event.stopPropagation();
-            if (delta > 0) playCartSound(); // Play user-uploaded sound when adding more
+            if (delta > 0) playCartSound(); 
             
             const item = cart.find(i => i.id === productId);
             if (item) {
@@ -524,8 +460,101 @@
             }, delay);
         }
 
-        // Initialize FOMO loop
         scheduleFOMO();
+
+        // --- CRYPTO PAYMENT LOGIC ---
+        function openCryptoPopup() {
+            cryptoNetwork = 'Ethereum';
+            cryptoToken = 'ETH';
+            
+            const modal = document.getElementById('crypto-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100');
+            }, 10);
+            
+            renderCryptoModal();
+        }
+
+        function closeCryptoPopup() {
+            const modal = document.getElementById('crypto-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function setCryptoNetwork(network) {
+            cryptoNetwork = network;
+            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL'; // Default tokens per network
+            renderCryptoModal();
+        }
+
+        function setCryptoToken(token) {
+            cryptoToken = token;
+            renderCryptoModal();
+        }
+
+        function renderCryptoModal() {
+            const container = document.getElementById('crypto-modal-content');
+            if (!container) return;
+
+            const totalDueFiat = getCartTotal();
+            // Calculate crypto amount
+            const exchangeRate = CRYPTO_RATES[cryptoToken] || 1;
+            const cryptoAmount = (totalDueFiat / exchangeRate).toFixed(cryptoToken.includes('USD') ? 2 : 4);
+            
+            // Available tokens depend on network
+            const tokens = cryptoNetwork === 'Ethereum' 
+                ? ['USDT', 'USDC', 'ETH'] 
+                : ['USDT', 'USDC', 'SOL'];
+
+            container.innerHTML = `
+                <!-- Network Selection Tabs -->
+                <div class="flex gap-2 p-1 bg-gray-100 rounded-sm mb-6">
+                    <button onclick="setCryptoNetwork('Ethereum')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Ethereum' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Ethereum</button>
+                    <button onclick="setCryptoNetwork('Solana')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Solana' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Solana</button>
+                </div>
+
+                <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-3">Select Token</p>
+                
+                <!-- Token List -->
+                <div class="space-y-2 mb-8">
+                    ${tokens.map(token => `
+                        <div onclick="setCryptoToken('${token}')" class="flex items-center justify-between p-4 border ${cryptoToken === token ? 'border-[#D30000] bg-red-50/50' : 'border-gray-200 hover:border-gray-300'} cursor-pointer transition-colors rounded-sm">
+                            <div class="flex items-center gap-3">
+                                <i class="ph ph-coin text-xl ${cryptoToken === token ? 'text-[#D30000]' : 'text-gray-400'}"></i>
+                                <span class="font-medium text-gray-900">${token} <span class="text-gray-400 text-xs font-light ml-1">(${cryptoNetwork})</span></span>
+                            </div>
+                            ${cryptoToken === token ? '<i class="ph-fill ph-check-circle text-[#D30000] text-lg"></i>' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- Total Amount Summary -->
+                <div class="flex justify-between items-end mb-6 pt-4 border-t border-gray-100">
+                    <span class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Total Due</span>
+                    <div class="text-right">
+                        <div class="text-2xl font-serif text-gray-900">${cryptoAmount} ${cryptoToken}</div>
+                        <div class="text-xs text-gray-400 font-light tracking-wide mt-1">≈ $${totalDueFiat.toFixed(2)} USD</div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button onclick="processCryptoPayment()" class="w-full bg-gray-900 text-white uppercase tracking-widest text-xs font-semibold py-4 hover:bg-black transition-colors shadow-lg">
+                    Pay with ${cryptoAmount} ${cryptoToken}
+                </button>
+            `;
+        }
+
+        function processCryptoPayment() {
+            // Close the modal
+            closeCryptoPopup();
+            // Show placeholder toast (Logic to be implemented later)
+            showToast(`Crypto payment via ${cryptoToken} on ${cryptoNetwork} to be defined later.`);
+        }
 
         // --- GLOBAL LOCATION DROPDOWNS API ---
         async function setupLocationAPI() {
@@ -560,7 +589,6 @@
                     phoneCodeSelect.appendChild(opt);
                 });
 
-                // Default to US & dynamic limits
                 window.updatePhoneLimit = function(selectElem) {
                     const phoneInput = document.getElementById('phone');
                     if(!phoneInput) return;
@@ -842,7 +870,6 @@
                         
                         <!-- Premium CSS Slider -->
                         <div class="flex-1 w-full relative group">
-                            <!-- Added snap-always to force 1 image per scroll -->
                             <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm" onscroll="updateSliderDots(this)">
                                 <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center snap-always flex items-center justify-center relative">
                                    <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 1</span>
@@ -1101,6 +1128,17 @@
                                 <div class="relative z-0">
                                     <div id="paypal-button-container" class="min-h-[55px]"></div>
                                 </div>
+
+                                <!-- Crypto Payment Divider & Button -->
+                                <div class="flex items-center justify-center space-x-4 my-6">
+                                    <hr class="flex-grow border-gray-200">
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">OR</span>
+                                    <hr class="flex-grow border-gray-200">
+                                </div>
+
+                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md">
+                                    <i class="ph ph-coin text-xl"></i> Pay with Crypto
+                                </button>
                             </div>
                         </div>
 
@@ -1217,6 +1255,11 @@
         window.handleDeliverySubmit = handleDeliverySubmit;
         window.goBackToDelivery = goBackToDelivery;
         window.closeModal = closeModal;
+        window.openCryptoPopup = openCryptoPopup;
+        window.closeCryptoPopup = closeCryptoPopup;
+        window.setCryptoNetwork = setCryptoNetwork;
+        window.setCryptoToken = setCryptoToken;
+        window.processCryptoPayment = processCryptoPayment;
 
         // Initialize App
         updateCartUI();
