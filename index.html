@@ -217,6 +217,26 @@
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
 
+        // --- CRYPTO MAP DATA ---
+        const CRYPTO_ASSETS = {
+            'Ethereum': {
+                address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
+                tokens: {
+                    'USDT': 'image_d2b45f.png',
+                    'USDC': 'image_d2b1b7.png',
+                    'ETH': 'image_d2b47e.png'
+                }
+            },
+            'Solana': {
+                address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy',
+                tokens: {
+                    'USDT': 'image_d2b498.png',
+                    'USDC': 'image_d2b1b1.png',
+                    'SOL': 'image_d2b4fc.png'
+                }
+            }
+        };
+
         // --- STATE ---
         let cart = [];
         let currentView = 'home';
@@ -227,7 +247,7 @@
         // Crypto State
         let cryptoNetwork = 'Ethereum';
         let cryptoToken = 'ETH';
-        // Mock static exchange rates relative to USD for display purposes
+        window.currentCryptoAmount = 0;
         const CRYPTO_RATES = { 'ETH': 3100, 'SOL': 140, 'USDT': 1, 'USDC': 1 };
 
         window.addEventListener('resize', () => { updateCartUI(); });
@@ -380,7 +400,7 @@
             const pill = document.getElementById('cart-pill');
             const pillText = document.getElementById('cart-pill-text');
             
-            if (count > 0 && currentView !== 'cart' && currentView !== 'checkout' && currentView !== 'thankyou') {
+            if (count > 0 && currentView !== 'cart' && currentView !== 'checkout' && currentView !== 'thankyou' && currentView !== 'crypto-payment') {
                 if (currentView === 'product' && window.innerWidth >= 1024) {
                     pill.classList.add('translate-y-full');
                 } else {
@@ -502,11 +522,11 @@
             if (!container) return;
 
             const totalDueFiat = getCartTotal();
-            // Calculate crypto amount
             const exchangeRate = CRYPTO_RATES[cryptoToken] || 1;
-            const cryptoAmount = (totalDueFiat / exchangeRate).toFixed(cryptoToken.includes('USD') ? 2 : 4);
+            const cryptoAmountRaw = (totalDueFiat / exchangeRate).toFixed(cryptoToken.includes('USD') ? 2 : 4);
             
-            // Available tokens depend on network
+            window.currentCryptoAmount = cryptoAmountRaw;
+
             const tokens = cryptoNetwork === 'Ethereum' 
                 ? ['USDT', 'USDC', 'ETH'] 
                 : ['USDT', 'USDC', 'SOL'];
@@ -537,23 +557,23 @@
                 <div class="flex justify-between items-end mb-6 pt-4 border-t border-gray-100">
                     <span class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Total Due</span>
                     <div class="text-right">
-                        <div class="text-2xl font-serif text-gray-900">${cryptoAmount} ${cryptoToken}</div>
+                        <div class="text-2xl font-serif text-gray-900">${window.currentCryptoAmount} ${cryptoToken}</div>
                         <div class="text-xs text-gray-400 font-light tracking-wide mt-1">≈ $${totalDueFiat.toFixed(2)} USD</div>
                     </div>
                 </div>
 
                 <!-- Action Button -->
                 <button onclick="processCryptoPayment()" class="w-full bg-gray-900 text-white uppercase tracking-widest text-xs font-semibold py-4 hover:bg-black transition-colors shadow-lg">
-                    Pay with ${cryptoAmount} ${cryptoToken}
+                    Pay with ${window.currentCryptoAmount} ${cryptoToken}
                 </button>
             `;
         }
 
         function processCryptoPayment() {
-            // Close the modal
             closeCryptoPopup();
-            // Show placeholder toast (Logic to be implemented later)
-            showToast(`Crypto payment via ${cryptoToken} on ${cryptoNetwork} to be defined later.`);
+            setTimeout(() => {
+                navigate('crypto-payment');
+            }, 300);
         }
 
         // --- GLOBAL LOCATION DROPDOWNS API ---
@@ -780,6 +800,20 @@
                 navigate('home');
             }, 300);
         }
+        
+        function copyText(text, label) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(label + " copied to clipboard!");
+            } catch (err) {
+                showToast("Failed to copy.");
+            }
+            document.body.removeChild(textArea);
+        }
 
         // --- RENDERING ---
         function render() {
@@ -795,6 +829,8 @@
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
                 setupLocationAPI(); 
+            } else if (currentView === 'crypto-payment') {
+                content.innerHTML = renderCryptoPayment();
             } else if (currentView === 'thankyou') {
                 content.innerHTML = renderThankYou();
             }
@@ -1159,6 +1195,62 @@
             `;
         }
 
+        function renderCryptoPayment() {
+            const assetInfo = CRYPTO_ASSETS[cryptoNetwork];
+            const address = assetInfo.address;
+            const qrImage = assetInfo.tokens[cryptoToken];
+            const amount = window.currentCryptoAmount;
+
+            return `
+                <div class="max-w-md mx-auto py-12 px-4 fade-in">
+                    <button onclick="navigate('checkout')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Checkout
+                    </button>
+                    
+                    <div class="bg-white p-6 md:p-8 rounded-sm border border-gray-100 shadow-xl text-center">
+                        <h2 class="text-2xl font-serif text-gray-900 mb-6">Send ${amount} ${cryptoToken}</h2>
+                        
+                        <div class="bg-gray-50 p-4 rounded-xl mb-6 inline-block border border-gray-100">
+                            <img src="${qrImage}" alt="${cryptoToken} QR Code" class="w-48 h-48 md:w-64 md:h-64 object-contain rounded-lg">
+                        </div>
+                        
+                        <div class="mb-8">
+                            <p class="text-xs tracking-widest uppercase text-gray-500 mb-1">Token to Send</p>
+                            <p class="text-xl font-bold text-gray-900">${cryptoToken} <span class="text-sm font-normal text-gray-500">(${cryptoNetwork})</span></p>
+                        </div>
+                        
+                        <div class="space-y-4 text-left">
+                            <div>
+                                <p class="text-xs tracking-widest uppercase text-gray-500 mb-2">Send to this address</p>
+                                <div class="flex items-center justify-between bg-gray-50 border border-gray-200 p-3 rounded-sm">
+                                    <span class="text-sm text-gray-800 font-mono truncate mr-2">${address}</span>
+                                    <button onclick="copyText('${address}', 'Address')" class="text-gray-500 hover:text-[#D30000] transition-colors shrink-0">
+                                        <i class="ph ph-copy text-xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p class="text-xs tracking-widest uppercase text-gray-500 mb-2">Amount to be received</p>
+                                <div class="flex items-center justify-between bg-gray-50 border border-gray-200 p-3 rounded-sm">
+                                    <span class="text-sm text-gray-800 font-mono mr-2">${amount}</span>
+                                    <button onclick="copyText('${amount}', 'Amount')" class="text-gray-500 hover:text-[#D30000] transition-colors shrink-0">
+                                        <i class="ph ph-copy text-xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-100 flex items-start gap-3 text-left">
+                            <i class="ph-fill ph-info text-[#D30000] text-lg shrink-0 mt-0.5"></i>
+                            <p class="text-xs text-gray-500 leading-relaxed">Please ensure you are sending <b class="text-gray-900">${cryptoToken}</b> strictly on the <b class="text-gray-900">${cryptoNetwork}</b> network. Sending to the wrong network may result in permanent loss of funds.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         function renderThankYou() {
             // Calculate Date 10 days from now
             const deliveryDate = new Date();
@@ -1260,6 +1352,7 @@
         window.setCryptoNetwork = setCryptoNetwork;
         window.setCryptoToken = setCryptoToken;
         window.processCryptoPayment = processCryptoPayment;
+        window.copyText = copyText;
 
         // Initialize App
         updateCartUI();
