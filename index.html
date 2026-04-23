@@ -6,7 +6,7 @@
     <title>Marina & Elévia</title>
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>a
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -92,6 +92,27 @@
         <div class="flex flex-col">
             <span id="top-notification-msg" class="font-medium text-base md:text-lg tracking-wide"></span>
             <span class="text-xs uppercase tracking-widest opacity-90 mt-0.5">Redirecting...</span>
+        </div>
+    </div>
+
+    <!-- FOMO Notification Popup -->
+    <div id="fomo-popup" class="fixed bottom-24 left-4 md:left-6 z-50 bg-white/95 backdrop-blur shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 rounded-full p-1.5 pr-5 flex items-center gap-3 transition-all duration-700 translate-y-40 opacity-0 pointer-events-none max-w-[90%] md:max-w-sm">
+        <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
+            <i class="ph ph-bag text-xl text-gray-400"></i>
+        </div>
+        <div class="flex flex-col py-1">
+            <div class="flex items-center gap-2 mb-0.5">
+                <span id="fomo-name" class="text-[11px] font-semibold text-gray-900"></span>
+                <span class="text-[9px] text-gray-400 font-medium">just now</span>
+            </div>
+            <span id="fomo-action" class="text-[10px] text-gray-600 leading-tight line-clamp-1"></span>
+            <div class="flex items-center gap-1 mt-1">
+                <i class="ph-fill ph-check-circle text-green-500 text-[10px]"></i>
+                <span class="text-[8px] text-green-600 uppercase tracking-widest font-bold">Verified by system</span>
+            </div>
+        </div>
+        <div class="ml-auto pl-3 border-l border-gray-100 flex items-center h-full">
+            <span id="fomo-price" class="text-sm font-serif font-medium text-[#D30000]"></span>
         </div>
     </div>
 
@@ -257,6 +278,8 @@
                 ]
             }
         ];
+
+        const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
 
         // --- STATE ---
         let cart = [];
@@ -461,6 +484,43 @@
                 dot.classList.toggle('bg-gray-300', i !== index);
             });
         }
+
+        // --- FOMO NOTIFICATION LOGIC ---
+        function triggerFOMO() {
+            if (currentView !== 'home' && currentView !== 'product') return;
+            
+            const popup = document.getElementById('fomo-popup');
+            if (!popup) return;
+            
+            const randomName = FAKE_NAMES[Math.floor(Math.random() * FAKE_NAMES.length)];
+            const randomProduct = PRODUCTS[Math.floor(Math.random() * PRODUCTS.length)];
+            const randomQty = Math.floor(Math.random() * 2) + 1; // High prices: 1 to 2 quantity
+            const priceStr = "$" + (randomProduct.price * randomQty).toFixed(2);
+            
+            document.getElementById('fomo-name').textContent = randomName;
+            document.getElementById('fomo-action').textContent = `bought ${randomQty > 1 ? randomQty + 'x ' : ''}${randomProduct.name}`;
+            document.getElementById('fomo-price').textContent = priceStr;
+            
+            popup.classList.remove('translate-y-40', 'opacity-0');
+            popup.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                popup.classList.remove('translate-y-0', 'opacity-100');
+                popup.classList.add('translate-y-40', 'opacity-0');
+            }, 5000);
+        }
+
+        function scheduleFOMO() {
+            // Randomized interval between 30 and 60 seconds
+            const delay = Math.floor(Math.random() * 30000) + 30000;
+            setTimeout(() => {
+                triggerFOMO();
+                scheduleFOMO();
+            }, delay);
+        }
+
+        // Initialize FOMO loop after initial 5 seconds
+        setTimeout(scheduleFOMO, 5000);
 
         // --- GLOBAL LOCATION DROPDOWNS API ---
         async function setupLocationAPI() {
@@ -907,8 +967,12 @@
                     
                     <div class="flex flex-col items-end w-full md:w-1/2 ml-auto mb-8">
                         <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
-                            <span class="tracking-wide">Subtotal</span>
+                            <span class="tracking-wide">Original Subtotal</span>
                             <span class="line-through">$${getCartOriginalTotal().toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-gray-800 text-sm font-medium">
+                            <span class="tracking-wide">Price</span>
+                            <span>$${getCartTotal().toFixed(2)}</span>
                         </div>
                         <div class="flex justify-between w-full mb-2 text-green-600 text-sm font-medium">
                             <span class="tracking-wide">Savings</span>
@@ -939,6 +1003,8 @@
 
         function renderCheckout() {
             const totalPaid = "$" + getCartTotal().toFixed(2);
+            const originalTotal = "$" + getCartOriginalTotal().toFixed(2);
+            const savings = "$" + (getCartOriginalTotal() - getCartTotal()).toFixed(2);
 
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
@@ -959,7 +1025,35 @@
                         
                         <!-- STEP 1: Delivery Details -->
                         <div id="delivery-step" class="transition-opacity duration-300">
-                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Delivery Details</h2>
+                            
+                            <div id="checkout-breakdown" class="flex flex-col w-full mb-8">
+                                <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                                    <span class="tracking-wide">Original Subtotal</span>
+                                    <span class="line-through">${originalTotal}</span>
+                                </div>
+                                <div class="flex justify-between w-full mb-2 text-gray-800 text-sm font-medium">
+                                    <span class="tracking-wide">Price</span>
+                                    <span>${totalPaid}</span>
+                                </div>
+                                <div class="flex justify-between w-full mb-2 text-green-600 text-sm font-medium">
+                                    <span class="tracking-wide">Savings</span>
+                                    <span>-${savings}</span>
+                                </div>
+                                <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                                    <span class="tracking-wide">Shipping</span>
+                                    <span>$0.00</span>
+                                </div>
+                                <div class="flex justify-between w-full mb-4 text-gray-500 text-sm border-b border-gray-200 pb-4">
+                                    <span class="tracking-wide">Tax</span>
+                                    <span>$0.00</span>
+                                </div>
+                                <div class="flex justify-between w-full text-gray-900 text-xl font-serif">
+                                    <span class="uppercase tracking-widest">Total Amount</span>
+                                    <span>${totalPaid} USD</span>
+                                </div>
+                            </div>
+                            
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900 border-t border-gray-200 pt-8">Delivery Details</h2>
                             
                             <form id="delivery-form" class="space-y-6" onsubmit="handleDeliverySubmit(event)">
                                 <div>
@@ -1102,10 +1196,14 @@
                         form.reportValidity(); 
                         return actions.reject(); 
                     }
+                    
+                    document.getElementById('paypal-ui-container').classList.add('hidden');
+                    document.getElementById('payment-waiting').classList.remove('hidden');
                     return actions.resolve(); 
                 },
                 onCancel: function (data) {
-                    // Do nothing if user cancels popup
+                    document.getElementById('paypal-ui-container').classList.remove('hidden');
+                    document.getElementById('payment-waiting').classList.add('hidden');
                 },
                 createOrder: function(data, actions) {
                     return actions.order.create({
@@ -1124,6 +1222,8 @@
                 },
                 onError: function(err) {
                     console.error("PayPal Error:", err);
+                    document.getElementById('paypal-ui-container').classList.remove('hidden');
+                    document.getElementById('payment-waiting').classList.add('hidden');
                     showToast("Payment window closed or an error occurred.");
                 }
             }).render('#paypal-button-container');
