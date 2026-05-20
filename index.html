@@ -1,681 +1,784 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html langa="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prakash Tours | Premium Car Rental</title>
-    <!-- Tailwind CSS -->
+    <title>AURA | Luxury Car Rentals Kashmir</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0a0a',
+                        darker: '#050505',
+                        gold: {
+                            DEFAULT: '#D4AF37',
+                            light: '#F3E5AB',
+                            dark: '#AA8529'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Syne', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
+        :root {
+            --gold: #D4AF37;
+        }
+        
         body {
-            font-family: 'Inter', sans-serif;
             background-color: #0a0a0a;
-            color: white;
+            color: #ffffff;
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
         }
-        ::selection {
-            background-color: #389b88;
-            color: white;
+
+        /* Film Grain Texture */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 10000;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: var(--gold);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        .cursor-hover .cursor-outline {
+            width: 60px; height: 60px;
+            background-color: rgba(212, 175, 55, 0.1);
+            border-color: transparent;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Glassmorphism Utilities */
+        .glass {
+            background: rgba(25, 25, 25, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30,30,30,0.6) 0%, rgba(15,15,15,0.8) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;
+        }
+        .glass-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+
+        /* Typography Gradients */
+        .text-gradient-gold {
+            background: linear-gradient(to right, #F3E5AB, #D4AF37, #AA8529);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Ambient Glow */
+        .ambient-glow {
+            position: absolute;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Hide Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+        .clip-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
     </style>
 </head>
-<body class="min-h-screen antialiased">
+<body class="antialiased font-sans selection:bg-gold selection:text-dark">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center cursor-pointer">
-                    <span class="text-2xl font-bold tracking-widest uppercase">Prakash<span class="text-[#389b88]">Tours</span></span>
-                </div>
+    <div class="noise-overlay"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#fleet" class="text-gray-300 hover:text-white font-medium transition-colors">Our Fleet</a>
-                    <a href="#about" class="text-gray-300 hover:text-white font-medium transition-colors">About Us</a>
-                    <a href="#reviews" class="text-gray-300 hover:text-white font-medium transition-colors">Reviews</a>
-                </div>
+    <!-- Ambient Lighting Effects -->
+    <div class="ambient-glow top-0 left-0"></div>
+    <div class="ambient-glow top-1/2 right-0"></div>
 
-                <div class="hidden md:flex items-center space-x-6">
-                    <div class="flex items-center space-x-2 text-sm text-gray-300 border border-white/20 rounded-full px-4 py-2">
-                        <i data-lucide="map-pin" class="w-4 h-4 text-[#389b88]"></i>
-                        <span>New Delhi</span>
-                    </div>
-                    <a href="tel:9818376653" class="font-semibold hover:text-[#389b88] transition-colors flex items-center gap-2">
-                        <i data-lucide="phone" class="w-4 h-4"></i>
-                        9818376653
-                    </a>
-                </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2">
-                        <i data-lucide="menu" id="icon-menu" class="w-6 h-6"></i>
-                        <i data-lucide="x" id="icon-close" class="w-6 h-6 hidden"></i>
-                    </button>
-                </div>
+    <!-- Sticky Glass Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto glass rounded-2xl px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-heading font-bold tracking-wider hover-trigger">
+                AURA<span class="text-gold">.</span>
+            </a>
+            
+            <div class="hidden md:flex space-x-8 items-center text-sm font-medium tracking-wide">
+                <a href="#fleet" class="hover:text-gold transition-colors hover-trigger">Fleet</a>
+                <a href="#experiences" class="hover:text-gold transition-colors hover-trigger">Experiences</a>
+                <a href="#services" class="hover:text-gold transition-colors hover-trigger">Services</a>
+                <a href="#reviews" class="hover:text-gold transition-colors hover-trigger">Reviews</a>
             </div>
-        </div>
 
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-[#121212] border-b border-white/10">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#fleet" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white">Our Fleet</a>
-                <a href="#about" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white">About Us</a>
-                <a href="#reviews" class="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white">Reviews</a>
-                <a href="tel:9818376653" class="block px-3 py-2 text-base font-medium text-[#389b88]">Call 9818376653</a>
-            </div>
+            <a href="https://wa.me/60052229202?text=Hi!%20I%20am%20looking%20to%20book%20a%20premium%20car." target="_blank" 
+               class="hidden md:flex items-center gap-2 bg-gold text-dark px-6 py-2.5 rounded-full font-semibold hover:bg-white transition-all hover-trigger hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                <i class="fab fa-whatsapp text-lg"></i> Book Now
+            </a>
+
+            <!-- Mobile Menu Btn -->
+            <button class="md:hidden text-2xl text-white hover:text-gold transition-colors">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <div class="relative pt-20 flex items-center min-h-[90vh]">
-        <div class="absolute inset-0 z-0">
-            <img 
-                src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=1920" 
-                alt="Luxury Car in City" 
-                class="w-full h-full object-cover object-center opacity-50"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent"></div>
-            <div class="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/95 via-[#0a0a0a]/60 to-transparent"></div>
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <!-- Parallax Background -->
+        <div class="absolute inset-0 z-0 bg-dark">
+            <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                 alt="Luxury Car Dark" 
+                 class="w-full h-full object-cover opacity-50 parallax-bg"
+                 style="transform: scale(1.1);">
+            <div class="absolute inset-0 bg-gradient-to-b from-dark/40 via-dark/20 to-dark"></div>
         </div>
 
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-20">
-            <!-- Trust Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 mb-8 hover:bg-white/10 transition-colors cursor-default shadow-xl">
-                <div class="flex gap-1 text-[#389b88]">
-                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                </div>
-                <span class="text-white text-sm font-medium ml-1">4.99 Rating (2,232 reviews)</span>
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-20">
+            <div class="clip-text">
+                <span class="block text-gold text-sm md:text-base font-semibold tracking-[0.3em] uppercase mb-4 hero-elem">Elevate Your Journey</span>
+            </div>
+            <div class="clip-text">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-bold leading-tight mb-6 hero-elem">
+                    Experience Kashmir <br> in <span class="font-serif italic font-normal text-gradient-gold">Unmatched Luxury</span>
+                </h1>
+            </div>
+            <div class="clip-text">
+                <p class="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 hero-elem">
+                    Premium chauffeur services and luxury rentals for road trips, weddings, and VIP airport transfers across the paradise on earth.
+                </p>
             </div>
             
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white max-w-4xl leading-[1.05] tracking-tight mb-6">
-                Drive the <br/>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Extraordinary.</span>
-            </h1>
-            <p class="text-lg md:text-xl text-gray-300 max-w-2xl font-light leading-relaxed border-l-4 border-[#389b88] pl-6 bg-gradient-to-r from-[#0a0a0a]/50 to-transparent py-2">
-                Elevate your journey in New Delhi with our exclusive fleet of luxury SUVs and sedans. Professional chauffeurs, immaculate vehicles, and transparent pricing.
-            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center hero-elem">
+                <a href="#fleet" class="bg-white text-dark px-8 py-4 rounded-full font-semibold hover:bg-gold transition-all hover-trigger">
+                    Explore Fleet
+                </a>
+                <a href="https://wa.me/60052229202?text=I%20need%20a%20custom%20Kashmir%20road%20trip%20package." target="_blank" 
+                   class="glass px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all hover-trigger flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-gold"></i> Custom Package
+                </a>
+            </div>
         </div>
-    </div>
 
-    <!-- Booking Widget (Overlapping Hero) -->
-    <div class="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 mb-20">
-        <div class="bg-[#f2f2f2] rounded-2xl p-2 md:p-3 flex flex-col md:flex-row shadow-2xl items-center gap-2">
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-60">
+            <span class="text-xs tracking-widest uppercase">Scroll</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-gold to-transparent overflow-hidden">
+                <div class="w-full h-1/2 bg-white animate-[scrollDown_1.5s_ease-in-out_infinite]"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 border-y border-white/5 bg-darker relative z-10">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="stat-item">
+                <div class="text-4xl font-heading font-bold text-gold mb-2"><span class="counter" data-target="500">0</span>+</div>
+                <div class="text-sm text-gray-400 tracking-wide uppercase">Happy Clients</div>
+            </div>
+            <div class="stat-item">
+                <div class="text-4xl font-heading font-bold text-gold mb-2"><span class="counter" data-target="25">0</span></div>
+                <div class="text-sm text-gray-400 tracking-wide uppercase">Premium Cars</div>
+            </div>
+            <div class="stat-item">
+                <div class="text-4xl font-heading font-bold text-gold mb-2"><span class="counter" data-target="100">0</span>%</div>
+                <div class="text-sm text-gray-400 tracking-wide uppercase">Satisfaction</div>
+            </div>
+            <div class="stat-item">
+                <div class="text-4xl font-heading font-bold text-gold mb-2">24/7</div>
+                <div class="text-sm text-gray-400 tracking-wide uppercase">Live Support</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-24 relative bg-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 section-header">
+                <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-2">Why Choose Us</h2>
+                <h3 class="text-4xl md:text-5xl font-serif">Curated Premium Services</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="glass-card p-8 rounded-2xl hover-trigger service-card">
+                    <div class="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-6 text-gold text-2xl">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h4 class="text-xl font-heading font-semibold mb-3">Kashmir Road-Trips</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Experience the breathtaking valleys of Gulmarg and Pahalgam with our specially curated luxury tours.</p>
+                </div>
+                <!-- Service 2 -->
+                <div class="glass-card p-8 rounded-2xl hover-trigger service-card">
+                    <div class="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-6 text-gold text-2xl">
+                        <i class="fas fa-plane-arrival"></i>
+                    </div>
+                    <h4 class="text-xl font-heading font-semibold mb-3">VIP Airport Pickup</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Seamless, punctual, and comfortable transfers from Srinagar International Airport directly to your hotel.</p>
+                </div>
+                <!-- Service 3 -->
+                <div class="glass-card p-8 rounded-2xl hover-trigger service-card">
+                    <div class="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-6 text-gold text-2xl">
+                        <i class="fas fa-ring"></i>
+                    </div>
+                    <h4 class="text-xl font-heading font-semibold mb-3">Wedding Luxury</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Make your grand entrance unforgettable with our immaculate fleet of decorated premium vehicles.</p>
+                </div>
+                <!-- Service 4 -->
+                <div class="glass-card p-8 rounded-2xl hover-trigger service-card">
+                    <div class="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-6 text-gold text-2xl">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h4 class="text-xl font-heading font-semibold mb-3">Chauffeur Service</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">Professional, multilingual chauffeurs trained in hospitality to ensure a smooth and safe journey.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="fleet" class="py-24 bg-darker relative">
+        <div class="ambient-glow top-1/4 left-1/4"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 section-header">
+                <div>
+                    <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-2">Our Collection</h2>
+                    <h3 class="text-4xl md:text-5xl font-serif">The Royal Fleet</h3>
+                </div>
+                
+                <!-- Filters -->
+                <div class="flex gap-4 mt-6 md:mt-0 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
+                    <button class="filter-btn active px-5 py-2 rounded-full border border-gold text-gold text-sm font-medium hover-trigger" data-filter="all">All</button>
+                    <button class="filter-btn px-5 py-2 rounded-full border border-white/20 text-white/70 text-sm font-medium hover:border-gold hover:text-gold transition-colors hover-trigger" data-filter="suv">SUVs</button>
+                    <button class="filter-btn px-5 py-2 rounded-full border border-white/20 text-white/70 text-sm font-medium hover:border-gold hover:text-gold transition-colors hover-trigger" data-filter="luxury">Luxury Sedans</button>
+                </div>
+            </div>
+
+            <!-- Car Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="car-grid">
+                
+                <!-- Car Card 1 -->
+                <div class="car-card glass-card rounded-2xl overflow-hidden flex flex-col group" data-category="suv">
+                    <div class="relative h-64 overflow-hidden bg-white/5">
+                        <div class="absolute top-4 left-4 z-10 glass px-3 py-1 rounded-full text-xs font-semibold text-gold">Popular in Kashmir</div>
+                        <!-- Using high quality Unsplash placeholders for cars -->
+                        <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Toyota Fortuner" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-2xl font-heading font-bold">Toyota Fortuner</h4>
+                            <span class="text-xl text-gold font-serif">₹5,000<span class="text-sm text-gray-400 font-sans">/day</span></span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-6">The ultimate beast for snowy terrains and steep Kashmir mountain passes. Unmatched power.</p>
+                        
+                        <div class="grid grid-cols-3 gap-2 mb-6 text-center text-xs text-gray-300">
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-users block mb-1 text-gold"></i> 7 Seats</div>
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-cogs block mb-1 text-gold"></i> Auto</div>
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-gas-pump block mb-1 text-gold"></i> Diesel</div>
+                        </div>
+                        
+                        <a href="https://wa.me/60052229202?text=I%20want%20to%20book%20the%20Toyota%20Fortuner" target="_blank" 
+                           class="mt-auto w-full py-3 rounded-xl border border-gold/50 text-center font-medium hover:bg-gold hover:text-dark transition-colors hover-trigger">
+                            Check Availability
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Car Card 2 -->
+                <div class="car-card glass-card rounded-2xl overflow-hidden flex flex-col group" data-category="luxury">
+                    <div class="relative h-64 overflow-hidden bg-white/5">
+                        <img src="https://images.unsplash.com/photo-1616423640778-28d1b53229bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Mercedes S-Class" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-2xl font-heading font-bold">Mercedes S-Class</h4>
+                            <span class="text-xl text-gold font-serif">₹15,000<span class="text-sm text-gray-400 font-sans">/day</span></span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-6">Pinnacle of luxury. Perfect for VIP delegations, weddings, and premium comfort.</p>
+                        
+                        <div class="grid grid-cols-3 gap-2 mb-6 text-center text-xs text-gray-300">
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-users block mb-1 text-gold"></i> 4 Seats</div>
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-cogs block mb-1 text-gold"></i> Auto</div>
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-suitcase block mb-1 text-gold"></i> 3 Bags</div>
+                        </div>
+                        
+                        <a href="https://wa.me/60052229202?text=I%20want%20to%20book%20the%20Mercedes%20S-Class" target="_blank" 
+                           class="mt-auto w-full py-3 rounded-xl border border-gold/50 text-center font-medium hover:bg-gold hover:text-dark transition-colors hover-trigger">
+                            Check Availability
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Car Card 3 -->
+                <div class="car-card glass-card rounded-2xl overflow-hidden flex flex-col group" data-category="suv">
+                    <div class="relative h-64 overflow-hidden bg-white/5">
+                        <div class="absolute top-4 left-4 z-10 glass px-3 py-1 rounded-full text-xs font-semibold text-gold">Best for Families</div>
+                        <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Innova Crysta" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-2xl font-heading font-bold">Innova Crysta</h4>
+                            <span class="text-xl text-gold font-serif">₹3,500<span class="text-sm text-gray-400 font-sans">/day</span></span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-6">The most comfortable MUV for long family road trips across the Kashmir valley.</p>
+                        
+                        <div class="grid grid-cols-3 gap-2 mb-6 text-center text-xs text-gray-300">
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-users block mb-1 text-gold"></i> 7 Seats</div>
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-cogs block mb-1 text-gold"></i> Manual</div>
+                            <div class="glass py-2 rounded-lg"><i class="fas fa-gas-pump block mb-1 text-gold"></i> Diesel</div>
+                        </div>
+                        
+                        <a href="https://wa.me/60052229202?text=I%20want%20to%20book%20the%20Innova%20Crysta" target="_blank" 
+                           class="mt-auto w-full py-3 rounded-xl border border-gold/50 text-center font-medium hover:bg-gold hover:text-dark transition-colors hover-trigger">
+                            Check Availability
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="experiences" class="py-24 bg-dark overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
             
-            <div class="flex-1 flex flex-col md:flex-row w-full bg-white rounded-xl overflow-hidden">
-                <div class="flex-1 p-4 border-b md:border-b-0 md:border-r border-gray-200">
-                    <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Pick up date</label>
-                    <div class="flex items-center text-black">
-                        <i data-lucide="calendar" class="w-5 h-5 mr-2 text-gray-400"></i>
-                        <input 
-                            type="date" 
-                            id="pickup-date"
-                            class="w-full outline-none font-medium bg-transparent cursor-pointer"
-                        />
-                    </div>
-                </div>
-                <div class="flex-1 p-4">
-                    <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Drop off date</label>
-                    <div class="flex items-center text-black">
-                        <i data-lucide="calendar" class="w-5 h-5 mr-2 text-gray-400"></i>
-                        <input 
-                            type="date" 
-                            id="dropoff-date"
-                            class="w-full outline-none font-medium bg-transparent cursor-pointer"
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <button 
-                onclick="document.getElementById('fleet').scrollIntoView({ behavior: 'smooth' })"
-                class="w-full md:w-auto px-8 py-5 bg-[#389b88] hover:bg-[#2c7a6b] text-white font-semibold rounded-xl transition-colors whitespace-nowrap flex items-center justify-center h-full"
-            >
-                Show Cars
-            </button>
-        </div>
-
-        <!-- Quick Contact Info below widget -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <div class="bg-[#161616] rounded-xl p-5 border border-white/5 flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500 text-sm mb-1">Phone</p>
-                    <p class="text-xl font-bold">+91 981 837 6653</p>
-                </div>
-                <i data-lucide="phone" class="text-[#389b88] w-6 h-6 opacity-50"></i>
-            </div>
-            <div class="bg-[#161616] rounded-xl p-5 border border-white/5 flex items-center justify-between">
-                <div>
-                    <p class="text-gray-500 text-sm mb-1">Address</p>
-                    <p class="text-md font-bold truncate">Greater Kailash, New Delhi</p>
-                </div>
-                <i data-lucide="map-pin" class="text-[#389b88] w-6 h-6 opacity-50"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fleet Section -->
-    <section id="fleet" class="py-20 bg-[#0a0a0a]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-end mb-12">
-                <div>
-                    <h2 class="text-4xl font-bold">Our Fleet</h2>
-                    <p class="text-gray-400 mt-2">Select the perfect vehicle for your journey.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Car 1 -->
-                <div class="bg-[#161616] rounded-3xl overflow-hidden border border-white/5 hover:border-white/10 transition-colors group">
-                    <div class="relative h-64 overflow-hidden p-6 bg-gradient-to-b from-transparent to-[#161616]">
-                        <div class="absolute top-4 right-4 bg-[#222] text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1 border border-white/10">
-                            +120 <span class="w-2 h-2 rounded-full bg-[#389b88] inline-block"></span>
-                        </div>
-                        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=800" alt="Toyota Innova Crysta" class="w-full h-full object-contain object-center transform group-hover:scale-105 transition-transform duration-500"/>
-                    </div>
-                    <div class="p-8 pt-0">
-                        <div class="flex justify-between items-start mb-6">
-                            <div>
-                                <h3 class="text-2xl font-bold flex items-center gap-2 group-hover:text-[#389b88] transition-colors">
-                                    Toyota Innova Crysta
-                                    <i data-lucide="arrow-right" class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all"></i>
-                                </h3>
-                                <p class="text-gray-400 text-sm mt-1">Premium SUV</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-8">
-                            <div>
-                                <span class="text-3xl font-bold flex items-end">
-                                    ₹2500 <span class="text-lg text-gray-500 font-normal ml-1 mb-1">/ day</span>
-                                </span>
-                            </div>
-                            <button onclick="handleBookNow('Toyota Innova Crysta')" class="px-6 py-3 bg-[#389b88] hover:bg-[#2c7a6b] text-white font-medium rounded-xl transition-colors">
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Car 2 -->
-                <div class="bg-[#161616] rounded-3xl overflow-hidden border border-white/5 hover:border-white/10 transition-colors group">
-                    <div class="relative h-64 overflow-hidden p-6 bg-gradient-to-b from-transparent to-[#161616]">
-                        <div class="absolute top-4 right-4 bg-[#222] text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1 border border-white/10">
-                            +85 <span class="w-2 h-2 rounded-full bg-[#389b88] inline-block"></span>
-                        </div>
-                        <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800" alt="Maruti Suzuki Dzire" class="w-full h-full object-contain object-center transform group-hover:scale-105 transition-transform duration-500"/>
-                    </div>
-                    <div class="p-8 pt-0">
-                        <div class="flex justify-between items-start mb-6">
-                            <div>
-                                <h3 class="text-2xl font-bold flex items-center gap-2 group-hover:text-[#389b88] transition-colors">
-                                    Maruti Suzuki Dzire
-                                    <i data-lucide="arrow-right" class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all"></i>
-                                </h3>
-                                <p class="text-gray-400 text-sm mt-1">Comfort Sedan</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-8">
-                            <div>
-                                <span class="text-3xl font-bold flex items-end">
-                                    ₹1500 <span class="text-lg text-gray-500 font-normal ml-1 mb-1">/ day</span>
-                                </span>
-                            </div>
-                            <button onclick="handleBookNow('Maruti Suzuki Dzire')" class="px-6 py-3 bg-[#389b88] hover:bg-[#2c7a6b] text-white font-medium rounded-xl transition-colors">
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Car 3 -->
-                <div class="bg-[#161616] rounded-3xl overflow-hidden border border-white/5 hover:border-white/10 transition-colors group">
-                    <div class="relative h-64 overflow-hidden p-6 bg-gradient-to-b from-transparent to-[#161616]">
-                        <div class="absolute top-4 right-4 bg-[#222] text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1 border border-white/10">
-                            +64 <span class="w-2 h-2 rounded-full bg-[#389b88] inline-block"></span>
-                        </div>
-                        <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&q=80&w=800" alt="Kia Seltos" class="w-full h-full object-contain object-center transform group-hover:scale-105 transition-transform duration-500"/>
-                    </div>
-                    <div class="p-8 pt-0">
-                        <div class="flex justify-between items-start mb-6">
-                            <div>
-                                <h3 class="text-2xl font-bold flex items-center gap-2 group-hover:text-[#389b88] transition-colors">
-                                    Kia Seltos
-                                    <i data-lucide="arrow-right" class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all"></i>
-                                </h3>
-                                <p class="text-gray-400 text-sm mt-1">Luxury Compact SUV</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-8">
-                            <div>
-                                <span class="text-3xl font-bold flex items-end">
-                                    ₹2200 <span class="text-lg text-gray-500 font-normal ml-1 mb-1">/ day</span>
-                                </span>
-                            </div>
-                            <button onclick="handleBookNow('Kia Seltos')" class="px-6 py-3 bg-[#389b88] hover:bg-[#2c7a6b] text-white font-medium rounded-xl transition-colors">
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Car 4 -->
-                <div class="bg-[#161616] rounded-3xl overflow-hidden border border-white/5 hover:border-white/10 transition-colors group">
-                    <div class="relative h-64 overflow-hidden p-6 bg-gradient-to-b from-transparent to-[#161616]">
-                        <div class="absolute top-4 right-4 bg-[#222] text-xs font-medium px-3 py-1 rounded-full flex items-center gap-1 border border-white/10">
-                            +32 <span class="w-2 h-2 rounded-full bg-[#389b88] inline-block"></span>
-                        </div>
-                        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&q=80&w=800" alt="Mercedes-Benz E-Class" class="w-full h-full object-contain object-center transform group-hover:scale-105 transition-transform duration-500"/>
-                    </div>
-                    <div class="p-8 pt-0">
-                        <div class="flex justify-between items-start mb-6">
-                            <div>
-                                <h3 class="text-2xl font-bold flex items-center gap-2 group-hover:text-[#389b88] transition-colors">
-                                    Mercedes-Benz E-Class
-                                    <i data-lucide="arrow-right" class="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:translate-x-0 transition-all"></i>
-                                </h3>
-                                <p class="text-gray-400 text-sm mt-1">Luxury Sedan</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-8">
-                            <div>
-                                <span class="text-3xl font-bold flex items-end">
-                                    ₹6500 <span class="text-lg text-gray-500 font-normal ml-1 mb-1">/ day</span>
-                                </span>
-                            </div>
-                            <button onclick="handleBookNow('Mercedes-Benz E-Class')" class="px-6 py-3 bg-[#389b88] hover:bg-[#2c7a6b] text-white font-medium rounded-xl transition-colors">
-                                Book Now
-                            </button>
+            <div class="w-full lg:w-1/2 relative">
+                <div class="absolute -inset-4 bg-gold/20 blur-3xl rounded-full z-0"></div>
+                <div class="glass-card p-2 rounded-2xl relative z-10 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Kashmir Valley" class="rounded-xl w-full h-[500px] object-cover">
+                    <!-- Glass overlay badge -->
+                    <div class="absolute bottom-6 left-6 glass px-6 py-4 rounded-xl flex items-center gap-4">
+                        <i class="fas fa-cloud-sun text-2xl text-gold"></i>
+                        <div>
+                            <div class="text-xs text-gray-300 uppercase tracking-widest">Srinagar</div>
+                            <div class="font-bold">Perfect Weather for a Drive</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Why Choose Us - Bento Box Layout -->
-    <section id="about" class="py-20 bg-[#0a0a0a]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="w-full lg:w-1/2">
+                <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-4 experience-text">Destination Experiences</h2>
+                <h3 class="text-4xl md:text-5xl font-serif mb-6 experience-text">Journey Through <br>Paradise on Earth</h3>
+                <p class="text-gray-400 mb-8 text-lg experience-text">
+                    From the snow-capped peaks of Gulmarg to the serene valleys of Pahalgam, our experienced chauffeurs know every hidden gem. Travel safely and luxuriously across Kashmir.
+                </p>
                 
-                <!-- Title Column -->
-                <div class="md:col-span-4 flex flex-col justify-center py-8">
-                    <h2 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
-                        <span class="text-gray-500">Why</span><br/>
-                        Prakash<br/>Tours?
-                    </h2>
-                    <p class="text-gray-400 text-lg leading-relaxed mb-8">
-                        Prakash Tour and Travels makes traveling in and around New Delhi as convenient as it is luxurious. Pick a vehicle, get professional service, and enjoy a stress-free journey.
-                    </p>
-                </div>
+                <ul class="space-y-4 mb-8 experience-text">
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-gold"></i> <span>Customized Itineraries</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-gold"></i> <span>Snow-Ready Vehicles (Chains Provided)</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-check-circle text-gold"></i> <span>Local Expert Drivers</span>
+                    </li>
+                </ul>
 
-                <!-- Middle Tall Card -->
-                <div class="md:col-span-4 bg-[#161616] rounded-[2rem] p-8 border border-white/5 relative overflow-hidden group">
-                    <div class="relative z-10">
-                        <h3 class="text-3xl font-bold mb-4">Professional<br/>Drivers</h3>
-                        <p class="text-gray-400">Our drivers are punctual, polite, and ensure a safe, comfortable ride wherever you go.</p>
-                        <a href="tel:9818376653" class="inline-flex items-center text-[#389b88] mt-6 hover:underline font-medium">
-                            Contact Us <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
-                        </a>
-                    </div>
-                    <div class="absolute bottom-0 right-0 w-3/4 opacity-40 group-hover:opacity-60 transition-opacity">
-                        <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=600" alt="Driver" class="rounded-tl-[3rem]" />
-                    </div>
-                </div>
-
-                <!-- Right Stacked Cards -->
-                <div class="md:col-span-4 flex flex-col gap-6">
-                    
-                    <div class="bg-[#161616] rounded-[2rem] p-8 border border-white/5 flex-1 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold mb-3">Transparent Pricing</h3>
-                        <p class="text-gray-400 text-sm mb-4">Pricing is reasonable and transparent with absolutely no hidden charges.</p>
-                        <a href="#fleet" class="inline-flex items-center text-[#389b88] hover:underline font-medium text-sm">
-                            View Fleet <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
-                        </a>
-                    </div>
-
-                    <div class="bg-[#161616] rounded-[2rem] p-8 border border-white/5 flex-1 flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold mb-3">The Car You Want.<br/>The Car You Need.</h3>
-                        <p class="text-gray-400 text-sm mb-4">Clean, comfortable vehicles maintained to the highest standards.</p>
-                        <a href="#fleet" class="inline-flex items-center text-[#389b88] hover:underline font-medium text-sm">
-                            Choose a Car <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
-                        </a>
-                    </div>
-
-                </div>
+                <a href="https://wa.me/60052229202?text=I%20want%20to%20plan%20a%20Kashmir%20tour." target="_blank" 
+                   class="inline-flex items-center gap-3 bg-white text-dark px-8 py-4 rounded-full font-semibold hover:bg-gold transition-all hover-trigger experience-text">
+                    Plan Your Route <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
+
         </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section id="reviews" class="py-20 bg-[#0a0a0a]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center mb-12">
-                <h2 class="text-5xl font-bold">Reviews</h2>
-                <div class="flex gap-2">
-                    <button class="p-3 rounded-full bg-[#161616] border border-white/10 hover:bg-[#222] transition-colors"><i data-lucide="arrow-right" class="w-5 h-5 transform rotate-180"></i></button>
-                    <button class="p-3 rounded-full bg-[#161616] border border-white/10 hover:bg-[#222] transition-colors text-[#389b88]"><i data-lucide="arrow-right" class="w-5 h-5"></i></button>
+    <section id="reviews" class="py-24 bg-darker relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 mb-12 text-center section-header">
+            <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-2">Testimonials</h2>
+            <h3 class="text-4xl md:text-5xl font-serif">Words from our Guests</h3>
+        </div>
+
+        <!-- Custom basic CSS infinite scroll wrapper -->
+        <div class="flex gap-6 overflow-x-auto pb-8 px-6 snap-x snap-mandatory hide-scrollbar max-w-7xl mx-auto" id="review-container">
+            <!-- Review 1 -->
+            <div class="min-w-[320px] md:min-w-[400px] glass-card p-8 rounded-2xl snap-center shrink-0">
+                <div class="flex text-gold mb-4 text-sm">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-gray-300 italic mb-6 leading-relaxed">"Booked an Innova for our 5-day Kashmir trip. The car was spotless, and our driver was incredibly polite and knowledgeable about local spots."</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center font-bold text-xl">R</div>
+                    <div>
+                        <div class="font-bold">Rahul Sharma</div>
+                        <div class="text-xs text-gray-500">Mumbai, India</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Review 1 -->
-                <div class="bg-[#161616] rounded-3xl p-8 border border-white/5 flex flex-col">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <h4 class="text-lg font-bold">Kabita Das</h4>
-                            <p class="text-gray-500 text-sm">2 reviews • 3 months ago</p>
-                        </div>
-                        <div class="flex gap-1 text-[#389b88]">
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        </div>
-                    </div>
-                    
-                    <p class="text-gray-500 text-xs mb-4 flex items-center gap-1">
-                        <i data-lucide="check-circle-2" class="w-3 h-3 text-[#389b88]"></i> Rented Toyota Innova
-                    </p>
-
-                    <p class="text-gray-300 text-sm leading-relaxed flex-1 line-clamp-6 hover:line-clamp-none transition-all duration-300">
-                        I had a great experience with Parkash Tour & Travels Private Limited. Their service is professional, reliable, and well-organized. The staff is polite, cooperative, and always ready to help with clear guidance and quick responses. The vehicle was clean, comfortable, and arrived on time, which made the journey smooth and stress-free. Pricing is reasonable and transparent with no hidden charges. Overall, they truly care about customer satisfaction and quality service. I would definitely recommend Parkash Tour & Travels to anyone looking for safe, comfortable, and trustworthy travel services. Will surely choose them again in the future.
-                    </p>
-
-                    <div class="mt-6 pt-4 border-t border-white/10 flex items-center gap-4 text-sm font-medium text-gray-400">
-                        <button class="hover:text-white transition-colors">Like</button>
-                        <button class="hover:text-white transition-colors">Share</button>
+            <!-- Review 2 -->
+            <div class="min-w-[320px] md:min-w-[400px] glass-card p-8 rounded-2xl snap-center shrink-0">
+                <div class="flex text-gold mb-4 text-sm">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="text-gray-300 italic mb-6 leading-relaxed">"Used their S-Class for my wedding in Srinagar. The car arrived early, beautifully decorated, and added the perfect royal touch to our day."</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center font-bold text-xl">F</div>
+                    <div>
+                        <div class="font-bold">Faizan Ali</div>
+                        <div class="text-xs text-gray-500">Srinagar, J&K</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Review 2 -->
-                <div class="bg-[#161616] rounded-3xl p-8 border border-white/5 flex flex-col">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <h4 class="text-lg font-bold">Svetha Venkatachari</h4>
-                            <p class="text-gray-500 text-sm">2 reviews • 4 months ago</p>
-                        </div>
-                        <div class="flex gap-1 text-[#389b88]">
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 text-gray-600"></i>
-                        </div>
-                    </div>
-                    
-                    <p class="text-gray-500 text-xs mb-4 flex items-center gap-1">
-                        <i data-lucide="check-circle-2" class="w-3 h-3 text-[#389b88]"></i> Rented Suzuki Dzire
-                    </p>
-
-                    <p class="text-gray-300 text-sm leading-relaxed flex-1 line-clamp-6 hover:line-clamp-none transition-all duration-300">
-                        Arranged car service for some guests through this tours and travels company. Overall, the guests had a positive experience. The driver was punctual and polite. However, the guests did feel that his driving was slightly fast. Despite this, the service was reliable and can be recommended.
-                    </p>
-
-                    <div class="mt-6 pt-4 border-t border-white/10 flex items-center gap-4 text-sm font-medium text-gray-400">
-                        <button class="hover:text-white transition-colors">Like</button>
-                        <button class="hover:text-white transition-colors">Share</button>
-                    </div>
+            <!-- Review 3 -->
+            <div class="min-w-[320px] md:min-w-[400px] glass-card p-8 rounded-2xl snap-center shrink-0">
+                <div class="flex text-gold mb-4 text-sm">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
-
-                <!-- Review 3 -->
-                <div class="bg-[#161616] rounded-3xl p-8 border border-white/5 flex flex-col">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <h4 class="text-lg font-bold">Punit Garg</h4>
-                            <p class="text-gray-500 text-sm">4 reviews • 2 months ago</p>
-                        </div>
-                        <div class="flex gap-1 text-[#389b88]">
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        </div>
-                    </div>
-                    
-                    <p class="text-gray-500 text-xs mb-4 flex items-center gap-1">
-                        <i data-lucide="check-circle-2" class="w-3 h-3 text-[#389b88]"></i> Rented Kia Seltos
-                    </p>
-
-                    <p class="text-gray-300 text-sm leading-relaxed flex-1 line-clamp-6 hover:line-clamp-none transition-all duration-300">
-                        Very good tour service. The trip was well organized and the driver was polite. The travel company managed everything smoothly. I recommend this tour & travel service to others.
-                    </p>
-
-                    <div class="mt-6 pt-4 border-t border-white/10 flex items-center gap-4 text-sm font-medium text-gray-400">
-                        <button class="hover:text-white transition-colors">Like</button>
-                        <button class="hover:text-white transition-colors">Share</button>
+                <p class="text-gray-300 italic mb-6 leading-relaxed">"The Fortuner handled the snowy roads to Gulmarg like a dream. Safe, luxurious, and the booking process via WhatsApp was instantly sorted."</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center font-bold text-xl">A</div>
+                    <div>
+                        <div class="font-bold">Amit Desai</div>
+                        <div class="text-xs text-gray-500">Gujarat, India</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Location & Map Section -->
-    <section class="py-10 bg-[#0a0a0a]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-[#161616] rounded-[2rem] p-2 border border-white/5 relative overflow-hidden flex flex-col md:flex-row items-stretch">
-                <!-- Content -->
-                <div class="p-8 md:p-12 flex-1 flex flex-col justify-center relative z-10">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#389b88]/10 text-[#389b88] text-sm font-medium mb-6 w-fit">
-                        <i data-lucide="map-pin" class="w-4 h-4"></i> Visit Us
+    <section class="py-24 bg-dark relative">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16 section-header">
+                <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-2">Support</h2>
+                <h3 class="text-4xl font-serif">Frequently Asked Questions</h3>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center font-medium hover:text-gold transition-colors hover-trigger">
+                        <span>Do you provide self-drive cars in Kashmir?</span>
+                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-black/20">
+                        <p class="p-6 text-gray-400 text-sm border-t border-white/5">Currently, we specialize in premium chauffeur-driven services to ensure your safety and comfort on challenging mountain roads.</p>
                     </div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Location</h2>
-                    <p class="text-gray-400 text-lg mb-8 max-w-md">
-                        floor, G, Lower Ground, 27, Bodofa Upendra Nath Brahma Rd, sector 4, Greater Kailash, New Delhi, Delhi 110048
-                    </p>
-                    <a href="https://maps.app.goo.gl/tNsA1iucbyqX2f2GA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-4 bg-[#389b88] hover:bg-[#2c7a6b] text-white font-semibold rounded-xl transition-colors w-fit shadow-lg shadow-[#389b88]/20">
-                        <i data-lucide="navigation" class="w-5 h-5"></i>
-                        Open in Google Maps
-                    </a>
                 </div>
-                <!-- Abstract Map Graphic -->
-                <div class="flex-1 min-h-[300px] relative bg-[#222] rounded-3xl overflow-hidden m-2 border border-white/5">
-                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=1000" alt="Map View" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity hover:opacity-60 transition-opacity duration-700" />
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#161616] via-[#161616]/50 to-transparent md:block hidden"></div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#161616] via-[#161616]/50 to-transparent md:hidden block"></div>
-                    <!-- Animated Map Pin -->
-                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[#389b88] animate-bounce filter drop-shadow-[0_0_15px_rgba(56,155,136,0.6)]">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3" fill="#0a0a0a"/></svg>
+                <!-- FAQ 2 -->
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center font-medium hover:text-gold transition-colors hover-trigger">
+                        <span>Is fuel included in the pricing?</span>
+                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-black/20">
+                        <p class="p-6 text-gray-400 text-sm border-t border-white/5">Our standard daily rates are generally exclusive of fuel unless you book a comprehensive all-inclusive tour package. Contact us for exact quotes.</p>
+                    </div>
+                </div>
+                <!-- FAQ 3 -->
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center font-medium hover:text-gold transition-colors hover-trigger">
+                        <span>How fast can I book a car?</span>
+                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-black/20">
+                        <p class="p-6 text-gray-400 text-sm border-t border-white/5">Instantly! Just click the WhatsApp button, send us your requirements, and our team will confirm your booking within minutes.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section id="faq" class="py-20 bg-[#0a0a0a]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl md:text-5xl font-bold mb-12">Frequently Asked Questions</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Col 1 -->
-                <div class="space-y-4">
-                    <details class="group bg-[#161616] rounded-2xl border border-white/5 [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex cursor-pointer items-center justify-between p-6 text-lg font-medium text-white hover:text-[#389b88] transition-colors">
-                            What is Prakash Tours?
-                            <span class="transition duration-300 group-open:-rotate-45 text-[#389b88]">
-                                <i data-lucide="plus" class="w-6 h-6"></i>
-                            </span>
-                        </summary>
-                        <div class="px-6 pb-6 text-gray-400">
-                            Prakash Tours is a premium car rental and travel service based in New Delhi, providing luxury and comfort vehicles with professional drivers for safe and stress-free journeys.
-                        </div>
-                    </details>
-
-                    <details class="group bg-[#161616] rounded-2xl border border-white/5 [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex cursor-pointer items-center justify-between p-6 text-lg font-medium text-white hover:text-[#389b88] transition-colors">
-                            What kind of vehicles do you offer?
-                            <span class="transition duration-300 group-open:-rotate-45 text-[#389b88]">
-                                <i data-lucide="plus" class="w-6 h-6"></i>
-                            </span>
-                        </summary>
-                        <div class="px-6 pb-6 text-gray-400">
-                            We offer a diverse fleet ranging from comfort sedans like the Maruti Suzuki Dzire, to luxury SUVs like the Toyota Innova Crysta and Kia Seltos, all the way up to premium luxury cars like the Mercedes-Benz E-Class.
-                        </div>
-                    </details>
-                    
-                    <details class="group bg-[#161616] rounded-2xl border border-white/5 [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex cursor-pointer items-center justify-between p-6 text-lg font-medium text-white hover:text-[#389b88] transition-colors">
-                            Are there any hidden charges?
-                            <span class="transition duration-300 group-open:-rotate-45 text-[#389b88]">
-                                <i data-lucide="plus" class="w-6 h-6"></i>
-                            </span>
-                        </summary>
-                        <div class="px-6 pb-6 text-gray-400">
-                            No. We pride ourselves on transparent pricing. The quote you receive includes all basic charges. Tolls and parking are typically handled as per actuals during the trip unless a specific all-inclusive package is booked.
-                        </div>
-                    </details>
+    <footer class="bg-black pt-20 pb-10 border-t border-white/10 relative overflow-hidden">
+        <div class="absolute bottom-0 right-0 text-[15vw] font-heading font-bold text-white/5 leading-none pointer-events-none select-none">AURA</div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-2">
+                <a href="#" class="text-3xl font-heading font-bold tracking-wider mb-6 inline-block">
+                    AURA<span class="text-gold">.</span>
+                </a>
+                <p class="text-gray-400 text-sm max-w-sm mb-6 leading-relaxed">
+                    Redefining luxury travel in Kashmir. Premium fleets, professional chauffeurs, and unforgettable experiences curated just for you.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-gold hover:text-dark transition-all hover-trigger"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-gold hover:text-dark transition-all hover-trigger"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-gold hover:text-dark transition-all hover-trigger"><i class="fab fa-twitter"></i></a>
                 </div>
+            </div>
 
-                <!-- Col 2 -->
-                <div class="space-y-4">
-                    <details class="group bg-[#161616] rounded-2xl border border-white/5 [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex cursor-pointer items-center justify-between p-6 text-lg font-medium text-white hover:text-[#389b88] transition-colors">
-                            How do I book a car?
-                            <span class="transition duration-300 group-open:-rotate-45 text-[#389b88]">
-                                <i data-lucide="plus" class="w-6 h-6"></i>
-                            </span>
-                        </summary>
-                        <div class="px-6 pb-6 text-gray-400">
-                            Simply select your dates and desired car on our website, click "Book Now", and you'll be redirected to our WhatsApp to instantly confirm your booking with our team.
-                        </div>
-                    </details>
+            <div>
+                <h5 class="text-lg font-bold mb-6">Quick Links</h5>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li><a href="#fleet" class="hover:text-gold transition-colors hover-trigger">Our Fleet</a></li>
+                    <li><a href="#experiences" class="hover:text-gold transition-colors hover-trigger">Destinations</a></li>
+                    <li><a href="#services" class="hover:text-gold transition-colors hover-trigger">Services</a></li>
+                    <li><a href="#reviews" class="hover:text-gold transition-colors hover-trigger">Reviews</a></li>
+                </ul>
+            </div>
 
-                    <details class="group bg-[#161616] rounded-2xl border border-white/5 [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex cursor-pointer items-center justify-between p-6 text-lg font-medium text-white hover:text-[#389b88] transition-colors">
-                            Are your drivers experienced?
-                            <span class="transition duration-300 group-open:-rotate-45 text-[#389b88]">
-                                <i data-lucide="plus" class="w-6 h-6"></i>
-                            </span>
-                        </summary>
-                        <div class="px-6 pb-6 text-gray-400">
-                            Yes, all our drivers are highly professional, polite, verified, and well-acquainted with the routes in and around New Delhi to ensure a smooth journey.
-                        </div>
-                    </details>
-
-                    <details class="group bg-[#161616] rounded-2xl border border-white/5 [&_summary::-webkit-details-marker]:hidden">
-                        <summary class="flex cursor-pointer items-center justify-between p-6 text-lg font-medium text-white hover:text-[#389b88] transition-colors">
-                            Where are you located?
-                            <span class="transition duration-300 group-open:-rotate-45 text-[#389b88]">
-                                <i data-lucide="plus" class="w-6 h-6"></i>
-                            </span>
-                        </summary>
-                        <div class="px-6 pb-6 text-gray-400">
-                            Our office is located at floor, G, Lower Ground, 27, Bodofa Upendra Nath Brahma Rd, sector 4, Greater Kailash, New Delhi, Delhi 110048. You can find directions via Google Maps right above this section.
-                        </div>
-                    </details>
-                </div>
+            <div>
+                <h5 class="text-lg font-bold mb-6">Contact Us</h5>
+                <ul class="space-y-4 text-sm text-gray-400">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-map-marker-alt text-gold mt-1"></i>
+                        <span>Boulevard Road, Dal Lake,<br>Srinagar, J&K 190001</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-phone-alt text-gold"></i>
+                        <span>+91 60052 229202</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-gold"></i>
+                        <span>bookings@aurarentals.com</span>
+                    </li>
+                </ul>
             </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#050505] pt-20 pb-10 border-t border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-                
-                <div class="lg:col-span-2">
-                    <span class="text-2xl font-bold tracking-widest uppercase mb-6 block">Prakash<span class="text-[#389b88]">Tours</span></span>
-                    <p class="text-gray-400 max-w-sm mb-6 leading-relaxed">
-                        Next-generation tour and travel service making driving in New Delhi convenient, luxurious, and completely stress-free.
-                    </p>
-                    <div class="flex space-x-4">
-                        <div class="w-10 h-10 rounded-full bg-[#161616] border border-white/10 flex items-center justify-center hover:text-[#389b88] cursor-pointer transition-colors">
-                            <span class="font-bold text-sm">IG</span>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-[#161616] border border-white/10 flex items-center justify-center hover:text-[#389b88] cursor-pointer transition-colors">
-                            <span class="font-bold text-sm">FB</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Contact</h4>
-                    <ul class="space-y-4 text-gray-400">
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="map-pin" class="w-5 h-5 text-[#389b88] flex-shrink-0 mt-1"></i>
-                            <span>floor, G, Lower Ground, 27, Bodofa Upendra Nath Brahma Rd, sector 4, Greater Kailash, New Delhi, Delhi 110048</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="phone" class="w-5 h-5 text-[#389b88] flex-shrink-0"></i>
-                            <a href="tel:9818376653" class="hover:text-white transition-colors">9818376653</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Quick Links</h4>
-                    <ul class="space-y-3 text-gray-400">
-                        <li><a href="#fleet" class="hover:text-[#389b88] transition-colors">Our Fleet</a></li>
-                        <li><a href="#about" class="hover:text-[#389b88] transition-colors">About Us</a></li>
-                        <li><a href="#reviews" class="hover:text-[#389b88] transition-colors">Reviews</a></li>
-                        <li><a href="#" class="hover:text-[#389b88] transition-colors">Terms of Service</a></li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600 gap-4">
-                <p>© 2026 Prakash Tour & Travels Pvt Ltd. All rights reserved.</p>
-                <p>Developed with modern web standards.</p>
+        <div class="max-w-7xl mx-auto px-6 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 relative z-10">
+            <p>&copy; 2026 Aura Luxury Rentals. All rights reserved.</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
             </div>
         </div>
     </footer>
 
-    <!-- Interactive Scripts -->
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/60052229202?text=Hi!%20I'm%20looking%20for%20a%20luxury%20car%20rental." target="_blank" 
+       class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-[0_4px_15px_rgba(37,211,102,0.4)] hover:-translate-y-2 transition-transform duration-300 hover-trigger">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // 1. Custom Cursor Logic
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+            
+            // Check for touch devices to disable custom cursor
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            
+            if(!isTouchDevice) {
+                window.addEventListener('mousemove', (e) => {
+                    const posX = e.clientX;
+                    const posY = e.clientY;
+                    
+                    cursorDot.style.left = `${posX}px`;
+                    cursorDot.style.top = `${posY}px`;
+                    
+                    // Slight delay for the outline using animate for smooth following
+                    cursorOutline.animate({
+                        left: `${posX}px`,
+                        top: `${posY}px`
+                    }, { duration: 500, fill: "forwards" });
+                });
 
-        // Mobile Menu Toggle Logic
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const iconMenu = document.getElementById('icon-menu');
-        const iconClose = document.getElementById('icon-close');
+                // Hover effects
+                document.querySelectorAll('.hover-trigger, a, button').forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+                });
+            } else {
+                cursorDot.style.display = 'none';
+                cursorOutline.style.display = 'none';
+            }
 
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            iconMenu.classList.toggle('hidden');
-            iconClose.classList.toggle('hidden');
-        });
-
-        // Close menu when clicking a link inside it
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                iconMenu.classList.remove('hidden');
-                iconClose.classList.add('hidden');
+            // 2. Sticky Navbar Glass Effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('py-2');
+                    navbar.classList.remove('py-6');
+                    navbar.firstElementChild.classList.add('shadow-lg', 'border-gold/20');
+                } else {
+                    navbar.classList.add('py-6');
+                    navbar.classList.remove('py-2');
+                    navbar.firstElementChild.classList.remove('shadow-lg', 'border-gold/20');
+                }
             });
-        });
 
-        // WhatsApp Booking Logic
-        function handleBookNow(carName) {
-            const pickupDate = document.getElementById('pickup-date').value;
-            const dropoffDate = document.getElementById('dropoff-date').value;
+            // 3. FAQ Accordion
+            document.querySelectorAll('.faq-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('i');
+                    
+                    // Close others
+                    document.querySelectorAll('.faq-content').forEach(c => {
+                        if (c !== content) {
+                            c.style.maxHeight = null;
+                            c.previousElementSibling.querySelector('i').style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    // Toggle current
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            // 4. Fleet Filtering
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const carCards = document.querySelectorAll('.car-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active', 'border-gold', 'text-gold');
+                        b.classList.add('border-white/20', 'text-white/70');
+                    });
+                    btn.classList.add('active', 'border-gold', 'text-gold');
+                    btn.classList.remove('border-white/20', 'text-white/70');
+
+                    const filter = btn.getAttribute('data-filter');
+
+                    carCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'flex';
+                            gsap.fromTo(card, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.5});
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // 5. Counter Animation
+            const counters = document.querySelectorAll('.counter');
+            let hasAnimated = false;
             
-            let message = `Hello Prakash Tour and Travels,\n\I am interested in booking the *${carName}*.`;
-            
-            if (pickupDate) {
-                message += `\nPickup Date: ${pickupDate}`;
-            }
-            if (dropoffDate) {
-                message += `\nDrop-off Date: ${dropoffDate}`;
-            }
-            
-            message += `\n\nPlease let me know the availability and further steps.`;
-            
-            const whatsappUrl = `https://wa.me/919818376653?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank');
-        }
+            const animateCounters = () => {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 2000; // 2 seconds
+                    const increment = target / (duration / 16); // 60fps
+                    let current = 0;
+
+                    const updateCounter = () => {
+                        current += increment;
+                        if (current < target) {
+                            counter.innerText = Math.ceil(current);
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCounter();
+                });
+            };
+
+            // 6. GSAP Animations Setup
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Hero Animation
+            const tl = gsap.timeline();
+            tl.from('.hero-elem', {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out",
+                delay: 0.5
+            });
+
+            // Parallax Hero BG
+            gsap.to('.parallax-bg', {
+                yPercent: 30,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Section Headers Reveal
+            gsap.utils.toArray('.section-header').forEach(header => {
+                gsap.from(header, {
+                    y: 30, opacity: 0, duration: 0.8,
+                    scrollTrigger: {
+                        trigger: header,
+                        start: "top 80%",
+                    }
+                });
+            });
+
+            // Service Cards Stagger
+            gsap.from('.service-card', {
+                y: 50, opacity: 0, duration: 0.8, stagger: 0.15,
+                scrollTrigger: {
+                    trigger: "#services",
+                    start: "top 70%",
+                }
+            });
+
+            // Experience Text Reveal
+            gsap.from('.experience-text', {
+                x: 50, opacity: 0, duration: 0.8, stagger: 0.1,
+                scrollTrigger: {
+                    trigger: "#experiences",
+                    start: "top 60%",
+                }
+            });
+
+            // Trigger Counter Animation on Scroll
+            ScrollTrigger.create({
+                trigger: ".stat-item",
+                start: "top 80%",
+                onEnter: () => {
+                    if(!hasAnimated) {
+                        animateCounters();
+                        hasAnimated = true;
+                    }
+                }
+            });
+
+        });
     </script>
 </body>
 </html>
