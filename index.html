@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html langa="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA | Luxury Car Rentals Kashmir</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AURA | Fresh Luxury Car Rentals Kashmir</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <!-- GSAP for Animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -18,13 +18,14 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: '#0a0a0a',
-                        darker: '#050505',
-                        gold: {
-                            DEFAULT: '#D4AF37',
-                            light: '#F3E5AB',
-                            dark: '#AA8529'
-                        }
+                        primary: {
+                            DEFAULT: '#007AFF', // Vibrant Apple/Alpine Blue
+                            light: '#4DA3FF',
+                            dark: '#0056b3'
+                        },
+                        lightBg: '#F4F7F9',
+                        darkText: '#0F172A',
+                        slateAccent: '#64748B'
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -38,27 +39,35 @@
 
     <style>
         :root {
-            --gold: #D4AF37;
+            --primary: #007AFF;
         }
         
-        body {
-            background-color: #0a0a0a;
-            color: #ffffff;
-            overflow-x: hidden;
-            cursor: none; /* Custom cursor */
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden; /* Fixes mobile horizontal zoom/scroll issue */
+            background-color: #F4F7F9;
+            color: #0F172A;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Film Grain Texture */
+        /* Prevent custom cursor on mobile to avoid lag/bugs */
+        @media (hover: hover) and (pointer: fine) {
+            body { cursor: none; }
+        }
+
+        /* Fresh Grain Texture - Very Subtle */
         .noise-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            top: 0; left: 0; width: 100%; height: 100vh;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Custom Cursor */
+        /* Custom Cursor - Blue */
         .cursor-dot, .cursor-outline {
             position: fixed;
             top: 0; left: 0;
@@ -66,229 +75,240 @@
             border-radius: 50%;
             z-index: 10000;
             pointer-events: none;
+            display: none; /* Default hidden for mobile */
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .cursor-dot, .cursor-outline { display: block; }
         }
         .cursor-dot {
             width: 8px; height: 8px;
-            background-color: var(--gold);
+            background-color: var(--primary);
         }
         .cursor-outline {
             width: 40px; height: 40px;
-            border: 1px solid rgba(212, 175, 55, 0.5);
+            border: 1px solid rgba(0, 122, 255, 0.4);
             transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
         .cursor-hover .cursor-outline {
             width: 60px; height: 60px;
-            background-color: rgba(212, 175, 55, 0.1);
+            background-color: rgba(0, 122, 255, 0.08);
             border-color: transparent;
             backdrop-filter: blur(2px);
         }
 
-        /* Glassmorphism Utilities */
-        .glass {
-            background: rgba(25, 25, 25, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* The Big Dark Header with Max Blur */
+        .dark-glass-header {
+            background: rgba(10, 15, 25, 0.75);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .glass-card {
-            background: linear-gradient(145deg, rgba(30,30,30,0.6) 0%, rgba(15,15,15,0.8) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;
+
+        /* Light Fresh Cards */
+        .fresh-card {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s, border-color 0.4s;
         }
-        .glass-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(212, 175, 55, 0.4);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.1);
+        .fresh-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0, 122, 255, 0.15);
+            border-color: rgba(0, 122, 255, 0.2);
         }
 
         /* Typography Gradients */
-        .text-gradient-gold {
-            background: linear-gradient(to right, #F3E5AB, #D4AF37, #AA8529);
+        .text-gradient-blue {
+            background: linear-gradient(135deg, #007AFF 0%, #00D4FF 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Ambient Glow */
-        .ambient-glow {
+        /* Fresh Ambient Glow */
+        .ambient-glow-blue {
             position: absolute;
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, rgba(0,0,0,0) 70%);
+            width: 40vw; height: 40vw;
+            background: radial-gradient(circle, rgba(0, 122, 255, 0.08) 0%, rgba(244,247,249,0) 70%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
+            max-width: 600px;
+            max-height: 600px;
         }
 
-        /* Hide Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+        /* Hide Scrollbar but keep functionality */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #F4F7F9; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         .clip-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="antialiased font-sans selection:bg-gold selection:text-dark">
+<body class="antialiased font-sans selection:bg-primary selection:text-white relative">
 
     <div class="noise-overlay"></div>
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- Ambient Lighting Effects -->
-    <div class="ambient-glow top-0 left-0"></div>
-    <div class="ambient-glow top-1/2 right-0"></div>
+    <div class="ambient-glow-blue top-[-10%] left-[-10%]"></div>
+    <div class="ambient-glow-blue top-[40%] right-[-10%]"></div>
 
-    <!-- Sticky Glass Navbar -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6 px-6 md:px-12">
-        <div class="max-w-7xl mx-auto glass rounded-2xl px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-heading font-bold tracking-wider hover-trigger">
-                AURA<span class="text-gold">.</span>
+    <!-- Sticky Dark Glass Navbar (Larger, Darker, Max Blur) -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6 px-4 sm:px-6 md:px-12">
+        <!-- Made it darker, larger padding, rounded-3xl -->
+        <div class="max-w-7xl mx-auto dark-glass-header rounded-[2rem] px-8 py-5 flex justify-between items-center text-white">
+            <a href="#" class="text-2xl font-heading font-bold tracking-wider hover-trigger flex items-center gap-1">
+                AURA<span class="text-primary text-3xl leading-none">.</span>
             </a>
             
-            <div class="hidden md:flex space-x-8 items-center text-sm font-medium tracking-wide">
-                <a href="#fleet" class="hover:text-gold transition-colors hover-trigger">Fleet</a>
-                <a href="#experiences" class="hover:text-gold transition-colors hover-trigger">Experiences</a>
-                <a href="#services" class="hover:text-gold transition-colors hover-trigger">Services</a>
-                <a href="#reviews" class="hover:text-gold transition-colors hover-trigger">Reviews</a>
+            <div class="hidden md:flex space-x-10 items-center text-sm font-medium tracking-wide">
+                <a href="#fleet" class="hover:text-primary transition-colors hover-trigger">Fleet</a>
+                <a href="#experiences" class="hover:text-primary transition-colors hover-trigger">Destinations</a>
+                <a href="#services" class="hover:text-primary transition-colors hover-trigger">Services</a>
+                <a href="#reviews" class="hover:text-primary transition-colors hover-trigger">Reviews</a>
             </div>
 
             <a href="https://wa.me/60052229202?text=Hi!%20I%20am%20looking%20to%20book%20a%20premium%20car." target="_blank" 
-               class="hidden md:flex items-center gap-2 bg-gold text-dark px-6 py-2.5 rounded-full font-semibold hover:bg-white transition-all hover-trigger hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+               class="hidden md:flex items-center gap-2 bg-primary text-white px-7 py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition-all hover-trigger shadow-[0_0_20px_rgba(0,122,255,0.3)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)]">
                 <i class="fab fa-whatsapp text-lg"></i> Book Now
             </a>
 
             <!-- Mobile Menu Btn -->
-            <button class="md:hidden text-2xl text-white hover:text-gold transition-colors">
+            <button class="md:hidden text-2xl text-white hover:text-primary transition-colors">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
 
     <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
-        <!-- Parallax Background -->
-        <div class="absolute inset-0 z-0 bg-dark">
-            <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
-                 alt="Luxury Car Dark" 
-                 class="w-full h-full object-cover opacity-50 parallax-bg"
-                 style="transform: scale(1.1);">
-            <div class="absolute inset-0 bg-gradient-to-b from-dark/40 via-dark/20 to-dark"></div>
+        <!-- Breathtaking Daylight Parallax Background -->
+        <div class="absolute inset-0 z-0 bg-lightBg">
+            <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                 alt="Breathtaking Kashmir Road" 
+                 class="w-full h-full object-cover parallax-bg"
+                 style="transform: scale(1.1); filter: brightness(0.85);">
+            <!-- Gradient fading into the white/light body below -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#F4F7F9]"></div>
         </div>
 
-        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-20">
+        <div class="relative z-10 text-center px-4 w-full max-w-5xl mx-auto mt-24">
             <div class="clip-text">
-                <span class="block text-gold text-sm md:text-base font-semibold tracking-[0.3em] uppercase mb-4 hero-elem">Elevate Your Journey</span>
+                <span class="block text-primary text-sm md:text-base font-bold tracking-[0.3em] uppercase mb-6 hero-elem drop-shadow-md">A Breath of Fresh Air</span>
             </div>
             <div class="clip-text">
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-bold leading-tight mb-6 hero-elem">
-                    Experience Kashmir <br> in <span class="font-serif italic font-normal text-gradient-gold">Unmatched Luxury</span>
+                <!-- White text for hero for contrast against the image -->
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-bold leading-tight mb-6 hero-elem text-white drop-shadow-lg">
+                    Discover Kashmir <br> in <span class="font-serif italic font-normal text-gradient-blue">Pure Elegance</span>
                 </h1>
             </div>
             <div class="clip-text">
-                <p class="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 hero-elem">
-                    Premium chauffeur services and luxury rentals for road trips, weddings, and VIP airport transfers across the paradise on earth.
+                <p class="text-gray-100 text-lg md:text-xl font-medium max-w-2xl mx-auto mb-10 hero-elem drop-shadow-md">
+                    Immaculate chauffeur services and premium rentals. Breathe in the paradise on earth with unparalleled comfort.
                 </p>
             </div>
             
-            <div class="flex flex-col sm:flex-row gap-4 justify-center hero-elem">
-                <a href="#fleet" class="bg-white text-dark px-8 py-4 rounded-full font-semibold hover:bg-gold transition-all hover-trigger">
-                    Explore Fleet
+            <div class="flex flex-col sm:flex-row gap-4 justify-center hero-elem items-center">
+                <a href="#fleet" class="bg-primary text-white w-full sm:w-auto px-10 py-4 rounded-full font-semibold hover:bg-white hover:text-primary transition-all hover-trigger shadow-lg">
+                    Explore Our Fleet
                 </a>
                 <a href="https://wa.me/60052229202?text=I%20need%20a%20custom%20Kashmir%20road%20trip%20package." target="_blank" 
-                   class="glass px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all hover-trigger flex items-center justify-center gap-2">
-                    <i class="fab fa-whatsapp text-gold"></i> Custom Package
+                   class="dark-glass-header text-white w-full sm:w-auto px-10 py-4 rounded-full font-semibold hover:bg-primary transition-all hover-trigger flex items-center justify-center gap-2 border border-white/20">
+                    <i class="fab fa-whatsapp text-green-400 text-xl"></i> Plan a Trip
                 </a>
             </div>
         </div>
 
         <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-60">
-            <span class="text-xs tracking-widest uppercase">Scroll</span>
-            <div class="w-[1px] h-12 bg-gradient-to-b from-gold to-transparent overflow-hidden">
-                <div class="w-full h-1/2 bg-white animate-[scrollDown_1.5s_ease-in-out_infinite]"></div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-80">
+            <span class="text-xs tracking-widest uppercase text-slate-800 font-bold">Scroll</span>
+            <div class="w-[2px] h-12 bg-slate-300 overflow-hidden rounded-full">
+                <div class="w-full h-1/2 bg-primary animate-[scrollDown_1.5s_ease-in-out_infinite] rounded-full"></div>
             </div>
         </div>
     </section>
 
-    <section class="py-12 border-y border-white/5 bg-darker relative z-10">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <section class="py-16 bg-white border-y border-slate-100 relative z-10 shadow-sm">
+        <div class="w-full max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div class="stat-item">
-                <div class="text-4xl font-heading font-bold text-gold mb-2"><span class="counter" data-target="500">0</span>+</div>
-                <div class="text-sm text-gray-400 tracking-wide uppercase">Happy Clients</div>
+                <div class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2"><span class="counter" data-target="1500">0</span>+</div>
+                <div class="text-xs md:text-sm text-slate-500 font-semibold tracking-wide uppercase">Happy Journeys</div>
             </div>
             <div class="stat-item">
-                <div class="text-4xl font-heading font-bold text-gold mb-2"><span class="counter" data-target="25">0</span></div>
-                <div class="text-sm text-gray-400 tracking-wide uppercase">Premium Cars</div>
+                <div class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2"><span class="counter" data-target="30">0</span></div>
+                <div class="text-xs md:text-sm text-slate-500 font-semibold tracking-wide uppercase">Pristine Cars</div>
             </div>
             <div class="stat-item">
-                <div class="text-4xl font-heading font-bold text-gold mb-2"><span class="counter" data-target="100">0</span>%</div>
-                <div class="text-sm text-gray-400 tracking-wide uppercase">Satisfaction</div>
+                <div class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2"><span class="counter" data-target="100">0</span>%</div>
+                <div class="text-xs md:text-sm text-slate-500 font-semibold tracking-wide uppercase">Satisfaction</div>
             </div>
             <div class="stat-item">
-                <div class="text-4xl font-heading font-bold text-gold mb-2">24/7</div>
-                <div class="text-sm text-gray-400 tracking-wide uppercase">Live Support</div>
+                <div class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2">24/7</div>
+                <div class="text-xs md:text-sm text-slate-500 font-semibold tracking-wide uppercase">Assistance</div>
             </div>
         </div>
     </section>
 
-    <section id="services" class="py-24 relative bg-dark">
-        <div class="max-w-7xl mx-auto px-6">
+    <section id="services" class="py-24 relative bg-lightBg">
+        <div class="w-full max-w-7xl mx-auto px-6">
             <div class="text-center mb-16 section-header">
-                <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-2">Why Choose Us</h2>
-                <h3 class="text-4xl md:text-5xl font-serif">Curated Premium Services</h3>
+                <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Why Choose Us</h2>
+                <h3 class="text-4xl md:text-5xl font-serif text-darkText">Curated Premium Services</h3>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Service 1 -->
-                <div class="glass-card p-8 rounded-2xl hover-trigger service-card">
-                    <div class="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-6 text-gold text-2xl">
-                        <i class="fas fa-map-marked-alt"></i>
+                <div class="fresh-card p-8 rounded-[2rem] hover-trigger service-card flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-primary text-2xl shadow-inner">
+                        <i class="fas fa-mountain"></i>
                     </div>
-                    <h4 class="text-xl font-heading font-semibold mb-3">Kashmir Road-Trips</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">Experience the breathtaking valleys of Gulmarg and Pahalgam with our specially curated luxury tours.</p>
+                    <h4 class="text-xl font-heading font-bold mb-3 text-darkText">Alpine Road-Trips</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Experience the breathtaking valleys of Gulmarg and Pahalgam with our specially curated, comfortable tours.</p>
                 </div>
                 <!-- Service 2 -->
-                <div class="glass-card p-8 rounded-2xl hover-trigger service-card">
-                    <div class="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-6 text-gold text-2xl">
+                <div class="fresh-card p-8 rounded-[2rem] hover-trigger service-card flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-primary text-2xl shadow-inner">
                         <i class="fas fa-plane-arrival"></i>
                     </div>
-                    <h4 class="text-xl font-heading font-semibold mb-3">VIP Airport Pickup</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">Seamless, punctual, and comfortable transfers from Srinagar International Airport directly to your hotel.</p>
+                    <h4 class="text-xl font-heading font-bold mb-3 text-darkText">VIP Airport Pickup</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Seamless, punctual, and refreshing transfers from Srinagar Airport directly to your luxury stay.</p>
                 </div>
                 <!-- Service 3 -->
-                <div class="glass-card p-8 rounded-2xl hover-trigger service-card">
-                    <div class="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-6 text-gold text-2xl">
+                <div class="fresh-card p-8 rounded-[2rem] hover-trigger service-card flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-primary text-2xl shadow-inner">
                         <i class="fas fa-ring"></i>
                     </div>
-                    <h4 class="text-xl font-heading font-semibold mb-3">Wedding Luxury</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">Make your grand entrance unforgettable with our immaculate fleet of decorated premium vehicles.</p>
+                    <h4 class="text-xl font-heading font-bold mb-3 text-darkText">Wedding Elegance</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Make your grand entrance unforgettable with our immaculate fleet of beautifully decorated premium vehicles.</p>
                 </div>
                 <!-- Service 4 -->
-                <div class="glass-card p-8 rounded-2xl hover-trigger service-card">
-                    <div class="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-6 text-gold text-2xl">
+                <div class="fresh-card p-8 rounded-[2rem] hover-trigger service-card flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-primary text-2xl shadow-inner">
                         <i class="fas fa-user-tie"></i>
                     </div>
-                    <h4 class="text-xl font-heading font-semibold mb-3">Chauffeur Service</h4>
-                    <p class="text-gray-400 text-sm leading-relaxed">Professional, multilingual chauffeurs trained in hospitality to ensure a smooth and safe journey.</p>
+                    <h4 class="text-xl font-heading font-bold mb-3 text-darkText">Chauffeur Service</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed">Professional, courteous chauffeurs trained in high-end hospitality to ensure a smooth, safe journey.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="fleet" class="py-24 bg-darker relative">
-        <div class="ambient-glow top-1/4 left-1/4"></div>
-        
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 section-header">
+    <section id="fleet" class="py-24 bg-white relative">
+        <div class="w-full max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 section-header gap-6 text-center md:text-left">
                 <div>
-                    <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-2">Our Collection</h2>
-                    <h3 class="text-4xl md:text-5xl font-serif">The Royal Fleet</h3>
+                    <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Our Collection</h2>
+                    <h3 class="text-4xl md:text-5xl font-serif text-darkText">The Pristine Fleet</h3>
                 </div>
                 
                 <!-- Filters -->
-                <div class="flex gap-4 mt-6 md:mt-0 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto">
-                    <button class="filter-btn active px-5 py-2 rounded-full border border-gold text-gold text-sm font-medium hover-trigger" data-filter="all">All</button>
-                    <button class="filter-btn px-5 py-2 rounded-full border border-white/20 text-white/70 text-sm font-medium hover:border-gold hover:text-gold transition-colors hover-trigger" data-filter="suv">SUVs</button>
-                    <button class="filter-btn px-5 py-2 rounded-full border border-white/20 text-white/70 text-sm font-medium hover:border-gold hover:text-gold transition-colors hover-trigger" data-filter="luxury">Luxury Sedans</button>
+                <div class="flex gap-3 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto justify-start md:justify-end hide-scrollbar">
+                    <button class="filter-btn active px-6 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover-trigger shadow-md whitespace-nowrap" data-filter="all">All</button>
+                    <button class="filter-btn px-6 py-2.5 rounded-full bg-slate-100 text-slate-600 text-sm font-semibold hover:bg-slate-200 transition-colors hover-trigger whitespace-nowrap" data-filter="suv">SUVs</button>
+                    <button class="filter-btn px-6 py-2.5 rounded-full bg-slate-100 text-slate-600 text-sm font-semibold hover:bg-slate-200 transition-colors hover-trigger whitespace-nowrap" data-filter="luxury">Luxury Sedans</button>
                 </div>
             </div>
 
@@ -296,81 +316,81 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="car-grid">
                 
                 <!-- Car Card 1 -->
-                <div class="car-card glass-card rounded-2xl overflow-hidden flex flex-col group" data-category="suv">
-                    <div class="relative h-64 overflow-hidden bg-white/5">
-                        <div class="absolute top-4 left-4 z-10 glass px-3 py-1 rounded-full text-xs font-semibold text-gold">Popular in Kashmir</div>
-                        <!-- Using high quality Unsplash placeholders for cars -->
+                <div class="car-card fresh-card rounded-[2rem] overflow-hidden flex flex-col group" data-category="suv">
+                    <div class="relative h-64 overflow-hidden bg-slate-100 p-6 flex items-center justify-center">
+                        <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold text-primary shadow-sm">Popular in Kashmir</div>
+                        <!-- Using clean car images -->
                         <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="Toyota Fortuner" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                             alt="Toyota Fortuner" class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 shadow-lg">
                     </div>
-                    <div class="p-6 flex-grow flex flex-col">
+                    <div class="p-8 flex-grow flex flex-col">
                         <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-2xl font-heading font-bold">Toyota Fortuner</h4>
-                            <span class="text-xl text-gold font-serif">₹5,000<span class="text-sm text-gray-400 font-sans">/day</span></span>
+                            <h4 class="text-2xl font-heading font-bold text-darkText">Toyota Fortuner</h4>
+                            <span class="text-xl text-primary font-serif font-bold">₹5,000<span class="text-sm text-slate-400 font-sans font-normal">/day</span></span>
                         </div>
-                        <p class="text-gray-400 text-sm mb-6">The ultimate beast for snowy terrains and steep Kashmir mountain passes. Unmatched power.</p>
+                        <p class="text-slate-500 text-sm mb-6">The ultimate beast for snowy terrains and steep mountain passes. Power meets comfort.</p>
                         
-                        <div class="grid grid-cols-3 gap-2 mb-6 text-center text-xs text-gray-300">
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-users block mb-1 text-gold"></i> 7 Seats</div>
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-cogs block mb-1 text-gold"></i> Auto</div>
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-gas-pump block mb-1 text-gold"></i> Diesel</div>
+                        <div class="grid grid-cols-3 gap-3 mb-8 text-center text-xs font-semibold text-slate-600">
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-users block mb-1 text-primary text-lg"></i> 7 Seats</div>
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-cogs block mb-1 text-primary text-lg"></i> Auto</div>
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-gas-pump block mb-1 text-primary text-lg"></i> Diesel</div>
                         </div>
                         
                         <a href="https://wa.me/60052229202?text=I%20want%20to%20book%20the%20Toyota%20Fortuner" target="_blank" 
-                           class="mt-auto w-full py-3 rounded-xl border border-gold/50 text-center font-medium hover:bg-gold hover:text-dark transition-colors hover-trigger">
+                           class="mt-auto w-full py-4 rounded-xl bg-slate-900 text-white text-center font-semibold hover:bg-primary transition-colors hover-trigger shadow-md">
                             Check Availability
                         </a>
                     </div>
                 </div>
 
                 <!-- Car Card 2 -->
-                <div class="car-card glass-card rounded-2xl overflow-hidden flex flex-col group" data-category="luxury">
-                    <div class="relative h-64 overflow-hidden bg-white/5">
+                <div class="car-card fresh-card rounded-[2rem] overflow-hidden flex flex-col group" data-category="luxury">
+                    <div class="relative h-64 overflow-hidden bg-slate-100 p-6 flex items-center justify-center">
                         <img src="https://images.unsplash.com/photo-1616423640778-28d1b53229bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="Mercedes S-Class" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                             alt="Mercedes S-Class" class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 shadow-lg">
                     </div>
-                    <div class="p-6 flex-grow flex flex-col">
+                    <div class="p-8 flex-grow flex flex-col">
                         <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-2xl font-heading font-bold">Mercedes S-Class</h4>
-                            <span class="text-xl text-gold font-serif">₹15,000<span class="text-sm text-gray-400 font-sans">/day</span></span>
+                            <h4 class="text-2xl font-heading font-bold text-darkText">Mercedes S-Class</h4>
+                            <span class="text-xl text-primary font-serif font-bold">₹15,000<span class="text-sm text-slate-400 font-sans font-normal">/day</span></span>
                         </div>
-                        <p class="text-gray-400 text-sm mb-6">Pinnacle of luxury. Perfect for VIP delegations, weddings, and premium comfort.</p>
+                        <p class="text-slate-500 text-sm mb-6">Pinnacle of luxury. Perfect for VIP delegations, weddings, and supreme travel comfort.</p>
                         
-                        <div class="grid grid-cols-3 gap-2 mb-6 text-center text-xs text-gray-300">
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-users block mb-1 text-gold"></i> 4 Seats</div>
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-cogs block mb-1 text-gold"></i> Auto</div>
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-suitcase block mb-1 text-gold"></i> 3 Bags</div>
+                        <div class="grid grid-cols-3 gap-3 mb-8 text-center text-xs font-semibold text-slate-600">
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-users block mb-1 text-primary text-lg"></i> 4 Seats</div>
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-cogs block mb-1 text-primary text-lg"></i> Auto</div>
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-suitcase block mb-1 text-primary text-lg"></i> 3 Bags</div>
                         </div>
                         
                         <a href="https://wa.me/60052229202?text=I%20want%20to%20book%20the%20Mercedes%20S-Class" target="_blank" 
-                           class="mt-auto w-full py-3 rounded-xl border border-gold/50 text-center font-medium hover:bg-gold hover:text-dark transition-colors hover-trigger">
+                           class="mt-auto w-full py-4 rounded-xl bg-slate-900 text-white text-center font-semibold hover:bg-primary transition-colors hover-trigger shadow-md">
                             Check Availability
                         </a>
                     </div>
                 </div>
 
                 <!-- Car Card 3 -->
-                <div class="car-card glass-card rounded-2xl overflow-hidden flex flex-col group" data-category="suv">
-                    <div class="relative h-64 overflow-hidden bg-white/5">
-                        <div class="absolute top-4 left-4 z-10 glass px-3 py-1 rounded-full text-xs font-semibold text-gold">Best for Families</div>
+                <div class="car-card fresh-card rounded-[2rem] overflow-hidden flex flex-col group" data-category="suv">
+                    <div class="relative h-64 overflow-hidden bg-slate-100 p-6 flex items-center justify-center">
+                        <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold text-primary shadow-sm">Best for Families</div>
                         <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                             alt="Innova Crysta" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                             alt="Innova Crysta" class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 shadow-lg">
                     </div>
-                    <div class="p-6 flex-grow flex flex-col">
+                    <div class="p-8 flex-grow flex flex-col">
                         <div class="flex justify-between items-start mb-2">
-                            <h4 class="text-2xl font-heading font-bold">Innova Crysta</h4>
-                            <span class="text-xl text-gold font-serif">₹3,500<span class="text-sm text-gray-400 font-sans">/day</span></span>
+                            <h4 class="text-2xl font-heading font-bold text-darkText">Innova Crysta</h4>
+                            <span class="text-xl text-primary font-serif font-bold">₹3,500<span class="text-sm text-slate-400 font-sans font-normal">/day</span></span>
                         </div>
-                        <p class="text-gray-400 text-sm mb-6">The most comfortable MUV for long family road trips across the Kashmir valley.</p>
+                        <p class="text-slate-500 text-sm mb-6">The most comfortable and reliable MUV for long family road trips across the valley.</p>
                         
-                        <div class="grid grid-cols-3 gap-2 mb-6 text-center text-xs text-gray-300">
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-users block mb-1 text-gold"></i> 7 Seats</div>
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-cogs block mb-1 text-gold"></i> Manual</div>
-                            <div class="glass py-2 rounded-lg"><i class="fas fa-gas-pump block mb-1 text-gold"></i> Diesel</div>
+                        <div class="grid grid-cols-3 gap-3 mb-8 text-center text-xs font-semibold text-slate-600">
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-users block mb-1 text-primary text-lg"></i> 7 Seats</div>
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-cogs block mb-1 text-primary text-lg"></i> Manual</div>
+                            <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-gas-pump block mb-1 text-primary text-lg"></i> Diesel</div>
                         </div>
                         
                         <a href="https://wa.me/60052229202?text=I%20want%20to%20book%20the%20Innova%20Crysta" target="_blank" 
-                           class="mt-auto w-full py-3 rounded-xl border border-gold/50 text-center font-medium hover:bg-gold hover:text-dark transition-colors hover-trigger">
+                           class="mt-auto w-full py-4 rounded-xl bg-slate-900 text-white text-center font-semibold hover:bg-primary transition-colors hover-trigger shadow-md">
                             Check Availability
                         </a>
                     </div>
@@ -380,46 +400,53 @@
         </div>
     </section>
 
-    <section id="experiences" class="py-24 bg-dark overflow-hidden relative">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
+    <section id="experiences" class="py-24 bg-lightBg overflow-hidden relative">
+        <div class="w-full max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16">
             
-            <div class="w-full lg:w-1/2 relative">
-                <div class="absolute -inset-4 bg-gold/20 blur-3xl rounded-full z-0"></div>
-                <div class="glass-card p-2 rounded-2xl relative z-10 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+            <!-- Symmetrical, clean image layout without the weird rotation -->
+            <div class="w-full lg:w-1/2 relative group">
+                <div class="absolute -inset-4 bg-primary/10 blur-3xl rounded-full z-0 transition-all duration-500 group-hover:bg-primary/20"></div>
+                <div class="fresh-card p-3 rounded-[2.5rem] relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
                     <img src="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-                         alt="Kashmir Valley" class="rounded-xl w-full h-[500px] object-cover">
-                    <!-- Glass overlay badge -->
-                    <div class="absolute bottom-6 left-6 glass px-6 py-4 rounded-xl flex items-center gap-4">
-                        <i class="fas fa-cloud-sun text-2xl text-gold"></i>
+                         alt="Clear Kashmir Valley" class="rounded-[2rem] w-full h-[450px] md:h-[550px] object-cover">
+                    
+                    <!-- Clean Floating Badge -->
+                    <div class="absolute bottom-8 left-8 right-8 md:right-auto bg-white/95 backdrop-blur-md px-6 py-4 rounded-2xl flex items-center gap-4 shadow-xl border border-white">
+                        <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center">
+                            <i class="fas fa-sun text-2xl text-primary"></i>
+                        </div>
                         <div>
-                            <div class="text-xs text-gray-300 uppercase tracking-widest">Srinagar</div>
-                            <div class="font-bold">Perfect Weather for a Drive</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-widest font-bold">Gulmarg</div>
+                            <div class="font-bold text-darkText">Clear Skies & Fresh Air</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="w-full lg:w-1/2">
-                <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-4 experience-text">Destination Experiences</h2>
-                <h3 class="text-4xl md:text-5xl font-serif mb-6 experience-text">Journey Through <br>Paradise on Earth</h3>
-                <p class="text-gray-400 mb-8 text-lg experience-text">
-                    From the snow-capped peaks of Gulmarg to the serene valleys of Pahalgam, our experienced chauffeurs know every hidden gem. Travel safely and luxuriously across Kashmir.
+            <div class="w-full lg:w-1/2 text-center lg:text-left">
+                <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-4 experience-text">Destination Experiences</h2>
+                <h3 class="text-4xl md:text-5xl font-serif mb-6 experience-text text-darkText leading-tight">Breathe in the <br>Paradise on Earth</h3>
+                <p class="text-slate-500 mb-8 text-lg experience-text leading-relaxed">
+                    From the majestic, snow-capped peaks of Gulmarg to the pristine, crystal-clear streams of Pahalgam, our expert chauffeurs navigate the beauty safely so you can simply look out the window and relax.
                 </p>
                 
-                <ul class="space-y-4 mb-8 experience-text">
-                    <li class="flex items-center gap-3">
-                        <i class="fas fa-check-circle text-gold"></i> <span>Customized Itineraries</span>
+                <ul class="space-y-5 mb-10 experience-text text-left max-w-md mx-auto lg:mx-0">
+                    <li class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0"><i class="fas fa-map-marked-alt text-primary"></i></div>
+                        <span class="font-medium text-slate-700">Customized Fresh Itineraries</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fas fa-check-circle text-gold"></i> <span>Snow-Ready Vehicles (Chains Provided)</span>
+                    <li class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0"><i class="fas fa-snowflake text-primary"></i></div>
+                        <span class="font-medium text-slate-700">Snow & Weather Ready Vehicles</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fas fa-check-circle text-gold"></i> <span>Local Expert Drivers</span>
+                    <li class="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0"><i class="fas fa-user-shield text-primary"></i></div>
+                        <span class="font-medium text-slate-700">Polite, Local Expert Drivers</span>
                     </li>
                 </ul>
 
                 <a href="https://wa.me/60052229202?text=I%20want%20to%20plan%20a%20Kashmir%20tour." target="_blank" 
-                   class="inline-flex items-center gap-3 bg-white text-dark px-8 py-4 rounded-full font-semibold hover:bg-gold transition-all hover-trigger experience-text">
+                   class="inline-flex items-center justify-center gap-3 bg-primary text-white px-10 py-4 rounded-full font-bold hover:bg-slate-900 transition-all hover-trigger experience-text shadow-lg hover:shadow-xl w-full sm:w-auto">
                     Plan Your Route <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -427,153 +454,160 @@
         </div>
     </section>
 
-    <section id="reviews" class="py-24 bg-darker relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 mb-12 text-center section-header">
-            <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-2">Testimonials</h2>
-            <h3 class="text-4xl md:text-5xl font-serif">Words from our Guests</h3>
+    <section id="reviews" class="py-24 bg-white relative overflow-hidden">
+        <div class="w-full max-w-7xl mx-auto px-6 mb-16 text-center section-header">
+            <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Testimonials</h2>
+            <h3 class="text-4xl md:text-5xl font-serif text-darkText">Smiles from our Guests</h3>
         </div>
 
-        <!-- Custom basic CSS infinite scroll wrapper -->
-        <div class="flex gap-6 overflow-x-auto pb-8 px-6 snap-x snap-mandatory hide-scrollbar max-w-7xl mx-auto" id="review-container">
+        <!-- Fixed infinite scroll wrapper width and padding -->
+        <div class="flex gap-6 overflow-x-auto pb-12 px-6 sm:px-12 snap-x snap-mandatory hide-scrollbar w-full max-w-full" id="review-container">
             <!-- Review 1 -->
-            <div class="min-w-[320px] md:min-w-[400px] glass-card p-8 rounded-2xl snap-center shrink-0">
-                <div class="flex text-gold mb-4 text-sm">
+            <div class="min-w-[300px] md:min-w-[420px] fresh-card p-8 md:p-10 rounded-[2rem] snap-center shrink-0">
+                <div class="flex text-[#FFB800] mb-6 text-sm gap-1">
                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
-                <p class="text-gray-300 italic mb-6 leading-relaxed">"Booked an Innova for our 5-day Kashmir trip. The car was spotless, and our driver was incredibly polite and knowledgeable about local spots."</p>
+                <p class="text-slate-600 text-lg mb-8 leading-relaxed font-medium">"Booked an Innova for our 5-day Kashmir trip. The car was spotless, smelling fresh, and our driver was incredibly polite and knowledgeable about hidden local spots."</p>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center font-bold text-xl">R</div>
+                    <div class="w-14 h-14 bg-gradient-to-br from-primary to-blue-400 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-md">R</div>
                     <div>
-                        <div class="font-bold">Rahul Sharma</div>
-                        <div class="text-xs text-gray-500">Mumbai, India</div>
+                        <div class="font-bold text-darkText text-lg">Rahul Sharma</div>
+                        <div class="text-sm text-primary font-medium">Mumbai, India</div>
                     </div>
                 </div>
             </div>
 
             <!-- Review 2 -->
-            <div class="min-w-[320px] md:min-w-[400px] glass-card p-8 rounded-2xl snap-center shrink-0">
-                <div class="flex text-gold mb-4 text-sm">
+            <div class="min-w-[300px] md:min-w-[420px] fresh-card p-8 md:p-10 rounded-[2rem] snap-center shrink-0">
+                <div class="flex text-[#FFB800] mb-6 text-sm gap-1">
                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
-                <p class="text-gray-300 italic mb-6 leading-relaxed">"Used their S-Class for my wedding in Srinagar. The car arrived early, beautifully decorated, and added the perfect royal touch to our day."</p>
+                <p class="text-slate-600 text-lg mb-8 leading-relaxed font-medium">"Used their S-Class for my wedding in Srinagar. The car arrived early, beautifully decorated with fresh flowers, and added the perfect elegant touch to our day."</p>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center font-bold text-xl">F</div>
+                    <div class="w-14 h-14 bg-gradient-to-br from-slate-800 to-slate-600 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-md">F</div>
                     <div>
-                        <div class="font-bold">Faizan Ali</div>
-                        <div class="text-xs text-gray-500">Srinagar, J&K</div>
+                        <div class="font-bold text-darkText text-lg">Faizan Ali</div>
+                        <div class="text-sm text-primary font-medium">Srinagar, J&K</div>
                     </div>
                 </div>
             </div>
 
             <!-- Review 3 -->
-            <div class="min-w-[320px] md:min-w-[400px] glass-card p-8 rounded-2xl snap-center shrink-0">
-                <div class="flex text-gold mb-4 text-sm">
+            <div class="min-w-[300px] md:min-w-[420px] fresh-card p-8 md:p-10 rounded-[2rem] snap-center shrink-0">
+                <div class="flex text-[#FFB800] mb-6 text-sm gap-1">
                     <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                 </div>
-                <p class="text-gray-300 italic mb-6 leading-relaxed">"The Fortuner handled the snowy roads to Gulmarg like a dream. Safe, luxurious, and the booking process via WhatsApp was instantly sorted."</p>
+                <p class="text-slate-600 text-lg mb-8 leading-relaxed font-medium">"The Fortuner handled the snowy roads to Gulmarg like a dream. Safe, clean, and the booking process via WhatsApp was instantly sorted. Highly recommend!"</p>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center font-bold text-xl">A</div>
+                    <div class="w-14 h-14 bg-gradient-to-br from-primary to-blue-400 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-md">A</div>
                     <div>
-                        <div class="font-bold">Amit Desai</div>
-                        <div class="text-xs text-gray-500">Gujarat, India</div>
+                        <div class="font-bold text-darkText text-lg">Amit Desai</div>
+                        <div class="text-sm text-primary font-medium">Gujarat, India</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-24 bg-dark relative">
-        <div class="max-w-4xl mx-auto px-6">
+    <section class="py-24 bg-lightBg relative">
+        <div class="w-full max-w-3xl mx-auto px-6">
             <div class="text-center mb-16 section-header">
-                <h2 class="text-gold text-sm tracking-[0.2em] uppercase mb-2">Support</h2>
-                <h3 class="text-4xl font-serif">Frequently Asked Questions</h3>
+                <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Support</h2>
+                <h3 class="text-4xl font-serif text-darkText">Frequently Asked Questions</h3>
             </div>
 
             <div class="space-y-4">
                 <!-- FAQ 1 -->
-                <div class="glass-card rounded-xl overflow-hidden">
-                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center font-medium hover:text-gold transition-colors hover-trigger">
+                <div class="fresh-card rounded-2xl overflow-hidden bg-white">
+                    <button class="faq-btn w-full px-8 py-6 text-left flex justify-between items-center font-semibold text-lg text-slate-800 hover:text-primary transition-colors hover-trigger">
                         <span>Do you provide self-drive cars in Kashmir?</span>
-                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                            <i class="fas fa-chevron-down text-sm text-primary transition-transform duration-300"></i>
+                        </div>
                     </button>
-                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-black/20">
-                        <p class="p-6 text-gray-400 text-sm border-t border-white/5">Currently, we specialize in premium chauffeur-driven services to ensure your safety and comfort on challenging mountain roads.</p>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-slate-50/50">
+                        <p class="px-8 pb-6 text-slate-600 leading-relaxed border-t border-slate-100 pt-4">Currently, we specialize in premium chauffeur-driven services. Our local expert drivers ensure your safety and comfort on challenging mountain roads so you can enjoy the fresh views.</p>
                     </div>
                 </div>
                 <!-- FAQ 2 -->
-                <div class="glass-card rounded-xl overflow-hidden">
-                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center font-medium hover:text-gold transition-colors hover-trigger">
+                <div class="fresh-card rounded-2xl overflow-hidden bg-white">
+                    <button class="faq-btn w-full px-8 py-6 text-left flex justify-between items-center font-semibold text-lg text-slate-800 hover:text-primary transition-colors hover-trigger">
                         <span>Is fuel included in the pricing?</span>
-                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                            <i class="fas fa-chevron-down text-sm text-primary transition-transform duration-300"></i>
+                        </div>
                     </button>
-                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-black/20">
-                        <p class="p-6 text-gray-400 text-sm border-t border-white/5">Our standard daily rates are generally exclusive of fuel unless you book a comprehensive all-inclusive tour package. Contact us for exact quotes.</p>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-slate-50/50">
+                        <p class="px-8 pb-6 text-slate-600 leading-relaxed border-t border-slate-100 pt-4">Our standard daily rates are generally exclusive of fuel unless you book a comprehensive all-inclusive tour package. Contact us on WhatsApp for exact customized quotes.</p>
                     </div>
                 </div>
                 <!-- FAQ 3 -->
-                <div class="glass-card rounded-xl overflow-hidden">
-                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center font-medium hover:text-gold transition-colors hover-trigger">
+                <div class="fresh-card rounded-2xl overflow-hidden bg-white">
+                    <button class="faq-btn w-full px-8 py-6 text-left flex justify-between items-center font-semibold text-lg text-slate-800 hover:text-primary transition-colors hover-trigger">
                         <span>How fast can I book a car?</span>
-                        <i class="fas fa-chevron-down text-sm transition-transform duration-300"></i>
+                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                            <i class="fas fa-chevron-down text-sm text-primary transition-transform duration-300"></i>
+                        </div>
                     </button>
-                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-black/20">
-                        <p class="p-6 text-gray-400 text-sm border-t border-white/5">Instantly! Just click the WhatsApp button, send us your requirements, and our team will confirm your booking within minutes.</p>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 bg-slate-50/50">
+                        <p class="px-8 pb-6 text-slate-600 leading-relaxed border-t border-slate-100 pt-4">Instantly! Just click the WhatsApp button, send us your requirements, and our team will confirm your booking and car details within minutes.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-black pt-20 pb-10 border-t border-white/10 relative overflow-hidden">
-        <div class="absolute bottom-0 right-0 text-[15vw] font-heading font-bold text-white/5 leading-none pointer-events-none select-none">AURA</div>
+    <footer class="bg-slate-900 pt-20 pb-10 relative overflow-hidden text-white">
+        <!-- Giant watermark text in footer -->
+        <div class="absolute bottom-0 right-0 text-[15vw] font-heading font-bold text-white/[0.03] leading-none pointer-events-none select-none">AURA</div>
         
-        <div class="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        <div class="w-full max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
             <div class="col-span-1 md:col-span-2">
-                <a href="#" class="text-3xl font-heading font-bold tracking-wider mb-6 inline-block">
-                    AURA<span class="text-gold">.</span>
+                <a href="#" class="text-3xl font-heading font-bold tracking-wider mb-6 inline-flex items-center gap-1">
+                    AURA<span class="text-primary text-4xl leading-none">.</span>
                 </a>
-                <p class="text-gray-400 text-sm max-w-sm mb-6 leading-relaxed">
-                    Redefining luxury travel in Kashmir. Premium fleets, professional chauffeurs, and unforgettable experiences curated just for you.
+                <p class="text-slate-400 text-sm max-w-sm mb-8 leading-relaxed">
+                    Redefining luxury and comfort in Kashmir. Premium fleets, professional chauffeurs, and breathtaking experiences curated just for you.
                 </p>
                 <div class="flex gap-4">
-                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-gold hover:text-dark transition-all hover-trigger"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-gold hover:text-dark transition-all hover-trigger"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-gold hover:text-dark transition-all hover-trigger"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all hover-trigger"><i class="fab fa-instagram text-lg"></i></a>
+                    <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all hover-trigger"><i class="fab fa-facebook-f text-lg"></i></a>
+                    <a href="#" class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all hover-trigger"><i class="fab fa-twitter text-lg"></i></a>
                 </div>
             </div>
 
             <div>
-                <h5 class="text-lg font-bold mb-6">Quick Links</h5>
-                <ul class="space-y-3 text-sm text-gray-400">
-                    <li><a href="#fleet" class="hover:text-gold transition-colors hover-trigger">Our Fleet</a></li>
-                    <li><a href="#experiences" class="hover:text-gold transition-colors hover-trigger">Destinations</a></li>
-                    <li><a href="#services" class="hover:text-gold transition-colors hover-trigger">Services</a></li>
-                    <li><a href="#reviews" class="hover:text-gold transition-colors hover-trigger">Reviews</a></li>
+                <h5 class="text-lg font-bold mb-6 text-white">Quick Links</h5>
+                <ul class="space-y-4 text-sm text-slate-400 font-medium">
+                    <li><a href="#fleet" class="hover:text-primary transition-colors hover-trigger">Our Fleet</a></li>
+                    <li><a href="#experiences" class="hover:text-primary transition-colors hover-trigger">Destinations</a></li>
+                    <li><a href="#services" class="hover:text-primary transition-colors hover-trigger">Services</a></li>
+                    <li><a href="#reviews" class="hover:text-primary transition-colors hover-trigger">Reviews</a></li>
                 </ul>
             </div>
 
             <div>
-                <h5 class="text-lg font-bold mb-6">Contact Us</h5>
-                <ul class="space-y-4 text-sm text-gray-400">
-                    <li class="flex items-start gap-3">
-                        <i class="fas fa-map-marker-alt text-gold mt-1"></i>
+                <h5 class="text-lg font-bold mb-6 text-white">Contact Us</h5>
+                <ul class="space-y-5 text-sm text-slate-400 font-medium">
+                    <li class="flex items-start gap-4 hover:text-white transition-colors cursor-pointer">
+                        <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-1"><i class="fas fa-map-marker-alt text-primary"></i></div>
                         <span>Boulevard Road, Dal Lake,<br>Srinagar, J&K 190001</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fas fa-phone-alt text-gold"></i>
+                    <li class="flex items-center gap-4 hover:text-white transition-colors cursor-pointer">
+                        <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0"><i class="fas fa-phone-alt text-primary"></i></div>
                         <span>+91 60052 229202</span>
                     </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fas fa-envelope text-gold"></i>
+                    <li class="flex items-center gap-4 hover:text-white transition-colors cursor-pointer">
+                        <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0"><i class="fas fa-envelope text-primary"></i></div>
                         <span>bookings@aurarentals.com</span>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 relative z-10">
+        <div class="w-full max-w-7xl mx-auto px-6 border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 font-medium relative z-10">
             <p>&copy; 2026 Aura Luxury Rentals. All rights reserved.</p>
-            <div class="flex gap-4">
+            <div class="flex gap-6">
                 <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
                 <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
             </div>
@@ -582,18 +616,17 @@
 
     <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/60052229202?text=Hi!%20I'm%20looking%20for%20a%20luxury%20car%20rental." target="_blank" 
-       class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-[0_4px_15px_rgba(37,211,102,0.4)] hover:-translate-y-2 transition-transform duration-300 hover-trigger">
+       class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 bg-[#25D366] text-white w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center text-3xl shadow-[0_8px_30px_rgba(37,211,102,0.4)] hover:-translate-y-2 transition-transform duration-300 hover-trigger">
         <i class="fab fa-whatsapp"></i>
     </a>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             
-            // 1. Custom Cursor Logic
+            // 1. Custom Cursor Logic (Only runs on non-touch devices via CSS hiding, but JS handles positioning)
             const cursorDot = document.querySelector('.cursor-dot');
             const cursorOutline = document.querySelector('.cursor-outline');
             
-            // Check for touch devices to disable custom cursor
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
             
             if(!isTouchDevice) {
@@ -604,38 +637,39 @@
                     cursorDot.style.left = `${posX}px`;
                     cursorDot.style.top = `${posY}px`;
                     
-                    // Slight delay for the outline using animate for smooth following
                     cursorOutline.animate({
                         left: `${posX}px`,
                         top: `${posY}px`
                     }, { duration: 500, fill: "forwards" });
                 });
 
-                // Hover effects
                 document.querySelectorAll('.hover-trigger, a, button').forEach(el => {
                     el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
                     el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
                 });
-            } else {
-                cursorDot.style.display = 'none';
-                cursorOutline.style.display = 'none';
             }
 
             // 2. Sticky Navbar Glass Effect
             const navbar = document.getElementById('navbar');
+            const navInner = navbar.firstElementChild;
+            
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) {
                     navbar.classList.add('py-2');
                     navbar.classList.remove('py-6');
-                    navbar.firstElementChild.classList.add('shadow-lg', 'border-gold/20');
+                    // Shrink border radius slightly on scroll
+                    navInner.classList.remove('rounded-[2rem]');
+                    navInner.classList.add('rounded-2xl');
                 } else {
                     navbar.classList.add('py-6');
                     navbar.classList.remove('py-2');
-                    navbar.firstElementChild.classList.remove('shadow-lg', 'border-gold/20');
+                    // Restore larger border radius
+                    navInner.classList.add('rounded-[2rem]');
+                    navInner.classList.remove('rounded-2xl');
                 }
             });
 
-            // 3. FAQ Accordion
+            // 3. FAQ Accordion Logic
             document.querySelectorAll('.faq-btn').forEach(button => {
                 button.addEventListener('click', () => {
                     const content = button.nextElementSibling;
@@ -668,11 +702,11 @@
                 btn.addEventListener('click', () => {
                     // Update active state
                     filterBtns.forEach(b => {
-                        b.classList.remove('active', 'border-gold', 'text-gold');
-                        b.classList.add('border-white/20', 'text-white/70');
+                        b.classList.remove('bg-primary', 'text-white', 'shadow-md');
+                        b.classList.add('bg-slate-100', 'text-slate-600');
                     });
-                    btn.classList.add('active', 'border-gold', 'text-gold');
-                    btn.classList.remove('border-white/20', 'text-white/70');
+                    btn.classList.add('bg-primary', 'text-white', 'shadow-md');
+                    btn.classList.remove('bg-slate-100', 'text-slate-600');
 
                     const filter = btn.getAttribute('data-filter');
 
@@ -694,8 +728,8 @@
             const animateCounters = () => {
                 counters.forEach(counter => {
                     const target = +counter.getAttribute('data-target');
-                    const duration = 2000; // 2 seconds
-                    const increment = target / (duration / 16); // 60fps
+                    const duration = 2000;
+                    const increment = target / (duration / 16);
                     let current = 0;
 
                     const updateCounter = () => {
@@ -717,17 +751,17 @@
             // Hero Animation
             const tl = gsap.timeline();
             tl.from('.hero-elem', {
-                y: 50,
+                y: 40,
                 opacity: 0,
                 duration: 1,
-                stagger: 0.2,
+                stagger: 0.15,
                 ease: "power3.out",
-                delay: 0.5
+                delay: 0.3
             });
 
             // Parallax Hero BG
             gsap.to('.parallax-bg', {
-                yPercent: 30,
+                yPercent: 20,
                 ease: "none",
                 scrollTrigger: {
                     trigger: "section",
@@ -743,33 +777,33 @@
                     y: 30, opacity: 0, duration: 0.8,
                     scrollTrigger: {
                         trigger: header,
-                        start: "top 80%",
+                        start: "top 85%",
                     }
                 });
             });
 
             // Service Cards Stagger
             gsap.from('.service-card', {
-                y: 50, opacity: 0, duration: 0.8, stagger: 0.15,
+                y: 40, opacity: 0, duration: 0.8, stagger: 0.15,
                 scrollTrigger: {
                     trigger: "#services",
-                    start: "top 70%",
+                    start: "top 75%",
                 }
             });
 
             // Experience Text Reveal
             gsap.from('.experience-text', {
-                x: 50, opacity: 0, duration: 0.8, stagger: 0.1,
+                x: 30, opacity: 0, duration: 0.8, stagger: 0.1,
                 scrollTrigger: {
                     trigger: "#experiences",
-                    start: "top 60%",
+                    start: "top 65%",
                 }
             });
 
             // Trigger Counter Animation on Scroll
             ScrollTrigger.create({
                 trigger: ".stat-item",
-                start: "top 80%",
+                start: "top 85%",
                 onEnter: () => {
                     if(!hasAnimated) {
                         animateCounters();
