@@ -814,30 +814,17 @@
             }
 
             const dtString = new Date(dt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
-            document.getElementById('modal-subtitle').innerText = `Pickup: ${loc} • ${dtString}`;
+            document.getElementById('modal-subtitle').innerText = `Checking real-time availability for ${loc}...`;
             
             const container = document.getElementById('modal-cars-container');
-            container.innerHTML = ''; // clear
             
-            carsData.forEach(car => {
-                container.innerHTML += `
-                    <div class="bg-white border border-slate-200 rounded-2xl p-4 flex gap-4 shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 group">
-                        <img src="${car.img}" class="w-24 h-24 rounded-xl object-cover" alt="${car.name}">
-                        <div class="flex-1 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold text-darkText text-lg group-hover:text-primary transition-colors">${car.name}</h4>
-                                <p class="text-xs text-slate-500 font-medium">${car.type} • ${car.seats} Seats</p>
-                            </div>
-                            <div class="flex justify-between items-center mt-2">
-                                <span class="font-serif font-bold text-primary">${car.price}</span>
-                                <button onclick="window.bookFromModal('${car.name}')" class="bg-primary text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-slate-900 transition-colors shadow-md">
-                                    Book Now
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
+            // 1. Show Loading State First
+            container.innerHTML = `
+                <div class="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-16">
+                    <i class="fas fa-circle-notch fa-spin text-4xl text-primary mb-4 shadow-sm rounded-full"></i>
+                    <p class="text-slate-500 font-medium text-lg animate-pulse">Searching fleet for your dates...</p>
+                </div>
+            `;
 
             const modal = document.getElementById('availability-modal');
             const box = document.getElementById('modal-content-box');
@@ -848,6 +835,35 @@
                 modal.classList.remove('opacity-0');
                 box.classList.remove('scale-95');
             }, 10);
+
+            // 2. Simulate API Call & Show Results after 1.2s
+            setTimeout(() => {
+                document.getElementById('modal-subtitle').innerText = `Pickup: ${loc} • ${dtString}`;
+                container.innerHTML = ''; // clear
+                
+                carsData.forEach(car => {
+                    container.innerHTML += `
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 flex gap-4 shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 group relative overflow-hidden">
+                            <img src="${car.img}" class="w-24 h-24 rounded-xl object-cover" alt="${car.name}">
+                            <div class="flex-1 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex justify-between items-start">
+                                        <h4 class="font-bold text-darkText text-lg group-hover:text-primary transition-colors">${car.name}</h4>
+                                        <span class="bg-emerald-100 text-emerald-600 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Available</span>
+                                    </div>
+                                    <p class="text-xs text-slate-500 font-medium">${car.type} • ${car.seats} Seats</p>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="font-serif font-bold text-primary">${car.price}</span>
+                                    <button onclick="window.bookFromModal('${car.name}')" class="bg-primary text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-slate-900 transition-colors shadow-md">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }, 1200);
         };
 
         window.closeModal = () => {
