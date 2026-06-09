@@ -1,1163 +1,1126 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth overflow-x-hidden">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AURA | Fresh Luxury Car Rentals Kashmir</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marina & Elévia</title>
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <!-- GSAP for Animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            DEFAULT: '#007AFF', // Vibrant Apple/Alpine Blue
-                            light: '#4DA3FF',
-                            dark: '#0056b3'
-                        },
-                        lightBg: '#F4F7F9',
-                        darkText: '#0F172A',
-                        slateAccent: '#64748B'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Syne', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- PayPal JS SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
     <style>
-        :root {
-            --primary: #007AFF;
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #111827;
         }
         
-        html, body {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden;
-            background-color: #F4F7F9;
-            color: #0F172A;
-            margin: 0;
-            padding: 0;
+        .font-serif {
+            font-family: 'Playfair Display', serif;
         }
 
-        /* Fresh Grain Texture - Very Subtle */
-        .noise-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            pointer-events: none;
-            z-index: 9997;
-            opacity: 0.02;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
         }
 
-        /* The Light White Header with Max Blur */
-        .light-glass-header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Light Fresh Cards */
-        .fresh-card {
-            background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s, border-color 0.4s;
-        }
-        .fresh-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px -10px rgba(0, 122, 255, 0.15);
-            border-color: rgba(0, 122, 255, 0.2);
-        }
-
-        .text-gradient-blue {
-            background: linear-gradient(135deg, #007AFF 0%, #00D4FF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #F4F7F9; }
-        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
-
-        .clip-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+        /* Hide scrollbar */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* SPA Page Transition Overlay */
-        #page-transition {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background-color: #ffffff;
-            z-index: 9998;
-            transform: translateY(100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+        
+        /* Floating Label overrides & Autofill cleanup */
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
         }
-        .page-view { display: none; }
-        .page-view.active { display: block; }
+        
+        .snap-always { scroll-snap-stop: always; }
     </style>
 </head>
-<body class="antialiased font-sans selection:bg-primary selection:text-white relative">
+<body class="min-h-screen flex flex-col selection:bg-[#f8d7d7] relative overflow-x-hidden">
 
-    <div class="noise-overlay"></div>
+    <!-- Header -->
+    <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
+        <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between w-full gap-4">
+            
+            <h1 onclick="navigate('product')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
+                <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
+            </h1>
+            
+            <div class="flex items-center justify-end gap-3 md:gap-5 border-l border-gray-200 pl-4 md:pl-8">
+                <button onclick="handleHelpClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 hover:text-[#D30000] transition-colors" title="Contact Support">
+                    <i class="ph ph-headset text-2xl"></i>
+                </button>
+                
+                <div class="flex-shrink-0">
+                    <button id="cart-icon-btn" onclick="handleCartClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 transition-colors">
+                        <i id="cart-icon" class="ph ph-shopping-cart text-2xl transition-colors duration-200"></i>
+                        <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-[#D30000] text-white text-[10px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full">
+                            0
+                        </span>
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </header>
 
-    <!-- Page Transition Screen -->
-    <div id="page-transition">
-        <h2 class="text-4xl font-heading font-bold tracking-wider text-darkText flex items-center gap-1">
-            AURA<span class="text-primary text-5xl leading-none">.</span>
-        </h2>
+    <!-- Top Notification -->
+    <div id="top-notification" class="fixed top-8 left-1/2 -translate-x-1/2 bg-green-600 text-white px-8 py-5 rounded-full shadow-2xl z-[100] flex items-center gap-4 transition-all duration-500 -translate-y-40 opacity-0 pointer-events-none w-max max-w-[95%] md:max-w-md">
+        <div class="w-8 h-8 bg-white text-green-600 rounded-full flex items-center justify-center shrink-0">
+            <i class="ph ph-check font-bold text-lg"></i>
+        </div>
+        <div class="flex flex-col">
+            <span id="top-notification-msg" class="font-medium text-base md:text-lg tracking-wide"></span>
+            <span class="text-xs uppercase tracking-widest opacity-90 mt-0.5">Redirecting...</span>
+        </div>
     </div>
 
-    <!-- Sticky Light Glass Navbar -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6 px-4 sm:px-6 md:px-12">
-        <div class="max-w-7xl mx-auto light-glass-header rounded-[2rem] px-8 py-5 flex justify-between items-center text-darkText">
-            <button onclick="window.app.navigate('page-home')" class="text-2xl font-heading font-bold tracking-wider hover-trigger flex items-center gap-1">
-                AURA<span class="text-primary text-3xl leading-none">.</span>
+    <!-- FOMO Notification Popup -->
+    <div id="fomo-popup" class="fixed bottom-24 left-4 md:left-6 z-50 bg-white/95 backdrop-blur shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 rounded-full p-1.5 pr-5 flex items-center gap-3 transition-all duration-700 translate-y-40 opacity-0 pointer-events-none max-w-[90%] md:max-w-sm">
+        <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
+            <i class="ph ph-bag text-xl text-gray-400"></i>
+        </div>
+        <div class="flex flex-col py-1">
+            <div class="flex items-center gap-2 mb-0.5">
+                <span id="fomo-name" class="text-[11px] font-semibold text-gray-900"></span>
+                <span class="text-[9px] text-gray-400 font-medium">just now</span>
+            </div>
+            <span id="fomo-action" class="text-[10px] text-gray-600 leading-tight line-clamp-1"></span>
+            <div class="flex items-center gap-1 mt-1">
+                <i class="ph-fill ph-check-circle text-green-500 text-[10px]"></i>
+                <span class="text-[8px] text-green-600 uppercase tracking-widest font-bold">Verified by system</span>
+            </div>
+        </div>
+        <div class="ml-auto pl-3 border-l border-gray-100 flex items-center h-full">
+            <span id="fomo-price" class="text-sm font-serif font-medium text-[#D30000]"></span>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main id="app-content" class="flex-grow pb-32"></main>
+
+    <!-- Custom Modal -->
+    <div id="modal" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
+        <div class="bg-white p-10 max-w-md w-full border border-gray-100 shadow-2xl text-center relative fade-in">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-[#D30000] transition-colors">
+                <i class="ph ph-x text-xl"></i>
             </button>
-            
-            <div class="hidden md:flex space-x-10 items-center text-sm font-medium tracking-wide">
-                <button onclick="window.app.navigate('page-home')" class="text-slate-700 hover:text-primary transition-colors hover-trigger nav-link">Home</button>
-                <button onclick="window.app.navigate('page-about')" class="text-slate-700 hover:text-primary transition-colors hover-trigger nav-link">About Us</button>
-                <button onclick="window.app.navigate('page-home'); setTimeout(()=>document.getElementById('fleet').scrollIntoView(), 600);" class="text-slate-700 hover:text-primary transition-colors hover-trigger nav-link">Fleet</button>
-                <button onclick="window.app.navigate('page-contact')" class="text-slate-700 hover:text-primary transition-colors hover-trigger nav-link">Contact</button>
+            <div class="w-16 h-16 bg-[#D30000] text-white rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="ph ph-check text-3xl"></i>
             </div>
-
-            <a href="https://wa.me/6005229202?text=Hi!%20I%20am%20looking%20to%20book%20a%20premium%20car." target="_blank" 
-               class="hidden md:flex items-center gap-2 bg-primary text-white px-7 py-3 rounded-full font-semibold hover:bg-slate-900 transition-all hover-trigger shadow-[0_0_20px_rgba(0,122,255,0.3)]">
-                <i class="fab fa-whatsapp text-lg"></i> Book Now
-            </a>
-
-            <!-- Mobile Menu Btn -->
-            <button class="md:hidden text-2xl text-darkText hover:text-primary transition-colors">
-                <i class="fas fa-bars"></i>
+            <h3 class="text-2xl font-serif tracking-widest uppercase mb-4 text-gray-900">Order Confirmed</h3>
+            <p id="modal-msg" class="text-gray-600 mb-8 font-light leading-relaxed"></p>
+            <button onclick="closeModal()" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 w-full hover:bg-[#a00000] transition-colors">
+                Return to Product
             </button>
         </div>
-    </nav>
+    </div>
 
-    <div id="app-container" class="w-full">
-        
-        <!-- ============================================== -->
-        <!-- PAGE 1: HOME VIEW                              -->
-        <!-- ============================================== -->
-        <main id="page-home" class="page-view active w-full">
-            
-            <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
-                <div class="absolute inset-0 z-0 bg-lightBg">
-                    <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
-                         alt="Breathtaking Kashmir Road" 
-                         class="w-full h-full object-cover parallax-bg"
-                         style="transform: scale(1.1); filter: brightness(0.85);">
-                    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#F4F7F9]"></div>
-                </div>
-
-                <div class="relative z-10 text-center px-4 w-full max-w-5xl mx-auto mt-12">
-                    <div class="clip-text">
-                        <span class="block text-primary text-sm md:text-base font-bold tracking-[0.3em] uppercase mb-6 hero-elem drop-shadow-md">A Breath of Fresh Air</span>
-                    </div>
-                    <div class="clip-text">
-                        <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-bold leading-tight mb-6 hero-elem text-white drop-shadow-lg">
-                            Discover Kashmir <br> in <span class="font-serif italic font-normal text-gradient-blue">Pure Elegance</span>
-                        </h1>
-                    </div>
-                    <div class="clip-text">
-                        <p class="text-gray-100 text-lg md:text-xl font-medium max-w-2xl mx-auto mb-10 hero-elem drop-shadow-md">
-                            Immaculate chauffeur services and premium rentals. Breathe in the paradise on earth with unparalleled comfort.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- NEW: Floating Booking/Search Bar -->
-                <div class="absolute bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 w-[90%] max-w-5xl light-glass-header rounded-3xl p-4 md:p-6 z-20 shadow-2xl flex flex-col md:flex-row gap-4 items-center justify-between hero-elem">
-                    <div class="flex-1 w-full border-b md:border-b-0 md:border-r border-slate-200/50 pb-3 md:pb-0 md:pr-4 relative">
-                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Pick Up Location</p>
-                        <select id="hero-pickup-loc" class="w-full bg-transparent font-medium text-darkText focus:outline-none cursor-pointer appearance-none pr-8">
-                            <option value="Srinagar Airport (SXR)">Srinagar Airport (SXR)</option>
-                            <option value="Dal Lake / Srinagar City">Dal Lake / Srinagar City</option>
-                            <option value="Gulmarg">Gulmarg</option>
-                            <option value="Pahalgam">Pahalgam</option>
-                        </select>
-                        <i class="fas fa-chevron-down absolute right-4 bottom-1 text-slate-400 pointer-events-none text-sm"></i>
-                    </div>
-                    <div class="flex-1 w-full border-b md:border-b-0 md:border-r border-slate-200/50 pb-3 md:pb-0 md:px-4 relative">
-                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Pickup Date & Time</p>
-                        <input type="datetime-local" id="hero-pickup-time" onclick="try{this.showPicker();}catch(e){}" class="w-full bg-transparent font-medium text-darkText focus:outline-none cursor-pointer min-h-[28px]" />
-                    </div>
-                    <div class="w-full md:w-auto md:pl-4">
-                        <button onclick="window.checkAvailability()" 
-                           class="w-full bg-primary text-white px-8 py-3.5 rounded-2xl font-bold hover:bg-slate-900 transition-all hover-trigger flex items-center justify-center gap-2">
-                            Check Availability <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <section class="pt-32 pb-16 bg-white relative z-10 shadow-sm border-b border-slate-100">
-                <div class="w-full max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                    <div class="stat-item">
-                        <div class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2"><span class="counter" data-target="1500">0</span>+</div>
-                        <div class="text-xs md:text-sm text-slate-500 font-semibold tracking-wide uppercase">Happy Journeys</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2"><span class="counter" data-target="30">0</span></div>
-                        <div class="text-xs md:text-sm text-slate-500 font-semibold tracking-wide uppercase">Pristine Cars</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2"><span class="counter" data-target="100">0</span>%</div>
-                        <div class="text-xs md:text-sm text-slate-500 font-semibold tracking-wide uppercase">Satisfaction</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="text-4xl md:text-5xl font-heading font-bold text-primary mb-2">24/7</div>
-                        <div class="text-xs md:text-sm text-slate-500 font-semibold tracking-wide uppercase">Assistance</div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="services" class="py-24 relative bg-lightBg">
-                <div class="w-full max-w-7xl mx-auto px-6">
-                    <div class="text-center mb-16 section-header">
-                        <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Why Choose Us</h2>
-                        <h3 class="text-4xl md:text-5xl font-serif text-darkText">Curated Premium Services</h3>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="fresh-card p-8 rounded-[2rem] hover-trigger service-card flex flex-col items-center text-center bg-white">
-                            <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-primary text-2xl shadow-inner">
-                                <i class="fas fa-mountain"></i>
-                            </div>
-                            <h4 class="text-xl font-heading font-bold mb-3 text-darkText">Alpine Road-Trips</h4>
-                            <p class="text-slate-500 text-sm leading-relaxed">Experience the breathtaking valleys of Gulmarg and Pahalgam with our specially curated, comfortable tours.</p>
-                        </div>
-                        <div class="fresh-card p-8 rounded-[2rem] hover-trigger service-card flex flex-col items-center text-center bg-white">
-                            <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-primary text-2xl shadow-inner">
-                                <i class="fas fa-plane-arrival"></i>
-                            </div>
-                            <h4 class="text-xl font-heading font-bold mb-3 text-darkText">VIP Airport Pickup</h4>
-                            <p class="text-slate-500 text-sm leading-relaxed">Seamless, punctual, and refreshing transfers from Srinagar Airport directly to your luxury stay.</p>
-                        </div>
-                        <div class="fresh-card p-8 rounded-[2rem] hover-trigger service-card flex flex-col items-center text-center bg-white">
-                            <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-primary text-2xl shadow-inner">
-                                <i class="fas fa-ring"></i>
-                            </div>
-                            <h4 class="text-xl font-heading font-bold mb-3 text-darkText">Wedding Elegance</h4>
-                            <p class="text-slate-500 text-sm leading-relaxed">Make your grand entrance unforgettable with our immaculate fleet of beautifully decorated premium vehicles.</p>
-                        </div>
-                        <div class="fresh-card p-8 rounded-[2rem] hover-trigger service-card flex flex-col items-center text-center bg-white">
-                            <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-primary text-2xl shadow-inner">
-                                <i class="fas fa-user-tie"></i>
-                            </div>
-                            <h4 class="text-xl font-heading font-bold mb-3 text-darkText">Chauffeur Service</h4>
-                            <p class="text-slate-500 text-sm leading-relaxed">Professional, courteous chauffeurs trained in high-end hospitality to ensure a smooth, safe journey.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="fleet" class="py-24 bg-white relative">
-                <div class="w-full max-w-7xl mx-auto px-6 relative z-10">
-                    <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 section-header gap-6 text-center md:text-left">
-                        <div>
-                            <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Our Collection</h2>
-                            <h3 class="text-4xl md:text-5xl font-serif text-darkText">The Pristine Fleet</h3>
-                        </div>
-                        
-                        <div class="flex gap-3 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto justify-start md:justify-end hide-scrollbar">
-                            <button class="filter-btn active px-6 py-2.5 rounded-full bg-primary text-white text-sm font-semibold hover-trigger shadow-md whitespace-nowrap" data-filter="all">All</button>
-                            <button class="filter-btn px-6 py-2.5 rounded-full bg-slate-100 text-slate-600 text-sm font-semibold hover:bg-slate-200 transition-colors hover-trigger whitespace-nowrap" data-filter="suv">SUVs</button>
-                            <button class="filter-btn px-6 py-2.5 rounded-full bg-slate-100 text-slate-600 text-sm font-semibold hover:bg-slate-200 transition-colors hover-trigger whitespace-nowrap" data-filter="luxury">Luxury Sedans</button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="car-grid">
-                        <!-- Car 1 -->
-                        <div class="car-card fresh-card rounded-[2rem] overflow-hidden flex flex-col group" data-category="suv">
-                            <div class="relative h-64 overflow-hidden bg-slate-100 p-6 flex items-center justify-center">
-                                <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold text-primary shadow-sm">Popular in Kashmir</div>
-                                <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                     alt="Toyota Fortuner" class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 shadow-lg">
-                            </div>
-                            <div class="p-8 flex-grow flex flex-col">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="text-2xl font-heading font-bold text-darkText">Toyota Fortuner</h4>
-                                    <span class="text-xl text-primary font-serif font-bold">₹5,000<span class="text-sm text-slate-400 font-sans font-normal">/day</span></span>
-                                </div>
-                                <p class="text-slate-500 text-sm mb-6">The ultimate beast for snowy terrains and steep mountain passes. Power meets comfort.</p>
-                                
-                                <div class="grid grid-cols-3 gap-3 mb-8 text-center text-xs font-semibold text-slate-600">
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-users block mb-1 text-primary text-lg"></i> 7 Seats</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-cogs block mb-1 text-primary text-lg"></i> Auto</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-gas-pump block mb-1 text-primary text-lg"></i> Diesel</div>
-                                </div>
-                                
-                                <a href="https://wa.me/6005229202?text=I%20want%20to%20book%20the%20Toyota%20Fortuner" target="_blank" 
-                                   class="mt-auto w-full py-4 rounded-xl border border-primary/20 text-primary text-center font-bold hover:bg-primary hover:text-white transition-all hover-trigger">
-                                    Book via WhatsApp
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Car 2 -->
-                        <div class="car-card fresh-card rounded-[2rem] overflow-hidden flex flex-col group" data-category="luxury">
-                            <div class="relative h-64 overflow-hidden bg-slate-100 p-6 flex items-center justify-center">
-                                <img src="https://images.unsplash.com/photo-1616423640778-28d1b53229bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                     alt="Mercedes S-Class" class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 shadow-lg">
-                            </div>
-                            <div class="p-8 flex-grow flex flex-col">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="text-2xl font-heading font-bold text-darkText">Mercedes S-Class</h4>
-                                    <span class="text-xl text-primary font-serif font-bold">₹15,000<span class="text-sm text-slate-400 font-sans font-normal">/day</span></span>
-                                </div>
-                                <p class="text-slate-500 text-sm mb-6">Pinnacle of luxury. Perfect for VIP delegations, weddings, and supreme travel comfort.</p>
-                                
-                                <div class="grid grid-cols-3 gap-3 mb-8 text-center text-xs font-semibold text-slate-600">
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-users block mb-1 text-primary text-lg"></i> 4 Seats</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-cogs block mb-1 text-primary text-lg"></i> Auto</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-suitcase block mb-1 text-primary text-lg"></i> 3 Bags</div>
-                                </div>
-                                
-                                <a href="https://wa.me/6005229202?text=I%20want%20to%20book%20the%20Mercedes%20S-Class" target="_blank" 
-                                   class="mt-auto w-full py-4 rounded-xl border border-primary/20 text-primary text-center font-bold hover:bg-primary hover:text-white transition-all hover-trigger">
-                                    Book via WhatsApp
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Car 3 -->
-                        <div class="car-card fresh-card rounded-[2rem] overflow-hidden flex flex-col group" data-category="suv">
-                            <div class="relative h-64 overflow-hidden bg-slate-100 p-6 flex items-center justify-center">
-                                <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold text-primary shadow-sm">Best for Families</div>
-                                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                     alt="Innova Crysta" class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 shadow-lg">
-                            </div>
-                            <div class="p-8 flex-grow flex flex-col">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="text-2xl font-heading font-bold text-darkText">Innova Crysta</h4>
-                                    <span class="text-xl text-primary font-serif font-bold">₹3,500<span class="text-sm text-slate-400 font-sans font-normal">/day</span></span>
-                                </div>
-                                <p class="text-slate-500 text-sm mb-6">The most comfortable and reliable MUV for long family road trips across the valley.</p>
-                                
-                                <div class="grid grid-cols-3 gap-3 mb-8 text-center text-xs font-semibold text-slate-600">
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-users block mb-1 text-primary text-lg"></i> 7 Seats</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-cogs block mb-1 text-primary text-lg"></i> Manual</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-gas-pump block mb-1 text-primary text-lg"></i> Diesel</div>
-                                </div>
-                                
-                                <a href="https://wa.me/6005229202?text=I%20want%20to%20book%20the%20Innova%20Crysta" target="_blank" 
-                                   class="mt-auto w-full py-4 rounded-xl border border-primary/20 text-primary text-center font-bold hover:bg-primary hover:text-white transition-all hover-trigger">
-                                    Book via WhatsApp
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Car 4 -->
-                        <div class="car-card fresh-card rounded-[2rem] overflow-hidden flex flex-col group" data-category="suv">
-                            <div class="relative h-64 overflow-hidden bg-slate-100 p-6 flex items-center justify-center">
-                                <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-bold text-primary shadow-sm">Adventure Ready</div>
-                                <img src="https://images.unsplash.com/photo-1628190710609-bcbe70c0c5af?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                     alt="Mahindra Thar" class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 shadow-lg" style="object-position: center;">
-                            </div>
-                            <div class="p-8 flex-grow flex flex-col">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="text-2xl font-heading font-bold text-darkText">Mahindra Thar</h4>
-                                    <span class="text-xl text-primary font-serif font-bold">₹4,500<span class="text-sm text-slate-400 font-sans font-normal">/day</span></span>
-                                </div>
-                                <p class="text-slate-500 text-sm mb-6">Conquer the rugged terrains of Sonamarg and off-beat Kashmir trails with this 4x4 beast.</p>
-                                
-                                <div class="grid grid-cols-3 gap-3 mb-8 text-center text-xs font-semibold text-slate-600">
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-users block mb-1 text-primary text-lg"></i> 4 Seats</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-cogs block mb-1 text-primary text-lg"></i> Auto</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-gas-pump block mb-1 text-primary text-lg"></i> Diesel</div>
-                                </div>
-                                
-                                <a href="https://wa.me/6005229202?text=I%20want%20to%20book%20the%20Mahindra%20Thar" target="_blank" 
-                                   class="mt-auto w-full py-4 rounded-xl border border-primary/20 text-primary text-center font-bold hover:bg-primary hover:text-white transition-all hover-trigger">
-                                    Book via WhatsApp
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Car 5 -->
-                        <div class="car-card fresh-card rounded-[2rem] overflow-hidden flex flex-col group" data-category="luxury">
-                            <div class="relative h-64 overflow-hidden bg-slate-100 p-6 flex items-center justify-center">
-                                <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                                     alt="Audi A6" class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 shadow-lg">
-                            </div>
-                            <div class="p-8 flex-grow flex flex-col">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h4 class="text-2xl font-heading font-bold text-darkText">Audi A6</h4>
-                                    <span class="text-xl text-primary font-serif font-bold">₹12,000<span class="text-sm text-slate-400 font-sans font-normal">/day</span></span>
-                                </div>
-                                <p class="text-slate-500 text-sm mb-6">A blend of sophisticated design and thrilling dynamics for a premium driving experience.</p>
-                                
-                                <div class="grid grid-cols-3 gap-3 mb-8 text-center text-xs font-semibold text-slate-600">
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-users block mb-1 text-primary text-lg"></i> 5 Seats</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-cogs block mb-1 text-primary text-lg"></i> Auto</div>
-                                    <div class="bg-slate-50 py-3 rounded-xl border border-slate-100"><i class="fas fa-suitcase block mb-1 text-primary text-lg"></i> 2 Bags</div>
-                                </div>
-                                
-                                <a href="https://wa.me/6005229202?text=I%20want%20to%20book%20the%20Audi%20A6" target="_blank" 
-                                   class="mt-auto w-full py-4 rounded-xl border border-primary/20 text-primary text-center font-bold hover:bg-primary hover:text-white transition-all hover-trigger">
-                                    Book via WhatsApp
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-24 bg-lightBg overflow-hidden border-t border-slate-200/50">
-                <div class="w-full max-w-7xl mx-auto px-6">
-                    <div class="text-center mb-16 section-header">
-                        <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Discover Kashmir</h2>
-                        <h3 class="text-4xl md:text-5xl font-serif text-darkText">Popular Routes</h3>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Route 1 -->
-                        <div class="relative group rounded-3xl overflow-hidden h-[400px] fresh-card cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1595815771614-ade9d652a65d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Gulmarg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
-                                <h4 class="text-white text-2xl font-bold font-heading mb-2">Srinagar to Gulmarg</h4>
-                                <p class="text-gray-200 text-sm mb-4">Snow-capped peaks and the world's highest gondola. A scenic 2-hour premium drive.</p>
-                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center gap-2">Explore Route <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </div>
-                        <!-- Route 2 -->
-                        <div class="relative group rounded-3xl overflow-hidden h-[400px] fresh-card cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1596783049103-6f81e6cbccaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pahalgam" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
-                                <h4 class="text-white text-2xl font-bold font-heading mb-2">Pahalgam Valley</h4>
-                                <p class="text-gray-200 text-sm mb-4">Valley of Shepherds. Crystal clear rivers and lush pine forests along the picturesque route.</p>
-                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center gap-2">Explore Route <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </div>
-                        <!-- Route 3 -->
-                        <div class="relative group rounded-3xl overflow-hidden h-[400px] fresh-card cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1598091383021-15ddea10925d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sonamarg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
-                                <h4 class="text-white text-2xl font-bold font-heading mb-2">Sonamarg Glaciers</h4>
-                                <p class="text-gray-200 text-sm mb-4">Meadow of Gold. Experience thrilling mountain passes in our sturdy luxury SUVs.</p>
-                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center gap-2">Explore Route <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </div>
-                        <!-- Route 4 -->
-                        <div class="relative group rounded-3xl overflow-hidden h-[400px] fresh-card cursor-pointer">
-                            <img src="https://images.unsplash.com/photo-1565557788480-4966dce3f683?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dal Lake" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
-                                <h4 class="text-white text-2xl font-bold font-heading mb-2">Srinagar City Tour</h4>
-                                <p class="text-gray-200 text-sm mb-4">Dal Lake, Mughal Gardens, and historic downtown. Travel comfortably within the capital.</p>
-                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center gap-2">Explore Route <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </div>
-                        <!-- Route 5 -->
-                        <div class="relative group rounded-3xl overflow-hidden h-[400px] fresh-card cursor-pointer lg:col-span-2">
-                            <img src="https://images.unsplash.com/photo-1627894483216-2138af692e32?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Doodhpathri" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
-                                <h4 class="text-white text-2xl font-bold font-heading mb-2">Doodhpathri Meadows</h4>
-                                <p class="text-gray-200 text-sm mb-4">The Valley of Milk. A hidden gem with lush green meadows and pristine alpine streams.</p>
-                                <span class="text-primary font-bold text-sm uppercase tracking-wider flex items-center gap-2">Explore Route <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="reviews" class="py-24 bg-white relative overflow-hidden">
-                <div class="w-full max-w-7xl mx-auto px-6 mb-16 text-center section-header">
-                    <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Testimonials</h2>
-                    <h3 class="text-4xl md:text-5xl font-serif text-darkText">Smiles from our Guests</h3>
-                </div>
-
-                <div class="w-full max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Review 1 -->
-                    <div class="fresh-card p-8 md:p-10 rounded-[2rem] border border-slate-100 bg-white shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between">
-                        <div>
-                            <div class="flex text-[#FFB800] mb-6 text-sm gap-1">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <p class="text-slate-600 text-lg mb-8 leading-relaxed font-medium">"Booked an Innova for our 5-day Kashmir trip. The car was spotless, smelling fresh, and our driver was incredibly polite and knowledgeable about hidden local spots."</p>
-                        </div>
-                        <div class="flex items-center gap-4 border-t border-slate-100 pt-6">
-                            <div class="w-14 h-14 bg-gradient-to-br from-primary to-blue-400 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-md">R</div>
-                            <div>
-                                <div class="font-bold text-darkText text-lg">Rahul Sharma</div>
-                                <div class="text-sm text-primary font-medium">Mumbai, India</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Review 2 -->
-                    <div class="fresh-card p-8 md:p-10 rounded-[2rem] border border-slate-100 bg-white shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between md:translate-y-8">
-                        <div>
-                            <div class="flex text-[#FFB800] mb-6 text-sm gap-1">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <p class="text-slate-600 text-lg mb-8 leading-relaxed font-medium">"Used their S-Class for my wedding in Srinagar. The car arrived early, beautifully decorated, and added the perfect elegant touch to our day."</p>
-                        </div>
-                        <div class="flex items-center gap-4 border-t border-slate-100 pt-6">
-                            <div class="w-14 h-14 bg-gradient-to-br from-slate-800 to-slate-600 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-md">F</div>
-                            <div>
-                                <div class="font-bold text-darkText text-lg">Faizan Ali</div>
-                                <div class="text-sm text-primary font-medium">Srinagar, J&K</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Review 3 -->
-                    <div class="fresh-card p-8 md:p-10 rounded-[2rem] border border-slate-100 bg-white shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between">
-                        <div>
-                            <div class="flex text-[#FFB800] mb-6 text-sm gap-1">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <p class="text-slate-600 text-lg mb-8 leading-relaxed font-medium">"The Fortuner handled the snowy roads to Gulmarg like a dream. Safe, clean, and the booking process via WhatsApp was instantly sorted. Highly recommend!"</p>
-                        </div>
-                        <div class="flex items-center gap-4 border-t border-slate-100 pt-6">
-                            <div class="w-14 h-14 bg-gradient-to-br from-primary to-blue-400 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-md">A</div>
-                            <div>
-                                <div class="font-bold text-darkText text-lg">Amit Desai</div>
-                                <div class="text-sm text-primary font-medium">Gujarat, India</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Review 4 -->
-                    <div class="fresh-card p-8 md:p-10 rounded-[2rem] border border-slate-100 bg-white shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between md:translate-y-8">
-                        <div>
-                            <div class="flex text-[#FFB800] mb-6 text-sm gap-1">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                            </div>
-                            <p class="text-slate-600 text-lg mb-8 leading-relaxed font-medium">"We rented the Mahindra Thar for our anniversary trip to Pahalgam. The car was in pristine condition and completely elevated our mountain adventure."</p>
-                        </div>
-                        <div class="flex items-center gap-4 border-t border-slate-100 pt-6">
-                            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-400 rounded-full flex items-center justify-center font-bold text-xl text-white shadow-md">S</div>
-                            <div>
-                                <div class="font-bold text-darkText text-lg">Sarah Jenkins</div>
-                                <div class="text-sm text-primary font-medium">London, UK</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- ============================================== -->
-        <!-- PAGE 2: ABOUT US VIEW                          -->
-        <!-- ============================================== -->
-        <main id="page-about" class="page-view w-full pt-32 pb-24 bg-white">
-            <div class="w-full max-w-7xl mx-auto px-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                    <div class="relative rounded-[3rem] overflow-hidden shadow-2xl h-[600px]">
-                        <img src="https://images.unsplash.com/photo-1543393043-41c30d31e9c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Luxury Car Detail" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-primary/10"></div>
-                    </div>
-                    <div>
-                        <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-4">Our Story</h2>
-                        <h3 class="text-4xl md:text-6xl font-serif text-darkText mb-8 leading-tight">Elevating Travel in the Valley</h3>
-                        <p class="text-slate-600 text-lg leading-relaxed mb-6">
-                            Founded with a passion for exceptional hospitality and a deep love for Kashmir, AURA Luxury Rentals bridges the gap between rugged mountainous terrain and supreme passenger comfort.
-                        </p>
-                        <p class="text-slate-600 text-lg leading-relaxed mb-10">
-                            We believe that the journey should be as breathtaking as the destination. From meticulously detailed interiors to highly trained local chauffeurs who know every curve of the alpine roads, we curate an experience that lets you truly breathe in the paradise on earth.
-                        </p>
-                        
-                        <div class="grid grid-cols-2 gap-8 border-t border-slate-100 pt-10">
-                            <div>
-                                <h4 class="text-3xl font-heading font-bold text-darkText mb-2">10+</h4>
-                                <p class="text-sm font-bold text-primary uppercase tracking-wider">Years Experience</p>
-                            </div>
-                            <div>
-                                <h4 class="text-3xl font-heading font-bold text-darkText mb-2">Premium</h4>
-                                <p class="text-sm font-bold text-primary uppercase tracking-wider">Only Fleet</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- ============================================== -->
-        <!-- PAGE 3: CONTACT VIEW                           -->
-        <!-- ============================================== -->
-        <main id="page-contact" class="page-view w-full pt-32 pb-24 bg-lightBg">
-            <div class="w-full max-w-7xl mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-primary text-sm tracking-[0.2em] font-bold uppercase mb-3">Get in Touch</h2>
-                    <h3 class="text-4xl md:text-5xl font-serif text-darkText">Plan Your Journey</h3>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-slate-100">
-                    
-                    <!-- Contact Info -->
-                    <div class="bg-slate-50 rounded-[2rem] p-8 md:p-12">
-                        <h4 class="text-2xl font-heading font-bold text-darkText mb-8">Direct Assistance</h4>
-                        
-                        <ul class="space-y-8">
-                            <li class="flex items-start gap-6">
-                                <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                                    <i class="fab fa-whatsapp text-2xl text-primary"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">WhatsApp Bookings</p>
-                                    <a href="https://wa.me/6005229202" target="_blank" class="text-xl font-bold text-darkText hover:text-primary transition-colors">+91 60052 29202</a>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-6">
-                                <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                                    <i class="fas fa-envelope text-2xl text-primary"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">Email Us</p>
-                                    <a href="mailto:bookings@aurarentals.com" class="text-xl font-bold text-darkText hover:text-primary transition-colors">bookings@aurarentals.com</a>
-                                </div>
-                            </li>
-                            <li class="flex items-start gap-6">
-                                <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                                    <i class="fas fa-map-marker-alt text-2xl text-primary"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">Office Location</p>
-                                    <p class="text-lg font-medium text-slate-700">Boulevard Road, Dal Lake<br>Srinagar, J&K 190001</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Contact Form (UI Only) -->
-                    <div class="flex flex-col justify-center">
-                        <h4 class="text-2xl font-heading font-bold text-darkText mb-8">Send an Inquiry</h4>
-                        <form class="space-y-6" onsubmit="event.preventDefault(); window.open('https://wa.me/6005229202?text=I%20have%20an%20inquiry%20from%20the%20website.', '_blank');">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-bold text-slate-500 mb-2">Full Name</label>
-                                    <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="John Doe" required>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-slate-500 mb-2">Phone Number</label>
-                                    <input type="tel" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="+91..." required>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-slate-500 mb-2">Vehicle Preference</label>
-                                <select class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
-                                    <option>Toyota Fortuner (Premium SUV)</option>
-                                    <option>Innova Crysta (Family MUV)</option>
-                                    <option>Mercedes S-Class (Luxury Sedan)</option>
-                                    <option>Need Recommendation</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-slate-500 mb-2">Travel Dates & Message</label>
-                                <textarea rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Tell us about your trip plans..."></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-slate-900 transition-all shadow-lg hover:shadow-xl">
-                                Send via WhatsApp <i class="fab fa-whatsapp ml-2"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </main>
-        
-    </div> <!-- End App Container -->
-
-    <footer class="bg-white pt-20 pb-10 relative overflow-hidden text-darkText border-t border-slate-200">
-        <div class="absolute bottom-0 right-0 text-[15vw] font-heading font-bold text-slate-900/[0.02] leading-none pointer-events-none select-none">AURA</div>
-        
-        <div class="w-full max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div class="col-span-1 md:col-span-2">
-                <a href="#" class="text-3xl font-heading font-bold tracking-wider mb-6 inline-flex items-center gap-1">
-                    AURA<span class="text-primary text-4xl leading-none">.</span>
-                </a>
-                <p class="text-slate-500 text-sm max-w-sm mb-8 leading-relaxed">
-                    Redefining luxury and comfort in Kashmir. Premium fleets, professional chauffeurs, and breathtaking experiences curated just for you.
-                </p>
-                <div class="flex gap-4">
-                    <a href="#" class="w-12 h-12 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center hover:bg-primary hover:text-white transition-all hover-trigger shadow-sm border border-slate-100"><i class="fab fa-instagram text-lg"></i></a>
-                    <a href="#" class="w-12 h-12 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center hover:bg-primary hover:text-white transition-all hover-trigger shadow-sm border border-slate-100"><i class="fab fa-facebook-f text-lg"></i></a>
-                    <a href="#" class="w-12 h-12 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center hover:bg-primary hover:text-white transition-all hover-trigger shadow-sm border border-slate-100"><i class="fab fa-twitter text-lg"></i></a>
-                </div>
-            </div>
-
-            <div>
-                <h5 class="text-lg font-bold mb-6 text-darkText">Quick Links</h5>
-                <ul class="space-y-4 text-sm text-slate-500 font-medium">
-                    <li><button onclick="window.app.navigate('page-home')" class="hover:text-primary transition-colors hover-trigger">Home</button></li>
-                    <li><button onclick="window.app.navigate('page-about')" class="hover:text-primary transition-colors hover-trigger">About Us</button></li>
-                    <li><button onclick="window.app.navigate('page-contact')" class="hover:text-primary transition-colors hover-trigger">Contact</button></li>
-                </ul>
-            </div>
-
-            <div>
-                <h5 class="text-lg font-bold mb-6 text-darkText">Contact Us</h5>
-                <ul class="space-y-5 text-sm text-slate-500 font-medium">
-                    <li class="flex items-start gap-4 hover:text-primary transition-colors cursor-pointer">
-                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-1"><i class="fas fa-map-marker-alt text-primary"></i></div>
-                        <span>Boulevard Road, Dal Lake,<br>Srinagar, J&K 190001</span>
-                    </li>
-                    <li class="flex items-start gap-4 hover:text-primary transition-colors cursor-pointer">
-                        <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0"><i class="fas fa-phone-alt text-primary"></i></div>
-                        <span>+91 60052 29202</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="w-full max-w-7xl mx-auto px-6 border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 font-medium relative z-10">
-            <p>&copy; 2026 Aura Luxury Rentals. All rights reserved.</p>
-            <div class="flex gap-6">
-                <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
-                <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Availability Modal -->
-    <div id="availability-modal" class="fixed inset-0 z-[100] hidden bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-4 md:p-6 opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-[2rem] w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col transform scale-95 transition-transform duration-300" id="modal-content-box">
-            <!-- Modal Header -->
-            <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-white z-10 sticky top-0">
-                <div>
-                    <h3 class="text-2xl font-heading font-bold text-darkText">Available Vehicles</h3>
-                    <p class="text-slate-500 text-sm mt-1" id="modal-subtitle">For your selected dates</p>
-                </div>
-                <button onclick="window.closeModal()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors">
-                    <i class="fas fa-times"></i>
+    <!-- Crypto Payment Modal -->
+    <div id="crypto-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
+        <div class="bg-white max-w-sm w-full rounded-md shadow-2xl relative fade-in overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <button onclick="closeCryptoPopup()" class="absolute top-6 right-6 text-gray-400 hover:text-[#D30000] transition-colors">
+                    <i class="ph ph-x text-xl"></i>
                 </button>
+                <h3 class="text-lg font-serif tracking-widest uppercase text-gray-900">Select Network & Token</h3>
             </div>
-            
-            <!-- Modal Body (Cars) -->
-            <div class="p-4 md:p-8 overflow-y-auto flex-1 bg-slate-50/50 hide-scrollbar">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="modal-cars-container">
-                    <!-- Cars injected via JS -->
-                </div>
+            <div id="crypto-modal-content" class="p-6">
+                <!-- Rendered dynamically via JS -->
             </div>
         </div>
     </div>
 
-    <!-- Floating AI Chatbot -->
-    <div id="ai-chatbot" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 flex flex-col items-end">
-        
-        <!-- Chat Window -->
-        <div id="chat-window" class="bg-white w-[90vw] md:w-96 rounded-2xl shadow-2xl border border-slate-100 overflow-hidden mb-4 opacity-0 scale-95 pointer-events-none transition-all duration-300 origin-bottom-right flex flex-col h-[400px]">
-            <div class="bg-primary p-4 text-white flex justify-between items-center shadow-md z-10">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                        <i class="fas fa-robot text-sm"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-sm leading-tight">AURA Assistant</h4>
-                        <p class="text-[10px] opacity-90 font-medium">Online • Car Rental Expert</p>
-                    </div>
-                </div>
-                <button onclick="window.toggleChat()" class="text-white hover:text-slate-200 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-slate-50 flex flex-col gap-3 text-sm scroll-smooth pb-6">
-                <!-- Messages and chips will be dynamically injected here via JS -->
-            </div>
-            
-            <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-center text-xs text-slate-400 font-medium">
-                <i class="fas fa-magic mr-1.5"></i> Please select an option above to reply
-            </div>
+    <!-- Support Redirect Loading Overlay -->
+    <div id="help-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center z-[60] transition-opacity duration-300 opacity-0 pointer-events-none hidden">
+        <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-6"></i>
+        <h3 class="text-2xl font-serif tracking-widest uppercase mb-3 text-gray-900">Redirecting you to us...</h3>
+        <p class="text-xs text-gray-500 tracking-widest uppercase">Opening your secure email client</p>
+    </div>
+
+    <!-- Solid White Sticky Cart Bar -->
+    <div id="cart-pill" class="fixed bottom-0 left-0 w-full bg-white text-gray-900 border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] px-6 md:px-12 py-4 z-40 flex items-center justify-between transition-transform duration-500 translate-y-full">
+        <div class="flex items-center gap-3">
+            <i class="ph ph-shopping-bag text-2xl text-[#D30000]"></i>
+            <span id="cart-pill-text" class="text-sm md:text-base font-medium tracking-wide"></span>
         </div>
-        
-        <!-- Chat Toggle Button -->
-        <button onclick="window.toggleChat()" class="bg-primary text-white w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center text-2xl shadow-[0_8px_30px_rgba(0,122,255,0.4)] hover:-translate-y-2 transition-transform duration-300 hover-trigger">
-            <i id="chat-icon" class="fas fa-comment-dots"></i>
+        <button onclick="navigate('cart')" class="text-xs md:text-sm tracking-widest uppercase font-semibold flex items-center gap-2 text-white bg-[#D30000] px-6 py-3 hover:bg-[#a00000] transition-colors shadow-md">
+            View in Cart <i class="ph ph-arrow-right text-lg"></i>
         </button>
     </div>
 
-    <script>
-        // --- Modal & Booking Logic ---
-        const carsData = [
-            { name: "Toyota Fortuner", price: "₹5,000/day", img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", seats: 7, type: "Premium SUV" },
-            { name: "Innova Crysta", price: "₹3,500/day", img: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", seats: 7, type: "Comfort MUV" },
-            { name: "Mercedes S-Class", price: "₹15,000/day", img: "https://images.unsplash.com/photo-1616423640778-28d1b53229bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", seats: 4, type: "Luxury Sedan" },
-            { name: "Mahindra Thar", price: "₹4,500/day", img: "https://images.unsplash.com/photo-1628190710609-bcbe70c0c5af?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", seats: 4, type: "4x4 Adventure" },
-            { name: "Audi A6", price: "₹12,000/day", img: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", seats: 5, type: "Luxury Sedan" }
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-[#D30000] text-white px-6 py-4 shadow-xl z-50 flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <i class="ph ph-warning text-lg"></i>
+        <span id="toast-msg" class="font-light tracking-wide text-sm"></span>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyD4qy5YuvvNyghccthEOm-D3DaCgB3LNbk",
+          authDomain: "form-info-221b0.firebaseapp.com",
+          projectId: "form-info-221b0",
+          storageBucket: "form-info-221b0.firebasestorage.app",
+          messagingSenderId: "640135037047",
+          appId: "1:640135037047:web:26762e57d31e8c46c98672"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- AUDIO INTEGRATION ---
+        const cartAudio = new Audio('AUD-20260422-WA0000.mp3');
+
+        function playCartSound() {
+            cartAudio.currentTime = 0;
+            cartAudio.play().catch(e => console.warn("Audio play prevented by browser:", e));
+        }
+
+        // --- STREAMING_CHUNK:Setting up Product Data and Config... ---
+        // Isolated to a single product for the landing page experience
+        const PRODUCTS = [
+            { 
+                id: 1, 
+                name: "Silk Crepe Blouse", 
+                price: 145.00, 
+                originalPrice: 180.00, 
+                rating: 4.9, 
+                reviews: 342, 
+                description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening.", 
+                reviewsList: [
+                    { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The silk is of the highest quality and it drapes beautifully. A wardrobe staple." }, 
+                    { author: "Sarah M.", rating: 5, text: "I've worn this to work and to dinner dates. Extremely versatile and feels luxurious against the skin." }, 
+                    { author: "Jessica T.", rating: 4, text: "Beautiful blouse. The button detailing adds such a chic touch. Looks far more expensive than it is." }, 
+                    { author: "Amanda C.", rating: 5, text: "Fits perfectly. I get compliments every time I wear it. I want it in every color." }, 
+                    { author: "Chloe R.", rating: 5, text: "Worth every penny. The craftsmanship is flawless, no loose threads anywhere." }
+                ] 
+            }
         ];
 
-        window.checkAvailability = () => {
-            const loc = document.getElementById('hero-pickup-loc').value;
-            const dt = document.getElementById('hero-pickup-time').value;
+        const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
+
+        const CRYPTO_ASSETS = {
+            'Ethereum': {
+                address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
+                tokens: {
+                    'USDT': './eth-usdt.jpg',
+                    'USDC': './ethereum-usdc.jpg',
+                    'ETH': './ethereum-eth.png'
+                }
+            },
+            'Solana': {
+                address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy',
+                tokens: {
+                    'USDT': './solana-usdt.jpg',
+                    'USDC': './solana-usdc.jpg',
+                    'SOL': './Solana-sol.jpg'
+                }
+            }
+        };
+
+        // --- STATE ---
+        let cart = [];
+        let currentView = 'product'; // Changed default view to Product
+        let selectedProductId = 1; // Default to the only product
+        let toastTimeout;
+        let finalCustomerEmail = '';
+        
+        let cryptoNetwork = 'Ethereum';
+        let cryptoToken = 'ETH';
+        window.currentCryptoAmount = 0;
+        const CRYPTO_RATES = { 'ETH': 3100, 'SOL': 140, 'USDT': 1, 'USDC': 1 };
+
+        window.addEventListener('resize', () => { updateCartUI(); });
+
+        // --- STREAMING_CHUNK:Defining core interactivity functions... ---
+        function navigate(view, productId = null) {
+            currentView = view;
+            if (productId) selectedProductId = productId;
+            window.scrollTo(0, 0);
+            updateCartUI(); 
+            render();
+        }
+
+        function handleHelpClick() {
+            const overlay = document.getElementById('help-overlay');
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }, 10);
+            setTimeout(() => {
+                window.location.href = "mailto:marina.elevia@gmail.com";
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => { overlay.classList.add('hidden'); }, 300);
+            }, 3000);
+        }
+
+        function handleCartClick() {
+            const icon = document.getElementById('cart-icon');
+            icon.classList.remove('ph');
+            icon.classList.add('ph-fill', 'text-[#D30000]');
+            setTimeout(() => {
+                icon.classList.remove('ph-fill', 'text-[#D30000]');
+                icon.classList.add('ph');
+                navigate('cart');
+            }, 150);
+        }
+
+        // New Direct Buy Now Logic
+        function buyNow(productId, event) {
+            if(event) event.stopPropagation();
+            const product = PRODUCTS.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
             
-            if(!dt) {
-                // In-line warning without using alert()
-                const btn = document.querySelector('button[onclick="window.checkAvailability()"]');
-                const origText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Select Date';
-                btn.classList.add('bg-red-500', 'hover:bg-red-600');
-                setTimeout(() => {
-                    btn.innerHTML = origText;
-                    btn.classList.remove('bg-red-500', 'hover:bg-red-600');
-                }, 2000);
+            if (!existing) {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCartUI();
+            navigate('checkout');
+        }
+
+        function addToCart(productId, event) {
+            if(event) event.stopPropagation();
+            playCartSound(); 
+            
+            const product = PRODUCTS.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+            
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCartUI();
+            updateAllButtons();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+            updateAllButtons();
+        }
+
+        function updateQuantity(productId, delta, event) {
+            if(event) event.stopPropagation();
+            if (delta > 0) playCartSound(); 
+            
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartUI();
+                    updateAllButtons();
+                }
+            }
+        }
+
+        function updateAllButtons() {
+            if (currentView === 'cart') {
+                render(); 
+                return;
+            }
+            
+            if (currentView === 'product') {
+                const btnContainer = document.getElementById(`btn-container-${selectedProductId}`);
+                const p = PRODUCTS.find(item => item.id === selectedProductId);
+                if (btnContainer && p) {
+                    btnContainer.innerHTML = getButtonHTML(p, 'large');
+                }
+            }
+        }
+
+        function getButtonHTML(p, size = 'normal') {
+            const inCart = cart.find(item => item.id === p.id);
+            const heightClass = size === 'large' ? 'h-[58px] text-sm' : 'h-[42px] text-xs';
+            
+            if (inCart) {
+                return `
+                    <div class="mt-3 w-full flex items-center justify-between border border-[#D30000] bg-[#D30000] text-white transition-all duration-300 shadow-md ${heightClass}">
+                        <button onclick="updateQuantity(${p.id}, -1, event)" class="w-14 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
+                            <i class="ph ph-minus font-bold"></i>
+                        </button>
+                        <span class="font-semibold tracking-widest select-none">${inCart.quantity} IN CART</span>
+                        <button onclick="updateQuantity(${p.id}, 1, event)" class="w-14 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
+                            <i class="ph ph-plus font-bold"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                return `
+                    <button onclick="addToCart(${p.id}, event)" class="mt-3 w-full ${heightClass} uppercase tracking-widest font-semibold border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300">
+                        Add to Cart
+                    </button>
+                `;
+            }
+        }
+
+        function getCartTotal() {
+            return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
+        function getCartCount() {
+            return cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+        
+        function getCartOriginalTotal() {
+            return cart.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
+        }
+
+        function updateCartUI() {
+            const count = getCartCount();
+            const total = getCartTotal();
+            
+            const badge = document.getElementById('cart-badge');
+            if (count > 0) {
+                badge.textContent = count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            const pill = document.getElementById('cart-pill');
+            const pillText = document.getElementById('cart-pill-text');
+            
+            if (count > 0 && currentView !== 'cart' && currentView !== 'checkout' && currentView !== 'thankyou' && currentView !== 'crypto-payment') {
+                if (currentView === 'product' && window.innerWidth >= 1024) {
+                    pill.classList.add('translate-y-full');
+                } else {
+                    pillText.textContent = `${count} ITEM${count !== 1 ? 'S' : ''}  |  $${total.toFixed(2)}`;
+                    pill.classList.remove('translate-y-full');
+                }
+            } else {
+                pill.classList.add('translate-y-full');
+            }
+        }
+
+        function proceedToCheckout() {
+            navigate('checkout');
+        }
+
+        // --- STREAMING_CHUNK:Image Slider Logic... ---
+        function scrollSlider(direction) {
+            const slider = document.getElementById('product-slider');
+            const width = slider.clientWidth;
+            const maxIndex = 2; // 3 images
+            
+            let currentIndex = Math.round(slider.scrollLeft / width);
+            let nextIndex = currentIndex + direction;
+            
+            if (nextIndex > maxIndex) nextIndex = 0;
+            if (nextIndex < 0) nextIndex = maxIndex;
+            
+            slider.scrollTo({ left: nextIndex * width, behavior: 'smooth' });
+        }
+
+        function updateSliderDots(slider) {
+            const width = slider.clientWidth;
+            if (width === 0) return;
+            const index = Math.round(slider.scrollLeft / width);
+            document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+                dot.classList.toggle('bg-[#D30000]', i === index);
+                dot.classList.toggle('bg-gray-300', i !== index);
+            });
+        }
+
+        // --- STREAMING_CHUNK:FOMO Notification Logic... ---
+        let fomoHideTimeout;
+        function triggerFOMO() {
+            if (currentView !== 'product') return;
+            
+            const popup = document.getElementById('fomo-popup');
+            if (!popup) return;
+            
+            const randomName = FAKE_NAMES[Math.floor(Math.random() * FAKE_NAMES.length)];
+            const product = PRODUCTS[0];
+            const randomQty = Math.floor(Math.random() * 2) + 1; 
+            const priceStr = "$" + (product.price * randomQty).toFixed(2);
+            
+            document.getElementById('fomo-name').textContent = randomName;
+            document.getElementById('fomo-action').textContent = `bought ${randomQty > 1 ? randomQty + 'x ' : ''}${product.name}`;
+            document.getElementById('fomo-price').textContent = priceStr;
+            
+            popup.classList.remove('translate-y-40', 'opacity-0');
+            popup.classList.add('translate-y-0', 'opacity-100');
+            
+            if (fomoHideTimeout) clearTimeout(fomoHideTimeout);
+            
+            fomoHideTimeout = setTimeout(() => {
+                popup.classList.remove('translate-y-0', 'opacity-100');
+                popup.classList.add('translate-y-40', 'opacity-0');
+            }, 3000); 
+        }
+
+        let fomoCount = 0;
+        function scheduleFOMO() {
+            let delay;
+            if (fomoCount === 0) delay = 1000;       
+            else if (fomoCount === 1) delay = 3500;  
+            else if (fomoCount === 2) delay = 4000;  
+            else if (fomoCount === 3) delay = 4500;  
+            else {
+                delay = Math.floor(Math.random() * 2000) + 5500;
+            }
+            
+            setTimeout(() => {
+                triggerFOMO();
+                fomoCount++;
+                scheduleFOMO();
+            }, delay);
+        }
+
+        scheduleFOMO();
+
+        // --- STREAMING_CHUNK:Crypto Logic... ---
+        function openCryptoPopup() {
+            cryptoNetwork = 'Ethereum';
+            cryptoToken = 'ETH';
+            
+            const modal = document.getElementById('crypto-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100');
+            }, 10);
+            
+            renderCryptoModal();
+        }
+
+        function closeCryptoPopup() {
+            const modal = document.getElementById('crypto-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function setCryptoNetwork(network) {
+            cryptoNetwork = network;
+            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL';
+            renderCryptoModal();
+        }
+
+        function setCryptoToken(token) {
+            cryptoToken = token;
+            renderCryptoModal();
+        }
+
+        function renderCryptoModal() {
+            const container = document.getElementById('crypto-modal-content');
+            if (!container) return;
+
+            const totalDueFiat = getCartTotal();
+            const exchangeRate = CRYPTO_RATES[cryptoToken] || 1;
+            const cryptoAmountRaw = (totalDueFiat / exchangeRate).toFixed(cryptoToken.includes('USD') ? 2 : 4);
+            
+            window.currentCryptoAmount = cryptoAmountRaw;
+
+            const tokens = cryptoNetwork === 'Ethereum'  
+                ? ['USDT', 'USDC', 'ETH']  
+                : ['USDT', 'USDC', 'SOL'];
+
+            container.innerHTML = `
+                <!-- Network Selection Tabs -->
+                <div class="flex gap-2 p-1 bg-gray-100 rounded-sm mb-6">
+                    <button onclick="setCryptoNetwork('Ethereum')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Ethereum' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Ethereum</button>
+                    <button onclick="setCryptoNetwork('Solana')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Solana' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Solana</button>
+                </div>
+
+                <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-3">Select Token</p>
+                
+                <!-- Token List -->
+                <div class="space-y-2 mb-8">
+                    ${tokens.map(token => `
+                        <div onclick="setCryptoToken('${token}')" class="flex items-center justify-between p-4 border ${cryptoToken === token ? 'border-[#D30000] bg-red-50/50' : 'border-gray-200 hover:border-gray-300'} cursor-pointer transition-colors rounded-sm">
+                            <div class="flex items-center gap-3">
+                                <i class="ph ph-coin text-xl ${cryptoToken === token ? 'text-[#D30000]' : 'text-gray-400'}"></i>
+                                <span class="font-medium text-gray-900">${token} <span class="text-gray-400 text-xs font-light ml-1">(${cryptoNetwork})</span></span>
+                            </div>
+                            ${cryptoToken === token ? '<i class="ph-fill ph-check-circle text-[#D30000] text-lg"></i>' : ''}
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- Total Amount Summary -->
+                <div class="flex justify-between items-end mb-6 pt-4 border-t border-gray-100">
+                    <span class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Total Due</span>
+                    <div class="text-right">
+                        <div class="text-2xl font-serif text-gray-900">${window.currentCryptoAmount} ${cryptoToken}</div>
+                        <div class="text-xs text-gray-400 font-light tracking-wide mt-1">≈ $${totalDueFiat.toFixed(2)} USD</div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button onclick="processCryptoPayment()" class="w-full bg-gray-900 text-white uppercase tracking-widest text-xs font-semibold py-4 hover:bg-black transition-colors shadow-lg">
+                    Pay with ${window.currentCryptoAmount} ${cryptoToken}
+                </button>
+            `;
+        }
+
+        function processCryptoPayment() {
+            closeCryptoPopup();
+            setTimeout(() => {
+                navigate('crypto-payment');
+            }, 300);
+        }
+
+        // --- STREAMING_CHUNK:Checkout Process Logic... ---
+        function handleCheckoutInfoSubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('checkout-info-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            finalCustomerEmail = document.getElementById('email').value;
+            const customerName = document.getElementById('customerName').value;
+            const address = document.getElementById('address').value;
+
+            // Show top green notification
+            const topNotif = document.getElementById('top-notification');
+            document.getElementById('top-notification-msg').textContent = `Info secured, ${customerName}`;
+            
+            topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
+            topNotif.classList.add('translate-y-0', 'opacity-100');
+
+            // Animate Button
+            const btn = document.getElementById('next-btn');
+            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
+            
+            // Collect order payload for Firebase
+            const orderData = {
+                customerDetails: {
+                    name: customerName,
+                    email: finalCustomerEmail,
+                    address: address
+                },
+                cart: cart.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity
+                })),
+                totalPrice: getCartTotal(),
+                createdAt: serverTimestamp()
+            };
+
+            // Fire and forget Firebase save
+            addDoc(collection(db, "delivery_orders"), orderData)
+                .then(() => console.log("Order saved to secure Firebase."))
+                .catch(error => console.error("Firebase Database error:", error));
+            
+            setTimeout(() => {
+                // Hide top notification
+                topNotif.classList.remove('translate-y-0', 'opacity-100');
+                topNotif.classList.add('-translate-y-40', 'opacity-0', 'pointer-events-none');
+                
+                // Swap views
+                document.getElementById('info-step').classList.add('hidden');
+                document.getElementById('info-back').classList.add('hidden');
+                
+                const waitingHeader = document.getElementById('checkout-waiting-header');
+                waitingHeader.classList.remove('hidden');
+                waitingHeader.classList.add('flex');
+                
+                document.getElementById('payment-step').classList.remove('hidden');
+                document.getElementById('payment-back').classList.remove('hidden');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                initPayPal();
+            }, 1800);
+        }
+
+        function goBackToInfo() {
+            document.getElementById('payment-step').classList.add('hidden');
+            document.getElementById('payment-back').classList.add('hidden');
+            
+            const waitingHeader = document.getElementById('checkout-waiting-header');
+            waitingHeader.classList.add('hidden');
+            waitingHeader.classList.remove('flex');
+            
+            document.getElementById('info-step').classList.remove('hidden');
+            document.getElementById('info-back').classList.remove('hidden');
+            
+            const btn = document.getElementById('next-btn');
+            btn.innerHTML = `Continue to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>`;
+        }
+
+        // --- STREAMING_CHUNK:UI Utilities... ---
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = message;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                navigate('product');
+            }, 300);
+        }
+        
+        function copyText(text, label) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(label + " copied to clipboard!");
+            } catch (err) {
+                showToast("Failed to copy.");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // --- STREAMING_CHUNK:Rendering Engine... ---
+        function render() {
+            const content = document.getElementById('app-content');
+            content.innerHTML = '';
+
+            if (currentView === 'product') {
+                content.innerHTML = renderProduct();
+            } else if (currentView === 'cart') {
+                content.innerHTML = renderCart();
+            } else if (currentView === 'checkout') {
+                content.innerHTML = renderCheckout();
+            } else if (currentView === 'crypto-payment') {
+                content.innerHTML = renderCryptoPayment();
+            } else if (currentView === 'thankyou') {
+                content.innerHTML = renderThankYou();
+            }
+        }
+
+        function renderProduct() {
+            const p = PRODUCTS.find(item => item.id === selectedProductId);
+            if (!p) return '';
+            
+            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-sm md:text-base"></i>').join('');
+
+            const reviewsHTML = p.reviewsList.map(review => {
+                const reviewStars = Array(5).fill(0).map((_, i) => 
+                    `<i class="${i < review.rating ? 'ph-fill' : 'ph'} ph-star text-[#D30000] text-sm"></i>`
+                ).join('');
+                return `
+                    <div class="border-b border-gray-100 pb-8 pt-8 last:border-0 last:pb-0">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-medium text-gray-900 tracking-wide">${review.author}</span>
+                            <div class="flex gap-[2px]">${reviewStars}</div>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest text-green-600 font-bold mb-3 block">Verified Buyer</span>
+                        <p class="text-gray-600 font-light leading-relaxed text-sm md:text-base">${review.text}</p>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="max-w-6xl mx-auto px-4 py-8 md:py-16 fade-in">
+                    <div class="flex flex-col md:flex-row gap-12 lg:gap-16">
+                        
+                        <!-- Premium CSS Slider -->
+                        <div class="flex-1 w-full relative group">
+                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm" onscroll="updateSliderDots(this)">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center snap-always flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 1</span>
+                                </div>
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#EFEFEF] snap-center snap-always flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 2</span>
+                                </div>
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center snap-always flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 3</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Slider Controls -->
+                            <button onclick="scrollSlider(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10">
+                                <i class="ph ph-caret-left text-xl"></i>
+                            </button>
+                            <button onclick="scrollSlider(1)" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10">
+                                <i class="ph ph-caret-right text-xl"></i>
+                            </button>
+                            
+                            <!-- Pagination Dots -->
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                <div class="slider-dot w-2 h-2 rounded-full bg-[#D30000] transition-colors"></div>
+                                <div class="slider-dot w-2 h-2 rounded-full bg-gray-300 transition-colors"></div>
+                                <div class="slider-dot w-2 h-2 rounded-full bg-gray-300 transition-colors"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1 flex flex-col py-2 md:py-8 lg:sticky lg:top-32 h-fit">
+                            <h2 class="text-3xl md:text-5xl font-serif uppercase tracking-widest mb-3 text-gray-900">${p.name}</h2>
+                            <div class="flex items-center text-[#D30000] mb-4 gap-[2px]">
+                                <span class="font-bold text-lg mr-2">${p.rating}</span> ${starsHTML}
+                                <span class="text-gray-400 text-xs ml-2 uppercase tracking-widest">(${p.reviews} Reviews)</span>
+                            </div>
+                            <p class="text-2xl text-gray-900 mb-8 font-medium">
+                                <span class="line-through text-gray-400 font-light mr-3 text-xl">$${p.originalPrice.toFixed(2)}</span>
+                                $${p.price.toFixed(2)}
+                            </p>
+                            
+                            <div class="w-12 h-[1px] bg-[#D30000] mb-8"></div>
+                            
+                            <p class="text-gray-600 leading-relaxed font-light mb-10 text-lg">${p.description}</p>
+                            
+                            <p class="text-[10px] uppercase tracking-widest font-bold text-green-600 mb-2">FREE WORLDWIDE SHIPPING</p>
+                            
+                            <!-- Enhanced Button Group -->
+                            <div class="w-full flex flex-col gap-3 mb-8">
+                                <button onclick="buyNow(${p.id}, event)" class="w-full h-[58px] bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold hover:bg-[#b00000] transition-all duration-300 shadow-xl flex items-center justify-center gap-2">
+                                    Buy Now <i class="ph ph-lightning text-lg"></i>
+                                </button>
+                                <div id="btn-container-${p.id}" class="w-full">
+                                    ${getButtonHTML(p, 'large')}
+                                </div>
+                            </div>
+                            
+                            <div class="border-t border-gray-100 pt-6 mt-2">
+                                <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between mb-2">
+                                    <span>Shipping</span> <span>Complimentary</span>
+                                </p>
+                                <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between">
+                                    <span>Returns</span> <span>Within 30 Days</span>
+                                </p>
+                            </div>
+                            
+                            <!-- Customer Reviews Section -->
+                            <div class="mt-16 pt-10 border-t border-gray-900">
+                                <h3 class="text-xl font-serif uppercase tracking-widest mb-2 text-gray-900">Customer Reviews</h3>
+                                <p class="text-sm text-gray-500 mb-6 tracking-wide">Based on ${p.reviews} reviews</p>
+                                <div>
+                                    ${reviewsHTML}
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCart() {
+            if (cart.length === 0) {
+                return `
+                    <div class="max-w-4xl mx-auto px-4 py-16 fade-in">
+                        <button onclick="navigate('product')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                            <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                            Back to Product
+                        </button>
+                        <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-16">Your Cart</h2>
+                        <div class="text-center py-20 bg-gray-50 border border-gray-100">
+                            <p class="text-gray-500 mb-6 font-light text-lg">Your selected items will appear here.</p>
+                            <button onclick="navigate('product')" class="text-[#D30000] uppercase tracking-widest text-sm border-b border-[#D30000] pb-1 hover:text-[#a00000] hover:border-[#a00000] transition-colors">
+                                Return to Product
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            let cartHtml = cart.map(item => `
+                <div class="py-8 flex items-center justify-between border-b border-gray-100 last:border-0">
+                    <div class="flex items-center gap-4 md:gap-6">
+                        <div class="w-20 h-28 md:w-24 md:h-32 bg-[#F7F7F7] flex items-center justify-center shrink-0 text-[10px] text-gray-400 uppercase tracking-widest text-center px-1">Img</div>
+                        <div>
+                            <h4 class="font-serif tracking-wider text-base md:text-lg mb-1">${item.name}</h4>
+                            <p class="text-gray-500 text-sm font-light mb-3">$${item.price.toFixed(2)}</p>
+                            
+                            <div class="flex items-center border border-gray-300 w-fit">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-[#D30000] transition-colors"><i class="ph ph-minus text-xs"></i></button>
+                                <span class="text-xs font-medium w-6 text-center select-none">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-[#D30000] transition-colors"><i class="ph ph-plus text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end gap-4 md:gap-6">
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-[#D30000] transition-colors" title="Remove item">
+                            <i class="ph ph-trash text-lg"></i>
+                        </button>
+                        <p class="font-medium text-base md:text-lg">$${(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="max-w-4xl mx-auto px-4 py-12 fade-in">
+                    <button onclick="navigate('product')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Product
+                    </button>
+                    <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-16">Your Cart</h2>
+                    
+                    <div class="border-t border-gray-100 mb-12">
+                        ${cartHtml}
+                    </div>
+                    
+                    <div class="flex flex-col items-end w-full md:w-1/2 ml-auto mb-8">
+                        <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                            <span class="tracking-wide">Original Subtotal</span>
+                            <span class="line-through">$${getCartOriginalTotal().toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-gray-800 text-sm font-medium">
+                            <span class="tracking-wide">Price</span>
+                            <span>$${getCartTotal().toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-green-600 text-sm font-medium">
+                            <span class="tracking-wide">Savings</span>
+                            <span>-$${(getCartOriginalTotal() - getCartTotal()).toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                            <span class="tracking-wide">Shipping</span>
+                            <span class="text-green-600">FREE</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-4 text-gray-500 text-sm border-b border-gray-100 pb-4">
+                            <span class="tracking-wide">Tax</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div class="flex justify-between w-full text-gray-900 text-xl font-serif">
+                            <span class="uppercase tracking-widest">Total</span>
+                            <span>$${getCartTotal().toFixed(2)}</span>
+                        </div>
+                    </div>
+                        
+                    <div class="flex justify-end">
+                        <button onclick="proceedToCheckout()" class="bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-[#a00000] transition-colors duration-300 w-full md:w-auto shadow-lg">
+                            Proceed to Checkout
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Modernized Checkout & Information Collection... ---
+        function renderCheckout() {
+            const totalPaid = "$" + getCartTotal().toFixed(2);
+
+            return `
+                <div class="max-w-xl mx-auto py-16 px-4 fade-in">
+                    
+                    <div class="bg-white p-8 md:p-12 rounded-sm mb-2 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] relative overflow-visible">
+
+                        <!-- Payment Step Waiting Header -->
+                        <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-8 border-b border-gray-100 pb-8">
+                            <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
+                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Secure connection established...</h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest mb-8">Ready for your payment</p>
+                            
+                            <div class="flex justify-between items-center w-full text-gray-900 text-xl font-serif bg-gray-50 p-5 rounded-sm">
+                                <span class="uppercase tracking-widest text-sm text-gray-500">Amount Due</span>
+                                <span class="text-[#D30000] font-semibold">${totalPaid} USD</span>
+                            </div>
+                        </div>
+                        
+                        <!-- STEP 1: Simplified Info Details -->
+                        <div id="info-step" class="transition-opacity duration-300">
+                            <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-2 text-gray-900">Checkout</h2>
+                            <p class="text-center text-sm text-gray-500 mb-10 tracking-widest uppercase">Contact & Shipping</p>
+                            
+                            <form id="checkout-info-form" class="space-y-8" onsubmit="handleCheckoutInfoSubmit(event)">
+                                
+                                <div class="relative group">
+                                    <input type="text" id="customerName" required autocomplete="off" class="peer w-full border-b-2 border-gray-200 py-3 bg-transparent text-gray-900 focus:outline-none focus:border-[#D30000] placeholder-transparent transition-colors" placeholder="Full Name">
+                                    <label class="absolute left-0 -top-3.5 text-gray-400 text-xs tracking-widest uppercase transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-[#D30000] pointer-events-none">Full Name</label>
+                                </div>
+
+                                <div class="relative group">
+                                    <input type="email" id="email" required autocomplete="off" class="peer w-full border-b-2 border-gray-200 py-3 bg-transparent text-gray-900 focus:outline-none focus:border-[#D30000] placeholder-transparent transition-colors" placeholder="Email Address">
+                                    <label class="absolute left-0 -top-3.5 text-gray-400 text-xs tracking-widest uppercase transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-[#D30000] pointer-events-none">Email Address</label>
+                                    
+                                    <!-- Explicit Spam Promise Requirement -->
+                                    <div class="flex items-center gap-1.5 mt-3 text-[#D30000]">
+                                        <i class="ph-fill ph-lock-key text-sm"></i>
+                                        <p class="text-[10px] font-semibold tracking-widest uppercase">We promise absolutely no spam. Just order updates.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="relative group">
+                                    <input type="text" id="address" required autocomplete="off" class="peer w-full border-b-2 border-gray-200 py-3 bg-transparent text-gray-900 focus:outline-none focus:border-[#D30000] placeholder-transparent transition-colors" placeholder="Shipping Address">
+                                    <label class="absolute left-0 -top-3.5 text-gray-400 text-xs tracking-widest uppercase transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-[#D30000] pointer-events-none">Shipping Address (Street, City, Zip)</label>
+                                </div>
+                                
+                                <div class="pt-6">
+                                    <button type="submit" id="next-btn" class="w-full bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 hover:bg-[#a00000] transition-colors shadow-lg flex justify-center items-center">
+                                        Continue to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- STEP 2: Payment Details -->
+                        <div id="payment-step" class="hidden fade-in">
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Select Payment</h2>
+                            
+                            <div id="paypal-ui-container">
+                                <div class="relative z-0">
+                                    <div id="paypal-button-container" class="min-h-[55px]"></div>
+                                </div>
+
+                                <!-- Crypto Payment Divider & Button -->
+                                <div class="flex items-center justify-center space-x-4 my-8">
+                                    <hr class="flex-grow border-gray-200">
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">OR PAY WITH</span>
+                                    <hr class="flex-grow border-gray-200">
+                                </div>
+
+                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-4 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md">
+                                    <i class="ph ph-currency-btc text-xl"></i> Pay with Crypto
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="info-back" class="text-center mt-8">
+                        <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Cart
+                        </button>
+                    </div>
+                    
+                    <div id="payment-back" class="text-center mt-8 hidden">
+                        <button onclick="goBackToInfo()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Information
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderThankYou() {
+            const deliveryDate = new Date();
+            deliveryDate.setDate(deliveryDate.getDate() + 10);
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = deliveryDate.toLocaleDateString(undefined, dateOptions);
+
+            return `
+                <div class="max-w-xl mx-auto py-24 px-4 fade-in text-center">
+                    <div class="w-20 h-20 bg-[#D30000] text-white rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
+                        <i class="ph ph-check text-4xl font-bold"></i>
+                    </div>
+                    <h2 class="text-4xl font-serif tracking-widest uppercase mb-6 text-gray-900">Thank You!</h2>
+                    <p class="text-xl text-gray-600 mb-8 font-light">Your elegant order has been placed successfully.</p>
+                    
+                    <div class="bg-gray-50 p-8 border border-gray-100 text-left mb-10 shadow-sm">
+                        <div class="mb-6">
+                            <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Estimated Delivery</p>
+                            <p class="text-lg text-gray-900 font-serif">${formattedDate}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Confirmation Email</p>
+                            <p class="text-base text-gray-900">Your tracking and order details will be mailed to <span class="font-medium text-[#D30000]">${finalCustomerEmail}</span>.</p>
+                        </div>
+                    </div>
+
+                    <button onclick="navigate('product')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                        Return to Product
+                    </button>
+                </div>
+            `;
+        }
+
+        function initPayPal() {
+            const container = document.getElementById('paypal-button-container');
+            if (!window.paypal) {
+                container.innerHTML = '<p class="text-[#D30000] text-sm text-center py-4">Failed to load secure gateway. Please refresh.</p>';
                 return;
             }
 
-            const dtString = new Date(dt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
-            document.getElementById('modal-subtitle').innerText = `Checking real-time availability for ${loc}...`;
+            container.innerHTML = ''; 
             
-            const container = document.getElementById('modal-cars-container');
-            
-            // 1. Show Loading State First
-            container.innerHTML = `
-                <div class="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-16">
-                    <i class="fas fa-circle-notch fa-spin text-4xl text-primary mb-4 shadow-sm rounded-full"></i>
-                    <p class="text-slate-500 font-medium text-lg animate-pulse">Searching fleet for your dates...</p>
-                </div>
-            `;
-
-            const modal = document.getElementById('availability-modal');
-            const box = document.getElementById('modal-content-box');
-            modal.classList.remove('hidden');
-            
-            // Allow tiny delay for display:block to apply before animating opacity
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                box.classList.remove('scale-95');
-            }, 10);
-
-            // 2. Simulate API Call & Show Results after 1.2s
-            setTimeout(() => {
-                document.getElementById('modal-subtitle').innerText = `Pickup: ${loc} • ${dtString}`;
-                container.innerHTML = ''; // clear
-                
-                carsData.forEach(car => {
-                    container.innerHTML += `
-                        <div class="bg-white border border-slate-200 rounded-2xl p-4 flex gap-4 shadow-sm hover:shadow-lg transition-all transform hover:-translate-y-1 group relative overflow-hidden">
-                            <img src="${car.img}" class="w-24 h-24 rounded-xl object-cover" alt="${car.name}">
-                            <div class="flex-1 flex flex-col justify-between">
-                                <div>
-                                    <div class="flex justify-between items-start">
-                                        <h4 class="font-bold text-darkText text-lg group-hover:text-primary transition-colors">${car.name}</h4>
-                                        <span class="bg-emerald-100 text-emerald-600 text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">Available</span>
-                                    </div>
-                                    <p class="text-xs text-slate-500 font-medium">${car.type} • ${car.seats} Seats</p>
-                                </div>
-                                <div class="flex justify-between items-center mt-2">
-                                    <span class="font-serif font-bold text-primary">${car.price}</span>
-                                    <button onclick="window.bookFromModal('${car.name}')" class="bg-primary text-white text-xs px-4 py-2 rounded-full font-bold hover:bg-slate-900 transition-colors shadow-md">
-                                        Book Now
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            }, 1200);
-        };
-
-        window.closeModal = () => {
-            const modal = document.getElementById('availability-modal');
-            const box = document.getElementById('modal-content-box');
-            modal.classList.add('opacity-0');
-            box.classList.add('scale-95');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        };
-
-        window.bookFromModal = (carName) => {
-            const loc = document.getElementById('hero-pickup-loc').value;
-            const dt = document.getElementById('hero-pickup-time').value;
-            const dtString = new Date(dt).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
-            
-            const message = `Hi! I am looking to book the *${carName}*.\n\n📍 *Pickup:* ${loc}\n🕒 *Date & Time:* ${dtString}\n\nPlease let me know the availability and confirm my booking.`;
-            window.open(`https://wa.me/6005229202?text=${encodeURIComponent(message)}`, '_blank');
-        };
-
-        // --- Chatbot Logic (Menu-Driven Options) ---
-        let chatOpen = false;
-        
-        const chatFlow = {
-            start: {
-                botMessage: "Hello! I'm your AURA assistant. How can I help you with your premium car rental in Kashmir today?",
-                options: [
-                    { text: "Which cars are available?", next: "cars" },
-                    { text: "Do you provide chauffeurs?", next: "chauffeurs" },
-                    { text: "How do I book?", next: "booking" }
-                ]
-            },
-            cars: {
-                botMessage: "We have a premium fleet ready for you: Toyota Fortuner, Innova Crysta, Mercedes S-Class, Mahindra Thar, and Audi A6.",
-                options: [
-                    { text: "What are their pricings?", next: "pricing" },
-                    { text: "Which is best for mountains?", next: "offroad" },
-                    { text: "Start over", next: "start" }
-                ]
-            },
-            pricing: {
-                botMessage: "Here are our daily rates:<br><br>• <b>Fortuner:</b> ₹5,000/day<br>• <b>Innova Crysta:</b> ₹3,500/day<br>• <b>S-Class:</b> ₹15,000/day<br>• <b>Thar:</b> ₹4,500/day<br>• <b>Audi A6:</b> ₹12,000/day",
-                options: [
-                    { text: "How do I book?", next: "booking" },
-                    { text: "Start over", next: "start" }
-                ]
-            },
-            chauffeurs: {
-                botMessage: "Yes! All our rentals include professional, courteous local chauffeurs who are experts in safely navigating Kashmir's mountain terrains.",
-                options: [
-                    { text: "Which cars are available?", next: "cars" },
-                    { text: "How do I book?", next: "booking" },
-                    { text: "Start over", next: "start" }
-                ]
-            },
-            booking: {
-                botMessage: "You can book easily by using the 'Check Availability' bar on our homepage, or by messaging us directly on WhatsApp.",
-                options: [
-                    { text: "Message on WhatsApp", action: "whatsapp" },
-                    { text: "Start over", next: "start" }
-                ]
-            },
-            offroad: {
-                botMessage: "For steep mountains, heavy snow, and trips to places like Sonamarg or Gulmarg, we highly recommend the <b>Mahindra Thar (4x4)</b> or the <b>Toyota Fortuner</b>.",
-                options: [
-                    { text: "What are their pricings?", next: "pricing" },
-                    { text: "How do I book?", next: "booking" },
-                    { text: "Start over", next: "start" }
-                ]
-            }
-        };
-
-        window.toggleChat = () => {
-            const windowEl = document.getElementById('chat-window');
-            const icon = document.getElementById('chat-icon');
-            chatOpen = !chatOpen;
-            
-            if(chatOpen) {
-                windowEl.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-                windowEl.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
-                icon.classList.remove('fa-comment-dots');
-                icon.classList.add('fa-times');
-            } else {
-                windowEl.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-                windowEl.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-comment-dots');
-            }
-        };
-
-        window.renderChatNode = (nodeId) => {
-            const node = chatFlow[nodeId];
-            if(!node) return;
-            
-            window.addMessage(node.botMessage, 'bot');
-            
-            const messagesEl = document.getElementById('chat-messages');
-            
-            // Remove active chips if they exist
-            const oldChips = document.getElementById('active-chat-chips');
-            if(oldChips) oldChips.remove();
-
-            let chipsHtml = `<div class="flex flex-wrap gap-2 mt-2 fade-in" id="active-chat-chips">`;
-            node.options.forEach(opt => {
-                if(opt.action === 'whatsapp') {
-                     chipsHtml += `<button onclick="window.open('https://wa.me/6005229202?text=Hi!%20I%20would%20like%20to%20know%20more%20about%20booking%20a%20car.', '_blank')" class="bg-blue-50 text-primary border border-blue-100 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition-colors text-left shadow-sm flex items-center gap-1.5"><i class="fab fa-whatsapp"></i> ${opt.text}</button>`;
-                } else {
-                     chipsHtml += `<button onclick="window.handleChatOption('${opt.text}', '${opt.next}')" class="bg-white text-primary border border-primary/20 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-primary hover:border-primary hover:text-white transition-colors text-left shadow-sm">${opt.text}</button>`;
-                }
-            });
-            chipsHtml += `</div>`;
-            messagesEl.innerHTML += chipsHtml;
-            window.scrollToBottom();
-        };
-
-        window.handleChatOption = (userText, nextNodeId) => {
-            const oldChips = document.getElementById('active-chat-chips');
-            if(oldChips) oldChips.remove();
-
-            window.addMessage(userText, 'user');
-            
-            const typingId = 'typing-' + Date.now();
-            const messagesEl = document.getElementById('chat-messages');
-            messagesEl.innerHTML += `
-                <div id="${typingId}" class="bg-white p-3 rounded-xl rounded-tl-sm shadow-sm border border-slate-100 w-16 flex justify-center gap-1.5 items-center h-10 mt-1">
-                    <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
-                    <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
-                    <span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
-                </div>`;
-            window.scrollToBottom();
-
-            // Simulate slight delay for natural reading pace
-            setTimeout(() => {
-                const typingEl = document.getElementById(typingId);
-                if(typingEl) typingEl.remove();
-                window.renderChatNode(nextNodeId);
-            }, 700);
-        };
-
-        window.addMessage = (text, sender) => {
-            const messagesEl = document.getElementById('chat-messages');
-            if(sender === 'user') {
-                messagesEl.innerHTML += `<div class="bg-primary p-3 rounded-xl rounded-tr-sm shadow-sm text-white w-[85%] self-end ml-auto mt-1">${text}</div>`;
-            } else {
-                messagesEl.innerHTML += `<div class="bg-white p-3 rounded-xl rounded-tl-sm shadow-sm text-slate-700 w-[85%] border border-slate-100 mt-1 leading-relaxed">${text}</div>`;
-            }
-            window.scrollToBottom();
-        };
-        
-        window.scrollToBottom = () => {
-            const messagesEl = document.getElementById('chat-messages');
-            messagesEl.scrollTop = messagesEl.scrollHeight;
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-            
-            // Initialize Chatbot Tree
-            window.renderChatNode('start');
-            
-            // Sticky Navbar Blur Effect
-            const navbar = document.getElementById('navbar');
-            const navInner = navbar.firstElementChild;
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('py-2');
-                    navbar.classList.remove('py-6');
-                    navInner.classList.remove('rounded-[2rem]');
-                    navInner.classList.add('rounded-2xl');
-                } else {
-                    navbar.classList.add('py-6');
-                    navbar.classList.remove('py-2');
-                    navInner.classList.add('rounded-[2rem]');
-                    navInner.classList.remove('rounded-2xl');
-                }
-            });
-
-            // 3. SPA Routing Logic
-            const pages = ['page-home', 'page-about', 'page-contact'];
-            window.app = {
-                navigate: function(targetId) {
-                    if(document.getElementById(targetId).classList.contains('active')) return;
-                    
-                    // Show Transition Overlay
-                    gsap.to('#page-transition', { y: '0%', duration: 0.6, ease: 'power4.inOut', onComplete: () => {
-                        
-                        // Hide all pages, show target
-                        pages.forEach(p => {
-                            const el = document.getElementById(p);
-                            el.classList.remove('active');
-                            el.style.display = 'none';
-                        });
-                        const target = document.getElementById(targetId);
-                        target.style.display = 'block';
-                        target.classList.add('active');
-                        
-                        window.scrollTo(0, 0);
-                        
-                        // Refresh animations for new layout
-                        setTimeout(() => {
-                            ScrollTrigger.refresh();
-                            if(targetId === 'page-home' && !window.hasAnimatedCounters) {
-                                initCounters();
-                            }
-                        }, 100);
-
-                        // Hide Transition Overlay
-                        gsap.to('#page-transition', { y: '-100%', duration: 0.6, ease: 'power4.inOut', delay: 0.2, onComplete: () => {
-                            gsap.set('#page-transition', { y: '100%' }); // reset
-                        }});
-                    }});
-                }
-            };
-
-            // 4. Fleet Filtering
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const carCards = document.querySelectorAll('.car-card');
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => {
-                        b.classList.remove('bg-primary', 'text-white', 'shadow-md');
-                        b.classList.add('bg-slate-100', 'text-slate-600');
+            paypal.Buttons({
+                style: { color: 'black', shape: 'rect', label: 'pay', height: 55 },
+                onClick: function(data, actions) {
+                    // Validation handled before this step now
+                    document.getElementById('paypal-ui-container').classList.add('hidden');
+                    return actions.resolve(); 
+                },
+                onCancel: function (data) {
+                    document.getElementById('paypal-ui-container').classList.remove('hidden');
+                },
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: { value: getCartTotal().toFixed(2) }
+                        }]
                     });
-                    btn.classList.add('bg-primary', 'text-white', 'shadow-md');
-                    btn.classList.remove('bg-slate-100', 'text-slate-600');
-
-                    const filter = btn.getAttribute('data-filter');
-                    carCards.forEach(card => {
-                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                            card.style.display = 'flex';
-                            gsap.fromTo(card, {opacity: 0, scale: 0.95}, {opacity: 1, scale: 1, duration: 0.4});
-                        } else {
-                            card.style.display = 'none';
-                        }
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        cart = []; 
+                        updateCartUI();
+                        updateAllButtons();
+                        navigate('thankyou');
                     });
-                    setTimeout(() => ScrollTrigger.refresh(), 100);
-                });
-            });
+                },
+                onError: function(err) {
+                    console.error("PayPal Error:", err);
+                    document.getElementById('paypal-ui-container').classList.remove('hidden');
+                    showToast("Payment window closed or an error occurred.");
+                }
+            }).render('#paypal-button-container');
+        }
 
-            // 5. GSAP Animations & Counters
-            gsap.registerPlugin(ScrollTrigger);
-            
-            // Hero Animation
-            gsap.from('.hero-elem', {
-                y: 40, opacity: 0, duration: 1, stagger: 0.15, ease: "power3.out", delay: 0.2
-            });
+        // --- BIND GLOBALS FOR MODULE SCRIPT ---
+        window.navigate = navigate;
+        window.handleHelpClick = handleHelpClick;
+        window.handleCartClick = handleCartClick;
+        window.buyNow = buyNow;
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+        window.proceedToCheckout = proceedToCheckout;
+        window.scrollSlider = scrollSlider;
+        window.updateSliderDots = updateSliderDots;
+        window.handleCheckoutInfoSubmit = handleCheckoutInfoSubmit;
+        window.goBackToInfo = goBackToInfo;
+        window.closeModal = closeModal;
+        window.openCryptoPopup = openCryptoPopup;
+        window.closeCryptoPopup = closeCryptoPopup;
+        window.setCryptoNetwork = setCryptoNetwork;
+        window.setCryptoToken = setCryptoToken;
+        window.processCryptoPayment = processCryptoPayment;
+        window.copyText = copyText;
 
-            // Parallax
-            gsap.to('.parallax-bg', {
-                yPercent: 20, ease: "none",
-                scrollTrigger: { trigger: "#page-home", start: "top top", end: "bottom top", scrub: true }
-            });
-
-            // Section Headers Reveal
-            gsap.utils.toArray('.section-header').forEach(header => {
-                gsap.from(header, {
-                    y: 30, opacity: 0, duration: 0.8,
-                    scrollTrigger: { trigger: header, start: "top 85%" }
-                });
-            });
-
-            // Service Cards Stagger
-            gsap.from('.service-card', {
-                y: 40, opacity: 0, duration: 0.8, stagger: 0.15,
-                scrollTrigger: { trigger: "#services", start: "top 75%" }
-            });
-
-            // Counter Animation
-            window.hasAnimatedCounters = false;
-            const initCounters = () => {
-                const counters = document.querySelectorAll('.counter');
-                counters.forEach(counter => {
-                    const target = +counter.getAttribute('data-target');
-                    const increment = target / 100;
-                    let current = 0;
-                    const updateCounter = () => {
-                        current += increment;
-                        if (current < target) {
-                            counter.innerText = Math.ceil(current);
-                            requestAnimationFrame(updateCounter);
-                        } else {
-                            counter.innerText = target;
-                        }
-                    };
-                    updateCounter();
-                });
-                window.hasAnimatedCounters = true;
-            };
-
-            ScrollTrigger.create({
-                trigger: ".stat-item",
-                start: "top 85%",
-                onEnter: () => { if(!window.hasAnimatedCounters) initCounters(); }
-            });
-
-        });
+        // Initialize App
+        updateCartUI();
+        render();
     </script>
 </body>
 </html>
