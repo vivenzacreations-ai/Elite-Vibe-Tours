@@ -11,11 +11,11 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <!-- PayPal JS SDK -->
+    <!-- PayPal JS SDK (Using Client ID) -->
     <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -36,7 +36,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Hide scrollbar */
+        /* Hide scrollbar for cleaner look */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -45,11 +45,12 @@
         ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
         
-        /* Floating Label overrides & Autofill cleanup */
+        /* Form Autofill cleanup */
         input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 30px white inset !important;
         }
         
+        /* Enforces strict 1-image per swipe */
         .snap-always { scroll-snap-stop: always; }
     </style>
 </head>
@@ -59,11 +60,13 @@
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
         <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between w-full gap-4">
             
-            <h1 onclick="navigate('product')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
+            <!-- Logo adjusted to the right & smaller -->
+            <h1 onclick="navigate('home')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
                 <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
             </h1>
             
             <div class="flex items-center justify-end gap-3 md:gap-5 border-l border-gray-200 pl-4 md:pl-8">
+                <!-- Help / Support Icon -->
                 <button onclick="handleHelpClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 hover:text-[#D30000] transition-colors" title="Contact Support">
                     <i class="ph ph-headset text-2xl"></i>
                 </button>
@@ -81,7 +84,7 @@
         </div>
     </header>
 
-    <!-- Top Notification -->
+    <!-- Top Notification (Success Inquiry) -->
     <div id="top-notification" class="fixed top-8 left-1/2 -translate-x-1/2 bg-green-600 text-white px-8 py-5 rounded-full shadow-2xl z-[100] flex items-center gap-4 transition-all duration-500 -translate-y-40 opacity-0 pointer-events-none w-max max-w-[95%] md:max-w-md">
         <div class="w-8 h-8 bg-white text-green-600 rounded-full flex items-center justify-center shrink-0">
             <i class="ph ph-check font-bold text-lg"></i>
@@ -128,7 +131,7 @@
             <h3 class="text-2xl font-serif tracking-widest uppercase mb-4 text-gray-900">Order Confirmed</h3>
             <p id="modal-msg" class="text-gray-600 mb-8 font-light leading-relaxed"></p>
             <button onclick="closeModal()" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 w-full hover:bg-[#a00000] transition-colors">
-                Return to Product
+                Continue Shopping
             </button>
         </div>
     </div>
@@ -172,7 +175,9 @@
         <span id="toast-msg" class="font-light tracking-wide text-sm"></span>
     </div>
 
+    <!-- Application Script -->
     <script type="module">
+        // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
@@ -196,29 +201,21 @@
             cartAudio.play().catch(e => console.warn("Audio play prevented by browser:", e));
         }
 
-        // --- STREAMING_CHUNK:Setting up Product Data and Config... ---
-        // Isolated to a single product for the landing page experience
+        // --- MOCK PRODUCT DATA ---
         const PRODUCTS = [
-            { 
-                id: 1, 
-                name: "Silk Crepe Blouse", 
-                price: 145.00, 
-                originalPrice: 180.00, 
-                rating: 4.9, 
-                reviews: 342, 
-                description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening.", 
-                reviewsList: [
-                    { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The silk is of the highest quality and it drapes beautifully. A wardrobe staple." }, 
-                    { author: "Sarah M.", rating: 5, text: "I've worn this to work and to dinner dates. Extremely versatile and feels luxurious against the skin." }, 
-                    { author: "Jessica T.", rating: 4, text: "Beautiful blouse. The button detailing adds such a chic touch. Looks far more expensive than it is." }, 
-                    { author: "Amanda C.", rating: 5, text: "Fits perfectly. I get compliments every time I wear it. I want it in every color." }, 
-                    { author: "Chloe R.", rating: 5, text: "Worth every penny. The craftsmanship is flawless, no loose threads anywhere." }
-                ] 
-            }
+            { id: 1, name: "Silk Crepe Blouse", price: 145.00, originalPrice: 180.00, rating: 4.9, reviews: 342, description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening.", reviewsList: [{ author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The silk is of the highest quality and it drapes beautifully. A wardrobe staple." }, { author: "Sarah M.", rating: 5, text: "I've worn this to work and to dinner dates. Extremely versatile and feels luxurious against the skin." }, { author: "Jessica T.", rating: 4, text: "Beautiful blouse. The button detailing adds such a chic touch. Looks far more expensive than it is." }, { author: "Amanda C.", rating: 5, text: "Fits perfectly. I get compliments every time I wear it. I want it in every color." }, { author: "Chloe R.", rating: 5, text: "Worth every penny. The craftsmanship is flawless, no loose threads anywhere." }] },
+            { id: 2, name: "Wide-Leg Trousers", price: 180.00, originalPrice: 220.00, rating: 4.8, reviews: 215, description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride.", reviewsList: [{ author: "Michelle K.", rating: 5, text: "Flawless fit. They make me look so tall and elegant. Highly recommend!" }, { author: "Lauren B.", rating: 5, text: "The wool blend is lightweight but beautifully structured. Perfect for the office." }, { author: "Diana P.", rating: 4, text: "Best trousers I own. The front pleats lay perfectly flat." }, { author: "Rachel W.", rating: 5, text: "Elegant and incredibly comfortable. They drape exactly like the photos show." }, { author: "Sophia L.", rating: 5, text: "Incredible tailoring. They hug the waist perfectly while remaining flowy at the bottom." }] },
+            { id: 3, name: "Cashmere Wrap Coat", price: 395.00, originalPrice: 450.00, rating: 5.0, reviews: 189, description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication.", reviewsList: [{ author: "Olivia S.", rating: 5, text: "A literal dream coat. It is so soft it feels like a cloud." }, { author: "Emily D.", rating: 5, text: "Incredibly warm but not bulky at all. It elevates literally any outfit I throw it over." }, { author: "Claire H.", rating: 5, text: "The wrap style is very flattering. The cashmere quality is comparable to designer coats twice the price." }, { author: "Victoria G.", rating: 5, text: "I feel like a million bucks wearing this. Highly recommend investing in this piece." }, { author: "Natasha R.", rating: 5, text: "Stunning. The oversized lapels give it such a chic, model-off-duty vibe." }] },
+            { id: 4, name: "Leather Crossbody", price: 210.00, originalPrice: 260.00, rating: 4.7, reviews: 420, description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap.", reviewsList: [{ author: "Isabella F.", rating: 5, text: "The leather smells amazing and is so buttery. Perfect size for my everyday essentials." }, { author: "Megan J.", rating: 4, text: "Hardware feels very premium. The strap is easily adjustable." }, { author: "Grace K.", rating: 5, text: "A timeless piece. I get stopped and asked where my bag is from constantly." }, { author: "Taylor B.", rating: 5, text: "Goes with literally every outfit I own. It holds its shape perfectly." }, { author: "Haley N.", rating: 4, text: "Beautiful minimalist design. The magnetic closure is very strong and secure." }] },
+            { id: 5, name: "Linen Midi Dress", price: 165.00, originalPrice: 195.00, rating: 4.8, reviews: 156, description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt.", reviewsList: [{ author: "Emma T.", rating: 5, text: "So breezy and comfortable for summer. The linen is thick and high quality, not see-through at all." }, { author: "Lily A.", rating: 5, text: "Very flattering cut. The tiered skirt flows beautifully when you walk." }, { author: "Mia P.", rating: 4, text: "Received so many compliments on my vacation in Italy. My new go-to dress." }, { author: "Avery C.", rating: 5, text: "Washes beautifully. True to size and incredibly elegant for brunch or dinner." }, { author: "Harper L.", rating: 5, text: "Absolutely love the subtle V-neckline. So effortlessly romantic." }] },
+            { id: 6, name: "Gold Hoop Earrings", price: 85.00, originalPrice: 110.00, rating: 4.9, reviews: 512, description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear.", reviewsList: [{ author: "Zoe M.", rating: 5, text: "I wear them every single day. They don't irritate my sensitive ears at all." }, { author: "Nora D.", rating: 5, text: "Perfect size, not too heavy, and they look very expensive." }, { author: "Riley S.", rating: 5, text: "Hasn't tarnished at all even after wearing them in the shower by accident." }, { author: "Aria W.", rating: 4, text: "The perfect everyday hoop. The gold color is a beautiful, rich hue." }, { author: "Evelyn K.", rating: 5, text: "Very secure clasp. I never worry about losing them. Highly recommend." }] },
+            { id: 7, name: "Suede Pointed Mules", price: 155.00, originalPrice: 190.00, rating: 4.6, reviews: 134, description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort.", reviewsList: [{ author: "Layla F.", rating: 5, text: "Walked all day in these with zero blisters. The suede is buttery soft." }, { author: "Aubrey G.", rating: 4, text: "Very chic pointed toe. It elongates the leg beautifully." }, { author: "Penelope H.", rating: 5, text: "True to size. They elevate any simple jeans-and-tee outfit immediately." }, { author: "Stella J.", rating: 4, text: "The slight heel is the perfect height. Great quality for the price." }, { author: "Hannah V.", rating: 5, text: "Received so many compliments at the office. Very sleek and professional." }] },
+            { id: 8, name: "Ribbed Knit Sweater", price: 125.00, originalPrice: 150.00, rating: 4.8, reviews: 298, description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness.", reviewsList: [{ author: "Samantha Q.", rating: 5, text: "Literally the coziest thing in my closet. It feels like wearing a warm hug." }, { author: "Madison E.", rating: 5, text: "Love the slouchy, effortless look. It drapes beautifully off the shoulder." }, { author: "Brooklyn R.", rating: 4, text: "Washes really well and hasn't pilled at all. Perfect thickness." }, { author: "Allison B.", rating: 5, text: "I want it in every single color. The knit is so plush and high quality." }, { author: "Savannah T.", rating: 5, text: "My absolute favorite fall staple. Looks great tucked into high-waisted trousers." }] }
         ];
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
 
+        // --- CRYPTO MAP DATA (With Exact Filenames) ---
         const CRYPTO_ASSETS = {
             'Ethereum': {
                 address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
@@ -240,11 +237,12 @@
 
         // --- STATE ---
         let cart = [];
-        let currentView = 'product'; // Changed default view to Product
-        let selectedProductId = 1; // Default to the only product
+        let currentView = 'home';
+        let selectedProductId = null;
         let toastTimeout;
         let finalCustomerEmail = '';
         
+        // Crypto State
         let cryptoNetwork = 'Ethereum';
         let cryptoToken = 'ETH';
         window.currentCryptoAmount = 0;
@@ -252,7 +250,7 @@
 
         window.addEventListener('resize', () => { updateCartUI(); });
 
-        // --- STREAMING_CHUNK:Defining core interactivity functions... ---
+        // --- CORE FUNCTIONS ---
         function navigate(view, productId = null) {
             currentView = view;
             if (productId) selectedProductId = productId;
@@ -285,20 +283,6 @@
                 icon.classList.add('ph');
                 navigate('cart');
             }, 150);
-        }
-
-        // New Direct Buy Now Logic
-        function buyNow(productId, event) {
-            if(event) event.stopPropagation();
-            const product = PRODUCTS.find(p => p.id === productId);
-            const existing = cart.find(item => item.id === productId);
-            
-            if (!existing) {
-                cart.push({ ...product, quantity: 1 });
-            }
-            
-            updateCartUI();
-            navigate('checkout');
         }
 
         function addToCart(productId, event) {
@@ -352,6 +336,13 @@
                 if (btnContainer && p) {
                     btnContainer.innerHTML = getButtonHTML(p, 'large');
                 }
+            } else if (currentView === 'home') {
+                PRODUCTS.forEach(p => {
+                    const btnContainer = document.getElementById(`btn-container-${p.id}`);
+                    if (btnContainer) {
+                        btnContainer.innerHTML = getButtonHTML(p, 'normal');
+                    }
+                });
             }
         }
 
@@ -361,7 +352,7 @@
             
             if (inCart) {
                 return `
-                    <div class="mt-3 w-full flex items-center justify-between border border-[#D30000] bg-[#D30000] text-white transition-all duration-300 shadow-md ${heightClass}">
+                    <div class="mt-4 w-full flex items-center justify-between border border-[#D30000] bg-[#D30000] text-white transition-all duration-300 shadow-md ${heightClass}">
                         <button onclick="updateQuantity(${p.id}, -1, event)" class="w-14 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
                             <i class="ph ph-minus font-bold"></i>
                         </button>
@@ -373,7 +364,7 @@
                 `;
             } else {
                 return `
-                    <button onclick="addToCart(${p.id}, event)" class="mt-3 w-full ${heightClass} uppercase tracking-widest font-semibold border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300">
+                    <button onclick="addToCart(${p.id}, event)" class="mt-4 w-full ${heightClass} uppercase tracking-widest font-semibold border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300">
                         Add to Cart
                     </button>
                 `;
@@ -423,7 +414,7 @@
             navigate('checkout');
         }
 
-        // --- STREAMING_CHUNK:Image Slider Logic... ---
+        // --- SLIDER LOGIC ---
         function scrollSlider(direction) {
             const slider = document.getElementById('product-slider');
             const width = slider.clientWidth;
@@ -448,21 +439,21 @@
             });
         }
 
-        // --- STREAMING_CHUNK:FOMO Notification Logic... ---
+        // --- FOMO NOTIFICATION LOGIC ---
         let fomoHideTimeout;
         function triggerFOMO() {
-            if (currentView !== 'product') return;
+            if (currentView !== 'home' && currentView !== 'product') return;
             
             const popup = document.getElementById('fomo-popup');
             if (!popup) return;
             
             const randomName = FAKE_NAMES[Math.floor(Math.random() * FAKE_NAMES.length)];
-            const product = PRODUCTS[0];
-            const randomQty = Math.floor(Math.random() * 2) + 1; 
-            const priceStr = "$" + (product.price * randomQty).toFixed(2);
+            const randomProduct = PRODUCTS[Math.floor(Math.random() * PRODUCTS.length)];
+            const randomQty = Math.floor(Math.random() * 2) + 1; // High prices: 1 to 2 quantity
+            const priceStr = "$" + (randomProduct.price * randomQty).toFixed(2);
             
             document.getElementById('fomo-name').textContent = randomName;
-            document.getElementById('fomo-action').textContent = `bought ${randomQty > 1 ? randomQty + 'x ' : ''}${product.name}`;
+            document.getElementById('fomo-action').textContent = `bought ${randomQty > 1 ? randomQty + 'x ' : ''}${randomProduct.name}`;
             document.getElementById('fomo-price').textContent = priceStr;
             
             popup.classList.remove('translate-y-40', 'opacity-0');
@@ -496,7 +487,7 @@
 
         scheduleFOMO();
 
-        // --- STREAMING_CHUNK:Crypto Logic... ---
+        // --- CRYPTO PAYMENT LOGIC ---
         function openCryptoPopup() {
             cryptoNetwork = 'Ethereum';
             cryptoToken = 'ETH';
@@ -522,7 +513,7 @@
 
         function setCryptoNetwork(network) {
             cryptoNetwork = network;
-            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL';
+            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL'; // Default tokens per network
             renderCryptoModal();
         }
 
@@ -541,8 +532,8 @@
             
             window.currentCryptoAmount = cryptoAmountRaw;
 
-            const tokens = cryptoNetwork === 'Ethereum'  
-                ? ['USDT', 'USDC', 'ETH']  
+            const tokens = cryptoNetwork === 'Ethereum' 
+                ? ['USDT', 'USDC', 'ETH'] 
                 : ['USDT', 'USDC', 'SOL'];
 
             container.innerHTML = `
@@ -590,10 +581,123 @@
             }, 300);
         }
 
-        // --- STREAMING_CHUNK:Checkout Process Logic... ---
-        function handleCheckoutInfoSubmit(event) {
+        // --- GLOBAL LOCATION DROPDOWNS API ---
+        async function setupLocationAPI() {
+            const countrySelect = document.getElementById('country');
+            const stateSelect = document.getElementById('state');
+            const citySelect = document.getElementById('city');
+            const phoneCodeSelect = document.getElementById('phoneCode');
+
+            if(!countrySelect) return;
+
+            try {
+                const [countriesRes, codesRes] = await Promise.all([
+                    fetch('https://countriesnow.space/api/v0.1/countries'),
+                    fetch('https://countriesnow.space/api/v0.1/countries/codes')
+                ]);
+                const countriesData = await countriesRes.json();
+                const codesData = await codesRes.json();
+
+                countrySelect.innerHTML = '<option value="" disabled selected>Select Country</option>';
+                countriesData.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.country;
+                    opt.textContent = c.country;
+                    countrySelect.appendChild(opt);
+                });
+
+                phoneCodeSelect.innerHTML = '<option value="" disabled selected>Code</option>';
+                codesData.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.dial_code;
+                    opt.textContent = `${c.name} (${c.dial_code})`;
+                    phoneCodeSelect.appendChild(opt);
+                });
+
+                // Default to US & dynamic limits
+                window.updatePhoneLimit = function(selectElem) {
+                    const phoneInput = document.getElementById('phone');
+                    if(!phoneInput) return;
+                    const code = selectElem.value;
+                    const lengthMap = { '+91': 10, '+1': 10, '+44': 10, '+61': 9 };
+                    phoneInput.maxLength = lengthMap[code] || 15;
+                };
+
+                const defaultCode = codesData.data.find(c => c.code === 'US');
+                if (defaultCode) {
+                    phoneCodeSelect.value = defaultCode.dial_code;
+                    window.updatePhoneLimit(phoneCodeSelect);
+                }
+
+                phoneCodeSelect.addEventListener('change', function() {
+                    window.updatePhoneLimit(this);
+                });
+
+                countrySelect.addEventListener('change', async (e) => {
+                    const country = e.target.value;
+                    stateSelect.innerHTML = '<option value="">Loading states...</option>';
+                    citySelect.innerHTML = '<option value="" disabled selected>Select City</option>'; 
+                    
+                    try {
+                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country})
+                        });
+                        const data = await res.json();
+                        
+                        stateSelect.innerHTML = '<option value="" disabled selected>Select State</option>';
+                        if(data.data && data.data.states && data.data.states.length > 0) {
+                            data.data.states.forEach(s => {
+                                const opt = document.createElement('option');
+                                opt.value = s.name; opt.textContent = s.name;
+                                stateSelect.appendChild(opt);
+                            });
+                        } else {
+                            stateSelect.innerHTML = '<option value="N/A">N/A (No states available)</option>';
+                        }
+                    } catch (err) {
+                        stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
+                    }
+                });
+
+                stateSelect.addEventListener('change', async (e) => {
+                    const state = e.target.value;
+                    const country = countrySelect.value;
+                    citySelect.innerHTML = '<option value="">Loading cities...</option>';
+                    
+                    try {
+                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country, state})
+                        });
+                        const data = await res.json();
+                        
+                        citySelect.innerHTML = '<option value="" disabled selected>Select City</option>';
+                        if(data.data && data.data.length > 0) {
+                            data.data.forEach(c => {
+                                const opt = document.createElement('option');
+                                opt.value = c; opt.textContent = c;
+                                citySelect.appendChild(opt);
+                            });
+                        } else {
+                            citySelect.innerHTML = '<option value="N/A">N/A (No cities available)</option>';
+                        }
+                    } catch (err) {
+                        citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
+                    }
+                });
+
+            } catch (e) {
+                console.warn("Location API fallback active.");
+                countrySelect.outerHTML = '<input type="text" id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Country">';
+                stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
+                citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
+                phoneCodeSelect.outerHTML = '<input type="text" id="phoneCode" required class="w-24 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900" placeholder="+1">';
+            }
+        }
+
+        // --- CHECKOUT FORM LOGIC & FIREBASE ---
+        function handleDeliverySubmit(event) {
             event.preventDefault();
-            const form = document.getElementById('checkout-info-form');
+            const form = document.getElementById('delivery-form');
             if (!form.checkValidity()) {
                 form.reportValidity();
                 return;
@@ -601,17 +705,17 @@
             
             finalCustomerEmail = document.getElementById('email').value;
             const customerName = document.getElementById('customerName').value;
-            const address = document.getElementById('address').value;
 
             // Show top green notification
             const topNotif = document.getElementById('top-notification');
-            document.getElementById('top-notification-msg').textContent = `Info secured, ${customerName}`;
+            document.getElementById('top-notification-msg').textContent = `Received your inquiry, ${customerName}`;
             
             topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
             topNotif.classList.add('translate-y-0', 'opacity-100');
 
-            // Animate Button
+            // Animate Button RIGHTWARDS and fill it entirely
             const btn = document.getElementById('next-btn');
+            btn.classList.add('translate-x-12', 'bg-[#D30000]', 'scale-105');
             btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
             
             // Collect order payload for Firebase
@@ -619,7 +723,12 @@
                 customerDetails: {
                     name: customerName,
                     email: finalCustomerEmail,
-                    address: address
+                    phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    country: document.getElementById('country').value,
+                    state: document.getElementById('state').value,
+                    city: document.getElementById('city').value,
+                    zip: document.getElementById('zip').value
                 },
                 cart: cart.map(item => ({
                     id: item.id,
@@ -642,8 +751,8 @@
                 topNotif.classList.add('-translate-y-40', 'opacity-0', 'pointer-events-none');
                 
                 // Swap views
-                document.getElementById('info-step').classList.add('hidden');
-                document.getElementById('info-back').classList.add('hidden');
+                document.getElementById('delivery-step').classList.add('hidden');
+                document.getElementById('delivery-back').classList.add('hidden');
                 
                 const waitingHeader = document.getElementById('checkout-waiting-header');
                 waitingHeader.classList.remove('hidden');
@@ -654,10 +763,10 @@
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 initPayPal();
-            }, 1800);
+            }, 2500);
         }
 
-        function goBackToInfo() {
+        function goBackToDelivery() {
             document.getElementById('payment-step').classList.add('hidden');
             document.getElementById('payment-back').classList.add('hidden');
             
@@ -665,14 +774,15 @@
             waitingHeader.classList.add('hidden');
             waitingHeader.classList.remove('flex');
             
-            document.getElementById('info-step').classList.remove('hidden');
-            document.getElementById('info-back').classList.remove('hidden');
+            document.getElementById('delivery-step').classList.remove('hidden');
+            document.getElementById('delivery-back').classList.remove('hidden');
             
             const btn = document.getElementById('next-btn');
-            btn.innerHTML = `Continue to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>`;
+            btn.classList.remove('translate-x-12', 'bg-[#D30000]', 'scale-105');
+            btn.innerHTML = `Next <i class="ph ph-arrow-right ml-2 text-lg"></i>`;
         }
 
-        // --- STREAMING_CHUNK:UI Utilities... ---
+        // --- UI UTILITIES ---
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-msg').textContent = message;
@@ -693,7 +803,7 @@
             modal.classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                navigate('product');
+                navigate('home');
             }, 300);
         }
         
@@ -711,22 +821,62 @@
             document.body.removeChild(textArea);
         }
 
-        // --- STREAMING_CHUNK:Rendering Engine... ---
+        // --- RENDERING ---
         function render() {
             const content = document.getElementById('app-content');
             content.innerHTML = '';
 
-            if (currentView === 'product') {
+            if (currentView === 'home') {
+                content.innerHTML = renderHome();
+            } else if (currentView === 'product') {
                 content.innerHTML = renderProduct();
             } else if (currentView === 'cart') {
                 content.innerHTML = renderCart();
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
+                setupLocationAPI(); 
             } else if (currentView === 'crypto-payment') {
                 content.innerHTML = renderCryptoPayment();
             } else if (currentView === 'thankyou') {
                 content.innerHTML = renderThankYou();
             }
+        }
+
+        function renderHome() {
+            return `
+                <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-16 md:gap-x-8">
+                        ${PRODUCTS.map(p => `
+                            <div class="group cursor-pointer flex flex-col relative" onclick="navigate('product', ${p.id})">
+                                <div class="aspect-[4/5] bg-[#F7F7F7] w-full mb-4 overflow-hidden flex items-center justify-center text-gray-300 transition-colors duration-500 group-hover:bg-[#EFEFEF]">
+                                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-light tracking-widest text-xs uppercase text-gray-500">
+                                        View Details
+                                    </span>
+                                </div>
+                                
+                                <div class="flex flex-col items-center text-center flex-1">
+                                    <h3 class="text-sm md:text-base tracking-wider uppercase text-gray-900 mb-1 font-medium">${p.name}</h3>
+                                    <div class="flex justify-center items-center text-[#D30000] mb-2 text-xs">
+                                        <span class="font-bold mr-1">${p.rating}</span> <i class="ph-fill ph-star"></i>
+                                        <span class="text-gray-400 ml-1 font-light">(${p.reviews})</span>
+                                    </div>
+                                    <p class="text-gray-900 text-sm mb-4 font-medium">
+                                        <span class="line-through text-gray-400 font-light mr-2">$${p.originalPrice.toFixed(2)}</span>
+                                        $${p.price.toFixed(2)}
+                                    </p>
+                                    
+                                    <div class="w-full mt-auto flex flex-col items-center" onclick="event.stopPropagation()">
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-green-600 mb-1">FREE SHIPPING</p>
+                                        <div id="btn-container-${p.id}" class="w-full">
+                                            ${getButtonHTML(p, 'normal')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
 
         function renderProduct() {
@@ -752,7 +902,12 @@
             }).join('');
 
             return `
-                <div class="max-w-6xl mx-auto px-4 py-8 md:py-16 fade-in">
+                <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
+                    <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-12 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Collection
+                    </button>
+                    
                     <div class="flex flex-col md:flex-row gap-12 lg:gap-16">
                         
                         <!-- Premium CSS Slider -->
@@ -785,8 +940,8 @@
                             </div>
                         </div>
                         
-                        <div class="flex-1 flex flex-col py-2 md:py-8 lg:sticky lg:top-32 h-fit">
-                            <h2 class="text-3xl md:text-5xl font-serif uppercase tracking-widest mb-3 text-gray-900">${p.name}</h2>
+                        <div class="flex-1 flex flex-col py-8 lg:sticky lg:top-32 h-fit">
+                            <h2 class="text-3xl md:text-4xl font-serif uppercase tracking-widest mb-3 text-gray-900">${p.name}</h2>
                             <div class="flex items-center text-[#D30000] mb-4 gap-[2px]">
                                 <span class="font-bold text-lg mr-2">${p.rating}</span> ${starsHTML}
                                 <span class="text-gray-400 text-xs ml-2 uppercase tracking-widest">(${p.reviews} Reviews)</span>
@@ -798,21 +953,14 @@
                             
                             <div class="w-12 h-[1px] bg-[#D30000] mb-8"></div>
                             
-                            <p class="text-gray-600 leading-relaxed font-light mb-10 text-lg">${p.description}</p>
+                            <p class="text-gray-600 leading-relaxed font-light mb-12 text-lg">${p.description}</p>
                             
-                            <p class="text-[10px] uppercase tracking-widest font-bold text-green-600 mb-2">FREE WORLDWIDE SHIPPING</p>
-                            
-                            <!-- Enhanced Button Group -->
-                            <div class="w-full flex flex-col gap-3 mb-8">
-                                <button onclick="buyNow(${p.id}, event)" class="w-full h-[58px] bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold hover:bg-[#b00000] transition-all duration-300 shadow-xl flex items-center justify-center gap-2">
-                                    Buy Now <i class="ph ph-lightning text-lg"></i>
-                                </button>
-                                <div id="btn-container-${p.id}" class="w-full">
-                                    ${getButtonHTML(p, 'large')}
-                                </div>
+                            <p class="text-[10px] uppercase tracking-widest font-bold text-green-600 mb-1">FREE WORLDWIDE SHIPPING</p>
+                            <div id="btn-container-${p.id}" class="w-full mb-6">
+                                ${getButtonHTML(p, 'large')}
                             </div>
                             
-                            <div class="border-t border-gray-100 pt-6 mt-2">
+                            <div class="border-t border-gray-100 pt-6 mt-6">
                                 <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between mb-2">
                                     <span>Shipping</span> <span>Complimentary</span>
                                 </p>
@@ -839,16 +987,16 @@
         function renderCart() {
             if (cart.length === 0) {
                 return `
-                    <div class="max-w-4xl mx-auto px-4 py-16 fade-in">
-                        <button onclick="navigate('product')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                    <div class="max-w-4xl mx-auto px-4 py-12 fade-in">
+                        <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
                             <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
-                            Back to Product
+                            Back to Products Section
                         </button>
                         <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-16">Your Cart</h2>
                         <div class="text-center py-20 bg-gray-50 border border-gray-100">
                             <p class="text-gray-500 mb-6 font-light text-lg">Your selected items will appear here.</p>
-                            <button onclick="navigate('product')" class="text-[#D30000] uppercase tracking-widest text-sm border-b border-[#D30000] pb-1 hover:text-[#a00000] hover:border-[#a00000] transition-colors">
-                                Return to Product
+                            <button onclick="navigate('home')" class="text-[#D30000] uppercase tracking-widest text-sm border-b border-[#D30000] pb-1 hover:text-[#a00000] hover:border-[#a00000] transition-colors">
+                                Continue Shopping
                             </button>
                         </div>
                     </div>
@@ -881,9 +1029,9 @@
 
             return `
                 <div class="max-w-4xl mx-auto px-4 py-12 fade-in">
-                    <button onclick="navigate('product')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                    <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
                         <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
-                        Back to Product
+                        Back to Products Section
                     </button>
                     <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-16">Your Cart</h2>
                     
@@ -906,7 +1054,7 @@
                         </div>
                         <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
                             <span class="tracking-wide">Shipping</span>
-                            <span class="text-green-600">FREE</span>
+                            <span>$0.00</span>
                         </div>
                         <div class="flex justify-between w-full mb-4 text-gray-500 text-sm border-b border-gray-100 pb-4">
                             <span class="tracking-wide">Tax</span>
@@ -919,7 +1067,7 @@
                     </div>
                         
                     <div class="flex justify-end">
-                        <button onclick="proceedToCheckout()" class="bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-[#a00000] transition-colors duration-300 w-full md:w-auto shadow-lg">
+                        <button onclick="proceedToCheckout()" class="bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-[#a00000] transition-colors duration-300 w-full md:w-auto">
                             Proceed to Checkout
                         </button>
                     </div>
@@ -927,58 +1075,87 @@
             `;
         }
 
-        // --- STREAMING_CHUNK:Modernized Checkout & Information Collection... ---
         function renderCheckout() {
             const totalPaid = "$" + getCartTotal().toFixed(2);
 
             return `
-                <div class="max-w-xl mx-auto py-16 px-4 fade-in">
+                <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     
-                    <div class="bg-white p-8 md:p-12 rounded-sm mb-2 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] relative overflow-visible">
+                    <div class="bg-gray-50 p-6 md:px-10 md:pt-10 md:pb-6 rounded-sm mb-2 border border-gray-100 shadow-sm relative overflow-visible">
 
                         <!-- Payment Step Waiting Header -->
-                        <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-8 border-b border-gray-100 pb-8">
+                        <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-8 border-b border-gray-200 pb-8">
                             <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
-                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Secure connection established...</h3>
-                            <p class="text-xs text-gray-500 uppercase tracking-widest mb-8">Ready for your payment</p>
+                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest mb-8">We're almost there</p>
                             
-                            <div class="flex justify-between items-center w-full text-gray-900 text-xl font-serif bg-gray-50 p-5 rounded-sm">
-                                <span class="uppercase tracking-widest text-sm text-gray-500">Amount Due</span>
+                            <div class="flex justify-between items-center w-full text-gray-900 text-xl font-serif bg-white p-4 border border-gray-100 shadow-sm rounded-sm">
+                                <span class="uppercase tracking-widest text-sm text-gray-500">Total Amount</span>
                                 <span class="text-[#D30000] font-semibold">${totalPaid} USD</span>
                             </div>
                         </div>
                         
-                        <!-- STEP 1: Simplified Info Details -->
-                        <div id="info-step" class="transition-opacity duration-300">
-                            <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-2 text-gray-900">Checkout</h2>
-                            <p class="text-center text-sm text-gray-500 mb-10 tracking-widest uppercase">Contact & Shipping</p>
+                        <!-- STEP 1: Delivery Details -->
+                        <div id="delivery-step" class="transition-opacity duration-300">
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Delivery Details</h2>
                             
-                            <form id="checkout-info-form" class="space-y-8" onsubmit="handleCheckoutInfoSubmit(event)">
-                                
-                                <div class="relative group">
-                                    <input type="text" id="customerName" required autocomplete="off" class="peer w-full border-b-2 border-gray-200 py-3 bg-transparent text-gray-900 focus:outline-none focus:border-[#D30000] placeholder-transparent transition-colors" placeholder="Full Name">
-                                    <label class="absolute left-0 -top-3.5 text-gray-400 text-xs tracking-widest uppercase transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-[#D30000] pointer-events-none">Full Name</label>
+                            <form id="delivery-form" class="space-y-6" onsubmit="handleDeliverySubmit(event)">
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Full Name *</label>
+                                    <input type="text" id="customerName" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Jane Doe">
                                 </div>
 
-                                <div class="relative group">
-                                    <input type="email" id="email" required autocomplete="off" class="peer w-full border-b-2 border-gray-200 py-3 bg-transparent text-gray-900 focus:outline-none focus:border-[#D30000] placeholder-transparent transition-colors" placeholder="Email Address">
-                                    <label class="absolute left-0 -top-3.5 text-gray-400 text-xs tracking-widest uppercase transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-[#D30000] pointer-events-none">Email Address</label>
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Email (For Tracking) *</label>
+                                    <input type="email" id="email" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="jane@example.com">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Street Address *</label>
+                                    <input type="text" id="address" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="123 Luxury Lane">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div class="col-span-2 md:col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Country *</label>
+                                        <select id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Loading...</option>
+                                        </select>
+                                    </div>
                                     
-                                    <!-- Explicit Spam Promise Requirement -->
-                                    <div class="flex items-center gap-1.5 mt-3 text-[#D30000]">
-                                        <i class="ph-fill ph-lock-key text-sm"></i>
-                                        <p class="text-[10px] font-semibold tracking-widest uppercase">We promise absolutely no spam. Just order updates.</p>
+                                    <div class="col-span-2 md:col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">State / Province *</label>
+                                        <select id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Select Country First</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">City *</label>
+                                        <select id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Select State First</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Postal / Zip *</label>
+                                        <input type="text" id="zip" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="10001">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number (For Delivery) *</label>
+                                    <div class="flex items-end w-full overflow-hidden">
+                                        <select id="phoneCode" required class="w-24 md:w-28 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer mr-2 text-xs md:text-sm shrink-0">
+                                            <option value="" disabled selected>Code</option>
+                                        </select>
+                                        <input type="tel" id="phone" required autocomplete="off" oninput="this.value=this.value.replace(/[^0-9]/g,'')" class="min-w-0 flex-1 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="0000000000">
                                     </div>
                                 </div>
                                 
-                                <div class="relative group">
-                                    <input type="text" id="address" required autocomplete="off" class="peer w-full border-b-2 border-gray-200 py-3 bg-transparent text-gray-900 focus:outline-none focus:border-[#D30000] placeholder-transparent transition-colors" placeholder="Shipping Address">
-                                    <label class="absolute left-0 -top-3.5 text-gray-400 text-xs tracking-widest uppercase transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-500 peer-focus:-top-3.5 peer-focus:text-xs peer-focus:text-[#D30000] pointer-events-none">Shipping Address (Street, City, Zip)</label>
-                                </div>
-                                
-                                <div class="pt-6">
-                                    <button type="submit" id="next-btn" class="w-full bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 hover:bg-[#a00000] transition-colors shadow-lg flex justify-center items-center">
-                                        Continue to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>
+                                <div class="pt-6 flex justify-center overflow-visible">
+                                    <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px] shadow-lg">
+                                        Next <i class="ph ph-arrow-right ml-2 text-lg"></i>
                                     </button>
                                 </div>
                             </form>
@@ -986,44 +1163,110 @@
 
                         <!-- STEP 2: Payment Details -->
                         <div id="payment-step" class="hidden fade-in">
-                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Select Payment</h2>
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Secure Payment</h2>
                             
                             <div id="paypal-ui-container">
+                                <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method below to complete the order</p>
                                 <div class="relative z-0">
                                     <div id="paypal-button-container" class="min-h-[55px]"></div>
                                 </div>
 
                                 <!-- Crypto Payment Divider & Button -->
-                                <div class="flex items-center justify-center space-x-4 my-8">
+                                <div class="flex items-center justify-center space-x-4 my-6">
                                     <hr class="flex-grow border-gray-200">
-                                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">OR PAY WITH</span>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">OR</span>
                                     <hr class="flex-grow border-gray-200">
                                 </div>
 
-                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-4 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md">
-                                    <i class="ph ph-currency-btc text-xl"></i> Pay with Crypto
+                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md">
+                                    <i class="ph ph-coin text-xl"></i> Pay with Crypto
                                 </button>
                             </div>
                         </div>
 
                     </div>
 
-                    <div id="info-back" class="text-center mt-8">
+                    <div id="delivery-back" class="text-center mt-6">
                         <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
                             <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Cart
                         </button>
                     </div>
                     
-                    <div id="payment-back" class="text-center mt-8 hidden">
-                        <button onclick="goBackToInfo()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Information
+                    <div id="payment-back" class="text-center mt-6 hidden">
+                        <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
                         </button>
                     </div>
                 </div>
             `;
         }
 
+        function renderCryptoPayment() {
+            const assetInfo = CRYPTO_ASSETS[cryptoNetwork];
+            const address = assetInfo.address;
+            const qrImage = assetInfo.tokens[cryptoToken];
+            const amount = window.currentCryptoAmount;
+
+            return `
+                <div class="max-w-md mx-auto py-12 px-4 fade-in">
+                    <button onclick="navigate('checkout')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Checkout
+                    </button>
+                    
+                    <div class="bg-white p-6 md:p-8 rounded-sm border border-gray-100 shadow-xl text-center">
+                        
+                        <!-- Payment Waiting Header -->
+                        <div class="flex flex-col items-center justify-center w-full mb-8 border-b border-gray-100 pb-8">
+                            <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
+                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest">We're almost there</p>
+                        </div>
+
+                        <h2 class="text-2xl font-serif text-gray-900 mb-6">Send ${amount} ${cryptoToken}</h2>
+                        
+                        <div class="bg-gray-50 p-4 rounded-xl mb-6 inline-block border border-gray-100">
+                            <img src="${qrImage}" alt="${cryptoToken} QR Code" class="w-48 h-48 md:w-64 md:h-64 object-contain rounded-lg">
+                        </div>
+                        
+                        <div class="mb-8">
+                            <p class="text-xs tracking-widest uppercase text-gray-500 mb-1">Token to Send</p>
+                            <p class="text-xl font-bold text-gray-900">${cryptoToken} <span class="text-sm font-normal text-gray-500">(${cryptoNetwork})</span></p>
+                        </div>
+                        
+                        <div class="space-y-4 text-left">
+                            <div>
+                                <p class="text-xs tracking-widest uppercase text-gray-500 mb-2">Send to this address</p>
+                                <div class="flex items-center justify-between bg-gray-50 border border-gray-200 p-3 rounded-sm">
+                                    <span class="text-sm text-gray-800 font-mono truncate mr-2">${address}</span>
+                                    <button onclick="copyText('${address}', 'Address')" class="text-gray-500 hover:text-[#D30000] transition-colors shrink-0">
+                                        <i class="ph ph-copy text-xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <p class="text-xs tracking-widest uppercase text-gray-500 mb-2">Amount to be received</p>
+                                <div class="flex items-center justify-between bg-gray-50 border border-gray-200 p-3 rounded-sm">
+                                    <span class="text-sm text-gray-800 font-mono mr-2">${amount}</span>
+                                    <button onclick="copyText('${amount}', 'Amount')" class="text-gray-500 hover:text-[#D30000] transition-colors shrink-0">
+                                        <i class="ph ph-copy text-xl"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-100 flex items-start gap-3 text-left">
+                            <i class="ph-fill ph-info text-[#D30000] text-lg shrink-0 mt-0.5"></i>
+                            <p class="text-xs text-gray-500 leading-relaxed">Please ensure you are sending <b class="text-gray-900">${cryptoToken}</b> strictly on the <b class="text-gray-900">${cryptoNetwork}</b> network. Sending to the wrong network may result in permanent loss of funds.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         function renderThankYou() {
+            // Calculate Date 10 days from now
             const deliveryDate = new Date();
             deliveryDate.setDate(deliveryDate.getDate() + 10);
             const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -1048,8 +1291,8 @@
                         </div>
                     </div>
 
-                    <button onclick="navigate('product')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                        Return to Product
+                    <button onclick="navigate('home')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                        Return to Home
                     </button>
                 </div>
             `;
@@ -1067,12 +1310,19 @@
             paypal.Buttons({
                 style: { color: 'black', shape: 'rect', label: 'pay', height: 55 },
                 onClick: function(data, actions) {
-                    // Validation handled before this step now
+                    const form = document.getElementById('delivery-form');
+                    if (!form.checkValidity()) {
+                        form.reportValidity(); 
+                        return actions.reject(); 
+                    }
+                    
                     document.getElementById('paypal-ui-container').classList.add('hidden');
+                    document.getElementById('payment-waiting').classList.remove('hidden');
                     return actions.resolve(); 
                 },
                 onCancel: function (data) {
                     document.getElementById('paypal-ui-container').classList.remove('hidden');
+                    document.getElementById('payment-waiting').classList.add('hidden');
                 },
                 createOrder: function(data, actions) {
                     return actions.order.create({
@@ -1092,6 +1342,7 @@
                 onError: function(err) {
                     console.error("PayPal Error:", err);
                     document.getElementById('paypal-ui-container').classList.remove('hidden');
+                    document.getElementById('payment-waiting').classList.add('hidden');
                     showToast("Payment window closed or an error occurred.");
                 }
             }).render('#paypal-button-container');
@@ -1101,15 +1352,14 @@
         window.navigate = navigate;
         window.handleHelpClick = handleHelpClick;
         window.handleCartClick = handleCartClick;
-        window.buyNow = buyNow;
         window.addToCart = addToCart;
         window.removeFromCart = removeFromCart;
         window.updateQuantity = updateQuantity;
         window.proceedToCheckout = proceedToCheckout;
         window.scrollSlider = scrollSlider;
         window.updateSliderDots = updateSliderDots;
-        window.handleCheckoutInfoSubmit = handleCheckoutInfoSubmit;
-        window.goBackToInfo = goBackToInfo;
+        window.handleDeliverySubmit = handleDeliverySubmit;
+        window.goBackToDelivery = goBackToDelivery;
         window.closeModal = closeModal;
         window.openCryptoPopup = openCryptoPopup;
         window.closeCryptoPopup = closeCryptoPopup;
