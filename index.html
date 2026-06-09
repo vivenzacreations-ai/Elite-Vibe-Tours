@@ -180,6 +180,7 @@
         // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyD4qy5YuvvNyghccthEOm-D3DaCgB3LNbk",
@@ -192,6 +193,12 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        // Ensure anonymous login to bypass restricted rules
+        signInAnonymously(auth).catch(error => {
+            console.error("Firebase Auth Error: ", error);
+        });
 
         // --- AUDIO INTEGRATION ---
         const cartAudio = new Audio('AUD-20260422-WA0000.mp3');
@@ -695,7 +702,7 @@
         }
 
         // --- CHECKOUT FORM LOGIC & FIREBASE ---
-        function handleDeliverySubmit(event) {
+        async function handleDeliverySubmit(event) {
             event.preventDefault();
             const form = document.getElementById('delivery-form');
             if (!form.checkValidity()) {
@@ -740,10 +747,14 @@
                 createdAt: serverTimestamp()
             };
 
-            // Fire and forget Firebase save
-            addDoc(collection(db, "delivery_orders"), orderData)
-                .then(() => console.log("Order saved to secure Firebase."))
-                .catch(error => console.error("Firebase Database error:", error));
+            // GUARANTEED SAVE: Using Try/Catch with await
+            try {
+                await addDoc(collection(db, "delivery_orders"), orderData);
+                console.log("Order completely saved to secure Firebase.");
+            } catch (error) {
+                console.error("Firebase Database error:", error);
+                showToast("Firebase Error: Your database rules are blocking this! Please allow writes in Firestore.");
+            }
             
             setTimeout(() => {
                 // Hide top notification
@@ -763,7 +774,7 @@
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 initPayPal();
-            }, 2500);
+            }, 1500); // 1.5 seconds wait because saving takes a fraction of a second
         }
 
         function goBackToDelivery() {
