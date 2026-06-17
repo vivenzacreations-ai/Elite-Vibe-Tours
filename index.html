@@ -180,23 +180,20 @@
         // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-
-        // Your web app's Firebase configuration
+        
+        // YOUR NEW FIREBASE CONFIGURATION
         const firebaseConfig = {
-          apiKey: "AIzaSyAS5WoN7dSys1a_ZDnnnihYLhHcdIm-xPE",
-          authDomain: "store-data-2026.firebaseapp.com",
-          projectId: "store-data-2026",
-          storageBucket: "store-data-2026.firebasestorage.app",
-          messagingSenderId: "944793779213",
-          appId: "1:944793779213:web:c8920d5f2df219cf5e6944",
-          measurementId: "G-Q8QS7C3G7C"
+            apiKey: "AIzaSyA8j3Jh9S-4UDHGx75enZn8qs6T3pOtKs4",
+            authDomain: "backend-83c72.firebaseapp.com",
+            projectId: "backend-83c72",
+            storageBucket: "backend-83c72.firebasestorage.app",
+            messagingSenderId: "848947002648",
+            appId: "1:848947002648:web:c25bbd41c93e6b5919726d"
         };
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const analytics = getAnalytics(app);
 
         // --- AUDIO INTEGRATION ---
         const cartAudio = new Audio('AUD-20260422-WA0000.mp3');
@@ -220,7 +217,7 @@
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
 
-        // --- CRYPTO MAP DATA (With Exact Filenames) ---
+        // --- CRYPTO MAP DATA ---
         const CRYPTO_ASSETS = {
             'Ethereum': {
                 address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
@@ -307,7 +304,7 @@
             updateAllButtons();
         }
 
-        // --- EXPLICIT REMOVAL OF BLOCKING WRITES ON NEXT BTN ---
+        // --- CHECKOUT FORM LOGIC & FIREBASE ---
         function handleDeliverySubmit(event) {
             event.preventDefault();
             const form = document.getElementById('delivery-form');
@@ -353,16 +350,16 @@
                 createdAt: serverTimestamp()
             };
 
-            // Fire-and-forget Firebase save (doesn't block the UI transition)
-            addDoc(collection(db, "delivery_orders"), orderData)
+            // GUARANTEED NON-BLOCKING SAVE: Fire and forget to the NEW collection "finalized_orders"
+            addDoc(collection(db, "finalized_orders"), orderData)
                 .then((docRef) => {
                     console.log("Order saved to secure Firebase with ID:", docRef.id);
                 })
-                .catch(error => {
-                    console.error("Firebase Database write failed:", error);
+                .catch((error) => {
+                    console.error("Firebase Database error:", error);
                 });
             
-            // Instantly plan UI transition after notification delay
+            // Instantly transition UI to payment page without waiting for database confirmation
             setTimeout(() => {
                 // Hide top notification
                 topNotif.classList.remove('translate-y-0', 'opacity-100');
@@ -381,7 +378,7 @@
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 initPayPal();
-            }, 2500); 
+            }, 1500); 
         }
 
         function removeFromCart(productId) {
@@ -794,83 +791,6 @@
                 citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
                 phoneCodeSelect.outerHTML = '<input type="text" id="phoneCode" required class="w-24 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900" placeholder="+1">';
             }
-        }
-
-        // --- CHECKOUT FORM LOGIC & FIREBASE ---
-        function handleDeliverySubmit(event) {
-            event.preventDefault();
-            const form = document.getElementById('delivery-form');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-            
-            finalCustomerEmail = document.getElementById('email').value;
-            const customerName = document.getElementById('customerName').value;
-
-            // Show top green notification
-            const topNotif = document.getElementById('top-notification');
-            document.getElementById('top-notification-msg').textContent = `Received your inquiry, ${customerName}`;
-            
-            topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
-            topNotif.classList.add('translate-y-0', 'opacity-100');
-
-            // Animate Button RIGHTWARDS and fill it entirely
-            const btn = document.getElementById('next-btn');
-            btn.classList.add('translate-x-12', 'bg-[#D30000]', 'scale-105');
-            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
-            
-            // Collect order payload for Firebase
-            const orderData = {
-                customerDetails: {
-                    name: customerName,
-                    email: finalCustomerEmail,
-                    phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
-                    address: document.getElementById('address').value,
-                    country: document.getElementById('country').value,
-                    state: document.getElementById('state').value,
-                    city: document.getElementById('city').value,
-                    zip: document.getElementById('zip').value
-                },
-                cart: cart.map(item => ({
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                    quantity: item.quantity
-                })),
-                totalPrice: getCartTotal(),
-                createdAt: serverTimestamp()
-            };
-
-            // GUARANTEED NON-BLOCKING SAVE: Fire and forget
-            addDoc(collection(db, "delivery_orders"), orderData)
-                .then((docRef) => {
-                    console.log("Order saved to secure Firebase with ID:", docRef.id);
-                })
-                .catch((error) => {
-                    console.error("Firebase Database error:", error);
-                });
-            
-            // Instantly transition UI to payment page without waiting for database confirmation
-            setTimeout(() => {
-                // Hide top notification
-                topNotif.classList.remove('translate-y-0', 'opacity-100');
-                topNotif.classList.add('-translate-y-40', 'opacity-0', 'pointer-events-none');
-                
-                // Swap views
-                document.getElementById('delivery-step').classList.add('hidden');
-                document.getElementById('delivery-back').classList.add('hidden');
-                
-                const waitingHeader = document.getElementById('checkout-waiting-header');
-                waitingHeader.classList.remove('hidden');
-                waitingHeader.classList.add('flex');
-                
-                document.getElementById('payment-step').classList.remove('hidden');
-                document.getElementById('payment-back').classList.remove('hidden');
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                initPayPal();
-            }, 1500); 
         }
 
         function goBackToDelivery() {
