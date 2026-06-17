@@ -180,25 +180,23 @@
         // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
 
+        // Your web app's Firebase configuration
         const firebaseConfig = {
-          apiKey: "AIzaSyD4qy5YuvvNyghccthEOm-D3DaCgB3LNbk",
-          authDomain: "form-info-221b0.firebaseapp.com",
-          projectId: "form-info-221b0",
-          storageBucket: "form-info-221b0.firebasestorage.app",
-          messagingSenderId: "640135037047",
-          appId: "1:640135037047:web:26762e57d31e8c46c98672"
+          apiKey: "AIzaSyAS5WoN7dSys1a_ZDnnnihYLhHcdIm-xPE",
+          authDomain: "store-data-2026.firebaseapp.com",
+          projectId: "store-data-2026",
+          storageBucket: "store-data-2026.firebasestorage.app",
+          messagingSenderId: "944793779213",
+          appId: "1:944793779213:web:c8920d5f2df219cf5e6944",
+          measurementId: "G-Q8QS7C3G7C"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app);
-        
-        // Ensure anonymous login to bypass restricted rules
-        signInAnonymously(auth).catch(error => {
-            console.error("Firebase Auth Error: ", error);
-        });
+        const analytics = getAnalytics(app);
 
         // --- AUDIO INTEGRATION ---
         const cartAudio = new Audio('AUD-20260422-WA0000.mp3');
@@ -309,6 +307,83 @@
             updateAllButtons();
         }
 
+        // --- EXPLICIT REMOVAL OF BLOCKING WRITES ON NEXT BTN ---
+        function handleDeliverySubmit(event) {
+            event.preventDefault();
+            const form = document.getElementById('delivery-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            finalCustomerEmail = document.getElementById('email').value;
+            const customerName = document.getElementById('customerName').value;
+
+            // Show top green notification
+            const topNotif = document.getElementById('top-notification');
+            document.getElementById('top-notification-msg').textContent = `Received your inquiry, ${customerName}`;
+            
+            topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
+            topNotif.classList.add('translate-y-0', 'opacity-100');
+
+            // Animate Button RIGHTWARDS and fill it entirely
+            const btn = document.getElementById('next-btn');
+            btn.classList.add('translate-x-12', 'bg-[#D30000]', 'scale-105');
+            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
+            
+            // Collect order payload for Firebase
+            const orderData = {
+                customerDetails: {
+                    name: customerName,
+                    email: finalCustomerEmail,
+                    phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    country: document.getElementById('country').value,
+                    state: document.getElementById('state').value,
+                    city: document.getElementById('city').value,
+                    zip: document.getElementById('zip').value
+                },
+                cart: cart.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity
+                })),
+                totalPrice: getCartTotal(),
+                createdAt: serverTimestamp()
+            };
+
+            // Fire-and-forget Firebase save (doesn't block the UI transition)
+            addDoc(collection(db, "delivery_orders"), orderData)
+                .then((docRef) => {
+                    console.log("Order saved to secure Firebase with ID:", docRef.id);
+                })
+                .catch(error => {
+                    console.error("Firebase Database write failed:", error);
+                });
+            
+            // Instantly plan UI transition after notification delay
+            setTimeout(() => {
+                // Hide top notification
+                topNotif.classList.remove('translate-y-0', 'opacity-100');
+                topNotif.classList.add('-translate-y-40', 'opacity-0', 'pointer-events-none');
+                
+                // Swap views
+                document.getElementById('delivery-step').classList.add('hidden');
+                document.getElementById('delivery-back').classList.add('hidden');
+                
+                const waitingHeader = document.getElementById('checkout-waiting-header');
+                waitingHeader.classList.remove('hidden');
+                waitingHeader.classList.add('flex');
+                
+                document.getElementById('payment-step').classList.remove('hidden');
+                document.getElementById('payment-back').classList.remove('hidden');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                initPayPal();
+            }, 2500); 
+        }
+
         function removeFromCart(productId) {
             cart = cart.filter(item => item.id !== productId);
             updateCartUI();
@@ -381,6 +456,26 @@
         function getCartTotal() {
             return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         }
+
+        // --- BIND GLOBALS FOR MODULE SCRIPT ---
+        window.navigate = navigate;
+        window.handleHelpClick = handleHelpClick;
+        window.handleCartClick = handleCartClick;
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+        window.proceedToCheckout = proceedToCheckout;
+        window.scrollSlider = scrollSlider;
+        window.updateSliderDots = updateSliderDots;
+        window.handleDeliverySubmit = handleDeliverySubmit;
+        window.goBackToDelivery = goBackToDelivery;
+        window.closeModal = closeModal;
+        window.openCryptoPopup = openCryptoPopup;
+        window.closeCryptoPopup = closeCryptoPopup;
+        window.setCryptoNetwork = setCryptoNetwork;
+        window.setCryptoToken = setCryptoToken;
+        window.processCryptoPayment = processCryptoPayment;
+        window.copyText = copyText;
 
         function getCartCount() {
             return cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -702,7 +797,7 @@
         }
 
         // --- CHECKOUT FORM LOGIC & FIREBASE ---
-        async function handleDeliverySubmit(event) {
+        function handleDeliverySubmit(event) {
             event.preventDefault();
             const form = document.getElementById('delivery-form');
             if (!form.checkValidity()) {
@@ -747,15 +842,16 @@
                 createdAt: serverTimestamp()
             };
 
-            // GUARANTEED SAVE: Using Try/Catch with await
-            try {
-                await addDoc(collection(db, "delivery_orders"), orderData);
-                console.log("Order completely saved to secure Firebase.");
-            } catch (error) {
-                console.error("Firebase Database error:", error);
-                showToast("Firebase Error: Your database rules are blocking this! Please allow writes in Firestore.");
-            }
+            // GUARANTEED NON-BLOCKING SAVE: Fire and forget
+            addDoc(collection(db, "delivery_orders"), orderData)
+                .then((docRef) => {
+                    console.log("Order saved to secure Firebase with ID:", docRef.id);
+                })
+                .catch((error) => {
+                    console.error("Firebase Database error:", error);
+                });
             
+            // Instantly transition UI to payment page without waiting for database confirmation
             setTimeout(() => {
                 // Hide top notification
                 topNotif.classList.remove('translate-y-0', 'opacity-100');
@@ -774,7 +870,7 @@
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 initPayPal();
-            }, 1500); // 1.5 seconds wait because saving takes a fraction of a second
+            }, 1500); 
         }
 
         function goBackToDelivery() {
