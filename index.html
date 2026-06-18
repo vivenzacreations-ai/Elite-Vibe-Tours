@@ -1,19 +1,9 @@
--->Purpose After Success(why does life feel boring now and how to make it exciting again)
--->“How to Build a Private Inner Circle When Everyone Wants Something From You”(“How Successful People Build Real Relationships Without Being Used”)
--->Fear of Their Children Becoming Weak(How to Raise Strong Children in a World of Comfort”)
--->“I Won the Game and Still Feel Empty”
--->“How to Stay Valuable As You Age”
-
-Product: Portable No-Glue Magnetic Eyelashes with its applier
-problem: Applying traditional false lashes with glue is notoriously difficult, messy, ruins eye makeup, and can damage natural lashes. This product solves that problem by making the process take literally 3 seconds with zero mess.
-Things to clarify: Its 100% reusable and 1 pair box
---------------------------------------------------------------------------------
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUXÉLASH | Exclusive Offer</title>
+    <title>Marina & Elévia</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -25,7 +15,7 @@ Things to clarify: Its 100% reusable and 1 pair box
     <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -70,9 +60,9 @@ Things to clarify: Its 100% reusable and 1 pair box
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
         <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between w-full gap-4">
             
-            <!-- Logo -->
-            <h1 onclick="navigate('product')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
-                <span class="text-[#D30000]">L</span>UXÉ<span class="text-[#D30000]">L</span>ASH
+            <!-- Logo adjusted to the right & smaller -->
+            <h1 onclick="navigate('home')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
+                <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
             </h1>
             
             <div class="flex items-center justify-end gap-3 md:gap-5 border-l border-gray-200 pl-4 md:pl-8">
@@ -80,6 +70,15 @@ Things to clarify: Its 100% reusable and 1 pair box
                 <button onclick="handleHelpClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 hover:text-[#D30000] transition-colors" title="Contact Support">
                     <i class="ph ph-headset text-2xl"></i>
                 </button>
+                
+                <div class="flex-shrink-0">
+                    <button id="cart-icon-btn" onclick="handleCartClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 transition-colors">
+                        <i id="cart-icon" class="ph ph-shopping-cart text-2xl transition-colors duration-200"></i>
+                        <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-[#D30000] text-white text-[10px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full">
+                            0
+                        </span>
+                    </button>
+                </div>
             </div>
             
         </div>
@@ -97,9 +96,9 @@ Things to clarify: Its 100% reusable and 1 pair box
     </div>
 
     <!-- FOMO Notification Popup -->
-    <div id="fomo-popup" class="fixed bottom-10 left-4 md:left-6 z-50 bg-white/95 backdrop-blur shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 rounded-full p-1.5 pr-5 flex items-center gap-3 transition-all duration-700 translate-y-40 opacity-0 pointer-events-none max-w-[90%] md:max-w-sm">
+    <div id="fomo-popup" class="fixed bottom-24 left-4 md:left-6 z-50 bg-white/95 backdrop-blur shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 rounded-full p-1.5 pr-5 flex items-center gap-3 transition-all duration-700 translate-y-40 opacity-0 pointer-events-none max-w-[90%] md:max-w-sm">
         <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
-            <i class="ph ph-bag text-xl text-green-500"></i>
+            <i class="ph ph-bag text-xl text-gray-400"></i>
         </div>
         <div class="flex flex-col py-1">
             <div class="flex items-center gap-2 mb-0.5">
@@ -109,13 +108,33 @@ Things to clarify: Its 100% reusable and 1 pair box
             <span id="fomo-action" class="text-[10px] text-gray-600 leading-tight line-clamp-1"></span>
             <div class="flex items-center gap-1 mt-1">
                 <i class="ph-fill ph-check-circle text-green-500 text-[10px]"></i>
-                <span class="text-[8px] text-green-600 uppercase tracking-widest font-bold">Verified Order</span>
+                <span class="text-[8px] text-green-600 uppercase tracking-widest font-bold">Verified by system</span>
             </div>
+        </div>
+        <div class="ml-auto pl-3 border-l border-gray-100 flex items-center h-full">
+            <span id="fomo-price" class="text-sm font-serif font-medium text-[#D30000]"></span>
         </div>
     </div>
 
     <!-- Main Content Area -->
-    <main id="app-content" class="flex-grow pb-16"></main>
+    <main id="app-content" class="flex-grow pb-32"></main>
+
+    <!-- Custom Modal -->
+    <div id="modal" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
+        <div class="bg-white p-10 max-w-md w-full border border-gray-100 shadow-2xl text-center relative fade-in">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-[#D30000] transition-colors">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+            <div class="w-16 h-16 bg-[#D30000] text-white rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="ph ph-check text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-serif tracking-widest uppercase mb-4 text-gray-900">Order Confirmed</h3>
+            <p id="modal-msg" class="text-gray-600 mb-8 font-light leading-relaxed"></p>
+            <button onclick="closeModal()" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 w-full hover:bg-[#a00000] transition-colors">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
 
     <!-- Crypto Payment Modal -->
     <div id="crypto-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
@@ -139,6 +158,17 @@ Things to clarify: Its 100% reusable and 1 pair box
         <p class="text-xs text-gray-500 tracking-widest uppercase">Opening your secure email client</p>
     </div>
 
+    <!-- Solid White Sticky Cart Bar -->
+    <div id="cart-pill" class="fixed bottom-0 left-0 w-full bg-white text-gray-900 border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] px-6 md:px-12 py-4 z-40 flex items-center justify-between transition-transform duration-500 translate-y-full">
+        <div class="flex items-center gap-3">
+            <i class="ph ph-shopping-bag text-2xl text-[#D30000]"></i>
+            <span id="cart-pill-text" class="text-sm md:text-base font-medium tracking-wide"></span>
+        </div>
+        <button onclick="navigate('cart')" class="text-xs md:text-sm tracking-widest uppercase font-semibold flex items-center gap-2 text-white bg-[#D30000] px-6 py-3 hover:bg-[#a00000] transition-colors shadow-md">
+            View in Cart <i class="ph ph-arrow-right text-lg"></i>
+        </button>
+    </div>
+
     <!-- Custom Toast Notification -->
     <div id="toast" class="fixed bottom-6 right-6 bg-[#D30000] text-white px-6 py-4 shadow-xl z-50 flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
         <i class="ph ph-warning text-lg"></i>
@@ -150,9 +180,8 @@ Things to clarify: Its 100% reusable and 1 pair box
         // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-
-        // Your new web app's Firebase configuration
+        
+        // YOUR NEW FIREBASE CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyA8j3Jh9S-4UDHGx75enZn8qs6T3pOtKs4",
             authDomain: "backend-83c72.firebaseapp.com",
@@ -165,33 +194,28 @@ Things to clarify: Its 100% reusable and 1 pair box
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const analytics = getAnalytics(app);
 
         // --- AUDIO INTEGRATION ---
-        const clickAudio = new Audio('AUD-20260422-WA0000.mp3');
-        function playClickSound() {
-            clickAudio.currentTime = 0;
-            clickAudio.play().catch(e => console.warn("Audio play prevented:", e));
+        const cartAudio = new Audio('AUD-20260422-WA0000.mp3');
+
+        function playCartSound() {
+            cartAudio.currentTime = 0;
+            cartAudio.play().catch(e => console.warn("Audio play prevented by browser:", e));
         }
 
-        // --- SINGLE PRODUCT DATA ---
-        const PRODUCT = {
-            name: "LUXÉLASH MAGNETIC EYELASHES BUNDLE",
-            rating: 4.9,
-            reviews: 1428,
-            description: "Effortlessly flawless lashes in seconds. Our premium magnetic eyelashes offer a secure, all-day hold without messy glue. Lightweight, reusable, and designed for true sophistication.",
-            reviewsList: [
-                { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The quality is unmatched and they look beautiful in person. No messy glue!" },
-                { author: "Sarah M.", rating: 5, text: "I've worn these to work and to dinner dates. Extremely versatile and the magnetic hold is so strong." },
-                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Looks far more natural and expensive than the price tag." }
-            ]
-        };
-
-        const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.'];
-        const FOMO_OPTIONS = [
-            { qty: 2, text: "bought the 2 Pairs offer" },
-            { qty: 4, text: "bought the 4 Pairs offer" }
+        // --- MOCK PRODUCT DATA ---
+        const PRODUCTS = [
+            { id: 1, name: "Silk Crepe Blouse", price: 145.00, originalPrice: 180.00, rating: 4.9, reviews: 342, description: "A luxurious silk crepe blouse featuring delicate button detailing and a relaxed silhouette. Perfect for transitioning seamlessly from day to evening.", reviewsList: [{ author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The silk is of the highest quality and it drapes beautifully. A wardrobe staple." }, { author: "Sarah M.", rating: 5, text: "I've worn this to work and to dinner dates. Extremely versatile and feels luxurious against the skin." }, { author: "Jessica T.", rating: 4, text: "Beautiful blouse. The button detailing adds such a chic touch. Looks far more expensive than it is." }, { author: "Amanda C.", rating: 5, text: "Fits perfectly. I get compliments every time I wear it. I want it in every color." }, { author: "Chloe R.", rating: 5, text: "Worth every penny. The craftsmanship is flawless, no loose threads anywhere." }] },
+            { id: 2, name: "Wide-Leg Trousers", price: 180.00, originalPrice: 220.00, rating: 4.8, reviews: 215, description: "High-waisted trousers tailored from premium wool-blend fabric. Features a flawless drape and subtle front pleats for an elegant stride.", reviewsList: [{ author: "Michelle K.", rating: 5, text: "Flawless fit. They make me look so tall and elegant. Highly recommend!" }, { author: "Lauren B.", rating: 5, text: "The wool blend is lightweight but beautifully structured. Perfect for the office." }, { author: "Diana P.", rating: 4, text: "Best trousers I own. The front pleats lay perfectly flat." }, { author: "Rachel W.", rating: 5, text: "Elegant and incredibly comfortable. They drape exactly like the photos show." }, { author: "Sophia L.", rating: 5, text: "Incredible tailoring. They hug the waist perfectly while remaining flowy at the bottom." }] },
+            { id: 3, name: "Cashmere Wrap Coat", price: 395.00, originalPrice: 450.00, rating: 5.0, reviews: 189, description: "An elegant wrap coat spun from pure, soft cashmere. Features a matching self-tie belt and oversized lapels for timeless sophistication.", reviewsList: [{ author: "Olivia S.", rating: 5, text: "A literal dream coat. It is so soft it feels like a cloud." }, { author: "Emily D.", rating: 5, text: "Incredibly warm but not bulky at all. It elevates literally any outfit I throw it over." }, { author: "Claire H.", rating: 5, text: "The wrap style is very flattering. The cashmere quality is comparable to designer coats twice the price." }, { author: "Victoria G.", rating: 5, text: "I feel like a million bucks wearing this. Highly recommend investing in this piece." }, { author: "Natasha R.", rating: 5, text: "Stunning. The oversized lapels give it such a chic, model-off-duty vibe." }] },
+            { id: 4, name: "Leather Crossbody", price: 210.00, originalPrice: 260.00, rating: 4.7, reviews: 420, description: "Minimalist structured bag crafted from genuine Italian leather. Includes polished gold-tone hardware and an adjustable strap.", reviewsList: [{ author: "Isabella F.", rating: 5, text: "The leather smells amazing and is so buttery. Perfect size for my everyday essentials." }, { author: "Megan J.", rating: 4, text: "Hardware feels very premium. The strap is easily adjustable." }, { author: "Grace K.", rating: 5, text: "A timeless piece. I get stopped and asked where my bag is from constantly." }, { author: "Taylor B.", rating: 5, text: "Goes with literally every outfit I own. It holds its shape perfectly." }, { author: "Haley N.", rating: 4, text: "Beautiful minimalist design. The magnetic closure is very strong and secure." }] },
+            { id: 5, name: "Linen Midi Dress", price: 165.00, originalPrice: 195.00, rating: 4.8, reviews: 156, description: "Breathable linen dress perfect for warm, sun-drenched afternoons. Features a subtle V-neckline and a flowing, tiered skirt.", reviewsList: [{ author: "Emma T.", rating: 5, text: "So breezy and comfortable for summer. The linen is thick and high quality, not see-through at all." }, { author: "Lily A.", rating: 5, text: "Very flattering cut. The tiered skirt flows beautifully when you walk." }, { author: "Mia P.", rating: 4, text: "Received so many compliments on my vacation in Italy. My new go-to dress." }, { author: "Avery C.", rating: 5, text: "Washes beautifully. True to size and incredibly elegant for brunch or dinner." }, { author: "Harper L.", rating: 5, text: "Absolutely love the subtle V-neckline. So effortlessly romantic." }] },
+            { id: 6, name: "Gold Hoop Earrings", price: 85.00, originalPrice: 110.00, rating: 4.9, reviews: 512, description: "Classic, lightweight hoops plated in thick 18k gold vermeil over sterling silver. Designed for comfortable, everyday wear.", reviewsList: [{ author: "Zoe M.", rating: 5, text: "I wear them every single day. They don't irritate my sensitive ears at all." }, { author: "Nora D.", rating: 5, text: "Perfect size, not too heavy, and they look very expensive." }, { author: "Riley S.", rating: 5, text: "Hasn't tarnished at all even after wearing them in the shower by accident." }, { author: "Aria W.", rating: 4, text: "The perfect everyday hoop. The gold color is a beautiful, rich hue." }, { author: "Evelyn K.", rating: 5, text: "Very secure clasp. I never worry about losing them. Highly recommend." }] },
+            { id: 7, name: "Suede Pointed Mules", price: 155.00, originalPrice: 190.00, rating: 4.6, reviews: 134, description: "Effortlessly chic mules with a soft suede finish and a sharp pointed toe. Includes a slight stacked heel for all-day comfort.", reviewsList: [{ author: "Layla F.", rating: 5, text: "Walked all day in these with zero blisters. The suede is buttery soft." }, { author: "Aubrey G.", rating: 4, text: "Very chic pointed toe. It elongates the leg beautifully." }, { author: "Penelope H.", rating: 5, text: "True to size. They elevate any simple jeans-and-tee outfit immediately." }, { author: "Stella J.", rating: 4, text: "The slight heel is the perfect height. Great quality for the price." }, { author: "Hannah V.", rating: 5, text: "Received so many compliments at the office. Very sleek and professional." }] },
+            { id: 8, name: "Ribbed Knit Sweater", price: 125.00, originalPrice: 150.00, rating: 4.8, reviews: 298, description: "Cozy ribbed knit sweater with a relaxed, slouchy fit. Spun from a plush cotton-wool blend for unmatched softness.", reviewsList: [{ author: "Samantha Q.", rating: 5, text: "Literally the coziest thing in my closet. It feels like wearing a warm hug." }, { author: "Madison E.", rating: 5, text: "Love the slouchy, effortless look. It drapes beautifully off the shoulder." }, { author: "Brooklyn R.", rating: 4, text: "Washes really well and hasn't pilled at all. Perfect thickness." }, { author: "Allison B.", rating: 5, text: "I want it in every single color. The knit is so plush and high quality." }, { author: "Savannah T.", rating: 5, text: "My absolute favorite fall staple. Looks great tucked into high-waisted trousers." }] }
         ];
+
+        const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.', 'Benjamin D.', 'Elijah P.'];
 
         // --- CRYPTO MAP DATA ---
         const CRYPTO_ASSETS = {
@@ -214,15 +238,11 @@ Things to clarify: Its 100% reusable and 1 pair box
         };
 
         // --- STATE ---
-        let currentView = 'product'; 
-        let selectedOrder = null; 
-        let showReviews = false;
+        let cart = [];
+        let currentView = 'home';
+        let selectedProductId = null;
         let toastTimeout;
         let finalCustomerEmail = '';
-        
-        // Timer State
-        let timerInterval;
-        let timeLeft = 600; // 10 minutes (600 seconds)
         
         // Crypto State
         let cryptoNetwork = 'Ethereum';
@@ -230,10 +250,14 @@ Things to clarify: Its 100% reusable and 1 pair box
         window.currentCryptoAmount = 0;
         const CRYPTO_RATES = { 'ETH': 3100, 'SOL': 140, 'USDT': 1, 'USDC': 1 };
 
+        window.addEventListener('resize', () => { updateCartUI(); });
+
         // --- CORE FUNCTIONS ---
-        function navigate(view) {
+        function navigate(view, productId = null) {
             currentView = view;
+            if (productId) selectedProductId = productId;
             window.scrollTo(0, 0);
+            updateCartUI(); 
             render();
         }
 
@@ -252,48 +276,33 @@ Things to clarify: Its 100% reusable and 1 pair box
             }, 3000);
         }
 
-        function selectPackage(qty, price) {
-            playClickSound();
-            selectedOrder = {
-                productName: PRODUCT.name,
-                quantity: qty,
-                price: price
-            };
-            render(); // Re-render to show selection highlight and enable Next button
+        function handleCartClick() {
+            const icon = document.getElementById('cart-icon');
+            icon.classList.remove('ph');
+            icon.classList.add('ph-fill', 'text-[#D30000]');
+            setTimeout(() => {
+                icon.classList.remove('ph-fill', 'text-[#D30000]');
+                icon.classList.add('ph');
+                navigate('cart');
+            }, 150);
         }
 
-        function proceedToCheckout() {
-            if (!selectedOrder) return;
-            playClickSound();
-            navigate('checkout');
+        function addToCart(productId, event) {
+            if(event) event.stopPropagation();
+            playCartSound(); 
+            
+            const product = PRODUCTS.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+            
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCartUI();
+            updateAllButtons();
         }
-
-        function toggleReviews() {
-            playClickSound();
-            showReviews = !showReviews;
-            render();
-        }
-
-        // Global Timer function (Starts once, runs forever, DOM is updated if element exists)
-        function startPromoTimer() {
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                if (timeLeft <= 0) timeLeft = 600; 
-                timeLeft--;
-                
-                const m = Math.floor(timeLeft / 60);
-                const s = timeLeft % 60;
-                const formattedTime = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                
-                const timerEl = document.getElementById('promo-timer');
-                if (timerEl) {
-                    timerEl.textContent = formattedTime;
-                }
-            }, 1000);
-        }
-        
-        // Start timer immediately
-        startPromoTimer();
 
         // --- CHECKOUT FORM LOGIC & FIREBASE ---
         function handleDeliverySubmit(event) {
@@ -309,7 +318,7 @@ Things to clarify: Its 100% reusable and 1 pair box
 
             // Show top green notification
             const topNotif = document.getElementById('top-notification');
-            document.getElementById('top-notification-msg').textContent = `Received your details, ${customerName}`;
+            document.getElementById('top-notification-msg').textContent = `Received your inquiry, ${customerName}`;
             
             topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
             topNotif.classList.add('translate-y-0', 'opacity-100');
@@ -331,12 +340,13 @@ Things to clarify: Its 100% reusable and 1 pair box
                     city: document.getElementById('city').value,
                     zip: document.getElementById('zip').value
                 },
-                cart: [{
-                    name: selectedOrder.productName,
-                    price: selectedOrder.price,
-                    quantity: selectedOrder.quantity
-                }],
-                totalPrice: selectedOrder.price,
+                cart: cart.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity
+                })),
+                totalPrice: getCartTotal(),
                 createdAt: serverTimestamp()
             };
 
@@ -371,22 +381,137 @@ Things to clarify: Its 100% reusable and 1 pair box
             }, 1500); 
         }
 
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+            updateAllButtons();
+        }
+
+        function updateQuantity(productId, delta, event) {
+            if(event) event.stopPropagation();
+            if (delta > 0) playCartSound(); 
+            
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartUI();
+                    updateAllButtons();
+                }
+            }
+        }
+
+        function updateAllButtons() {
+            if (currentView === 'cart') {
+                render(); 
+                return;
+            }
+            
+            if (currentView === 'product') {
+                const btnContainer = document.getElementById(`btn-container-${selectedProductId}`);
+                const p = PRODUCTS.find(item => item.id === selectedProductId);
+                if (btnContainer && p) {
+                    btnContainer.innerHTML = getButtonHTML(p, 'large');
+                }
+            } else if (currentView === 'home') {
+                PRODUCTS.forEach(p => {
+                    const btnContainer = document.getElementById(`btn-container-${p.id}`);
+                    if (btnContainer) {
+                        btnContainer.innerHTML = getButtonHTML(p, 'normal');
+                    }
+                });
+            }
+        }
+
+        function getButtonHTML(p, size = 'normal') {
+            const inCart = cart.find(item => item.id === p.id);
+            const heightClass = size === 'large' ? 'h-[58px] text-sm' : 'h-[42px] text-xs';
+            
+            if (inCart) {
+                return `
+                    <div class="mt-4 w-full flex items-center justify-between border border-[#D30000] bg-[#D30000] text-white transition-all duration-300 shadow-md ${heightClass}">
+                        <button onclick="updateQuantity(${p.id}, -1, event)" class="w-14 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
+                            <i class="ph ph-minus font-bold"></i>
+                        </button>
+                        <span class="font-semibold tracking-widest select-none">${inCart.quantity} IN CART</span>
+                        <button onclick="updateQuantity(${p.id}, 1, event)" class="w-14 h-full hover:bg-[#a00000] flex items-center justify-center transition-colors">
+                            <i class="ph ph-plus font-bold"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                return `
+                    <button onclick="addToCart(${p.id}, event)" class="mt-4 w-full ${heightClass} uppercase tracking-widest font-semibold border border-gray-300 text-gray-700 hover:bg-[#D30000] hover:text-white hover:border-[#D30000] transition-all duration-300">
+                        Add to Cart
+                    </button>
+                `;
+            }
+        }
+
+        function getCartTotal() {
+            return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
         // --- BIND GLOBALS FOR MODULE SCRIPT ---
         window.navigate = navigate;
         window.handleHelpClick = handleHelpClick;
-        window.selectPackage = selectPackage;
+        window.handleCartClick = handleCartClick;
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
         window.proceedToCheckout = proceedToCheckout;
-        window.toggleReviews = toggleReviews;
         window.scrollSlider = scrollSlider;
         window.updateSliderDots = updateSliderDots;
         window.handleDeliverySubmit = handleDeliverySubmit;
         window.goBackToDelivery = goBackToDelivery;
+        window.closeModal = closeModal;
         window.openCryptoPopup = openCryptoPopup;
         window.closeCryptoPopup = closeCryptoPopup;
         window.setCryptoNetwork = setCryptoNetwork;
         window.setCryptoToken = setCryptoToken;
         window.processCryptoPayment = processCryptoPayment;
         window.copyText = copyText;
+
+        function getCartCount() {
+            return cart.reduce((sum, item) => sum + item.quantity, 0);
+        }
+        
+        function getCartOriginalTotal() {
+            return cart.reduce((sum, item) => sum + (item.originalPrice * item.quantity), 0);
+        }
+
+        function updateCartUI() {
+            const count = getCartCount();
+            const total = getCartTotal();
+            
+            const badge = document.getElementById('cart-badge');
+            if (count > 0) {
+                badge.textContent = count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            const pill = document.getElementById('cart-pill');
+            const pillText = document.getElementById('cart-pill-text');
+            
+            if (count > 0 && currentView !== 'cart' && currentView !== 'checkout' && currentView !== 'thankyou' && currentView !== 'crypto-payment') {
+                if (currentView === 'product' && window.innerWidth >= 1024) {
+                    pill.classList.add('translate-y-full');
+                } else {
+                    pillText.textContent = `${count} ITEM${count !== 1 ? 'S' : ''}  |  $${total.toFixed(2)}`;
+                    pill.classList.remove('translate-y-full');
+                }
+            } else {
+                pill.classList.add('translate-y-full');
+            }
+        }
+
+        function proceedToCheckout() {
+            navigate('checkout');
+        }
 
         // --- SLIDER LOGIC ---
         function scrollSlider(direction) {
@@ -416,16 +541,19 @@ Things to clarify: Its 100% reusable and 1 pair box
         // --- FOMO NOTIFICATION LOGIC ---
         let fomoHideTimeout;
         function triggerFOMO() {
-            if (currentView !== 'product') return;
+            if (currentView !== 'home' && currentView !== 'product') return;
             
             const popup = document.getElementById('fomo-popup');
             if (!popup) return;
             
             const randomName = FAKE_NAMES[Math.floor(Math.random() * FAKE_NAMES.length)];
-            const randomOption = FOMO_OPTIONS[Math.floor(Math.random() * FOMO_OPTIONS.length)];
+            const randomProduct = PRODUCTS[Math.floor(Math.random() * PRODUCTS.length)];
+            const randomQty = Math.floor(Math.random() * 2) + 1; // High prices: 1 to 2 quantity
+            const priceStr = "$" + (randomProduct.price * randomQty).toFixed(2);
             
             document.getElementById('fomo-name').textContent = randomName;
-            document.getElementById('fomo-action').textContent = randomOption.text;
+            document.getElementById('fomo-action').textContent = `bought ${randomQty > 1 ? randomQty + 'x ' : ''}${randomProduct.name}`;
+            document.getElementById('fomo-price').textContent = priceStr;
             
             popup.classList.remove('translate-y-40', 'opacity-0');
             popup.classList.add('translate-y-0', 'opacity-100');
@@ -435,17 +563,18 @@ Things to clarify: Its 100% reusable and 1 pair box
             fomoHideTimeout = setTimeout(() => {
                 popup.classList.remove('translate-y-0', 'opacity-100');
                 popup.classList.add('translate-y-40', 'opacity-0');
-            }, 4000); 
+            }, 3000); 
         }
 
         let fomoCount = 0;
         function scheduleFOMO() {
             let delay;
-            if (fomoCount === 0) delay = 2000;       
-            else if (fomoCount === 1) delay = 6000;  
-            else if (fomoCount === 2) delay = 8000;  
+            if (fomoCount === 0) delay = 1000;       
+            else if (fomoCount === 1) delay = 3500;  
+            else if (fomoCount === 2) delay = 4000;  
+            else if (fomoCount === 3) delay = 4500;  
             else {
-                delay = Math.floor(Math.random() * 4000) + 8000;
+                delay = Math.floor(Math.random() * 2000) + 5500;
             }
             
             setTimeout(() => {
@@ -494,9 +623,9 @@ Things to clarify: Its 100% reusable and 1 pair box
 
         function renderCryptoModal() {
             const container = document.getElementById('crypto-modal-content');
-            if (!container || !selectedOrder) return;
+            if (!container) return;
 
-            const totalDueFiat = selectedOrder.price;
+            const totalDueFiat = getCartTotal();
             const exchangeRate = CRYPTO_RATES[cryptoToken] || 1;
             const cryptoAmountRaw = (totalDueFiat / exchangeRate).toFixed(cryptoToken.includes('USD') ? 2 : 4);
             
@@ -694,6 +823,16 @@ Things to clarify: Its 100% reusable and 1 pair box
                 toast.classList.add('opacity-0', 'pointer-events-none');
             }, 3000);
         }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                navigate('home');
+            }, 300);
+        }
         
         function copyText(text, label) {
             const textArea = document.createElement("textarea");
@@ -712,18 +851,14 @@ Things to clarify: Its 100% reusable and 1 pair box
         // --- RENDERING ---
         function render() {
             const content = document.getElementById('app-content');
-            
-            // Capture existing timer string before destroying the DOM, to prevent a blink
-            let currentTimerStr = "10:00";
-            const existingTimer = document.getElementById('promo-timer');
-            if (existingTimer) {
-                currentTimerStr = existingTimer.textContent;
-            }
-
             content.innerHTML = '';
 
-            if (currentView === 'product') {
-                content.innerHTML = renderProduct(currentTimerStr);
+            if (currentView === 'home') {
+                content.innerHTML = renderHome();
+            } else if (currentView === 'product') {
+                content.innerHTML = renderProduct();
+            } else if (currentView === 'cart') {
+                content.innerHTML = renderCart();
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
                 setupLocationAPI(); 
@@ -734,49 +869,85 @@ Things to clarify: Its 100% reusable and 1 pair box
             }
         }
 
-        function renderProduct(timerStr = "10:00") {
-            const starsHTML = Array(5).fill('<i class="ph-fill ph-star"></i>').join('');
+        function renderHome() {
+            return `
+                <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-16 md:gap-x-8">
+                        ${PRODUCTS.map(p => `
+                            <div class="group cursor-pointer flex flex-col relative" onclick="navigate('product', ${p.id})">
+                                <div class="aspect-[4/5] bg-[#F7F7F7] w-full mb-4 overflow-hidden flex items-center justify-center text-gray-300 transition-colors duration-500 group-hover:bg-[#EFEFEF]">
+                                    <span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-light tracking-widest text-xs uppercase text-gray-500">
+                                        View Details
+                                    </span>
+                                </div>
+                                
+                                <div class="flex flex-col items-center text-center flex-1">
+                                    <h3 class="text-sm md:text-base tracking-wider uppercase text-gray-900 mb-1 font-medium">${p.name}</h3>
+                                    <div class="flex justify-center items-center text-[#D30000] mb-2 text-xs">
+                                        <span class="font-bold mr-1">${p.rating}</span> <i class="ph-fill ph-star"></i>
+                                        <span class="text-gray-400 ml-1 font-light">(${p.reviews})</span>
+                                    </div>
+                                    <p class="text-gray-900 text-sm mb-4 font-medium">
+                                        <span class="line-through text-gray-400 font-light mr-2">$${p.originalPrice.toFixed(2)}</span>
+                                        $${p.price.toFixed(2)}
+                                    </p>
+                                    
+                                    <div class="w-full mt-auto flex flex-col items-center" onclick="event.stopPropagation()">
+                                        <p class="text-[9px] uppercase tracking-widest font-bold text-green-600 mb-1">FREE SHIPPING</p>
+                                        <div id="btn-container-${p.id}" class="w-full">
+                                            ${getButtonHTML(p, 'normal')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
 
-            const reviewsHTML = PRODUCT.reviewsList.map(review => {
+        function renderProduct() {
+            const p = PRODUCTS.find(item => item.id === selectedProductId);
+            if (!p) return '';
+            
+            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-sm md:text-base"></i>').join('');
+
+            const reviewsHTML = p.reviewsList.map(review => {
                 const reviewStars = Array(5).fill(0).map((_, i) => 
                     `<i class="${i < review.rating ? 'ph-fill' : 'ph'} ph-star text-[#D30000] text-sm"></i>`
                 ).join('');
                 return `
-                    <div class="border-b border-gray-100 pb-6 pt-6 last:border-0 last:pb-0">
+                    <div class="border-b border-gray-100 pb-8 pt-8 last:border-0 last:pb-0">
                         <div class="flex items-center justify-between mb-2">
                             <span class="font-medium text-gray-900 tracking-wide">${review.author}</span>
                             <div class="flex gap-[2px]">${reviewStars}</div>
                         </div>
                         <span class="text-[10px] uppercase tracking-widest text-green-600 font-bold mb-3 block">Verified Buyer</span>
-                        <p class="text-gray-600 font-light leading-relaxed text-sm">${review.text}</p>
+                        <p class="text-gray-600 font-light leading-relaxed text-sm md:text-base">${review.text}</p>
                     </div>
                 `;
             }).join('');
-            
-            const reviewToggleText = showReviews ? "Hide Customer Reviews" : "Show Customer Reviews";
-            const reviewSectionClass = showReviews ? "block fade-in" : "hidden";
-
-            // Next button logic
-            const nextButtonClass = selectedOrder 
-                ? "bg-[#D30000] text-white hover:bg-[#a00000] shadow-xl cursor-pointer" 
-                : "bg-gray-100 text-gray-400 cursor-not-allowed";
 
             return `
-                <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 fade-in">
+                <div class="max-w-6xl mx-auto px-4 py-12 fade-in">
+                    <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-12 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Collection
+                    </button>
                     
                     <div class="flex flex-col md:flex-row gap-12 lg:gap-16">
                         
-                        <!-- Product Image Slider -->
+                        <!-- Premium CSS Slider -->
                         <div class="flex-1 w-full relative group">
-                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm bg-gray-50" onscroll="updateSliderDots(this)">
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
-                                   <img src="PE1.png" alt="LUXÉLASH View 1" class="w-full h-full object-cover">
+                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm" onscroll="updateSliderDots(this)">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center snap-always flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 1</span>
                                 </div>
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
-                                   <img src="PE2.png" alt="LUXÉLASH View 2" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#EFEFEF] snap-center snap-always flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 2</span>
                                 </div>
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
-                                   <img src="PE3.png" alt="LUXÉLASH View 3" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] bg-[#F7F7F7] snap-center snap-always flex items-center justify-center relative">
+                                   <span class="text-gray-400 font-light tracking-widest uppercase text-sm">Image 3</span>
                                 </div>
                             </div>
                             
@@ -796,77 +967,40 @@ Things to clarify: Its 100% reusable and 1 pair box
                             </div>
                         </div>
                         
-                        <div class="flex-1 flex flex-col py-2 lg:sticky lg:top-32 h-fit">
-                            <h2 class="text-2xl md:text-3xl font-serif uppercase tracking-widest mb-4 text-gray-900 leading-snug">${PRODUCT.name}</h2>
+                        <div class="flex-1 flex flex-col py-8 lg:sticky lg:top-32 h-fit">
+                            <h2 class="text-3xl md:text-4xl font-serif uppercase tracking-widest mb-3 text-gray-900">${p.name}</h2>
+                            <div class="flex items-center text-[#D30000] mb-4 gap-[2px]">
+                                <span class="font-bold text-lg mr-2">${p.rating}</span> ${starsHTML}
+                                <span class="text-gray-400 text-xs ml-2 uppercase tracking-widest">(${p.reviews} Reviews)</span>
+                            </div>
+                            <p class="text-2xl text-gray-900 mb-8 font-medium">
+                                <span class="line-through text-gray-400 font-light mr-3 text-xl">$${p.originalPrice.toFixed(2)}</span>
+                                $${p.price.toFixed(2)}
+                            </p>
                             
-                            <!-- Free Shipping Banner -->
-                            <div class="flex items-center gap-2 mb-6 text-green-700 bg-green-50/80 px-4 py-2.5 rounded-sm border border-green-100 w-fit">
-                                <i class="ph ph-truck text-xl"></i>
-                                <span class="text-xs uppercase tracking-widest font-bold">Free Worldwide Shipping</span>
+                            <div class="w-12 h-[1px] bg-[#D30000] mb-8"></div>
+                            
+                            <p class="text-gray-600 leading-relaxed font-light mb-12 text-lg">${p.description}</p>
+                            
+                            <p class="text-[10px] uppercase tracking-widest font-bold text-green-600 mb-1">FREE WORLDWIDE SHIPPING</p>
+                            <div id="btn-container-${p.id}" class="w-full mb-6">
+                                ${getButtonHTML(p, 'large')}
                             </div>
                             
-                            <p class="text-gray-600 leading-relaxed font-light mb-10 text-sm md:text-base">${PRODUCT.description}</p>
-                            
-                            <p class="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-3">SELECT YOUR PACKAGE</p>
-                            
-                            <!-- Package Grid Options -->
-                            <div class="grid grid-cols-3 gap-3 md:gap-4 w-full mb-8">
-                                
-                                <!-- 2 Pairs Option -->
-                                <button onclick="selectPackage(2, 19.99)" class="relative p-3 md:p-4 border-2 rounded-sm flex flex-col items-center justify-center transition-all ${selectedOrder?.quantity === 2 ? 'border-[#D30000] bg-red-50/30' : 'border-gray-200 hover:border-gray-300 bg-white'}">
-                                    <span class="font-serif text-sm md:text-lg font-medium ${selectedOrder?.quantity === 2 ? 'text-[#D30000]' : 'text-gray-900'} transition-colors">2 Pairs</span>
-                                    <span class="text-xs md:text-sm font-bold ${selectedOrder?.quantity === 2 ? 'text-[#D30000]' : 'text-gray-900'} mt-1 transition-colors">$19.99</span>
-                                </button>
-                                
-                                <!-- 4 Pairs Option (Best Value) -->
-                                <button onclick="selectPackage(4, 28.99)" class="relative p-3 md:p-4 border-2 rounded-sm flex flex-col items-center justify-center transition-all ${selectedOrder?.quantity === 4 ? 'border-[#D30000] bg-red-50/50 shadow-md transform -translate-y-0.5' : 'border-[#D30000] border-opacity-40 hover:border-opacity-100 bg-white'}">
-                                    <div class="absolute -top-2.5 bg-[#D30000] text-white text-[8px] md:text-[9px] uppercase tracking-widest px-2.5 py-0.5 rounded-sm whitespace-nowrap shadow-sm font-bold">Best Value</div>
-                                    <span class="font-serif text-sm md:text-lg font-medium text-[#D30000]">4 Pairs</span>
-                                    <span class="text-xs md:text-sm font-bold text-[#D30000] mt-1">$28.99</span>
-                                    
-                                    <!-- Dynamic Timer -->
-                                    <div class="mt-2 text-[10px] text-[#D30000] font-bold bg-white px-2 py-1 rounded-sm border border-red-100 flex items-center gap-1 w-full justify-center">
-                                       <i class="ph ph-timer"></i> <span id="promo-timer">${timerStr}</span>
-                                    </div>
-                                </button>
-                                
-                                <!-- 6 Pairs Option (Sold Out) -->
-                                <button disabled class="relative p-3 md:p-4 border-2 border-red-100 bg-red-50/50 rounded-sm flex flex-col items-center justify-center cursor-not-allowed overflow-hidden">
-                                    <span class="font-serif text-sm md:text-lg font-medium text-gray-500 opacity-60">6 Pairs</span>
-                                    <span class="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-white bg-gray-500 px-2 py-0.5 mt-1.5 rounded-sm z-10 shadow-sm">Sold Out</span>
-                                    
-                                    <!-- Red Cross Layer -->
-                                    <div class="absolute inset-0 flex items-center justify-center opacity-40">
-                                        <div class="w-[150%] h-[2px] bg-[#D30000] rotate-45 absolute"></div>
-                                        <div class="w-[150%] h-[2px] bg-[#D30000] -rotate-45 absolute"></div>
-                                    </div>
-                                </button>
-                                
+                            <div class="border-t border-gray-100 pt-6 mt-6">
+                                <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between mb-2">
+                                    <span>Shipping</span> <span>Complimentary</span>
+                                </p>
+                                <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between">
+                                    <span>Returns</span> <span>Within 30 Days</span>
+                                </p>
                             </div>
                             
-                            <!-- Proceed Button -->
-                            <button onclick="proceedToCheckout()" class="w-full py-5 uppercase tracking-widest text-xs font-semibold flex justify-center items-center gap-2 ${nextButtonClass}">
-                                Proceed to Checkout <i class="ph ph-arrow-right text-lg"></i>
-                            </button>
-                            ${!selectedOrder ? '<p class="text-[10px] text-center text-gray-400 mt-3 uppercase tracking-widest">Please select a package above</p>' : ''}
-                            
-                            <!-- Customer Reviews Toggle Section -->
-                            <div class="mt-14 pt-8 border-t border-gray-200">
-                                <h3 class="text-lg font-serif uppercase tracking-widest mb-4 text-gray-900">Customer Ratings</h3>
-                                
-                                <div class="flex items-center gap-4 mb-6">
-                                    <span class="font-bold text-3xl text-gray-900">${PRODUCT.rating}</span>
-                                    <div class="flex flex-col">
-                                        <div class="flex text-[#D30000] text-lg gap-[1px] mb-1">${starsHTML}</div>
-                                        <span class="text-xs text-gray-500 tracking-wide">Based on ${PRODUCT.reviews} verified reviews</span>
-                                    </div>
-                                </div>
-                                
-                                <button onclick="toggleReviews()" class="border border-gray-300 w-fit px-6 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-600 hover:border-[#D30000] hover:text-[#D30000] transition-colors flex items-center gap-2">
-                                    ${reviewToggleText} <i class="ph ph-caret-${showReviews ? 'up' : 'down'} text-sm"></i>
-                                </button>
-                                
-                                <div id="reviews-container" class="${reviewSectionClass} mt-6 border-t border-gray-100">
+                            <!-- Customer Reviews Section -->
+                            <div class="mt-16 pt-10 border-t border-gray-900">
+                                <h3 class="text-xl font-serif uppercase tracking-widest mb-2 text-gray-900">Customer Reviews</h3>
+                                <p class="text-sm text-gray-500 mb-6 tracking-wide">Based on ${p.reviews} reviews</p>
+                                <div>
                                     ${reviewsHTML}
                                 </div>
                             </div>
@@ -877,41 +1011,115 @@ Things to clarify: Its 100% reusable and 1 pair box
             `;
         }
 
-        function renderCheckout() {
-            if (!selectedOrder) {
-                navigate('product');
-                return '';
+        function renderCart() {
+            if (cart.length === 0) {
+                return `
+                    <div class="max-w-4xl mx-auto px-4 py-12 fade-in">
+                        <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                            <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                            Back to Products Section
+                        </button>
+                        <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-16">Your Cart</h2>
+                        <div class="text-center py-20 bg-gray-50 border border-gray-100">
+                            <p class="text-gray-500 mb-6 font-light text-lg">Your selected items will appear here.</p>
+                            <button onclick="navigate('home')" class="text-[#D30000] uppercase tracking-widest text-sm border-b border-[#D30000] pb-1 hover:text-[#a00000] hover:border-[#a00000] transition-colors">
+                                Continue Shopping
+                            </button>
+                        </div>
+                    </div>
+                `;
             }
 
-            const totalPaid = "$" + selectedOrder.price.toFixed(2);
+            let cartHtml = cart.map(item => `
+                <div class="py-8 flex items-center justify-between border-b border-gray-100 last:border-0">
+                    <div class="flex items-center gap-4 md:gap-6">
+                        <div class="w-20 h-28 md:w-24 md:h-32 bg-[#F7F7F7] flex items-center justify-center shrink-0 text-[10px] text-gray-400 uppercase tracking-widest text-center px-1">Img</div>
+                        <div>
+                            <h4 class="font-serif tracking-wider text-base md:text-lg mb-1">${item.name}</h4>
+                            <p class="text-gray-500 text-sm font-light mb-3">$${item.price.toFixed(2)}</p>
+                            
+                            <div class="flex items-center border border-gray-300 w-fit">
+                                <button onclick="updateQuantity(${item.id}, -1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-[#D30000] transition-colors"><i class="ph ph-minus text-xs"></i></button>
+                                <span class="text-xs font-medium w-6 text-center select-none">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 hover:text-[#D30000] transition-colors"><i class="ph ph-plus text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end gap-4 md:gap-6">
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-[#D30000] transition-colors" title="Remove item">
+                            <i class="ph ph-trash text-lg"></i>
+                        </button>
+                        <p class="font-medium text-base md:text-lg">$${(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="max-w-4xl mx-auto px-4 py-12 fade-in">
+                    <button onclick="navigate('home')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Products Section
+                    </button>
+                    <h2 class="text-3xl font-serif uppercase tracking-widest text-center mb-16">Your Cart</h2>
+                    
+                    <div class="border-t border-gray-100 mb-12">
+                        ${cartHtml}
+                    </div>
+                    
+                    <div class="flex flex-col items-end w-full md:w-1/2 ml-auto mb-8">
+                        <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                            <span class="tracking-wide">Original Subtotal</span>
+                            <span class="line-through">$${getCartOriginalTotal().toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-gray-800 text-sm font-medium">
+                            <span class="tracking-wide">Price</span>
+                            <span>$${getCartTotal().toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-green-600 text-sm font-medium">
+                            <span class="tracking-wide">Savings</span>
+                            <span>-$${(getCartOriginalTotal() - getCartTotal()).toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-2 text-gray-500 text-sm">
+                            <span class="tracking-wide">Shipping</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div class="flex justify-between w-full mb-4 text-gray-500 text-sm border-b border-gray-100 pb-4">
+                            <span class="tracking-wide">Tax</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div class="flex justify-between w-full text-gray-900 text-xl font-serif">
+                            <span class="uppercase tracking-widest">Total</span>
+                            <span>$${getCartTotal().toFixed(2)}</span>
+                        </div>
+                    </div>
+                        
+                    <div class="flex justify-end">
+                        <button onclick="proceedToCheckout()" class="bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-5 px-12 hover:bg-[#a00000] transition-colors duration-300 w-full md:w-auto">
+                            Proceed to Checkout
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCheckout() {
+            const totalPaid = "$" + getCartTotal().toFixed(2);
 
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     
-                    <button onclick="navigate('product')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
-                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
-                        Back to Offer
-                    </button>
-
                     <div class="bg-gray-50 p-6 md:px-10 md:pt-10 md:pb-6 rounded-sm mb-2 border border-gray-100 shadow-sm relative overflow-visible">
-
-                        <!-- Order Summary Box -->
-                        <div class="bg-white border border-gray-200 p-4 mb-8 flex justify-between items-center rounded-sm">
-                            <div>
-                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Your Selection</p>
-                                <p class="font-serif text-gray-900 font-medium">${selectedOrder.productName} (${selectedOrder.quantity} Pairs)</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Total</p>
-                                <p class="text-lg text-[#D30000] font-bold">${totalPaid}</p>
-                            </div>
-                        </div>
 
                         <!-- Payment Step Waiting Header -->
                         <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-8 border-b border-gray-200 pb-8">
                             <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
                             <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
                             <p class="text-xs text-gray-500 uppercase tracking-widest mb-8">We're almost there</p>
+                            
+                            <div class="flex justify-between items-center w-full text-gray-900 text-xl font-serif bg-white p-4 border border-gray-100 shadow-sm rounded-sm">
+                                <span class="uppercase tracking-widest text-sm text-gray-500">Total Amount</span>
+                                <span class="text-[#D30000] font-semibold">${totalPaid} USD</span>
+                            </div>
                         </div>
                         
                         <!-- STEP 1: Delivery Details -->
@@ -973,8 +1181,8 @@ Things to clarify: Its 100% reusable and 1 pair box
                                 </div>
                                 
                                 <div class="pt-6 flex justify-center overflow-visible">
-                                    <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px] shadow-lg hover:bg-[#a00000]">
-                                        Proceed to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>
+                                    <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px] shadow-lg">
+                                        Next <i class="ph ph-arrow-right ml-2 text-lg"></i>
                                     </button>
                                 </div>
                             </form>
@@ -1005,6 +1213,12 @@ Things to clarify: Its 100% reusable and 1 pair box
 
                     </div>
 
+                    <div id="delivery-back" class="text-center mt-6">
+                        <button onclick="navigate('cart')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Cart
+                        </button>
+                    </div>
+                    
                     <div id="payment-back" class="text-center mt-6 hidden">
                         <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
                             <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
@@ -1015,11 +1229,6 @@ Things to clarify: Its 100% reusable and 1 pair box
         }
 
         function renderCryptoPayment() {
-            if (!selectedOrder) {
-                navigate('product');
-                return '';
-            }
-
             const assetInfo = CRYPTO_ASSETS[cryptoNetwork];
             const address = assetInfo.address;
             const qrImage = assetInfo.tokens[cryptoToken];
@@ -1109,8 +1318,8 @@ Things to clarify: Its 100% reusable and 1 pair box
                         </div>
                     </div>
 
-                    <button onclick="navigate('product')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                        Return to Store
+                    <button onclick="navigate('home')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                        Return to Home
                     </button>
                 </div>
             `;
@@ -1145,13 +1354,15 @@ Things to clarify: Its 100% reusable and 1 pair box
                 createOrder: function(data, actions) {
                     return actions.order.create({
                         purchase_units: [{
-                            amount: { value: selectedOrder.price.toFixed(2) }
+                            amount: { value: getCartTotal().toFixed(2) }
                         }]
                     });
                 },
                 onApprove: function(data, actions) {
                     return actions.order.capture().then(function(details) {
-                        selectedOrder = null;
+                        cart = []; 
+                        updateCartUI();
+                        updateAllButtons();
                         navigate('thankyou');
                     });
                 },
@@ -1164,7 +1375,28 @@ Things to clarify: Its 100% reusable and 1 pair box
             }).render('#paypal-button-container');
         }
 
-        // Initialize App directly to product
+        // --- BIND GLOBALS FOR MODULE SCRIPT ---
+        window.navigate = navigate;
+        window.handleHelpClick = handleHelpClick;
+        window.handleCartClick = handleCartClick;
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+        window.proceedToCheckout = proceedToCheckout;
+        window.scrollSlider = scrollSlider;
+        window.updateSliderDots = updateSliderDots;
+        window.handleDeliverySubmit = handleDeliverySubmit;
+        window.goBackToDelivery = goBackToDelivery;
+        window.closeModal = closeModal;
+        window.openCryptoPopup = openCryptoPopup;
+        window.closeCryptoPopup = closeCryptoPopup;
+        window.setCryptoNetwork = setCryptoNetwork;
+        window.setCryptoToken = setCryptoToken;
+        window.processCryptoPayment = processCryptoPayment;
+        window.copyText = copyText;
+
+        // Initialize App
+        updateCartUI();
         render();
     </script>
 </body>
