@@ -1,3 +1,13 @@
+-->Purpose After Success(why does life feel boring now and how to make it exciting again)
+-->“How to Build a Private Inner Circle When Everyone Wants Something From You”(“How Successful People Build Real Relationships Without Being Used”)
+-->Fear of Their Children Becoming Weak(How to Raise Strong Children in a World of Comfort”)
+-->“I Won the Game and Still Feel Empty”
+-->“How to Stay Valuable As You Age”
+
+Product: Portable No-Glue Magnetic Eyelashes with its applier
+problem: Applying traditional false lashes with glue is notoriously difficult, messy, ruins eye makeup, and can damage natural lashes. This product solves that problem by making the process take literally 3 seconds with zero mess.
+Things to clarify: Its 100% reusable and 1 pair box
+--------------------------------------------------------------------------------
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +21,11 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
-    <!-- PayPal JS SDK -->
+    <!-- PayPal JS SDK (Using Client ID) -->
     <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -34,18 +44,6 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes gradient-border {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .anim-border {
-            background: linear-gradient(90deg, #fb923c, #facc15, #fb923c);
-            background-size: 200% 200%;
-            animation: gradient-border 2s ease infinite;
         }
 
         /* Hide scrollbar for cleaner look */
@@ -70,7 +68,7 @@
 
     <!-- Header -->
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
-        <div class="max-w-6xl mx-auto px-4 h-20 md:h-24 flex items-center justify-between w-full gap-4">
+        <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between w-full gap-4">
             
             <!-- Logo -->
             <h1 onclick="navigate('product')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
@@ -152,7 +150,9 @@
         // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+
+        // Your new web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA8j3Jh9S-4UDHGx75enZn8qs6T3pOtKs4",
             authDomain: "backend-83c72.firebaseapp.com",
@@ -162,34 +162,34 @@
             appId: "1:848947002648:web:c25bbd41c93e6b5919726d"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const analytics = getAnalytics(app);
 
         // --- AUDIO INTEGRATION ---
-        const clickAudio = new Audio('https://www.soundjay.com/buttons/sounds/button-3.mp3');
+        const clickAudio = new Audio('AUD-20260422-WA0000.mp3');
         function playClickSound() {
             clickAudio.currentTime = 0;
             clickAudio.play().catch(e => console.warn("Audio play prevented:", e));
         }
 
-        // --- PRODUCT DATA ---
+        // --- SINGLE PRODUCT DATA ---
         const PRODUCT = {
             name: "LUXÉLASH MAGNETIC EYELASHES BUNDLE",
             rating: 4.9,
             reviews: 1428,
-            description: "Effortless, flawless magnetic lashes for instant elegance. No glue, no mess—just a perfect, seamless look all day.",
+            description: "Effortlessly flawless lashes in seconds. Our premium magnetic eyelashes offer a secure, all-day hold without messy glue. Lightweight, reusable, and designed for true sophistication.",
             reviewsList: [
-                { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The quality is unmatched and they look beautiful in person. A staple piece." },
-                { author: "Sarah M.", rating: 5, text: "I've worn these to work and to dinner dates. Extremely versatile and feels luxurious." },
-                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Looks far more expensive than the price tag." },
-                { author: "Amanda K.", rating: 5, text: "The magnets are so strong! They lasted me through an entire wedding without lifting once." },
-                { author: "Rachel H.", rating: 5, text: "Literally took me 2 minutes to put on. I'm throwing away all my eyelash glue right now!" }
+                { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The quality is unmatched and they look beautiful in person. No messy glue!" },
+                { author: "Sarah M.", rating: 5, text: "I've worn these to work and to dinner dates. Extremely versatile and the magnetic hold is so strong." },
+                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Looks far more natural and expensive than the price tag." }
             ]
         };
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.'];
         const FOMO_OPTIONS = [
-            { qty: 2, text: "bought the 2 Boxes offer" },
+            { qty: 2, text: "bought the 2 Pairs offer" },
             { qty: 4, text: "bought the 4 Pairs offer" }
         ];
 
@@ -197,21 +197,34 @@
         const CRYPTO_ASSETS = {
             'Ethereum': {
                 address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
-                tokens: { 'USDT': 'https://placehold.co/400x400/f8f9fa/333?text=ETH+QR', 'USDC': 'https://placehold.co/400x400/f8f9fa/333?text=ETH+QR', 'ETH': 'https://placehold.co/400x400/f8f9fa/333?text=ETH+QR' }
+                tokens: {
+                    'USDT': './eth-usdt.jpg',
+                    'USDC': './ethereum-usdc.jpg',
+                    'ETH': './ethereum-eth.png'
+                }
             },
             'Solana': {
                 address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy',
-                tokens: { 'USDT': 'https://placehold.co/400x400/f8f9fa/333?text=SOL+QR', 'USDC': 'https://placehold.co/400x400/f8f9fa/333?text=SOL+QR', 'SOL': 'https://placehold.co/400x400/f8f9fa/333?text=SOL+QR' }
+                tokens: {
+                    'USDT': './solana-usdt.jpg',
+                    'USDC': './solana-usdc.jpg',
+                    'SOL': './Solana-sol.jpg'
+                }
             }
         };
 
         // --- STATE ---
         let currentView = 'product'; 
         let selectedOrder = null; 
+        let showReviews = false;
         let toastTimeout;
         let finalCustomerEmail = '';
-        let countdownTimer;
         
+        // Timer State
+        let timerInterval;
+        let timeLeft = 600; // 10 minutes (600 seconds)
+        
+        // Crypto State
         let cryptoNetwork = 'Ethereum';
         let cryptoToken = 'ETH';
         window.currentCryptoAmount = 0;
@@ -239,71 +252,48 @@
             }, 3000);
         }
 
-        function toggleReviews() {
-            const revDiv = document.getElementById('reviews-list');
-            const btn = document.getElementById('toggle-reviews-btn');
-            if(revDiv.classList.contains('hidden')) {
-                revDiv.classList.remove('hidden');
-                btn.innerHTML = 'Hide Reviews <i class="ph ph-caret-up ml-1"></i>';
-            } else {
-                revDiv.classList.add('hidden');
-                btn.innerHTML = 'Show All Reviews <i class="ph ph-caret-down ml-1"></i>';
-            }
-        }
-
-        function selectOption(qty, price, elementId) {
+        function selectPackage(qty, price) {
             playClickSound();
             selectedOrder = {
                 productName: PRODUCT.name,
                 quantity: qty,
                 price: price
             };
-            
-            // Reset visually
-            document.querySelectorAll('.package-option').forEach(el => {
-                el.classList.remove('border-[#D30000]', 'bg-red-50/10', 'ring-2', 'ring-red-100');
-                if(el.id !== 'pack-4-inner') el.classList.add('border-gray-200');
-                if(el.id === 'pack-4-inner') el.classList.add('border-transparent');
-            });
-            
-            // Highlight selected
-            const selectedEl = document.getElementById(elementId);
-            if(selectedEl) {
-                if(elementId === 'pack-4-inner') {
-                    selectedEl.classList.remove('border-transparent');
-                    selectedEl.classList.add('border-[#D30000]', 'bg-orange-50/40');
-                } else {
-                    selectedEl.classList.remove('border-gray-200');
-                    selectedEl.classList.add('border-[#D30000]', 'bg-red-50/10', 'ring-2', 'ring-red-100');
-                }
-            }
-
-            // Show Next button
-            const nextBtnContainer = document.getElementById('next-btn-container');
-            if (nextBtnContainer) {
-                nextBtnContainer.classList.remove('hidden');
-                nextBtnContainer.classList.add('animate-[fadeIn_0.3s_ease-out]');
-            }
+            render(); // Re-render to show selection highlight and enable Next button
         }
 
-        function proceedToDelivery() {
-            if(!selectedOrder) return;
+        function proceedToCheckout() {
+            if (!selectedOrder) return;
             playClickSound();
             navigate('checkout');
         }
 
-        function startCountdown() {
-            if(countdownTimer) clearInterval(countdownTimer);
-            let timeLeft = 300; 
-            countdownTimer = setInterval(() => {
+        function toggleReviews() {
+            playClickSound();
+            showReviews = !showReviews;
+            render();
+        }
+
+        // Global Timer function (Starts once, runs forever, DOM is updated if element exists)
+        function startPromoTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) timeLeft = 600; 
                 timeLeft--;
-                if(timeLeft < 0) timeLeft = 300;
-                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-                const s = (timeLeft % 60).toString().padStart(2, '0');
-                const el = document.getElementById('offer-timer');
-                if(el) el.textContent = `${m}:${s}`;
+                
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                const formattedTime = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                
+                const timerEl = document.getElementById('promo-timer');
+                if (timerEl) {
+                    timerEl.textContent = formattedTime;
+                }
             }, 1000);
         }
+        
+        // Start timer immediately
+        startPromoTimer();
 
         // --- CHECKOUT FORM LOGIC & FIREBASE ---
         function handleDeliverySubmit(event) {
@@ -317,16 +307,19 @@
             finalCustomerEmail = document.getElementById('email').value;
             const customerName = document.getElementById('customerName').value;
 
+            // Show top green notification
             const topNotif = document.getElementById('top-notification');
             document.getElementById('top-notification-msg').textContent = `Received your details, ${customerName}`;
             
             topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
             topNotif.classList.add('translate-y-0', 'opacity-100');
 
+            // Animate Button RIGHTWARDS and fill it entirely
             const btn = document.getElementById('next-btn');
             btn.classList.add('translate-x-12', 'bg-[#D30000]', 'scale-105');
             btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
             
+            // Collect order payload for Firebase
             const orderData = {
                 customerDetails: {
                     name: customerName,
@@ -338,23 +331,31 @@
                     city: document.getElementById('city').value,
                     zip: document.getElementById('zip').value
                 },
-                orderItems: [{
+                cart: [{
                     name: selectedOrder.productName,
-                    package: `Pack of ${selectedOrder.quantity}`,
-                    price: selectedOrder.price
+                    price: selectedOrder.price,
+                    quantity: selectedOrder.quantity
                 }],
                 totalPrice: selectedOrder.price,
                 createdAt: serverTimestamp()
             };
 
+            // GUARANTEED NON-BLOCKING SAVE: Fire and forget to the NEW collection "finalized_orders"
             addDoc(collection(db, "finalized_orders"), orderData)
-                .then((docRef) => { console.log("Order saved to secure Firebase with ID:", docRef.id); })
-                .catch((error) => { console.error("Firebase Database error:", error); });
+                .then((docRef) => {
+                    console.log("Order saved to secure Firebase with ID:", docRef.id);
+                })
+                .catch((error) => {
+                    console.error("Firebase Database error:", error);
+                });
             
+            // Instantly transition UI to payment page without waiting for database confirmation
             setTimeout(() => {
+                // Hide top notification
                 topNotif.classList.remove('translate-y-0', 'opacity-100');
                 topNotif.classList.add('-translate-y-40', 'opacity-0', 'pointer-events-none');
                 
+                // Swap views
                 document.getElementById('delivery-step').classList.add('hidden');
                 document.getElementById('delivery-back').classList.add('hidden');
                 
@@ -373,8 +374,8 @@
         // --- BIND GLOBALS FOR MODULE SCRIPT ---
         window.navigate = navigate;
         window.handleHelpClick = handleHelpClick;
-        window.selectOption = selectOption;
-        window.proceedToDelivery = proceedToDelivery;
+        window.selectPackage = selectPackage;
+        window.proceedToCheckout = proceedToCheckout;
         window.toggleReviews = toggleReviews;
         window.scrollSlider = scrollSlider;
         window.updateSliderDots = updateSliderDots;
@@ -391,7 +392,7 @@
         function scrollSlider(direction) {
             const slider = document.getElementById('product-slider');
             const width = slider.clientWidth;
-            const maxIndex = 2;
+            const maxIndex = 2; // 3 images
             
             let currentIndex = Math.round(slider.scrollLeft / width);
             let nextIndex = currentIndex + direction;
@@ -416,6 +417,7 @@
         let fomoHideTimeout;
         function triggerFOMO() {
             if (currentView !== 'product') return;
+            
             const popup = document.getElementById('fomo-popup');
             if (!popup) return;
             
@@ -429,6 +431,7 @@
             popup.classList.add('translate-y-0', 'opacity-100');
             
             if (fomoHideTimeout) clearTimeout(fomoHideTimeout);
+            
             fomoHideTimeout = setTimeout(() => {
                 popup.classList.remove('translate-y-0', 'opacity-100');
                 popup.classList.add('translate-y-40', 'opacity-0');
@@ -441,7 +444,9 @@
             if (fomoCount === 0) delay = 2000;       
             else if (fomoCount === 1) delay = 6000;  
             else if (fomoCount === 2) delay = 8000;  
-            else delay = Math.floor(Math.random() * 4000) + 8000;
+            else {
+                delay = Math.floor(Math.random() * 4000) + 8000;
+            }
             
             setTimeout(() => {
                 triggerFOMO();
@@ -449,18 +454,21 @@
                 scheduleFOMO();
             }, delay);
         }
+
         scheduleFOMO();
 
         // --- CRYPTO PAYMENT LOGIC ---
         function openCryptoPopup() {
             cryptoNetwork = 'Ethereum';
             cryptoToken = 'ETH';
+            
             const modal = document.getElementById('crypto-modal');
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.remove('opacity-0', 'pointer-events-none');
                 modal.classList.add('opacity-100');
             }, 10);
+            
             renderCryptoModal();
         }
 
@@ -468,12 +476,14 @@
             const modal = document.getElementById('crypto-modal');
             modal.classList.remove('opacity-100');
             modal.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
 
         function setCryptoNetwork(network) {
             cryptoNetwork = network;
-            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL';
+            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL'; // Default tokens per network
             renderCryptoModal();
         }
 
@@ -492,14 +502,20 @@
             
             window.currentCryptoAmount = cryptoAmountRaw;
 
-            const tokens = cryptoNetwork === 'Ethereum' ? ['USDT', 'USDC', 'ETH'] : ['USDT', 'USDC', 'SOL'];
+            const tokens = cryptoNetwork === 'Ethereum' 
+                ? ['USDT', 'USDC', 'ETH'] 
+                : ['USDT', 'USDC', 'SOL'];
 
             container.innerHTML = `
+                <!-- Network Selection Tabs -->
                 <div class="flex gap-2 p-1 bg-gray-100 rounded-sm mb-6">
                     <button onclick="setCryptoNetwork('Ethereum')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Ethereum' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Ethereum</button>
                     <button onclick="setCryptoNetwork('Solana')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Solana' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Solana</button>
                 </div>
+
                 <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-3">Select Token</p>
+                
+                <!-- Token List -->
                 <div class="space-y-2 mb-8">
                     ${tokens.map(token => `
                         <div onclick="setCryptoToken('${token}')" class="flex items-center justify-between p-4 border ${cryptoToken === token ? 'border-[#D30000] bg-red-50/50' : 'border-gray-200 hover:border-gray-300'} cursor-pointer transition-colors rounded-sm">
@@ -511,6 +527,8 @@
                         </div>
                     `).join('')}
                 </div>
+
+                <!-- Total Amount Summary -->
                 <div class="flex justify-between items-end mb-6 pt-4 border-t border-gray-100">
                     <span class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Total Due</span>
                     <div class="text-right">
@@ -518,6 +536,8 @@
                         <div class="text-xs text-gray-400 font-light tracking-wide mt-1">≈ $${totalDueFiat.toFixed(2)} USD</div>
                     </div>
                 </div>
+
+                <!-- Action Button -->
                 <button onclick="processCryptoPayment()" class="w-full bg-gray-900 text-white uppercase tracking-widest text-xs font-semibold py-4 hover:bg-black transition-colors shadow-lg">
                     Pay with ${window.currentCryptoAmount} ${cryptoToken}
                 </button>
@@ -526,7 +546,9 @@
 
         function processCryptoPayment() {
             closeCryptoPopup();
-            setTimeout(() => { navigate('crypto-payment'); }, 300);
+            setTimeout(() => {
+                navigate('crypto-payment');
+            }, 300);
         }
 
         // --- GLOBAL LOCATION DROPDOWNS API ---
@@ -562,6 +584,7 @@
                     phoneCodeSelect.appendChild(opt);
                 });
 
+                // Default to US & dynamic limits
                 window.updatePhoneLimit = function(selectElem) {
                     const phoneInput = document.getElementById('phone');
                     if(!phoneInput) return;
@@ -576,7 +599,9 @@
                     window.updatePhoneLimit(phoneCodeSelect);
                 }
 
-                phoneCodeSelect.addEventListener('change', function() { window.updatePhoneLimit(this); });
+                phoneCodeSelect.addEventListener('change', function() {
+                    window.updatePhoneLimit(this);
+                });
 
                 countrySelect.addEventListener('change', async (e) => {
                     const country = e.target.value;
@@ -588,6 +613,7 @@
                             method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country})
                         });
                         const data = await res.json();
+                        
                         stateSelect.innerHTML = '<option value="" disabled selected>Select State</option>';
                         if(data.data && data.data.states && data.data.states.length > 0) {
                             data.data.states.forEach(s => {
@@ -654,11 +680,14 @@
             btn.innerHTML = `Next <i class="ph ph-arrow-right ml-2 text-lg"></i>`;
         }
 
+        // --- UI UTILITIES ---
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-msg').textContent = message;
+            
             toast.classList.remove('opacity-0', 'pointer-events-none');
             toast.classList.add('opacity-100');
+            
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
                 toast.classList.remove('opacity-100');
@@ -674,17 +703,27 @@
             try {
                 document.execCommand('copy');
                 showToast(label + " copied to clipboard!");
-            } catch (err) { showToast("Failed to copy."); }
+            } catch (err) {
+                showToast("Failed to copy.");
+            }
             document.body.removeChild(textArea);
         }
 
+        // --- RENDERING ---
         function render() {
             const content = document.getElementById('app-content');
+            
+            // Capture existing timer string before destroying the DOM, to prevent a blink
+            let currentTimerStr = "10:00";
+            const existingTimer = document.getElementById('promo-timer');
+            if (existingTimer) {
+                currentTimerStr = existingTimer.textContent;
+            }
+
             content.innerHTML = '';
 
             if (currentView === 'product') {
-                content.innerHTML = renderProduct();
-                startCountdown();
+                content.innerHTML = renderProduct(currentTimerStr);
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
                 setupLocationAPI(); 
@@ -695,8 +734,8 @@
             }
         }
 
-        function renderProduct() {
-            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-sm md:text-base"></i>').join('');
+        function renderProduct(timerStr = "10:00") {
+            const starsHTML = Array(5).fill('<i class="ph-fill ph-star"></i>').join('');
 
             const reviewsHTML = PRODUCT.reviewsList.map(review => {
                 const reviewStars = Array(5).fill(0).map((_, i) => 
@@ -708,31 +747,40 @@
                             <span class="font-medium text-gray-900 tracking-wide">${review.author}</span>
                             <div class="flex gap-[2px]">${reviewStars}</div>
                         </div>
-                        <span class="text-[10px] uppercase tracking-widest text-green-600 font-bold mb-2 block">Verified Buyer</span>
-                        <p class="text-gray-600 font-light leading-relaxed text-sm md:text-base">${review.text}</p>
+                        <span class="text-[10px] uppercase tracking-widest text-green-600 font-bold mb-3 block">Verified Buyer</span>
+                        <p class="text-gray-600 font-light leading-relaxed text-sm">${review.text}</p>
                     </div>
                 `;
             }).join('');
+            
+            const reviewToggleText = showReviews ? "Hide Customer Reviews" : "Show Customer Reviews";
+            const reviewSectionClass = showReviews ? "block fade-in" : "hidden";
+
+            // Next button logic
+            const nextButtonClass = selectedOrder 
+                ? "bg-[#D30000] text-white hover:bg-[#a00000] shadow-xl cursor-pointer" 
+                : "bg-gray-100 text-gray-400 cursor-not-allowed";
 
             return `
                 <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 fade-in">
                     
-                    <div class="flex flex-col md:flex-row gap-8 lg:gap-16">
+                    <div class="flex flex-col md:flex-row gap-12 lg:gap-16">
                         
                         <!-- Product Image Slider -->
                         <div class="flex-1 w-full relative group">
                             <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm bg-gray-50" onscroll="updateSliderDots(this)">
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="https://placehold.co/800x1000/f8f9fa/a1a1aa?text=LUX%C3%89LASH+1" alt="Product View 1" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE1.png" alt="LUXÉLASH View 1" class="w-full h-full object-cover">
                                 </div>
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="https://placehold.co/800x1000/f8f9fa/a1a1aa?text=LUX%C3%89LASH+2" alt="Product View 2" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE2.png" alt="LUXÉLASH View 2" class="w-full h-full object-cover">
                                 </div>
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="https://placehold.co/800x1000/f8f9fa/a1a1aa?text=LUX%C3%89LASH+3" alt="Product View 3" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE3.png" alt="LUXÉLASH View 3" class="w-full h-full object-cover">
                                 </div>
                             </div>
                             
+                            <!-- Slider Controls -->
                             <button onclick="scrollSlider(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10">
                                 <i class="ph ph-caret-left text-xl"></i>
                             </button>
@@ -740,6 +788,7 @@
                                 <i class="ph ph-caret-right text-xl"></i>
                             </button>
                             
+                            <!-- Pagination Dots -->
                             <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
                                 <div class="slider-dot w-2 h-2 rounded-full bg-[#D30000] transition-colors"></div>
                                 <div class="slider-dot w-2 h-2 rounded-full bg-gray-300 transition-colors"></div>
@@ -747,93 +796,77 @@
                             </div>
                         </div>
                         
-                        <!-- Product Content & Checkout Actions -->
-                        <div class="flex-1 flex flex-col py-2 md:py-8 lg:sticky lg:top-28 h-fit">
-                            <h2 class="text-2xl md:text-3xl font-serif uppercase tracking-widest mb-2 text-gray-900">${PRODUCT.name}</h2>
+                        <div class="flex-1 flex flex-col py-2 lg:sticky lg:top-32 h-fit">
+                            <h2 class="text-2xl md:text-3xl font-serif uppercase tracking-widest mb-4 text-gray-900 leading-snug">${PRODUCT.name}</h2>
                             
-                            <div class="flex items-center text-[#D30000] mb-4 gap-[2px]">
-                                <span class="font-bold text-lg mr-2">${PRODUCT.rating}</span> ${starsHTML}
-                                <span class="text-gray-400 text-xs ml-2 uppercase tracking-widest">(${PRODUCT.reviews} Reviews)</span>
+                            <!-- Free Shipping Banner -->
+                            <div class="flex items-center gap-2 mb-6 text-green-700 bg-green-50/80 px-4 py-2.5 rounded-sm border border-green-100 w-fit">
+                                <i class="ph ph-truck text-xl"></i>
+                                <span class="text-xs uppercase tracking-widest font-bold">Free Worldwide Shipping</span>
                             </div>
                             
-                            <p class="text-sm md:text-base text-gray-600 leading-relaxed font-light mb-5">${PRODUCT.description}</p>
+                            <p class="text-gray-600 leading-relaxed font-light mb-10 text-sm md:text-base">${PRODUCT.description}</p>
                             
-                            <button onclick="document.getElementById('reviews-section').scrollIntoView({behavior: 'smooth'}); if(document.getElementById('reviews-list').classList.contains('hidden')) toggleReviews();" class="text-[10px] text-[#D30000] underline uppercase tracking-widest mb-6 w-fit hover:opacity-80 transition-opacity font-bold">Read Customer Reviews</button>
-
-                            <div class="bg-green-50/50 border border-green-200 rounded-sm p-3 flex items-center justify-center gap-2 mb-6">
-                                <i class="ph-fill ph-truck text-green-600 text-xl"></i>
-                                <span class="text-[10px] md:text-xs uppercase tracking-widest text-green-700 font-bold">Complimentary Worldwide Shipping Included</span>
-                            </div>
+                            <p class="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-3">SELECT YOUR PACKAGE</p>
                             
-                            <p class="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-3 border-b border-gray-100 pb-2">Select Your Package</p>
-                            
-                            <!-- Direct to Checkout Options -->
-                            <div class="flex flex-col gap-4 w-full mb-6">
-                                <!-- Option 1 -->
-                                <button id="pack-2" onclick="selectOption(2, 19.99, 'pack-2')" class="package-option w-full border-2 border-gray-200 p-3 md:p-4 rounded-sm flex justify-between items-center transition-all duration-300 bg-white hover:border-gray-300">
-                                    <div class="flex flex-col text-left">
-                                        <span class="font-serif text-base md:text-lg text-gray-900 font-medium">Buy 2 Boxes</span>
-                                        <span class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest mt-0.5">Standard Pack</span>
-                                    </div>
-                                    <span class="text-lg md:text-xl font-semibold text-gray-900">$19.99</span>
+                            <!-- Package Grid Options -->
+                            <div class="grid grid-cols-3 gap-3 md:gap-4 w-full mb-8">
+                                
+                                <!-- 2 Pairs Option -->
+                                <button onclick="selectPackage(2, 19.99)" class="relative p-3 md:p-4 border-2 rounded-sm flex flex-col items-center justify-center transition-all ${selectedOrder?.quantity === 2 ? 'border-[#D30000] bg-red-50/30' : 'border-gray-200 hover:border-gray-300 bg-white'}">
+                                    <span class="font-serif text-sm md:text-lg font-medium ${selectedOrder?.quantity === 2 ? 'text-[#D30000]' : 'text-gray-900'} transition-colors">2 Pairs</span>
+                                    <span class="text-xs md:text-sm font-bold ${selectedOrder?.quantity === 2 ? 'text-[#D30000]' : 'text-gray-900'} mt-1 transition-colors">$19.99</span>
                                 </button>
                                 
-                                <!-- Option 2: Best Value -->
-                                <div class="relative p-[2px] rounded-sm anim-border shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="selectOption(4, 28.99, 'pack-4-inner')">
-                                    <div id="pack-4-inner" class="package-option w-full bg-white rounded-[2px] p-3 md:p-4 flex justify-between items-center transition-colors h-full border-2 border-transparent relative">
-                                        <div class="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-[8px] md:text-[9px] uppercase tracking-widest font-bold px-3 py-1 rounded-bl-sm flex items-center gap-1 shadow-sm">
-                                            Best Value <i class="ph-bold ph-timer ml-1"></i><span id="offer-timer">05:00</span>
-                                        </div>
-                                        <div class="flex flex-col text-left mt-2">
-                                            <span class="font-serif text-base md:text-lg text-gray-900 font-medium">Buy 4 Pairs</span>
-                                            <span class="text-[10px] md:text-xs text-orange-600 uppercase tracking-widest font-bold mt-0.5">Save 27% Instantly</span>
-                                        </div>
-                                        <span class="text-lg md:text-xl font-semibold text-[#D30000] mt-2">$28.99</span>
+                                <!-- 4 Pairs Option (Best Value) -->
+                                <button onclick="selectPackage(4, 28.99)" class="relative p-3 md:p-4 border-2 rounded-sm flex flex-col items-center justify-center transition-all ${selectedOrder?.quantity === 4 ? 'border-[#D30000] bg-red-50/50 shadow-md transform -translate-y-0.5' : 'border-[#D30000] border-opacity-40 hover:border-opacity-100 bg-white'}">
+                                    <div class="absolute -top-2.5 bg-[#D30000] text-white text-[8px] md:text-[9px] uppercase tracking-widest px-2.5 py-0.5 rounded-sm whitespace-nowrap shadow-sm font-bold">Best Value</div>
+                                    <span class="font-serif text-sm md:text-lg font-medium text-[#D30000]">4 Pairs</span>
+                                    <span class="text-xs md:text-sm font-bold text-[#D30000] mt-1">$28.99</span>
+                                    
+                                    <!-- Dynamic Timer -->
+                                    <div class="mt-2 text-[10px] text-[#D30000] font-bold bg-white px-2 py-1 rounded-sm border border-red-100 flex items-center gap-1 w-full justify-center">
+                                       <i class="ph ph-timer"></i> <span id="promo-timer">${timerStr}</span>
                                     </div>
-                                </div>
-
-                                <!-- Sold out option -->
-                                <button disabled class="w-full border-2 border-red-100 bg-red-50 p-3 md:p-4 rounded-sm flex justify-between items-center opacity-70 cursor-not-allowed">
-                                    <div class="flex flex-col text-left">
-                                        <span class="font-serif text-base md:text-lg text-gray-400 font-medium line-through decoration-red-200">6 Box Package</span>
-                                        <span class="text-[10px] text-[#D30000] uppercase tracking-widest font-bold mt-0.5 flex items-center gap-1"><i class="ph-bold ph-x"></i> Sold Out</span>
+                                </button>
+                                
+                                <!-- 6 Pairs Option (Sold Out) -->
+                                <button disabled class="relative p-3 md:p-4 border-2 border-red-100 bg-red-50/50 rounded-sm flex flex-col items-center justify-center cursor-not-allowed overflow-hidden">
+                                    <span class="font-serif text-sm md:text-lg font-medium text-gray-500 opacity-60">6 Pairs</span>
+                                    <span class="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-white bg-gray-500 px-2 py-0.5 mt-1.5 rounded-sm z-10 shadow-sm">Sold Out</span>
+                                    
+                                    <!-- Red Cross Layer -->
+                                    <div class="absolute inset-0 flex items-center justify-center opacity-40">
+                                        <div class="w-[150%] h-[2px] bg-[#D30000] rotate-45 absolute"></div>
+                                        <div class="w-[150%] h-[2px] bg-[#D30000] -rotate-45 absolute"></div>
                                     </div>
-                                    <span class="text-lg md:text-xl font-semibold text-gray-400 line-through decoration-red-200">$39.99</span>
                                 </button>
-                            </div>
-
-                            <div id="next-btn-container" class="hidden mb-6 mt-2">
-                                <button onclick="proceedToDelivery()" class="w-full bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-4 rounded-sm shadow-xl hover:bg-[#a00000] transition-colors flex justify-center items-center gap-2">
-                                    Next Step <i class="ph ph-arrow-right text-lg"></i>
-                                </button>
+                                
                             </div>
                             
-                            <div class="border-t border-gray-100 pt-4 mt-2">
-                                <p class="text-[11px] text-gray-500 tracking-wider uppercase flex justify-between mb-2">
-                                    <span>Shipping</span> <span class="text-green-600 font-bold">Complimentary</span>
-                                </p>
-                                <p class="text-[11px] text-gray-500 tracking-wider uppercase flex justify-between">
-                                    <span>Returns</span> <span>Within 30 Days</span>
-                                </p>
-                            </div>
+                            <!-- Proceed Button -->
+                            <button onclick="proceedToCheckout()" class="w-full py-5 uppercase tracking-widest text-xs font-semibold flex justify-center items-center gap-2 ${nextButtonClass}">
+                                Proceed to Checkout <i class="ph ph-arrow-right text-lg"></i>
+                            </button>
+                            ${!selectedOrder ? '<p class="text-[10px] text-center text-gray-400 mt-3 uppercase tracking-widest">Please select a package above</p>' : ''}
                             
-                            <!-- Customer Reviews Section -->
-                            <div id="reviews-section" class="mt-12 pt-10 border-t border-gray-200">
-                                <div class="flex justify-between items-end mb-4">
-                                    <div>
-                                        <h3 class="text-lg font-serif uppercase tracking-widest mb-1 text-gray-900">Customer Reviews</h3>
-                                        <p class="text-xs text-gray-500 tracking-wide">Based on ${PRODUCT.reviews} verified reviews</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <span class="text-2xl font-bold text-gray-900 mr-1">${PRODUCT.rating}</span><span class="text-gray-400 text-sm">/5</span>
+                            <!-- Customer Reviews Toggle Section -->
+                            <div class="mt-14 pt-8 border-t border-gray-200">
+                                <h3 class="text-lg font-serif uppercase tracking-widest mb-4 text-gray-900">Customer Ratings</h3>
+                                
+                                <div class="flex items-center gap-4 mb-6">
+                                    <span class="font-bold text-3xl text-gray-900">${PRODUCT.rating}</span>
+                                    <div class="flex flex-col">
+                                        <div class="flex text-[#D30000] text-lg gap-[1px] mb-1">${starsHTML}</div>
+                                        <span class="text-xs text-gray-500 tracking-wide">Based on ${PRODUCT.reviews} verified reviews</span>
                                     </div>
                                 </div>
                                 
-                                <button id="toggle-reviews-btn" onclick="toggleReviews()" class="w-full py-3 border border-gray-200 text-xs font-semibold tracking-widest uppercase text-gray-700 hover:bg-gray-50 transition-colors flex justify-center items-center mb-4">
-                                    Show All Reviews <i class="ph ph-caret-down ml-1"></i>
+                                <button onclick="toggleReviews()" class="border border-gray-300 w-fit px-6 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-600 hover:border-[#D30000] hover:text-[#D30000] transition-colors flex items-center gap-2">
+                                    ${reviewToggleText} <i class="ph ph-caret-${showReviews ? 'up' : 'down'} text-sm"></i>
                                 </button>
-
-                                <div id="reviews-list" class="hidden transition-all duration-300 opacity-100 mt-6">
+                                
+                                <div id="reviews-container" class="${reviewSectionClass} mt-6 border-t border-gray-100">
                                     ${reviewsHTML}
                                 </div>
                             </div>
@@ -855,14 +888,18 @@
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     
+                    <button onclick="navigate('product')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Offer
+                    </button>
+
                     <div class="bg-gray-50 p-6 md:px-10 md:pt-10 md:pb-6 rounded-sm mb-2 border border-gray-100 shadow-sm relative overflow-visible">
 
                         <!-- Order Summary Box -->
                         <div class="bg-white border border-gray-200 p-4 mb-8 flex justify-between items-center rounded-sm">
                             <div>
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Your Selection</p>
-                                <p class="font-serif text-gray-900 font-medium text-sm">${selectedOrder.productName}</p>
-                                <p class="text-xs text-gray-500 mt-1">${selectedOrder.quantity === 4 ? '4 Pairs' : '2 Boxes'}</p>
+                                <p class="font-serif text-gray-900 font-medium">${selectedOrder.productName} (${selectedOrder.quantity} Pairs)</p>
                             </div>
                             <div class="text-right">
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Total</p>
@@ -936,7 +973,7 @@
                                 </div>
                                 
                                 <div class="pt-6 flex justify-center overflow-visible">
-                                    <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px] shadow-lg hover:bg-[#a00000] rounded-sm">
+                                    <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px] shadow-lg hover:bg-[#a00000]">
                                         Proceed to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>
                                     </button>
                                 </div>
@@ -953,13 +990,14 @@
                                     <div id="paypal-button-container" class="min-h-[55px]"></div>
                                 </div>
 
+                                <!-- Crypto Payment Divider & Button -->
                                 <div class="flex items-center justify-center space-x-4 my-6">
                                     <hr class="flex-grow border-gray-200">
                                     <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">OR</span>
                                     <hr class="flex-grow border-gray-200">
                                 </div>
 
-                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md rounded-sm">
+                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md">
                                     <i class="ph ph-coin text-xl"></i> Pay with Crypto
                                 </button>
                             </div>
@@ -967,12 +1005,6 @@
 
                     </div>
 
-                    <div id="delivery-back" class="text-center mt-6">
-                        <button onclick="navigate('product')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Product
-                        </button>
-                    </div>
-                    
                     <div id="payment-back" class="text-center mt-6 hidden">
                         <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
                             <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
@@ -1002,6 +1034,7 @@
                     
                     <div class="bg-white p-6 md:p-8 rounded-sm border border-gray-100 shadow-xl text-center">
                         
+                        <!-- Payment Waiting Header -->
                         <div class="flex flex-col items-center justify-center w-full mb-8 border-b border-gray-100 pb-8">
                             <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
                             <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
@@ -1051,6 +1084,7 @@
         }
 
         function renderThankYou() {
+            // Calculate Date 10 days from now
             const deliveryDate = new Date();
             deliveryDate.setDate(deliveryDate.getDate() + 10);
             const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -1064,7 +1098,7 @@
                     <h2 class="text-4xl font-serif tracking-widest uppercase mb-6 text-gray-900">Thank You!</h2>
                     <p class="text-xl text-gray-600 mb-8 font-light">Your elegant order has been placed successfully.</p>
                     
-                    <div class="bg-gray-50 p-8 border border-gray-100 text-left mb-10 shadow-sm rounded-sm">
+                    <div class="bg-gray-50 p-8 border border-gray-100 text-left mb-10 shadow-sm">
                         <div class="mb-6">
                             <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Estimated Delivery</p>
                             <p class="text-lg text-gray-900 font-serif">${formattedDate}</p>
