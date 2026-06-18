@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marina & Elévia | Exclusive Offer</title>
+    <title>LUXÉLASH | Exclusive Offer</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -62,7 +62,7 @@
             
             <!-- Logo -->
             <h1 onclick="navigate('product')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
-                <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
+                <span class="text-[#D30000]">L</span>UXÉ<span class="text-[#D30000]">L</span>ASH
             </h1>
             
             <div class="flex items-center justify-end gap-3 md:gap-5 border-l border-gray-200 pl-4 md:pl-8">
@@ -140,8 +140,9 @@
         // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
-        // YOUR NEW FIREBASE CONFIGURATION
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+
+        // Your new web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA8j3Jh9S-4UDHGx75enZn8qs6T3pOtKs4",
             authDomain: "backend-83c72.firebaseapp.com",
@@ -154,6 +155,7 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const analytics = getAnalytics(app);
 
         // --- AUDIO INTEGRATION ---
         const clickAudio = new Audio('AUD-20260422-WA0000.mp3');
@@ -164,21 +166,21 @@
 
         // --- SINGLE PRODUCT DATA ---
         const PRODUCT = {
-            name: "Signature Collection",
+            name: "LUXÉLASH MAGNETIC EYELASHES BUNDLE",
             rating: 4.9,
             reviews: 1428,
-            description: "Experience unparalleled elegance with our signature collection. Meticulously crafted to offer a flawless finish that effortlessly elevates any ensemble. Designed for those who appreciate true sophistication.",
+            description: "Effortlessly flawless lashes in seconds. Our premium magnetic eyelashes offer a secure, all-day hold without messy glue. Lightweight, reusable, and designed for true sophistication.",
             reviewsList: [
-                { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The quality is unmatched and they look beautiful in person. A staple piece." },
-                { author: "Sarah M.", rating: 5, text: "I've worn these to work and to dinner dates. Extremely versatile and feels luxurious." },
-                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Looks far more expensive than the price tag." }
+                { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The quality is unmatched and they look beautiful in person. No messy glue!" },
+                { author: "Sarah M.", rating: 5, text: "I've worn these to work and to dinner dates. Extremely versatile and the magnetic hold is so strong." },
+                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Looks far more natural and expensive than the price tag." }
             ]
         };
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.'];
         const FOMO_OPTIONS = [
-            { qty: 2, text: "bought the 2 for $19.99 offer" },
-            { qty: 4, text: "bought the 4 for $28.99 offer" }
+            { qty: 2, text: "bought the 2 Pairs offer" },
+            { qty: 4, text: "bought the 4 Pairs offer" }
         ];
 
         // --- CRYPTO MAP DATA ---
@@ -202,10 +204,15 @@
         };
 
         // --- STATE ---
-        let currentView = 'product'; // Default is directly on the product
-        let selectedOrder = null; // Holds the { qty, price } chosen
+        let currentView = 'product'; 
+        let selectedOrder = null; 
+        let showReviews = false;
         let toastTimeout;
         let finalCustomerEmail = '';
+        
+        // Timer State
+        let timerInterval;
+        let timeLeft = 600; // 10 minutes (600 seconds)
         
         // Crypto State
         let cryptoNetwork = 'Ethereum';
@@ -235,15 +242,48 @@
             }, 3000);
         }
 
-        function selectOption(qty, price) {
+        function selectPackage(qty, price) {
             playClickSound();
             selectedOrder = {
                 productName: PRODUCT.name,
                 quantity: qty,
                 price: price
             };
+            render(); // Re-render to show selection highlight and enable Next button
+        }
+
+        function proceedToCheckout() {
+            if (!selectedOrder) return;
+            playClickSound();
             navigate('checkout');
         }
+
+        function toggleReviews() {
+            playClickSound();
+            showReviews = !showReviews;
+            render();
+        }
+
+        // Global Timer function (Starts once, runs forever, DOM is updated if element exists)
+        function startPromoTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) timeLeft = 600; 
+                timeLeft--;
+                
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                const formattedTime = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                
+                const timerEl = document.getElementById('promo-timer');
+                if (timerEl) {
+                    timerEl.textContent = formattedTime;
+                }
+            }, 1000);
+        }
+        
+        // Start timer immediately
+        startPromoTimer();
 
         // --- CHECKOUT FORM LOGIC & FIREBASE ---
         function handleDeliverySubmit(event) {
@@ -281,10 +321,10 @@
                     city: document.getElementById('city').value,
                     zip: document.getElementById('zip').value
                 },
-                orderItems: [{
+                cart: [{
                     name: selectedOrder.productName,
-                    package: `Pack of ${selectedOrder.quantity}`,
-                    price: selectedOrder.price
+                    price: selectedOrder.price,
+                    quantity: selectedOrder.quantity
                 }],
                 totalPrice: selectedOrder.price,
                 createdAt: serverTimestamp()
@@ -324,7 +364,9 @@
         // --- BIND GLOBALS FOR MODULE SCRIPT ---
         window.navigate = navigate;
         window.handleHelpClick = handleHelpClick;
-        window.selectOption = selectOption;
+        window.selectPackage = selectPackage;
+        window.proceedToCheckout = proceedToCheckout;
+        window.toggleReviews = toggleReviews;
         window.scrollSlider = scrollSlider;
         window.updateSliderDots = updateSliderDots;
         window.handleDeliverySubmit = handleDeliverySubmit;
@@ -660,10 +702,18 @@
         // --- RENDERING ---
         function render() {
             const content = document.getElementById('app-content');
+            
+            // Capture existing timer string before destroying the DOM, to prevent a blink
+            let currentTimerStr = "10:00";
+            const existingTimer = document.getElementById('promo-timer');
+            if (existingTimer) {
+                currentTimerStr = existingTimer.textContent;
+            }
+
             content.innerHTML = '';
 
             if (currentView === 'product') {
-                content.innerHTML = renderProduct();
+                content.innerHTML = renderProduct(currentTimerStr);
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
                 setupLocationAPI(); 
@@ -674,24 +724,32 @@
             }
         }
 
-        function renderProduct() {
-            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-sm md:text-base"></i>').join('');
+        function renderProduct(timerStr = "10:00") {
+            const starsHTML = Array(5).fill('<i class="ph-fill ph-star"></i>').join('');
 
             const reviewsHTML = PRODUCT.reviewsList.map(review => {
                 const reviewStars = Array(5).fill(0).map((_, i) => 
                     `<i class="${i < review.rating ? 'ph-fill' : 'ph'} ph-star text-[#D30000] text-sm"></i>`
                 ).join('');
                 return `
-                    <div class="border-b border-gray-100 pb-8 pt-8 last:border-0 last:pb-0">
+                    <div class="border-b border-gray-100 pb-6 pt-6 last:border-0 last:pb-0">
                         <div class="flex items-center justify-between mb-2">
                             <span class="font-medium text-gray-900 tracking-wide">${review.author}</span>
                             <div class="flex gap-[2px]">${reviewStars}</div>
                         </div>
                         <span class="text-[10px] uppercase tracking-widest text-green-600 font-bold mb-3 block">Verified Buyer</span>
-                        <p class="text-gray-600 font-light leading-relaxed text-sm md:text-base">${review.text}</p>
+                        <p class="text-gray-600 font-light leading-relaxed text-sm">${review.text}</p>
                     </div>
                 `;
             }).join('');
+            
+            const reviewToggleText = showReviews ? "Hide Customer Reviews" : "Show Customer Reviews";
+            const reviewSectionClass = showReviews ? "block fade-in" : "hidden";
+
+            // Next button logic
+            const nextButtonClass = selectedOrder 
+                ? "bg-[#D30000] text-white hover:bg-[#a00000] shadow-xl cursor-pointer" 
+                : "bg-gray-100 text-gray-400 cursor-not-allowed";
 
             return `
                 <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 fade-in">
@@ -701,14 +759,14 @@
                         <!-- Product Image Slider -->
                         <div class="flex-1 w-full relative group">
                             <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm bg-gray-50" onscroll="updateSliderDots(this)">
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="PE1.png" alt="Product View 1" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE1.png" alt="LUXÉLASH View 1" class="w-full h-full object-cover">
                                 </div>
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="PE2.png" alt="Product View 2" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE2.png" alt="LUXÉLASH View 2" class="w-full h-full object-cover">
                                 </div>
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="PE3.png" alt="Product View 3" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE3.png" alt="LUXÉLASH View 3" class="w-full h-full object-cover">
                                 </div>
                             </div>
                             
@@ -728,53 +786,77 @@
                             </div>
                         </div>
                         
-                        <div class="flex-1 flex flex-col py-4 md:py-8 lg:sticky lg:top-32 h-fit">
-                            <h2 class="text-3xl md:text-4xl font-serif uppercase tracking-widest mb-3 text-gray-900">${PRODUCT.name}</h2>
+                        <div class="flex-1 flex flex-col py-2 lg:sticky lg:top-32 h-fit">
+                            <h2 class="text-2xl md:text-3xl font-serif uppercase tracking-widest mb-4 text-gray-900 leading-snug">${PRODUCT.name}</h2>
                             
-                            <div class="flex items-center text-[#D30000] mb-6 gap-[2px]">
-                                <span class="font-bold text-lg mr-2">${PRODUCT.rating}</span> ${starsHTML}
-                                <span class="text-gray-400 text-xs ml-2 uppercase tracking-widest">(${PRODUCT.reviews} Reviews)</span>
+                            <!-- Free Shipping Banner -->
+                            <div class="flex items-center gap-2 mb-6 text-green-700 bg-green-50/80 px-4 py-2.5 rounded-sm border border-green-100 w-fit">
+                                <i class="ph ph-truck text-xl"></i>
+                                <span class="text-xs uppercase tracking-widest font-bold">Free Worldwide Shipping</span>
                             </div>
                             
-                            <p class="text-gray-600 leading-relaxed font-light mb-10 text-base md:text-lg">${PRODUCT.description}</p>
+                            <p class="text-gray-600 leading-relaxed font-light mb-10 text-sm md:text-base">${PRODUCT.description}</p>
                             
-                            <p class="text-[10px] uppercase tracking-widest font-bold text-green-600 mb-3">SELECT YOUR PACKAGE</p>
+                            <p class="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-3">SELECT YOUR PACKAGE</p>
                             
-                            <!-- Direct to Checkout Options -->
-                            <div class="flex flex-col gap-4 w-full mb-8">
-                                <button onclick="selectOption(2, 19.99)" class="w-full border-2 border-gray-200 hover:border-[#D30000] p-4 md:p-5 rounded-sm flex justify-between items-center transition-all duration-300 group bg-white shadow-sm hover:shadow-md relative overflow-hidden">
-                                    <div class="flex flex-col text-left relative z-10">
-                                        <span class="font-serif text-lg md:text-xl text-gray-900 group-hover:text-[#D30000] transition-colors font-medium">Buy 2 Items</span>
-                                        <span class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest mt-1">Standard Pack</span>
-                                    </div>
-                                    <span class="text-xl md:text-2xl font-semibold text-gray-900 relative z-10 group-hover:text-[#D30000] transition-colors">$19.99</span>
-                                    <div class="absolute inset-0 bg-red-50/0 group-hover:bg-red-50/50 transition-colors duration-300"></div>
+                            <!-- Package Grid Options -->
+                            <div class="grid grid-cols-3 gap-3 md:gap-4 w-full mb-8">
+                                
+                                <!-- 2 Pairs Option -->
+                                <button onclick="selectPackage(2, 19.99)" class="relative p-3 md:p-4 border-2 rounded-sm flex flex-col items-center justify-center transition-all ${selectedOrder?.quantity === 2 ? 'border-[#D30000] bg-red-50/30' : 'border-gray-200 hover:border-gray-300 bg-white'}">
+                                    <span class="font-serif text-sm md:text-lg font-medium ${selectedOrder?.quantity === 2 ? 'text-[#D30000]' : 'text-gray-900'} transition-colors">2 Pairs</span>
+                                    <span class="text-xs md:text-sm font-bold ${selectedOrder?.quantity === 2 ? 'text-[#D30000]' : 'text-gray-900'} mt-1 transition-colors">$19.99</span>
                                 </button>
                                 
-                                <button onclick="selectOption(4, 28.99)" class="w-full border-2 border-[#D30000] p-4 md:p-5 rounded-sm flex justify-between items-center transition-all duration-300 group bg-red-50/30 hover:bg-red-50/60 shadow-md relative overflow-hidden">
-                                    <div class="absolute top-0 right-0 bg-[#D30000] text-white text-[8px] md:text-[9px] uppercase tracking-widest font-bold px-3 py-1 rounded-bl-sm">Best Value</div>
-                                    <div class="flex flex-col text-left relative z-10">
-                                        <span class="font-serif text-lg md:text-xl text-gray-900 transition-colors font-medium">Buy 4 Items</span>
-                                        <span class="text-[10px] md:text-xs text-green-600 uppercase tracking-widest font-bold mt-1">Save 27% Instantly</span>
+                                <!-- 4 Pairs Option (Best Value) -->
+                                <button onclick="selectPackage(4, 28.99)" class="relative p-3 md:p-4 border-2 rounded-sm flex flex-col items-center justify-center transition-all ${selectedOrder?.quantity === 4 ? 'border-[#D30000] bg-red-50/50 shadow-md transform -translate-y-0.5' : 'border-[#D30000] border-opacity-40 hover:border-opacity-100 bg-white'}">
+                                    <div class="absolute -top-2.5 bg-[#D30000] text-white text-[8px] md:text-[9px] uppercase tracking-widest px-2.5 py-0.5 rounded-sm whitespace-nowrap shadow-sm font-bold">Best Value</div>
+                                    <span class="font-serif text-sm md:text-lg font-medium text-[#D30000]">4 Pairs</span>
+                                    <span class="text-xs md:text-sm font-bold text-[#D30000] mt-1">$28.99</span>
+                                    
+                                    <!-- Dynamic Timer -->
+                                    <div class="mt-2 text-[10px] text-[#D30000] font-bold bg-white px-2 py-1 rounded-sm border border-red-100 flex items-center gap-1 w-full justify-center">
+                                       <i class="ph ph-timer"></i> <span id="promo-timer">${timerStr}</span>
                                     </div>
-                                    <span class="text-xl md:text-2xl font-semibold text-[#D30000] relative z-10">$28.99</span>
                                 </button>
+                                
+                                <!-- 6 Pairs Option (Sold Out) -->
+                                <button disabled class="relative p-3 md:p-4 border-2 border-red-100 bg-red-50/50 rounded-sm flex flex-col items-center justify-center cursor-not-allowed overflow-hidden">
+                                    <span class="font-serif text-sm md:text-lg font-medium text-gray-500 opacity-60">6 Pairs</span>
+                                    <span class="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-white bg-gray-500 px-2 py-0.5 mt-1.5 rounded-sm z-10 shadow-sm">Sold Out</span>
+                                    
+                                    <!-- Red Cross Layer -->
+                                    <div class="absolute inset-0 flex items-center justify-center opacity-40">
+                                        <div class="w-[150%] h-[2px] bg-[#D30000] rotate-45 absolute"></div>
+                                        <div class="w-[150%] h-[2px] bg-[#D30000] -rotate-45 absolute"></div>
+                                    </div>
+                                </button>
+                                
                             </div>
                             
-                            <div class="border-t border-gray-100 pt-6 mt-2">
-                                <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between mb-2">
-                                    <span>Shipping</span> <span class="text-green-600 font-bold">Complimentary</span>
-                                </p>
-                                <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between">
-                                    <span>Returns</span> <span>Within 30 Days</span>
-                                </p>
-                            </div>
+                            <!-- Proceed Button -->
+                            <button onclick="proceedToCheckout()" class="w-full py-5 uppercase tracking-widest text-xs font-semibold flex justify-center items-center gap-2 ${nextButtonClass}">
+                                Proceed to Checkout <i class="ph ph-arrow-right text-lg"></i>
+                            </button>
+                            ${!selectedOrder ? '<p class="text-[10px] text-center text-gray-400 mt-3 uppercase tracking-widest">Please select a package above</p>' : ''}
                             
-                            <!-- Customer Reviews Section -->
-                            <div class="mt-12 pt-10 border-t border-gray-900">
-                                <h3 class="text-xl font-serif uppercase tracking-widest mb-2 text-gray-900">Customer Reviews</h3>
-                                <p class="text-sm text-gray-500 mb-6 tracking-wide">Based on ${PRODUCT.reviews} verified reviews</p>
-                                <div>
+                            <!-- Customer Reviews Toggle Section -->
+                            <div class="mt-14 pt-8 border-t border-gray-200">
+                                <h3 class="text-lg font-serif uppercase tracking-widest mb-4 text-gray-900">Customer Ratings</h3>
+                                
+                                <div class="flex items-center gap-4 mb-6">
+                                    <span class="font-bold text-3xl text-gray-900">${PRODUCT.rating}</span>
+                                    <div class="flex flex-col">
+                                        <div class="flex text-[#D30000] text-lg gap-[1px] mb-1">${starsHTML}</div>
+                                        <span class="text-xs text-gray-500 tracking-wide">Based on ${PRODUCT.reviews} verified reviews</span>
+                                    </div>
+                                </div>
+                                
+                                <button onclick="toggleReviews()" class="border border-gray-300 w-fit px-6 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-600 hover:border-[#D30000] hover:text-[#D30000] transition-colors flex items-center gap-2">
+                                    ${reviewToggleText} <i class="ph ph-caret-${showReviews ? 'up' : 'down'} text-sm"></i>
+                                </button>
+                                
+                                <div id="reviews-container" class="${reviewSectionClass} mt-6 border-t border-gray-100">
                                     ${reviewsHTML}
                                 </div>
                             </div>
@@ -796,13 +878,18 @@
             return `
                 <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     
+                    <button onclick="navigate('product')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Offer
+                    </button>
+
                     <div class="bg-gray-50 p-6 md:px-10 md:pt-10 md:pb-6 rounded-sm mb-2 border border-gray-100 shadow-sm relative overflow-visible">
 
                         <!-- Order Summary Box -->
                         <div class="bg-white border border-gray-200 p-4 mb-8 flex justify-between items-center rounded-sm">
                             <div>
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Your Selection</p>
-                                <p class="font-serif text-gray-900 font-medium">${selectedOrder.productName} (x${selectedOrder.quantity})</p>
+                                <p class="font-serif text-gray-900 font-medium">${selectedOrder.productName} (${selectedOrder.quantity} Pairs)</p>
                             </div>
                             <div class="text-right">
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Total</p>
@@ -908,12 +995,6 @@
 
                     </div>
 
-                    <div id="delivery-back" class="text-center mt-6">
-                        <button onclick="navigate('product')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Product
-                        </button>
-                    </div>
-                    
                     <div id="payment-back" class="text-center mt-6 hidden">
                         <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
                             <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
