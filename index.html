@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LUXÉLASH | Magnetic Eyelashes Bundle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXÉLASH | Exclusive Offer</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,7 +15,7 @@
     <script src="https://www.paypal.com/sdk/js?client-id=AYgtpNcMYauLd1IW8nzAsfQw-sWG3mqR2-YbsqJDUvTHx6SaQjnXAj42lacA_t-qHa1SYklPM53tTY0P&currency=USD"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -28,29 +28,12 @@
         }
 
         .fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
+            animation: fadeIn 0.4s ease-out forwards;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Animated Zebra Stripes for Best Value */
-        @keyframes slideStripes {
-            from { background-position: 0 0; }
-            to { background-position: 40px 0; }
-        }
-        .zebra-stripes {
-            background-image: repeating-linear-gradient(
-                -45deg,
-                #D30000,
-                #D30000 10px,
-                #ffffff 10px,
-                #ffffff 20px
-            );
-            background-size: 56px 56px;
-            animation: slideStripes 2s linear infinite;
         }
 
         /* Hide scrollbar for cleaner look */
@@ -60,52 +43,64 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
         
         /* Form Autofill cleanup */
         input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 30px white inset !important;
         }
         
+        /* Enforces strict 1-image per swipe */
         .snap-always { scroll-snap-stop: always; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-[#f8d7d7] relative overflow-x-hidden">
 
     <!-- Header -->
-    <header class="sticky top-0 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm z-40">
-        <div class="max-w-md mx-auto px-4 h-14 flex items-center justify-between w-full">
-            <!-- LUXÉLASH Logo -->
-            <h1 onclick="navigate('product')" class="text-xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0">
+    <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
+        <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between w-full gap-4">
+            
+            <!-- Logo -->
+            <h1 onclick="navigate('product')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
                 <span class="text-[#D30000]">L</span>UXÉ<span class="text-[#D30000]">L</span>ASH
             </h1>
             
-            <div class="flex items-center justify-end gap-3">
-                <button onclick="handleHelpClick()" class="w-8 h-8 flex items-center justify-center text-gray-900 hover:text-[#D30000] transition-colors" title="Contact Support">
-                    <i class="ph ph-headset text-xl"></i>
+            <div class="flex items-center justify-end gap-3 md:gap-5 border-l border-gray-200 pl-4 md:pl-8">
+                <!-- Help / Support Icon -->
+                <button onclick="handleHelpClick()" class="w-10 h-10 flex items-center justify-center relative text-gray-900 hover:text-[#D30000] transition-colors" title="Contact Support">
+                    <i class="ph ph-headset text-2xl"></i>
                 </button>
             </div>
+            
         </div>
     </header>
 
-    <!-- Top Notification -->
-    <div id="top-notification" class="fixed top-4 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 transition-all duration-500 -translate-y-32 opacity-0 pointer-events-none w-max max-w-[95%]">
-        <div class="w-6 h-6 bg-white text-green-600 rounded-full flex items-center justify-center shrink-0">
-            <i class="ph ph-check font-bold text-sm"></i>
+    <!-- Top Notification (Success Inquiry) -->
+    <div id="top-notification" class="fixed top-8 left-1/2 -translate-x-1/2 bg-green-600 text-white px-8 py-5 rounded-full shadow-2xl z-[100] flex items-center gap-4 transition-all duration-500 -translate-y-40 opacity-0 pointer-events-none w-max max-w-[95%] md:max-w-md">
+        <div class="w-8 h-8 bg-white text-green-600 rounded-full flex items-center justify-center shrink-0">
+            <i class="ph ph-check font-bold text-lg"></i>
         </div>
-        <span id="top-notification-msg" class="font-medium text-sm tracking-wide"></span>
+        <div class="flex flex-col">
+            <span id="top-notification-msg" class="font-medium text-base md:text-lg tracking-wide"></span>
+            <span class="text-xs uppercase tracking-widest opacity-90 mt-0.5">Redirecting...</span>
+        </div>
     </div>
 
     <!-- FOMO Notification Popup -->
-    <div id="fomo-popup" class="fixed bottom-6 left-4 right-4 md:left-auto md:right-6 md:w-80 z-50 bg-white/95 backdrop-blur shadow-2xl border border-gray-100 rounded-lg p-3 flex items-center gap-3 transition-all duration-700 translate-y-32 opacity-0 pointer-events-none">
-        <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center shrink-0">
-            <i class="ph-fill ph-check-circle text-2xl text-green-500"></i>
+    <div id="fomo-popup" class="fixed bottom-10 left-4 md:left-6 z-50 bg-white/95 backdrop-blur shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 rounded-full p-1.5 pr-5 flex items-center gap-3 transition-all duration-700 translate-y-40 opacity-0 pointer-events-none max-w-[90%] md:max-w-sm">
+        <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
+            <i class="ph ph-bag text-xl text-green-500"></i>
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col py-1">
             <div class="flex items-center gap-2 mb-0.5">
-                <span id="fomo-name" class="text-xs font-semibold text-gray-900"></span>
-                <span class="text-[10px] text-gray-400 font-medium">just now</span>
+                <span id="fomo-name" class="text-[11px] font-semibold text-gray-900"></span>
+                <span class="text-[9px] text-gray-400 font-medium">just now</span>
             </div>
-            <span id="fomo-action" class="text-xs text-gray-600 leading-tight"></span>
+            <span id="fomo-action" class="text-[10px] text-gray-600 leading-tight line-clamp-1"></span>
+            <div class="flex items-center gap-1 mt-1">
+                <i class="ph-fill ph-check-circle text-green-500 text-[10px]"></i>
+                <span class="text-[8px] text-green-600 uppercase tracking-widest font-bold">Verified Order</span>
+            </div>
         </div>
     </div>
 
@@ -115,26 +110,29 @@
     <!-- Crypto Payment Modal -->
     <div id="crypto-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-[70] p-4 transition-opacity duration-300 opacity-0 pointer-events-none hidden">
         <div class="bg-white max-w-sm w-full rounded-md shadow-2xl relative fade-in overflow-hidden">
-            <div class="p-5 border-b border-gray-100">
-                <button onclick="closeCryptoPopup()" class="absolute top-5 right-5 text-gray-400 hover:text-[#D30000] transition-colors">
+            <div class="p-6 border-b border-gray-100">
+                <button onclick="closeCryptoPopup()" class="absolute top-6 right-6 text-gray-400 hover:text-[#D30000] transition-colors">
                     <i class="ph ph-x text-xl"></i>
                 </button>
-                <h3 class="text-base font-serif tracking-widest uppercase text-gray-900">Select Network</h3>
+                <h3 class="text-lg font-serif tracking-widest uppercase text-gray-900">Select Network & Token</h3>
             </div>
-            <div id="crypto-modal-content" class="p-5"></div>
+            <div id="crypto-modal-content" class="p-6">
+                <!-- Rendered dynamically via JS -->
+            </div>
         </div>
     </div>
 
-    <!-- Support Redirect Overlay -->
+    <!-- Support Redirect Loading Overlay -->
     <div id="help-overlay" class="fixed inset-0 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center z-[60] transition-opacity duration-300 opacity-0 pointer-events-none hidden">
-        <i class="ph ph-spinner animate-spin text-4xl text-[#D30000] mb-4"></i>
-        <h3 class="text-xl font-serif tracking-widest uppercase mb-2 text-gray-900">Redirecting...</h3>
+        <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-6"></i>
+        <h3 class="text-2xl font-serif tracking-widest uppercase mb-3 text-gray-900">Redirecting you to us...</h3>
+        <p class="text-xs text-gray-500 tracking-widest uppercase">Opening your secure email client</p>
     </div>
 
-    <!-- Custom Toast -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-[#D30000] text-white px-5 py-3 shadow-xl z-50 flex items-center gap-2 transition-opacity duration-300 opacity-0 pointer-events-none rounded-sm">
-        <i class="ph ph-warning text-base"></i>
-        <span id="toast-msg" class="font-light tracking-wide text-xs"></span>
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-[#D30000] text-white px-6 py-4 shadow-xl z-50 flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <i class="ph ph-warning text-lg"></i>
+        <span id="toast-msg" class="font-light tracking-wide text-sm"></span>
     </div>
 
     <!-- Application Script -->
@@ -142,7 +140,9 @@
         // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+
+        // Your new web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA8j3Jh9S-4UDHGx75enZn8qs6T3pOtKs4",
             authDomain: "backend-83c72.firebaseapp.com",
@@ -152,204 +152,225 @@
             appId: "1:848947002648:web:c25bbd41c93e6b5919726d"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const analytics = getAnalytics(app);
 
-        // --- AUDIO ---
+        // --- AUDIO INTEGRATION ---
         const clickAudio = new Audio('AUD-20260422-WA0000.mp3');
         function playClickSound() {
             clickAudio.currentTime = 0;
-            clickAudio.play().catch(e => console.warn("Audio prevented:", e));
+            clickAudio.play().catch(e => console.warn("Audio play prevented:", e));
         }
 
-        // --- PRODUCT DATA ---
+        // --- SINGLE PRODUCT DATA ---
         const PRODUCT = {
             name: "LUXÉLASH MAGNETIC EYELASHES BUNDLE",
             rating: 4.9,
             reviews: 1428,
-            description: "Flawless, reusable magnetic lashes that apply in seconds. No glue, no mess. Elevate your daily look with effortless, lightweight volume.",
+            description: "Effortlessly flawless lashes in seconds. Our premium magnetic eyelashes offer a secure, all-day hold without messy glue. Lightweight, reusable, and designed for true sophistication.",
             reviewsList: [
-                { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The magnets are strong and they look beautiful." },
-                { author: "Sarah M.", rating: 5, text: "I've worn these to work and dinner. Extremely versatile and no eye irritation!" },
-                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Much better than messy glue." }
+                { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The quality is unmatched and they look beautiful in person. No messy glue!" },
+                { author: "Sarah M.", rating: 5, text: "I've worn these to work and to dinner dates. Extremely versatile and the magnetic hold is so strong." },
+                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Looks far more natural and expensive than the price tag." }
             ]
         };
 
-        const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.'];
+        const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.'];
         const FOMO_OPTIONS = [
-            { text: "bought the 2 Pairs offer" },
-            { text: "bought the 4 Pairs offer" }
+            { qty: 2, text: "bought the 2 Pairs offer" },
+            { qty: 4, text: "bought the 4 Pairs offer" }
         ];
 
         // --- CRYPTO MAP DATA ---
         const CRYPTO_ASSETS = {
             'Ethereum': {
                 address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
-                tokens: { 'USDT': './eth-usdt.jpg', 'USDC': './ethereum-usdc.jpg', 'ETH': './ethereum-eth.png' }
+                tokens: {
+                    'USDT': './eth-usdt.jpg',
+                    'USDC': './ethereum-usdc.jpg',
+                    'ETH': './ethereum-eth.png'
+                }
             },
             'Solana': {
                 address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy',
-                tokens: { 'USDT': './solana-usdt.jpg', 'USDC': './solana-usdc.jpg', 'SOL': './Solana-sol.jpg' }
+                tokens: {
+                    'USDT': './solana-usdt.jpg',
+                    'USDC': './solana-usdc.jpg',
+                    'SOL': './Solana-sol.jpg'
+                }
             }
         };
 
         // --- STATE ---
         let currentView = 'product'; 
         let selectedOrder = null; 
+        let showReviews = false;
         let toastTimeout;
         let finalCustomerEmail = '';
+        
+        // Timer State
+        let timerInterval;
+        let timeLeft = 600; // 10 minutes (600 seconds)
+        
+        // Crypto State
         let cryptoNetwork = 'Ethereum';
         let cryptoToken = 'ETH';
         window.currentCryptoAmount = 0;
         const CRYPTO_RATES = { 'ETH': 3100, 'SOL': 140, 'USDT': 1, 'USDC': 1 };
-
-        // Countdown Timer Logic
-        let countdownInterval;
-        function startCountdown() {
-            let time = 15 * 60 + 43; // 15 mins 43 secs
-            clearInterval(countdownInterval);
-            countdownInterval = setInterval(() => {
-                time--;
-                if (time < 0) time = 15 * 60; // reset loop
-                const mins = Math.floor(time / 60).toString().padStart(2, '0');
-                const secs = (time % 60).toString().padStart(2, '0');
-                const el = document.getElementById('timer-display');
-                if(el) el.textContent = `Ends in ${mins}:${secs}`;
-            }, 1000);
-        }
 
         // --- CORE FUNCTIONS ---
         function navigate(view) {
             currentView = view;
             window.scrollTo(0, 0);
             render();
-            if(view === 'product') {
-                selectedOrder = null; // Reset selection if going back
-                startCountdown();
-            }
         }
 
         function handleHelpClick() {
             const overlay = document.getElementById('help-overlay');
             overlay.classList.remove('hidden');
-            setTimeout(() => { overlay.classList.remove('opacity-0', 'pointer-events-none'); overlay.classList.add('opacity-100'); }, 10);
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }, 10);
             setTimeout(() => {
                 window.location.href = "mailto:marina.elevia@gmail.com";
-                overlay.classList.remove('opacity-100'); overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
                 setTimeout(() => { overlay.classList.add('hidden'); }, 300);
             }, 3000);
         }
 
         function selectPackage(qty, price) {
             playClickSound();
-            selectedOrder = { productName: PRODUCT.name, quantity: qty, price: price };
-            
-            // Update UI Selections
-            document.getElementById('pack-2').classList.remove('border-[#D30000]', 'bg-red-50/10');
-            document.getElementById('pack-2').classList.add('border-gray-200', 'bg-white');
-            document.getElementById('pack-4').classList.remove('border-[#D30000]', 'scale-[1.02]', 'shadow-md');
-            document.getElementById('pack-4').classList.add('border-gray-300');
-
-            if(qty === 2) {
-                document.getElementById('pack-2').classList.remove('border-gray-200', 'bg-white');
-                document.getElementById('pack-2').classList.add('border-[#D30000]', 'bg-red-50/10');
-            } else if (qty === 4) {
-                document.getElementById('pack-4').classList.remove('border-gray-300');
-                document.getElementById('pack-4').classList.add('border-[#D30000]', 'scale-[1.02]', 'shadow-md');
-            }
-
-            // Enable Proceed Button
-            const proceedBtn = document.getElementById('proceed-btn');
-            proceedBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-800');
-            proceedBtn.classList.add('bg-[#D30000]', 'hover:bg-[#a00000]', 'shadow-lg');
-            proceedBtn.disabled = false;
+            selectedOrder = {
+                productName: PRODUCT.name,
+                quantity: qty,
+                price: price
+            };
+            render(); // Re-render to show selection highlight and enable Next button
         }
 
-        function triggerProceed() {
-            if(!selectedOrder) return;
+        function proceedToCheckout() {
+            if (!selectedOrder) return;
             playClickSound();
             navigate('checkout');
         }
 
         function toggleReviews() {
-            const container = document.getElementById('reviews-container');
-            const btn = document.getElementById('toggle-reviews-btn');
-            if(container.classList.contains('hidden')) {
-                container.classList.remove('hidden');
-                btn.textContent = "Hide Reviews";
-            } else {
-                container.classList.add('hidden');
-                btn.textContent = "Show Reviews";
-            }
+            playClickSound();
+            showReviews = !showReviews;
+            render();
         }
+
+        // Global Timer function (Starts once, runs forever, DOM is updated if element exists)
+        function startPromoTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) timeLeft = 600; 
+                timeLeft--;
+                
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                const formattedTime = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                
+                const timerEl = document.getElementById('promo-timer');
+                if (timerEl) {
+                    timerEl.textContent = formattedTime;
+                }
+            }, 1000);
+        }
+        
+        // Start timer immediately
+        startPromoTimer();
 
         // --- CHECKOUT FORM LOGIC & FIREBASE ---
         function handleDeliverySubmit(event) {
             event.preventDefault();
             const form = document.getElementById('delivery-form');
-            if (!form.checkValidity()) { form.reportValidity(); return; }
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
             
             finalCustomerEmail = document.getElementById('email').value;
             const customerName = document.getElementById('customerName').value;
 
+            // Show top green notification
             const topNotif = document.getElementById('top-notification');
-            document.getElementById('top-notification-msg').textContent = `Details secured, ${customerName}`;
-            topNotif.classList.remove('-translate-y-32', 'opacity-0', 'pointer-events-none');
+            document.getElementById('top-notification-msg').textContent = `Received your details, ${customerName}`;
+            
+            topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
             topNotif.classList.add('translate-y-0', 'opacity-100');
 
+            // Animate Button RIGHTWARDS and fill it entirely
             const btn = document.getElementById('next-btn');
-            btn.classList.add('bg-[#D30000]', 'scale-[1.02]');
-            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-xl"></i>`;
+            btn.classList.add('translate-x-12', 'bg-[#D30000]', 'scale-105');
+            btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
             
+            // Collect order payload for Firebase
             const orderData = {
                 customerDetails: {
-                    name: customerName, email: finalCustomerEmail,
+                    name: customerName,
+                    email: finalCustomerEmail,
                     phone: document.getElementById('phoneCode').value + " " + document.getElementById('phone').value,
-                    address: document.getElementById('address').value, country: document.getElementById('country').value,
-                    state: document.getElementById('state').value, city: document.getElementById('city').value,
+                    address: document.getElementById('address').value,
+                    country: document.getElementById('country').value,
+                    state: document.getElementById('state').value,
+                    city: document.getElementById('city').value,
                     zip: document.getElementById('zip').value
                 },
-                orderItems: [{ name: selectedOrder.productName, package: `Pack of ${selectedOrder.quantity}`, price: selectedOrder.price }],
+                cart: [{
+                    name: selectedOrder.productName,
+                    price: selectedOrder.price,
+                    quantity: selectedOrder.quantity
+                }],
                 totalPrice: selectedOrder.price,
                 createdAt: serverTimestamp()
             };
 
+            // GUARANTEED NON-BLOCKING SAVE: Fire and forget to the NEW collection "finalized_orders"
             addDoc(collection(db, "finalized_orders"), orderData)
-                .then(docRef => console.log("Saved ID:", docRef.id))
-                .catch(error => console.error("DB error:", error));
+                .then((docRef) => {
+                    console.log("Order saved to secure Firebase with ID:", docRef.id);
+                })
+                .catch((error) => {
+                    console.error("Firebase Database error:", error);
+                });
             
+            // Instantly transition UI to payment page without waiting for database confirmation
             setTimeout(() => {
+                // Hide top notification
                 topNotif.classList.remove('translate-y-0', 'opacity-100');
-                topNotif.classList.add('-translate-y-32', 'opacity-0', 'pointer-events-none');
+                topNotif.classList.add('-translate-y-40', 'opacity-0', 'pointer-events-none');
                 
+                // Swap views
                 document.getElementById('delivery-step').classList.add('hidden');
-                document.getElementById('checkout-waiting-header').classList.remove('hidden');
-                document.getElementById('checkout-waiting-header').classList.add('flex');
+                document.getElementById('delivery-back').classList.add('hidden');
+                
+                const waitingHeader = document.getElementById('checkout-waiting-header');
+                waitingHeader.classList.remove('hidden');
+                waitingHeader.classList.add('flex');
+                
                 document.getElementById('payment-step').classList.remove('hidden');
+                document.getElementById('payment-back').classList.remove('hidden');
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 initPayPal();
-            }, 1200); 
+            }, 1500); 
         }
 
-        // --- BIND GLOBALS ---
+        // --- BIND GLOBALS FOR MODULE SCRIPT ---
         window.navigate = navigate;
         window.handleHelpClick = handleHelpClick;
         window.selectPackage = selectPackage;
-        window.triggerProceed = triggerProceed;
+        window.proceedToCheckout = proceedToCheckout;
         window.toggleReviews = toggleReviews;
         window.scrollSlider = scrollSlider;
         window.updateSliderDots = updateSliderDots;
         window.handleDeliverySubmit = handleDeliverySubmit;
-        window.goBackToDelivery = () => {
-            document.getElementById('payment-step').classList.add('hidden');
-            document.getElementById('checkout-waiting-header').classList.add('hidden');
-            document.getElementById('checkout-waiting-header').classList.remove('flex');
-            document.getElementById('delivery-step').classList.remove('hidden');
-            const btn = document.getElementById('next-btn');
-            btn.classList.remove('scale-[1.02]');
-            btn.innerHTML = `Proceed to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>`;
-        };
+        window.goBackToDelivery = goBackToDelivery;
         window.openCryptoPopup = openCryptoPopup;
         window.closeCryptoPopup = closeCryptoPopup;
         window.setCryptoNetwork = setCryptoNetwork;
@@ -361,9 +382,14 @@
         function scrollSlider(direction) {
             const slider = document.getElementById('product-slider');
             const width = slider.clientWidth;
-            let nextIndex = Math.round(slider.scrollLeft / width) + direction;
-            if (nextIndex > 2) nextIndex = 0;
-            if (nextIndex < 0) nextIndex = 2;
+            const maxIndex = 2; // 3 images
+            
+            let currentIndex = Math.round(slider.scrollLeft / width);
+            let nextIndex = currentIndex + direction;
+            
+            if (nextIndex > maxIndex) nextIndex = 0;
+            if (nextIndex < 0) nextIndex = maxIndex;
+            
             slider.scrollTo({ left: nextIndex * width, behavior: 'smooth' });
         }
 
@@ -377,364 +403,670 @@
             });
         }
 
-        // --- FOMO LOGIC ---
+        // --- FOMO NOTIFICATION LOGIC ---
         let fomoHideTimeout;
         function triggerFOMO() {
             if (currentView !== 'product') return;
+            
             const popup = document.getElementById('fomo-popup');
             if (!popup) return;
             
-            document.getElementById('fomo-name').textContent = FAKE_NAMES[Math.floor(Math.random() * FAKE_NAMES.length)];
-            document.getElementById('fomo-action').textContent = FOMO_OPTIONS[Math.floor(Math.random() * FOMO_OPTIONS.length)].text;
+            const randomName = FAKE_NAMES[Math.floor(Math.random() * FAKE_NAMES.length)];
+            const randomOption = FOMO_OPTIONS[Math.floor(Math.random() * FOMO_OPTIONS.length)];
             
-            popup.classList.remove('translate-y-32', 'opacity-0');
+            document.getElementById('fomo-name').textContent = randomName;
+            document.getElementById('fomo-action').textContent = randomOption.text;
+            
+            popup.classList.remove('translate-y-40', 'opacity-0');
             popup.classList.add('translate-y-0', 'opacity-100');
             
-            clearTimeout(fomoHideTimeout);
+            if (fomoHideTimeout) clearTimeout(fomoHideTimeout);
+            
             fomoHideTimeout = setTimeout(() => {
                 popup.classList.remove('translate-y-0', 'opacity-100');
-                popup.classList.add('translate-y-32', 'opacity-0');
+                popup.classList.add('translate-y-40', 'opacity-0');
             }, 4000); 
         }
 
         let fomoCount = 0;
         function scheduleFOMO() {
-            let delay = (fomoCount === 0) ? 2000 : Math.floor(Math.random() * 5000) + 6000;
+            let delay;
+            if (fomoCount === 0) delay = 2000;       
+            else if (fomoCount === 1) delay = 6000;  
+            else if (fomoCount === 2) delay = 8000;  
+            else {
+                delay = Math.floor(Math.random() * 4000) + 8000;
+            }
+            
             setTimeout(() => {
                 triggerFOMO();
                 fomoCount++;
                 scheduleFOMO();
             }, delay);
         }
+
         scheduleFOMO();
 
-        // --- CRYPTO LOGIC ---
+        // --- CRYPTO PAYMENT LOGIC ---
         function openCryptoPopup() {
-            cryptoNetwork = 'Ethereum'; cryptoToken = 'ETH';
+            cryptoNetwork = 'Ethereum';
+            cryptoToken = 'ETH';
+            
             const modal = document.getElementById('crypto-modal');
             modal.classList.remove('hidden');
-            setTimeout(() => { modal.classList.remove('opacity-0', 'pointer-events-none'); modal.classList.add('opacity-100'); }, 10);
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100');
+            }, 10);
+            
             renderCryptoModal();
         }
+
         function closeCryptoPopup() {
             const modal = document.getElementById('crypto-modal');
-            modal.classList.remove('opacity-100'); modal.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
-        function setCryptoNetwork(network) { cryptoNetwork = network; cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL'; renderCryptoModal(); }
-        function setCryptoToken(token) { cryptoToken = token; renderCryptoModal(); }
+
+        function setCryptoNetwork(network) {
+            cryptoNetwork = network;
+            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL'; // Default tokens per network
+            renderCryptoModal();
+        }
+
+        function setCryptoToken(token) {
+            cryptoToken = token;
+            renderCryptoModal();
+        }
 
         function renderCryptoModal() {
             const container = document.getElementById('crypto-modal-content');
             if (!container || !selectedOrder) return;
-            const cryptoAmountRaw = (selectedOrder.price / (CRYPTO_RATES[cryptoToken] || 1)).toFixed(cryptoToken.includes('USD') ? 2 : 4);
+
+            const totalDueFiat = selectedOrder.price;
+            const exchangeRate = CRYPTO_RATES[cryptoToken] || 1;
+            const cryptoAmountRaw = (totalDueFiat / exchangeRate).toFixed(cryptoToken.includes('USD') ? 2 : 4);
+            
             window.currentCryptoAmount = cryptoAmountRaw;
-            const tokens = cryptoNetwork === 'Ethereum' ? ['USDT', 'USDC', 'ETH'] : ['USDT', 'USDC', 'SOL'];
+
+            const tokens = cryptoNetwork === 'Ethereum' 
+                ? ['USDT', 'USDC', 'ETH'] 
+                : ['USDT', 'USDC', 'SOL'];
 
             container.innerHTML = `
-                <div class="flex gap-2 p-1 bg-gray-100 rounded-sm mb-4">
-                    <button onclick="setCryptoNetwork('Ethereum')" class="flex-1 py-1.5 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Ethereum' ? 'bg-white shadow-sm text-black' : 'text-gray-500'}">Ethereum</button>
-                    <button onclick="setCryptoNetwork('Solana')" class="flex-1 py-1.5 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Solana' ? 'bg-white shadow-sm text-black' : 'text-gray-500'}">Solana</button>
+                <!-- Network Selection Tabs -->
+                <div class="flex gap-2 p-1 bg-gray-100 rounded-sm mb-6">
+                    <button onclick="setCryptoNetwork('Ethereum')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Ethereum' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Ethereum</button>
+                    <button onclick="setCryptoNetwork('Solana')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Solana' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Solana</button>
                 </div>
-                <div class="space-y-2 mb-6">
+
+                <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-3">Select Token</p>
+                
+                <!-- Token List -->
+                <div class="space-y-2 mb-8">
                     ${tokens.map(token => `
-                        <div onclick="setCryptoToken('${token}')" class="flex items-center justify-between p-3 border ${cryptoToken === token ? 'border-[#D30000] bg-red-50/50' : 'border-gray-200'} cursor-pointer rounded-sm">
-                            <span class="font-medium text-sm">${token}</span>
-                            ${cryptoToken === token ? '<i class="ph-fill ph-check-circle text-[#D30000]"></i>' : ''}
+                        <div onclick="setCryptoToken('${token}')" class="flex items-center justify-between p-4 border ${cryptoToken === token ? 'border-[#D30000] bg-red-50/50' : 'border-gray-200 hover:border-gray-300'} cursor-pointer transition-colors rounded-sm">
+                            <div class="flex items-center gap-3">
+                                <i class="ph ph-coin text-xl ${cryptoToken === token ? 'text-[#D30000]' : 'text-gray-400'}"></i>
+                                <span class="font-medium text-gray-900">${token} <span class="text-gray-400 text-xs font-light ml-1">(${cryptoNetwork})</span></span>
+                            </div>
+                            ${cryptoToken === token ? '<i class="ph-fill ph-check-circle text-[#D30000] text-lg"></i>' : ''}
                         </div>
                     `).join('')}
                 </div>
-                <button onclick="processCryptoPayment()" class="w-full bg-gray-900 text-white uppercase text-xs font-semibold py-3 shadow-lg">
-                    Pay ${window.currentCryptoAmount} ${cryptoToken}
+
+                <!-- Total Amount Summary -->
+                <div class="flex justify-between items-end mb-6 pt-4 border-t border-gray-100">
+                    <span class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Total Due</span>
+                    <div class="text-right">
+                        <div class="text-2xl font-serif text-gray-900">${window.currentCryptoAmount} ${cryptoToken}</div>
+                        <div class="text-xs text-gray-400 font-light tracking-wide mt-1">≈ $${totalDueFiat.toFixed(2)} USD</div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button onclick="processCryptoPayment()" class="w-full bg-gray-900 text-white uppercase tracking-widest text-xs font-semibold py-4 hover:bg-black transition-colors shadow-lg">
+                    Pay with ${window.currentCryptoAmount} ${cryptoToken}
                 </button>
             `;
         }
 
         function processCryptoPayment() {
             closeCryptoPopup();
-            setTimeout(() => { navigate('crypto-payment'); }, 300);
+            setTimeout(() => {
+                navigate('crypto-payment');
+            }, 300);
         }
 
-        // --- LOCATION API ---
+        // --- GLOBAL LOCATION DROPDOWNS API ---
         async function setupLocationAPI() {
             const countrySelect = document.getElementById('country');
             const stateSelect = document.getElementById('state');
             const citySelect = document.getElementById('city');
             const phoneCodeSelect = document.getElementById('phoneCode');
+
             if(!countrySelect) return;
 
             try {
-                const [countriesRes, codesRes] = await Promise.all([ fetch('https://countriesnow.space/api/v0.1/countries'), fetch('https://countriesnow.space/api/v0.1/countries/codes') ]);
+                const [countriesRes, codesRes] = await Promise.all([
+                    fetch('https://countriesnow.space/api/v0.1/countries'),
+                    fetch('https://countriesnow.space/api/v0.1/countries/codes')
+                ]);
                 const countriesData = await countriesRes.json();
                 const codesData = await codesRes.json();
 
-                countrySelect.innerHTML = '<option value="" disabled selected>Country</option>';
-                countriesData.data.forEach(c => { const opt = document.createElement('option'); opt.value = c.country; opt.textContent = c.country; countrySelect.appendChild(opt); });
+                countrySelect.innerHTML = '<option value="" disabled selected>Select Country</option>';
+                countriesData.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.country;
+                    opt.textContent = c.country;
+                    countrySelect.appendChild(opt);
+                });
 
                 phoneCodeSelect.innerHTML = '<option value="" disabled selected>Code</option>';
-                codesData.data.forEach(c => { const opt = document.createElement('option'); opt.value = c.dial_code; opt.textContent = `${c.name} (${c.dial_code})`; phoneCodeSelect.appendChild(opt); });
+                codesData.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.dial_code;
+                    opt.textContent = `${c.name} (${c.dial_code})`;
+                    phoneCodeSelect.appendChild(opt);
+                });
+
+                // Default to US & dynamic limits
+                window.updatePhoneLimit = function(selectElem) {
+                    const phoneInput = document.getElementById('phone');
+                    if(!phoneInput) return;
+                    const code = selectElem.value;
+                    const lengthMap = { '+91': 10, '+1': 10, '+44': 10, '+61': 9 };
+                    phoneInput.maxLength = lengthMap[code] || 15;
+                };
 
                 const defaultCode = codesData.data.find(c => c.code === 'US');
-                if (defaultCode) phoneCodeSelect.value = defaultCode.dial_code;
+                if (defaultCode) {
+                    phoneCodeSelect.value = defaultCode.dial_code;
+                    window.updatePhoneLimit(phoneCodeSelect);
+                }
+
+                phoneCodeSelect.addEventListener('change', function() {
+                    window.updatePhoneLimit(this);
+                });
 
                 countrySelect.addEventListener('change', async (e) => {
                     const country = e.target.value;
-                    stateSelect.innerHTML = '<option value="">Loading...</option>';
+                    stateSelect.innerHTML = '<option value="">Loading states...</option>';
+                    citySelect.innerHTML = '<option value="" disabled selected>Select City</option>'; 
+                    
                     try {
-                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country}) });
+                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country})
+                        });
                         const data = await res.json();
-                        stateSelect.innerHTML = '<option value="" disabled selected>State</option>';
-                        data.data.states.forEach(s => { const opt = document.createElement('option'); opt.value = s.name; opt.textContent = s.name; stateSelect.appendChild(opt); });
-                    } catch (err) { stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm" placeholder="State">'; }
+                        
+                        stateSelect.innerHTML = '<option value="" disabled selected>Select State</option>';
+                        if(data.data && data.data.states && data.data.states.length > 0) {
+                            data.data.states.forEach(s => {
+                                const opt = document.createElement('option');
+                                opt.value = s.name; opt.textContent = s.name;
+                                stateSelect.appendChild(opt);
+                            });
+                        } else {
+                            stateSelect.innerHTML = '<option value="N/A">N/A (No states available)</option>';
+                        }
+                    } catch (err) {
+                        stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
+                    }
                 });
 
                 stateSelect.addEventListener('change', async (e) => {
-                    const state = e.target.value; const country = countrySelect.value;
-                    citySelect.innerHTML = '<option value="">Loading...</option>';
+                    const state = e.target.value;
+                    const country = countrySelect.value;
+                    citySelect.innerHTML = '<option value="">Loading cities...</option>';
+                    
                     try {
-                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country, state}) });
+                        const res = await fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+                            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({country, state})
+                        });
                         const data = await res.json();
-                        citySelect.innerHTML = '<option value="" disabled selected>City</option>';
-                        data.data.forEach(c => { const opt = document.createElement('option'); opt.value = c; opt.textContent = c; citySelect.appendChild(opt); });
-                    } catch (err) { citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm" placeholder="City">'; }
+                        
+                        citySelect.innerHTML = '<option value="" disabled selected>Select City</option>';
+                        if(data.data && data.data.length > 0) {
+                            data.data.forEach(c => {
+                                const opt = document.createElement('option');
+                                opt.value = c; opt.textContent = c;
+                                citySelect.appendChild(opt);
+                            });
+                        } else {
+                            citySelect.innerHTML = '<option value="N/A">N/A (No cities available)</option>';
+                        }
+                    } catch (err) {
+                        citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
+                    }
                 });
 
             } catch (e) {
-                countrySelect.outerHTML = '<input type="text" id="country" required class="w-full border-b border-gray-300 py-2 text-sm" placeholder="Country">';
-                stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 text-sm" placeholder="State">';
-                citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 text-sm" placeholder="City">';
+                console.warn("Location API fallback active.");
+                countrySelect.outerHTML = '<input type="text" id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Country">';
+                stateSelect.outerHTML = '<input type="text" id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="State/Province">';
+                citySelect.outerHTML = '<input type="text" id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="City">';
+                phoneCodeSelect.outerHTML = '<input type="text" id="phoneCode" required class="w-24 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900" placeholder="+1">';
             }
         }
 
-        function showToast(msg) {
+        function goBackToDelivery() {
+            document.getElementById('payment-step').classList.add('hidden');
+            document.getElementById('payment-back').classList.add('hidden');
+            
+            const waitingHeader = document.getElementById('checkout-waiting-header');
+            waitingHeader.classList.add('hidden');
+            waitingHeader.classList.remove('flex');
+            
+            document.getElementById('delivery-step').classList.remove('hidden');
+            document.getElementById('delivery-back').classList.remove('hidden');
+            
+            const btn = document.getElementById('next-btn');
+            btn.classList.remove('translate-x-12', 'bg-[#D30000]', 'scale-105');
+            btn.innerHTML = `Next <i class="ph ph-arrow-right ml-2 text-lg"></i>`;
+        }
+
+        // --- UI UTILITIES ---
+        function showToast(message) {
             const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').textContent = msg;
-            toast.classList.remove('opacity-0', 'pointer-events-none'); toast.classList.add('opacity-100');
+            document.getElementById('toast-msg').textContent = message;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            
             clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => { toast.classList.remove('opacity-100'); toast.classList.add('opacity-0', 'pointer-events-none'); }, 3000);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
         }
         
         function copyText(text, label) {
-            const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
-            try { document.execCommand('copy'); showToast(label + " copied!"); } catch (err) { showToast("Failed to copy."); }
-            document.body.removeChild(ta);
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(label + " copied to clipboard!");
+            } catch (err) {
+                showToast("Failed to copy.");
+            }
+            document.body.removeChild(textArea);
         }
 
-        // --- RENDERING VIEWS ---
+        // --- RENDERING ---
         function render() {
             const content = document.getElementById('app-content');
-            if (currentView === 'product') content.innerHTML = renderProduct();
-            else if (currentView === 'checkout') { content.innerHTML = renderCheckout(); setupLocationAPI(); }
-            else if (currentView === 'crypto-payment') content.innerHTML = renderCryptoPayment();
-            else if (currentView === 'thankyou') content.innerHTML = renderThankYou();
+            
+            // Capture existing timer string before destroying the DOM, to prevent a blink
+            let currentTimerStr = "10:00";
+            const existingTimer = document.getElementById('promo-timer');
+            if (existingTimer) {
+                currentTimerStr = existingTimer.textContent;
+            }
+
+            content.innerHTML = '';
+
+            if (currentView === 'product') {
+                content.innerHTML = renderProduct(currentTimerStr);
+            } else if (currentView === 'checkout') {
+                content.innerHTML = renderCheckout();
+                setupLocationAPI(); 
+            } else if (currentView === 'crypto-payment') {
+                content.innerHTML = renderCryptoPayment();
+            } else if (currentView === 'thankyou') {
+                content.innerHTML = renderThankYou();
+            }
         }
 
-        function renderProduct() {
-            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-sm"></i>').join('');
-            const reviewsHTML = PRODUCT.reviewsList.map(r => `
-                <div class="border-b border-gray-100 pb-4 pt-4 last:border-0 last:pb-0">
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="font-medium text-xs text-gray-900">${r.author}</span>
-                        <div class="flex gap-0.5 text-[#D30000]">${Array(5).fill('<i class="ph-fill ph-star text-[10px]"></i>').join('')}</div>
+        function renderProduct(timerStr = "10:00") {
+            const starsHTML = Array(5).fill('<i class="ph-fill ph-star"></i>').join('');
+
+            const reviewsHTML = PRODUCT.reviewsList.map(review => {
+                const reviewStars = Array(5).fill(0).map((_, i) => 
+                    `<i class="${i < review.rating ? 'ph-fill' : 'ph'} ph-star text-[#D30000] text-sm"></i>`
+                ).join('');
+                return `
+                    <div class="border-b border-gray-100 pb-6 pt-6 last:border-0 last:pb-0">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-medium text-gray-900 tracking-wide">${review.author}</span>
+                            <div class="flex gap-[2px]">${reviewStars}</div>
+                        </div>
+                        <span class="text-[10px] uppercase tracking-widest text-green-600 font-bold mb-3 block">Verified Buyer</span>
+                        <p class="text-gray-600 font-light leading-relaxed text-sm">${review.text}</p>
                     </div>
-                    <span class="text-[8px] uppercase tracking-widest text-green-600 font-bold mb-1.5 block">Verified</span>
-                    <p class="text-gray-600 font-light text-xs leading-relaxed">${r.text}</p>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+            
+            const reviewToggleText = showReviews ? "Hide Customer Reviews" : "Show Customer Reviews";
+            const reviewSectionClass = showReviews ? "block fade-in" : "hidden";
+
+            // Next button logic
+            const nextButtonClass = selectedOrder 
+                ? "bg-[#D30000] text-white hover:bg-[#a00000] shadow-xl cursor-pointer" 
+                : "bg-gray-100 text-gray-400 cursor-not-allowed";
 
             return `
-                <div class="max-w-md mx-auto px-4 py-4 md:py-8 fade-in flex flex-col">
+                <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 fade-in">
                     
-                    <!-- Minimized Image Slider for Above-Fold view -->
-                    <div class="w-full relative group mx-auto mb-4">
-                        <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth bg-gray-50 max-h-[260px] md:max-h-[320px]" onscroll="updateSliderDots(this)">
-                            <div class="w-full flex-shrink-0 aspect-[4/3] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                               <img src="PE1.png" alt="View 1" class="w-full h-full object-cover">
-                            </div>
-                            <div class="w-full flex-shrink-0 aspect-[4/3] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                               <img src="PE2.png" alt="View 2" class="w-full h-full object-cover">
-                            </div>
-                            <div class="w-full flex-shrink-0 aspect-[4/3] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                               <img src="PE3.png" alt="View 3" class="w-full h-full object-cover">
-                            </div>
-                        </div>
+                    <div class="flex flex-col md:flex-row gap-12 lg:gap-16">
                         
-                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                            <div class="slider-dot w-1.5 h-1.5 rounded-full bg-[#D30000] transition-colors"></div>
-                            <div class="slider-dot w-1.5 h-1.5 rounded-full bg-gray-300 transition-colors"></div>
-                            <div class="slider-dot w-1.5 h-1.5 rounded-full bg-gray-300 transition-colors"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Compact Product Info -->
-                    <div class="flex flex-col flex-grow">
-                        <h2 class="text-lg md:text-xl font-serif uppercase tracking-widest mb-1 text-gray-900 leading-tight">${PRODUCT.name}</h2>
-                        
-                        <div class="flex items-center text-[#D30000] mb-3 gap-1">
-                            <span class="font-bold text-sm mr-1">${PRODUCT.rating}</span> ${starsHTML}
-                            <span class="text-gray-400 text-[10px] ml-1 uppercase tracking-widest">(${PRODUCT.reviews} Reviews)</span>
-                        </div>
-
-                        <!-- Visibility emphasized Free Shipping -->
-                        <div class="bg-green-50 border border-green-100 text-green-700 px-3 py-1.5 rounded-sm text-[10px] font-bold uppercase tracking-widest inline-flex items-center gap-1.5 mb-3 w-max">
-                            <i class="ph-fill ph-truck text-sm"></i> FREE WORLDWIDE SHIPPING
-                        </div>
-                        
-                        <p class="text-xs md:text-sm leading-relaxed text-gray-600 mb-5">${PRODUCT.description}</p>
-                        
-                        <!-- VERTICAL PACKAGE OPTIONS -->
-                        <div class="flex flex-col gap-3 w-full mb-6">
-                            
-                            <!-- 2 Pairs Option -->
-                            <button id="pack-2" onclick="selectPackage(2, 19.99)" class="w-full border border-gray-200 p-4 rounded-sm flex justify-between items-center transition-all duration-200 text-left relative bg-white">
-                                <div class="flex flex-col z-10">
-                                    <span class="font-serif text-base text-gray-900 font-medium">Buy 2 Pairs</span>
-                                    <span class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Everyday Pack</span>
+                        <!-- Product Image Slider -->
+                        <div class="flex-1 w-full relative group">
+                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm bg-gray-50" onscroll="updateSliderDots(this)">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE1.png" alt="LUXÉLASH View 1" class="w-full h-full object-cover">
                                 </div>
-                                <span class="text-lg font-semibold text-gray-900 z-10">$19.99</span>
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE2.png" alt="LUXÉLASH View 2" class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="PE3.png" alt="LUXÉLASH View 3" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            
+                            <!-- Slider Controls -->
+                            <button onclick="scrollSlider(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10">
+                                <i class="ph ph-caret-left text-xl"></i>
+                            </button>
+                            <button onclick="scrollSlider(1)" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10">
+                                <i class="ph ph-caret-right text-xl"></i>
                             </button>
                             
-                            <!-- 4 Pairs Option (Zebra animated best value) -->
-                            <button id="pack-4" onclick="selectPackage(4, 28.99)" class="w-full border border-gray-300 p-4 pt-5 rounded-sm flex justify-between items-end transition-all duration-200 text-left relative bg-white overflow-hidden">
-                                <!-- Zebra Badge -->
-                                <div class="absolute top-0 left-0 w-full h-4 zebra-stripes flex items-center justify-center">
-                                    <span class="bg-white px-2 py-[1px] text-[#D30000] text-[8px] uppercase tracking-widest font-black shadow-sm rounded-sm">BEST VALUE</span>
-                                </div>
-                                
-                                <div class="flex flex-col z-10">
-                                    <span class="font-serif text-lg text-gray-900 font-medium leading-none mb-1 mt-2">Buy 4 Pairs</span>
-                                    <span id="timer-display" class="text-[10px] text-[#D30000] font-bold tracking-widest uppercase">Ends in 15:43</span>
-                                </div>
-                                <span class="text-xl font-bold text-[#D30000] z-10">$28.99</span>
-                            </button>
-
-                            <!-- 6 Pairs Option (Sold Out) -->
-                            <div class="w-full border border-red-200 bg-red-50 p-4 rounded-sm flex justify-between items-center relative overflow-hidden cursor-not-allowed opacity-80">
-                                <!-- Cross graphic -->
-                                <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0 opacity-50">
-                                    <div class="w-[120%] h-[2px] bg-red-400 rotate-12 absolute"></div>
-                                    <div class="w-[120%] h-[2px] bg-red-400 -rotate-12 absolute"></div>
-                                </div>
-                                <!-- Sold Out stamp -->
-                                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#D30000] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 shadow-lg z-20 border border-red-800 rotate-[-10deg]">
-                                    SOLD OUT
-                                </div>
-                                
-                                <div class="flex flex-col text-left opacity-30 z-10">
-                                    <span class="font-serif text-base font-medium">Buy 6 Pairs</span>
-                                    <span class="text-[10px] uppercase tracking-widest mt-0.5">Family Pack</span>
-                                </div>
-                                <span class="text-lg font-semibold opacity-30 z-10">$39.99</span>
-                            </div>
-
-                        </div>
-                        
-                        <!-- Locked Proceed Button -->
-                        <button id="proceed-btn" onclick="triggerProceed()" disabled class="w-full bg-gray-800 text-white uppercase tracking-widest text-xs font-semibold py-4 rounded-sm transition-all duration-300 opacity-50 cursor-not-allowed mb-8">
-                            Select a Package Above
-                        </button>
-                        
-                        <!-- Toggleable Reviews -->
-                        <div class="text-center border-t border-gray-100 pt-6 mt-auto">
-                            <button id="toggle-reviews-btn" onclick="toggleReviews()" class="text-[10px] uppercase tracking-widest text-gray-500 underline font-semibold hover:text-[#D30000]">
-                                Show Reviews
-                            </button>
-                            <div id="reviews-container" class="hidden mt-4 text-left">
-                                ${reviewsHTML}
+                            <!-- Pagination Dots -->
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                <div class="slider-dot w-2 h-2 rounded-full bg-[#D30000] transition-colors"></div>
+                                <div class="slider-dot w-2 h-2 rounded-full bg-gray-300 transition-colors"></div>
+                                <div class="slider-dot w-2 h-2 rounded-full bg-gray-300 transition-colors"></div>
                             </div>
                         </div>
                         
+                        <div class="flex-1 flex flex-col py-2 lg:sticky lg:top-32 h-fit">
+                            <h2 class="text-2xl md:text-3xl font-serif uppercase tracking-widest mb-4 text-gray-900 leading-snug">${PRODUCT.name}</h2>
+                            
+                            <!-- Free Shipping Banner -->
+                            <div class="flex items-center gap-2 mb-6 text-green-700 bg-green-50/80 px-4 py-2.5 rounded-sm border border-green-100 w-fit">
+                                <i class="ph ph-truck text-xl"></i>
+                                <span class="text-xs uppercase tracking-widest font-bold">Free Worldwide Shipping</span>
+                            </div>
+                            
+                            <p class="text-gray-600 leading-relaxed font-light mb-10 text-sm md:text-base">${PRODUCT.description}</p>
+                            
+                            <p class="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-3">SELECT YOUR PACKAGE</p>
+                            
+                            <!-- Package Grid Options -->
+                            <div class="grid grid-cols-3 gap-3 md:gap-4 w-full mb-8">
+                                
+                                <!-- 2 Pairs Option -->
+                                <button onclick="selectPackage(2, 19.99)" class="relative p-3 md:p-4 border-2 rounded-sm flex flex-col items-center justify-center transition-all ${selectedOrder?.quantity === 2 ? 'border-[#D30000] bg-red-50/30' : 'border-gray-200 hover:border-gray-300 bg-white'}">
+                                    <span class="font-serif text-sm md:text-lg font-medium ${selectedOrder?.quantity === 2 ? 'text-[#D30000]' : 'text-gray-900'} transition-colors">2 Pairs</span>
+                                    <span class="text-xs md:text-sm font-bold ${selectedOrder?.quantity === 2 ? 'text-[#D30000]' : 'text-gray-900'} mt-1 transition-colors">$19.99</span>
+                                </button>
+                                
+                                <!-- 4 Pairs Option (Best Value) -->
+                                <button onclick="selectPackage(4, 28.99)" class="relative p-3 md:p-4 border-2 rounded-sm flex flex-col items-center justify-center transition-all ${selectedOrder?.quantity === 4 ? 'border-[#D30000] bg-red-50/50 shadow-md transform -translate-y-0.5' : 'border-[#D30000] border-opacity-40 hover:border-opacity-100 bg-white'}">
+                                    <div class="absolute -top-2.5 bg-[#D30000] text-white text-[8px] md:text-[9px] uppercase tracking-widest px-2.5 py-0.5 rounded-sm whitespace-nowrap shadow-sm font-bold">Best Value</div>
+                                    <span class="font-serif text-sm md:text-lg font-medium text-[#D30000]">4 Pairs</span>
+                                    <span class="text-xs md:text-sm font-bold text-[#D30000] mt-1">$28.99</span>
+                                    
+                                    <!-- Dynamic Timer -->
+                                    <div class="mt-2 text-[10px] text-[#D30000] font-bold bg-white px-2 py-1 rounded-sm border border-red-100 flex items-center gap-1 w-full justify-center">
+                                       <i class="ph ph-timer"></i> <span id="promo-timer">${timerStr}</span>
+                                    </div>
+                                </button>
+                                
+                                <!-- 6 Pairs Option (Sold Out) -->
+                                <button disabled class="relative p-3 md:p-4 border-2 border-red-100 bg-red-50/50 rounded-sm flex flex-col items-center justify-center cursor-not-allowed overflow-hidden">
+                                    <span class="font-serif text-sm md:text-lg font-medium text-gray-500 opacity-60">6 Pairs</span>
+                                    <span class="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-white bg-gray-500 px-2 py-0.5 mt-1.5 rounded-sm z-10 shadow-sm">Sold Out</span>
+                                    
+                                    <!-- Red Cross Layer -->
+                                    <div class="absolute inset-0 flex items-center justify-center opacity-40">
+                                        <div class="w-[150%] h-[2px] bg-[#D30000] rotate-45 absolute"></div>
+                                        <div class="w-[150%] h-[2px] bg-[#D30000] -rotate-45 absolute"></div>
+                                    </div>
+                                </button>
+                                
+                            </div>
+                            
+                            <!-- Proceed Button -->
+                            <button onclick="proceedToCheckout()" class="w-full py-5 uppercase tracking-widest text-xs font-semibold flex justify-center items-center gap-2 ${nextButtonClass}">
+                                Proceed to Checkout <i class="ph ph-arrow-right text-lg"></i>
+                            </button>
+                            ${!selectedOrder ? '<p class="text-[10px] text-center text-gray-400 mt-3 uppercase tracking-widest">Please select a package above</p>' : ''}
+                            
+                            <!-- Customer Reviews Toggle Section -->
+                            <div class="mt-14 pt-8 border-t border-gray-200">
+                                <h3 class="text-lg font-serif uppercase tracking-widest mb-4 text-gray-900">Customer Ratings</h3>
+                                
+                                <div class="flex items-center gap-4 mb-6">
+                                    <span class="font-bold text-3xl text-gray-900">${PRODUCT.rating}</span>
+                                    <div class="flex flex-col">
+                                        <div class="flex text-[#D30000] text-lg gap-[1px] mb-1">${starsHTML}</div>
+                                        <span class="text-xs text-gray-500 tracking-wide">Based on ${PRODUCT.reviews} verified reviews</span>
+                                    </div>
+                                </div>
+                                
+                                <button onclick="toggleReviews()" class="border border-gray-300 w-fit px-6 py-3 text-[10px] uppercase tracking-widest font-bold text-gray-600 hover:border-[#D30000] hover:text-[#D30000] transition-colors flex items-center gap-2">
+                                    ${reviewToggleText} <i class="ph ph-caret-${showReviews ? 'up' : 'down'} text-sm"></i>
+                                </button>
+                                
+                                <div id="reviews-container" class="${reviewSectionClass} mt-6 border-t border-gray-100">
+                                    ${reviewsHTML}
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
             `;
         }
 
         function renderCheckout() {
-            if (!selectedOrder) { navigate('product'); return ''; }
+            if (!selectedOrder) {
+                navigate('product');
+                return '';
+            }
+
             const totalPaid = "$" + selectedOrder.price.toFixed(2);
 
             return `
-                <div class="max-w-md mx-auto py-8 px-4 fade-in">
+                <div class="max-w-xl mx-auto py-12 px-4 fade-in">
                     
-                    <div class="bg-gray-50 p-5 rounded-sm mb-2 border border-gray-100 shadow-sm relative">
-                        <div class="bg-white border border-gray-200 p-3 mb-6 flex justify-between items-center rounded-sm">
+                    <button onclick="navigate('product')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Offer
+                    </button>
+
+                    <div class="bg-gray-50 p-6 md:px-10 md:pt-10 md:pb-6 rounded-sm mb-2 border border-gray-100 shadow-sm relative overflow-visible">
+
+                        <!-- Order Summary Box -->
+                        <div class="bg-white border border-gray-200 p-4 mb-8 flex justify-between items-center rounded-sm">
                             <div>
-                                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-0.5">Your Selection</p>
-                                <p class="font-serif text-sm text-gray-900">${selectedOrder.productName} (x${selectedOrder.quantity})</p>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Your Selection</p>
+                                <p class="font-serif text-gray-900 font-medium">${selectedOrder.productName} (${selectedOrder.quantity} Pairs)</p>
                             </div>
                             <div class="text-right">
-                                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-0.5">Total</p>
-                                <p class="text-base text-[#D30000] font-bold">${totalPaid}</p>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Total</p>
+                                <p class="text-lg text-[#D30000] font-bold">${totalPaid}</p>
                             </div>
                         </div>
 
-                        <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-6 border-b border-gray-200 pb-6">
-                            <i class="ph ph-spinner animate-spin text-3xl text-[#D30000] mb-3"></i>
-                            <h3 class="text-lg font-serif text-gray-900 tracking-wide text-center">Awaiting Payment</h3>
+                        <!-- Payment Step Waiting Header -->
+                        <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-8 border-b border-gray-200 pb-8">
+                            <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
+                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest mb-8">We're almost there</p>
                         </div>
                         
+                        <!-- STEP 1: Delivery Details -->
                         <div id="delivery-step" class="transition-opacity duration-300">
-                            <h2 class="text-lg font-serif uppercase tracking-widest text-center mb-6 text-gray-900">Delivery Details</h2>
-                            <form id="delivery-form" class="space-y-4" onsubmit="handleDeliverySubmit(event)">
-                                <div><input type="text" id="customerName" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm focus:border-[#D30000] outline-none transition-colors" placeholder="Full Name *"></div>
-                                <div><input type="email" id="email" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm focus:border-[#D30000] outline-none transition-colors" placeholder="Email Address *"></div>
-                                <div><input type="text" id="address" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm focus:border-[#D30000] outline-none transition-colors" placeholder="Street Address *"></div>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="col-span-2 md:col-span-1"><select id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm focus:border-[#D30000] outline-none"><option value="">Country</option></select></div>
-                                    <div class="col-span-2 md:col-span-1"><select id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm focus:border-[#D30000] outline-none"><option value="">State</option></select></div>
-                                    <div class="col-span-1"><select id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm focus:border-[#D30000] outline-none"><option value="">City</option></select></div>
-                                    <div class="col-span-1"><input type="text" id="zip" required class="w-full border-b border-gray-300 py-2 bg-transparent text-sm focus:border-[#D30000] outline-none" placeholder="Zip *"></div>
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Delivery Details</h2>
+                            
+                            <form id="delivery-form" class="space-y-6" onsubmit="handleDeliverySubmit(event)">
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Full Name *</label>
+                                    <input type="text" id="customerName" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Jane Doe">
                                 </div>
-                                <div class="flex items-end w-full overflow-hidden">
-                                    <select id="phoneCode" required class="w-20 border-b border-gray-300 py-2 bg-transparent text-xs mr-2 focus:border-[#D30000] outline-none"></select>
-                                    <input type="tel" id="phone" required oninput="this.value=this.value.replace(/[^0-9]/g,'')" class="flex-1 border-b border-gray-300 py-2 bg-transparent text-sm focus:border-[#D30000] outline-none" placeholder="Phone Number *">
+
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Email (For Tracking) *</label>
+                                    <input type="email" id="email" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="jane@example.com">
                                 </div>
-                                <div class="pt-4"><button type="submit" id="next-btn" class="w-full bg-[#D30000] text-white uppercase text-xs font-semibold py-3.5 shadow-md transition-transform">Proceed to Payment <i class="ph ph-arrow-right ml-1"></i></button></div>
+                                
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Street Address *</label>
+                                    <input type="text" id="address" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="123 Luxury Lane">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div class="col-span-2 md:col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Country *</label>
+                                        <select id="country" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Loading...</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-span-2 md:col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">State / Province *</label>
+                                        <select id="state" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Select Country First</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">City *</label>
+                                        <select id="city" required class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer text-sm">
+                                            <option value="" disabled selected>Select State First</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-span-1">
+                                        <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Postal / Zip *</label>
+                                        <input type="text" id="zip" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="10001">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Phone Number (For Delivery) *</label>
+                                    <div class="flex items-end w-full overflow-hidden">
+                                        <select id="phoneCode" required class="w-24 md:w-28 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer mr-2 text-xs md:text-sm shrink-0">
+                                            <option value="" disabled selected>Code</option>
+                                        </select>
+                                        <input type="tel" id="phone" required autocomplete="off" oninput="this.value=this.value.replace(/[^0-9]/g,'')" class="min-w-0 flex-1 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="0000000000">
+                                    </div>
+                                </div>
+                                
+                                <div class="pt-6 flex justify-center overflow-visible">
+                                    <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px] shadow-lg hover:bg-[#a00000]">
+                                        Proceed to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>
+                                    </button>
+                                </div>
                             </form>
                         </div>
 
+                        <!-- STEP 2: Payment Details -->
                         <div id="payment-step" class="hidden fade-in">
-                            <h2 class="text-lg font-serif uppercase tracking-widest text-center mb-6 text-gray-900">Secure Payment</h2>
+                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Secure Payment</h2>
+                            
                             <div id="paypal-ui-container">
-                                <div id="paypal-button-container" class="min-h-[55px]"></div>
-                                <div class="flex items-center justify-center space-x-4 my-5"><hr class="flex-grow border-gray-200"><span class="text-[9px] text-gray-400 uppercase tracking-widest font-semibold">OR</span><hr class="flex-grow border-gray-200"></div>
-                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-3 text-xs tracking-widest uppercase font-semibold shadow-md"><i class="ph ph-coin text-lg"></i> Pay with Crypto</button>
+                                <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method below to complete the order</p>
+                                <div class="relative z-0">
+                                    <div id="paypal-button-container" class="min-h-[55px]"></div>
+                                </div>
+
+                                <!-- Crypto Payment Divider & Button -->
+                                <div class="flex items-center justify-center space-x-4 my-6">
+                                    <hr class="flex-grow border-gray-200">
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">OR</span>
+                                    <hr class="flex-grow border-gray-200">
+                                </div>
+
+                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md">
+                                    <i class="ph ph-coin text-xl"></i> Pay with Crypto
+                                </button>
                             </div>
                         </div>
+
                     </div>
-                    
-                    <div class="text-center mt-4">
-                        <button onclick="navigate('product')" class="text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] border-b border-transparent hover:border-[#D30000] pb-0.5"><i class="ph ph-arrow-left inline-block mr-1"></i> Back to Product</button>
+
+                    <div id="payment-back" class="text-center mt-6 hidden">
+                        <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
+                        </button>
                     </div>
                 </div>
             `;
         }
 
         function renderCryptoPayment() {
-            if (!selectedOrder) { navigate('product'); return ''; }
-            const address = CRYPTO_ASSETS[cryptoNetwork].address;
-            const qrImage = CRYPTO_ASSETS[cryptoNetwork].tokens[cryptoToken];
+            if (!selectedOrder) {
+                navigate('product');
+                return '';
+            }
+
+            const assetInfo = CRYPTO_ASSETS[cryptoNetwork];
+            const address = assetInfo.address;
+            const qrImage = assetInfo.tokens[cryptoToken];
             const amount = window.currentCryptoAmount;
 
             return `
-                <div class="max-w-md mx-auto py-8 px-4 fade-in">
-                    <button onclick="navigate('checkout')" class="flex items-center text-[10px] tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-6"><i class="ph ph-arrow-left mr-1"></i> Back to Checkout</button>
-                    <div class="bg-white p-6 rounded-sm border border-gray-100 shadow-xl text-center">
-                        <h2 class="text-xl font-serif text-gray-900 mb-4">Send ${amount} ${cryptoToken}</h2>
-                        <div class="bg-gray-50 p-3 rounded-lg mb-5 inline-block border border-gray-100"><img src="${qrImage}" alt="QR" class="w-40 h-40 object-contain rounded-md"></div>
-                        <div class="mb-6">
-                            <p class="text-[10px] tracking-widest uppercase text-gray-500 mb-0.5">Token to Send</p>
-                            <p class="text-lg font-bold text-gray-900">${cryptoToken} <span class="text-xs font-normal text-gray-500">(${cryptoNetwork})</span></p>
+                <div class="max-w-md mx-auto py-12 px-4 fade-in">
+                    <button onclick="navigate('checkout')" class="flex items-center text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] mb-8 transition-colors group">
+                        <i class="ph ph-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> 
+                        Back to Checkout
+                    </button>
+                    
+                    <div class="bg-white p-6 md:p-8 rounded-sm border border-gray-100 shadow-xl text-center">
+                        
+                        <!-- Payment Waiting Header -->
+                        <div class="flex flex-col items-center justify-center w-full mb-8 border-b border-gray-100 pb-8">
+                            <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
+                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest">We're almost there</p>
                         </div>
-                        <div class="space-y-3 text-left">
+
+                        <h2 class="text-2xl font-serif text-gray-900 mb-6">Send ${amount} ${cryptoToken}</h2>
+                        
+                        <div class="bg-gray-50 p-4 rounded-xl mb-6 inline-block border border-gray-100">
+                            <img src="${qrImage}" alt="${cryptoToken} QR Code" class="w-48 h-48 md:w-64 md:h-64 object-contain rounded-lg">
+                        </div>
+                        
+                        <div class="mb-8">
+                            <p class="text-xs tracking-widest uppercase text-gray-500 mb-1">Token to Send</p>
+                            <p class="text-xl font-bold text-gray-900">${cryptoToken} <span class="text-sm font-normal text-gray-500">(${cryptoNetwork})</span></p>
+                        </div>
+                        
+                        <div class="space-y-4 text-left">
                             <div>
-                                <p class="text-[10px] tracking-widest uppercase text-gray-500 mb-1">Address</p>
-                                <div class="flex items-center justify-between bg-gray-50 border border-gray-200 p-2 rounded-sm"><span class="text-xs text-gray-800 font-mono truncate mr-2">${address}</span><button onclick="copyText('${address}', 'Address')" class="text-gray-500"><i class="ph ph-copy text-lg"></i></button></div>
+                                <p class="text-xs tracking-widest uppercase text-gray-500 mb-2">Send to this address</p>
+                                <div class="flex items-center justify-between bg-gray-50 border border-gray-200 p-3 rounded-sm">
+                                    <span class="text-sm text-gray-800 font-mono truncate mr-2">${address}</span>
+                                    <button onclick="copyText('${address}', 'Address')" class="text-gray-500 hover:text-[#D30000] transition-colors shrink-0">
+                                        <i class="ph ph-copy text-xl"></i>
+                                    </button>
+                                </div>
                             </div>
+                            
                             <div>
-                                <p class="text-[10px] tracking-widest uppercase text-gray-500 mb-1">Amount</p>
-                                <div class="flex items-center justify-between bg-gray-50 border border-gray-200 p-2 rounded-sm"><span class="text-xs text-gray-800 font-mono">${amount}</span><button onclick="copyText('${amount}', 'Amount')" class="text-gray-500"><i class="ph ph-copy text-lg"></i></button></div>
+                                <p class="text-xs tracking-widest uppercase text-gray-500 mb-2">Amount to be received</p>
+                                <div class="flex items-center justify-between bg-gray-50 border border-gray-200 p-3 rounded-sm">
+                                    <span class="text-sm text-gray-800 font-mono mr-2">${amount}</span>
+                                    <button onclick="copyText('${amount}', 'Amount')" class="text-gray-500 hover:text-[#D30000] transition-colors shrink-0">
+                                        <i class="ph ph-copy text-xl"></i>
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-100 flex items-start gap-3 text-left">
+                            <i class="ph-fill ph-info text-[#D30000] text-lg shrink-0 mt-0.5"></i>
+                            <p class="text-xs text-gray-500 leading-relaxed">Please ensure you are sending <b class="text-gray-900">${cryptoToken}</b> strictly on the <b class="text-gray-900">${cryptoNetwork}</b> network. Sending to the wrong network may result in permanent loss of funds.</p>
                         </div>
                     </div>
                 </div>
@@ -742,24 +1074,88 @@
         }
 
         function renderThankYou() {
-            const date = new Date(); date.setDate(date.getDate() + 10);
+            // Calculate Date 10 days from now
+            const deliveryDate = new Date();
+            deliveryDate.setDate(deliveryDate.getDate() + 10);
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = deliveryDate.toLocaleDateString(undefined, dateOptions);
+
             return `
-                <div class="max-w-md mx-auto py-20 px-4 fade-in text-center">
-                    <div class="w-16 h-16 bg-[#D30000] text-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"><i class="ph ph-check text-3xl font-bold"></i></div>
-                    <h2 class="text-2xl font-serif tracking-widest uppercase mb-4 text-gray-900">Thank You!</h2>
-                    <p class="text-sm text-gray-600 mb-6 font-light">Your order is confirmed.</p>
-                    <div class="bg-gray-50 p-5 border border-gray-100 text-left mb-8 shadow-sm text-sm">
-                        <div class="mb-4"><p class="text-[10px] tracking-widest uppercase text-gray-400 mb-0.5">Est. Delivery</p><p class="text-gray-900 font-serif">${date.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</p></div>
-                        <div><p class="text-[10px] tracking-widest uppercase text-gray-400 mb-0.5">Details Sent To</p><p class="font-medium text-[#D30000] break-all">${finalCustomerEmail}</p></div>
+                <div class="max-w-xl mx-auto py-24 px-4 fade-in text-center">
+                    <div class="w-20 h-20 bg-[#D30000] text-white rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
+                        <i class="ph ph-check text-4xl font-bold"></i>
                     </div>
-                    <button onclick="navigate('product')" class="text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] border-b border-transparent hover:border-[#D30000] pb-0.5">Return to Store</button>
+                    <h2 class="text-4xl font-serif tracking-widest uppercase mb-6 text-gray-900">Thank You!</h2>
+                    <p class="text-xl text-gray-600 mb-8 font-light">Your elegant order has been placed successfully.</p>
+                    
+                    <div class="bg-gray-50 p-8 border border-gray-100 text-left mb-10 shadow-sm">
+                        <div class="mb-6">
+                            <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Estimated Delivery</p>
+                            <p class="text-lg text-gray-900 font-serif">${formattedDate}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Confirmation Email</p>
+                            <p class="text-base text-gray-900">Your tracking and order details will be mailed to <span class="font-medium text-[#D30000]">${finalCustomerEmail}</span>.</p>
+                        </div>
+                    </div>
+
+                    <button onclick="navigate('product')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                        Return to Store
+                    </button>
                 </div>
             `;
         }
 
-        // Initialize App
+        function initPayPal() {
+            const container = document.getElementById('paypal-button-container');
+            if (!window.paypal) {
+                container.innerHTML = '<p class="text-[#D30000] text-sm text-center py-4">Failed to load secure gateway. Please refresh.</p>';
+                return;
+            }
+
+            container.innerHTML = ''; 
+            
+            paypal.Buttons({
+                style: { color: 'black', shape: 'rect', label: 'pay', height: 55 },
+                onClick: function(data, actions) {
+                    const form = document.getElementById('delivery-form');
+                    if (!form.checkValidity()) {
+                        form.reportValidity(); 
+                        return actions.reject(); 
+                    }
+                    
+                    document.getElementById('paypal-ui-container').classList.add('hidden');
+                    document.getElementById('payment-waiting').classList.remove('hidden');
+                    return actions.resolve(); 
+                },
+                onCancel: function (data) {
+                    document.getElementById('paypal-ui-container').classList.remove('hidden');
+                    document.getElementById('payment-waiting').classList.add('hidden');
+                },
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: { value: selectedOrder.price.toFixed(2) }
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        selectedOrder = null;
+                        navigate('thankyou');
+                    });
+                },
+                onError: function(err) {
+                    console.error("PayPal Error:", err);
+                    document.getElementById('paypal-ui-container').classList.remove('hidden');
+                    document.getElementById('payment-waiting').classList.add('hidden');
+                    showToast("Payment window closed or an error occurred.");
+                }
+            }).render('#paypal-button-container');
+        }
+
+        // Initialize App directly to product
         render();
-        startCountdown();
     </script>
 </body>
 </html>
