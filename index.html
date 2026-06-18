@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marina & Elévia | Exclusive Offer</title>
+    <title>LUXÉLASH | Exclusive Offer</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,6 +36,18 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Animated Border for Best Value Package */
+        .anim-border {
+            background: linear-gradient(90deg, #f59e0b, #fde047, #f97316, #f59e0b);
+            background-size: 200% 200%;
+            animation: gradientMove 2.5s linear infinite;
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
         /* Hide scrollbar for cleaner look */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -58,11 +70,11 @@
 
     <!-- Header -->
     <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b-[2px] border-[#D30000] z-40">
-        <div class="max-w-6xl mx-auto px-4 h-24 flex items-center justify-between w-full gap-4">
+        <div class="max-w-6xl mx-auto px-4 h-20 md:h-24 flex items-center justify-between w-full gap-4">
             
             <!-- Logo -->
             <h1 onclick="navigate('product')" class="text-xl md:text-2xl font-serif font-bold tracking-widest uppercase cursor-pointer flex-shrink-0 hover:opacity-80 transition-opacity">
-                <span class="text-[#D30000]">M</span>arina & <span class="text-[#D30000]">E</span>lévia
+                <span class="text-[#D30000]">L</span>UXÉ<span class="text-[#D30000]">L</span>ASH
             </h1>
             
             <div class="flex items-center justify-end gap-3 md:gap-5 border-l border-gray-200 pl-4 md:pl-8">
@@ -137,11 +149,9 @@
 
     <!-- Application Script -->
     <script type="module">
-        // --- FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
-        // YOUR NEW FIREBASE CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyA8j3Jh9S-4UDHGx75enZn8qs6T3pOtKs4",
             authDomain: "backend-83c72.firebaseapp.com",
@@ -151,69 +161,65 @@
             appId: "1:848947002648:web:c25bbd41c93e6b5919726d"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- AUDIO INTEGRATION ---
         const clickAudio = new Audio('AUD-20260422-WA0000.mp3');
         function playClickSound() {
             clickAudio.currentTime = 0;
             clickAudio.play().catch(e => console.warn("Audio play prevented:", e));
         }
 
-        // --- SINGLE PRODUCT DATA ---
         const PRODUCT = {
-            name: "Signature Collection",
+            name: "LUXÉLASH MAGNETIC EYELASHES BUNDLE",
             rating: 4.9,
             reviews: 1428,
-            description: "Experience unparalleled elegance with our signature collection. Meticulously crafted to offer a flawless finish that effortlessly elevates any ensemble. Designed for those who appreciate true sophistication.",
+            description: "Instantly elevate your look with our premium magnetic eyelashes. Effortless application, all-day hold, and a flawless natural finish without messy glue.",
             reviewsList: [
                 { author: "Eleanor V.", rating: 5, text: "Absolutely stunning! The quality is unmatched and they look beautiful in person. A staple piece." },
                 { author: "Sarah M.", rating: 5, text: "I've worn these to work and to dinner dates. Extremely versatile and feels luxurious." },
-                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Looks far more expensive than the price tag." }
+                { author: "Jessica T.", rating: 4, text: "Beautiful. They add such a chic touch. Looks far more expensive than the price tag." },
+                { author: "Amanda L.", rating: 5, text: "Best magnetic lashes I've ever used. The hold is incredible throughout the entire day." },
+                { author: "Chloe R.", rating: 5, text: "No glue mess and they blend so perfectly with my natural lashes. Recommending to all my friends!" }
             ]
         };
 
         const FAKE_NAMES = ['Emma W.', 'Sophia L.', 'James B.', 'Olivia M.', 'William K.', 'Ava C.', 'Isabella R.', 'Mia T.', 'Charlotte H.', 'Amelia S.'];
         const FOMO_OPTIONS = [
-            { qty: 2, text: "bought the 2 for $19.99 offer" },
-            { qty: 4, text: "bought the 4 for $28.99 offer" }
+            { qty: 2, text: "bought the 2 Pairs offer" },
+            { qty: 4, text: "bought the 4 Pairs offer" }
         ];
 
-        // --- CRYPTO MAP DATA ---
         const CRYPTO_ASSETS = {
             'Ethereum': {
                 address: '0x6Fc3681E7b082278dDab90686f048B04117C332c',
                 tokens: {
-                    'USDT': './eth-usdt.jpg',
-                    'USDC': './ethereum-usdc.jpg',
-                    'ETH': './ethereum-eth.png'
+                    'USDT': 'https://placehold.co/300x300/f3f4f6/a1a1aa?text=QR+Code',
+                    'USDC': 'https://placehold.co/300x300/f3f4f6/a1a1aa?text=QR+Code',
+                    'ETH': 'https://placehold.co/300x300/f3f4f6/a1a1aa?text=QR+Code'
                 }
             },
             'Solana': {
                 address: 'CkgnzdUT8R16o2ZMEZa9swjT727PvR5swNRK47ADtCy',
                 tokens: {
-                    'USDT': './solana-usdt.jpg',
-                    'USDC': './solana-usdc.jpg',
-                    'SOL': './Solana-sol.jpg'
+                    'USDT': 'https://placehold.co/300x300/f3f4f6/a1a1aa?text=QR+Code',
+                    'USDC': 'https://placehold.co/300x300/f3f4f6/a1a1aa?text=QR+Code',
+                    'SOL': 'https://placehold.co/300x300/f3f4f6/a1a1aa?text=QR+Code'
                 }
             }
         };
 
-        // --- STATE ---
-        let currentView = 'product'; // Default is directly on the product
-        let selectedOrder = null; // Holds the { qty, price } chosen
+        let currentView = 'product'; 
+        let selectedOrder = null; 
         let toastTimeout;
         let finalCustomerEmail = '';
+        let countdownTimer;
         
-        // Crypto State
         let cryptoNetwork = 'Ethereum';
         let cryptoToken = 'ETH';
         window.currentCryptoAmount = 0;
         const CRYPTO_RATES = { 'ETH': 3100, 'SOL': 140, 'USDT': 1, 'USDC': 1 };
 
-        // --- CORE FUNCTIONS ---
         function navigate(view) {
             currentView = view;
             window.scrollTo(0, 0);
@@ -228,24 +234,51 @@
                 overlay.classList.add('opacity-100', 'pointer-events-auto');
             }, 10);
             setTimeout(() => {
-                window.location.href = "mailto:marina.elevia@gmail.com";
+                window.location.href = "mailto:support@luxelash.com";
                 overlay.classList.remove('opacity-100', 'pointer-events-auto');
                 overlay.classList.add('opacity-0', 'pointer-events-none');
                 setTimeout(() => { overlay.classList.add('hidden'); }, 300);
             }, 3000);
         }
 
-        function selectOption(qty, price) {
+        function selectOption(qty, price, elementId) {
             playClickSound();
             selectedOrder = {
                 productName: PRODUCT.name,
                 quantity: qty,
                 price: price
             };
+            
+            // Reset all visually
+            document.querySelectorAll('.package-option').forEach(el => {
+                el.classList.remove('border-[#D30000]', 'bg-red-50/10', 'ring-2', 'ring-red-100');
+                if(el.id !== 'pack-4-inner') el.classList.add('border-gray-200');
+            });
+            
+            // Highlight selected
+            const selectedEl = document.getElementById(elementId);
+            if(selectedEl) {
+                if(elementId === 'pack-4-inner') {
+                    selectedEl.classList.add('bg-orange-50/40');
+                } else {
+                    selectedEl.classList.remove('border-gray-200');
+                    selectedEl.classList.add('border-[#D30000]', 'bg-red-50/10', 'ring-2', 'ring-red-100');
+                }
+            }
+
+            // Show and enable Next button
+            const nextBtnContainer = document.getElementById('next-btn-container');
+            nextBtnContainer.classList.remove('hidden');
+            // Small animation
+            nextBtnContainer.classList.add('animate-[fadeIn_0.3s_ease-out]');
+        }
+
+        function proceedToDelivery() {
+            if(!selectedOrder) return;
+            playClickSound();
             navigate('checkout');
         }
 
-        // --- CHECKOUT FORM LOGIC & FIREBASE ---
         function handleDeliverySubmit(event) {
             event.preventDefault();
             const form = document.getElementById('delivery-form');
@@ -257,19 +290,16 @@
             finalCustomerEmail = document.getElementById('email').value;
             const customerName = document.getElementById('customerName').value;
 
-            // Show top green notification
             const topNotif = document.getElementById('top-notification');
             document.getElementById('top-notification-msg').textContent = `Received your details, ${customerName}`;
             
             topNotif.classList.remove('-translate-y-40', 'opacity-0', 'pointer-events-none');
             topNotif.classList.add('translate-y-0', 'opacity-100');
 
-            // Animate Button RIGHTWARDS and fill it entirely
             const btn = document.getElementById('next-btn');
             btn.classList.add('translate-x-12', 'bg-[#D30000]', 'scale-105');
             btn.innerHTML = `<i class="ph ph-spinner animate-spin text-2xl"></i>`;
             
-            // Collect order payload for Firebase
             const orderData = {
                 customerDetails: {
                     name: customerName,
@@ -290,22 +320,14 @@
                 createdAt: serverTimestamp()
             };
 
-            // GUARANTEED NON-BLOCKING SAVE: Fire and forget to the NEW collection "finalized_orders"
             addDoc(collection(db, "finalized_orders"), orderData)
-                .then((docRef) => {
-                    console.log("Order saved to secure Firebase with ID:", docRef.id);
-                })
-                .catch((error) => {
-                    console.error("Firebase Database error:", error);
-                });
+                .then((docRef) => console.log("Order saved:", docRef.id))
+                .catch((error) => console.error("Firebase Database error:", error));
             
-            // Instantly transition UI to payment page without waiting for database confirmation
             setTimeout(() => {
-                // Hide top notification
                 topNotif.classList.remove('translate-y-0', 'opacity-100');
                 topNotif.classList.add('-translate-y-40', 'opacity-0', 'pointer-events-none');
                 
-                // Swap views
                 document.getElementById('delivery-step').classList.add('hidden');
                 document.getElementById('delivery-back').classList.add('hidden');
                 
@@ -321,10 +343,10 @@
             }, 1500); 
         }
 
-        // --- BIND GLOBALS FOR MODULE SCRIPT ---
         window.navigate = navigate;
         window.handleHelpClick = handleHelpClick;
         window.selectOption = selectOption;
+        window.proceedToDelivery = proceedToDelivery;
         window.scrollSlider = scrollSlider;
         window.updateSliderDots = updateSliderDots;
         window.handleDeliverySubmit = handleDeliverySubmit;
@@ -335,12 +357,13 @@
         window.setCryptoToken = setCryptoToken;
         window.processCryptoPayment = processCryptoPayment;
         window.copyText = copyText;
+        window.toggleReviews = toggleReviews;
+        window.scrollToReviews = scrollToReviews;
 
-        // --- SLIDER LOGIC ---
         function scrollSlider(direction) {
             const slider = document.getElementById('product-slider');
             const width = slider.clientWidth;
-            const maxIndex = 2; // 3 images
+            const maxIndex = 2; 
             
             let currentIndex = Math.round(slider.scrollLeft / width);
             let nextIndex = currentIndex + direction;
@@ -361,7 +384,19 @@
             });
         }
 
-        // --- FOMO NOTIFICATION LOGIC ---
+        function startCountdown() {
+            if(countdownTimer) clearInterval(countdownTimer);
+            let timeLeft = 300; 
+            countdownTimer = setInterval(() => {
+                timeLeft--;
+                if(timeLeft < 0) timeLeft = 300;
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                const el = document.getElementById('offer-timer');
+                if(el) el.textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
         let fomoHideTimeout;
         function triggerFOMO() {
             if (currentView !== 'product') return;
@@ -402,10 +437,28 @@
                 scheduleFOMO();
             }, delay);
         }
-
         scheduleFOMO();
 
-        // --- CRYPTO PAYMENT LOGIC ---
+        function toggleReviews() {
+            const container = document.getElementById('reviews-container');
+            const btn = document.getElementById('toggle-reviews-btn');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                btn.textContent = 'Hide Reviews';
+            } else {
+                container.classList.add('hidden');
+                btn.textContent = 'Show All Reviews';
+            }
+        }
+
+        function scrollToReviews() {
+            const container = document.getElementById('reviews-container');
+            const btn = document.getElementById('toggle-reviews-btn');
+            container.classList.remove('hidden');
+            btn.textContent = 'Hide Reviews';
+            document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
         function openCryptoPopup() {
             cryptoNetwork = 'Ethereum';
             cryptoToken = 'ETH';
@@ -431,7 +484,7 @@
 
         function setCryptoNetwork(network) {
             cryptoNetwork = network;
-            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL'; // Default tokens per network
+            cryptoToken = network === 'Ethereum' ? 'ETH' : 'SOL'; 
             renderCryptoModal();
         }
 
@@ -455,7 +508,6 @@
                 : ['USDT', 'USDC', 'SOL'];
 
             container.innerHTML = `
-                <!-- Network Selection Tabs -->
                 <div class="flex gap-2 p-1 bg-gray-100 rounded-sm mb-6">
                     <button onclick="setCryptoNetwork('Ethereum')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Ethereum' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Ethereum</button>
                     <button onclick="setCryptoNetwork('Solana')" class="flex-1 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${cryptoNetwork === 'Solana' ? 'bg-white shadow-sm text-black' : 'text-gray-500 hover:text-black'}">Solana</button>
@@ -463,7 +515,6 @@
 
                 <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-3">Select Token</p>
                 
-                <!-- Token List -->
                 <div class="space-y-2 mb-8">
                     ${tokens.map(token => `
                         <div onclick="setCryptoToken('${token}')" class="flex items-center justify-between p-4 border ${cryptoToken === token ? 'border-[#D30000] bg-red-50/50' : 'border-gray-200 hover:border-gray-300'} cursor-pointer transition-colors rounded-sm">
@@ -476,7 +527,6 @@
                     `).join('')}
                 </div>
 
-                <!-- Total Amount Summary -->
                 <div class="flex justify-between items-end mb-6 pt-4 border-t border-gray-100">
                     <span class="text-[10px] uppercase tracking-widest text-gray-500 font-semibold">Total Due</span>
                     <div class="text-right">
@@ -485,7 +535,6 @@
                     </div>
                 </div>
 
-                <!-- Action Button -->
                 <button onclick="processCryptoPayment()" class="w-full bg-gray-900 text-white uppercase tracking-widest text-xs font-semibold py-4 hover:bg-black transition-colors shadow-lg">
                     Pay with ${window.currentCryptoAmount} ${cryptoToken}
                 </button>
@@ -499,7 +548,6 @@
             }, 300);
         }
 
-        // --- GLOBAL LOCATION DROPDOWNS API ---
         async function setupLocationAPI() {
             const countrySelect = document.getElementById('country');
             const stateSelect = document.getElementById('state');
@@ -532,7 +580,6 @@
                     phoneCodeSelect.appendChild(opt);
                 });
 
-                // Default to US & dynamic limits
                 window.updatePhoneLimit = function(selectElem) {
                     const phoneInput = document.getElementById('phone');
                     if(!phoneInput) return;
@@ -628,7 +675,6 @@
             btn.innerHTML = `Next <i class="ph ph-arrow-right ml-2 text-lg"></i>`;
         }
 
-        // --- UI UTILITIES ---
         function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-msg').textContent = message;
@@ -657,13 +703,13 @@
             document.body.removeChild(textArea);
         }
 
-        // --- RENDERING ---
         function render() {
             const content = document.getElementById('app-content');
             content.innerHTML = '';
 
             if (currentView === 'product') {
                 content.innerHTML = renderProduct();
+                startCountdown();
             } else if (currentView === 'checkout') {
                 content.innerHTML = renderCheckout();
                 setupLocationAPI(); 
@@ -675,20 +721,20 @@
         }
 
         function renderProduct() {
-            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-sm md:text-base"></i>').join('');
+            const starsHTML = Array(5).fill('<i class="ph-fill ph-star text-base"></i>').join('');
 
             const reviewsHTML = PRODUCT.reviewsList.map(review => {
                 const reviewStars = Array(5).fill(0).map((_, i) => 
                     `<i class="${i < review.rating ? 'ph-fill' : 'ph'} ph-star text-[#D30000] text-sm"></i>`
                 ).join('');
                 return `
-                    <div class="border-b border-gray-100 pb-8 pt-8 last:border-0 last:pb-0">
-                        <div class="flex items-center justify-between mb-2">
+                    <div class="border-b border-gray-100 pb-6 last:border-0 last:pb-0">
+                        <div class="flex items-center justify-between mb-1">
                             <span class="font-medium text-gray-900 tracking-wide">${review.author}</span>
                             <div class="flex gap-[2px]">${reviewStars}</div>
                         </div>
-                        <span class="text-[10px] uppercase tracking-widest text-green-600 font-bold mb-3 block">Verified Buyer</span>
-                        <p class="text-gray-600 font-light leading-relaxed text-sm md:text-base">${review.text}</p>
+                        <span class="text-[9px] uppercase tracking-widest text-green-600 font-bold mb-2 block">Verified Buyer</span>
+                        <p class="text-gray-600 font-light leading-relaxed text-sm">${review.text}</p>
                     </div>
                 `;
             }).join('');
@@ -696,19 +742,19 @@
             return `
                 <div class="max-w-6xl mx-auto px-4 py-8 md:py-12 fade-in">
                     
-                    <div class="flex flex-col md:flex-row gap-12 lg:gap-16">
+                    <div class="flex flex-col md:flex-row gap-8 lg:gap-16">
                         
                         <!-- Product Image Slider -->
                         <div class="flex-1 w-full relative group">
-                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm bg-gray-50" onscroll="updateSliderDots(this)">
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="PE1.png" alt="Product View 1" class="w-full h-full object-cover">
+                            <div id="product-slider" class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-0 w-full scroll-smooth shadow-sm bg-gray-50 rounded-sm" onscroll="updateSliderDots(this)">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="https://placehold.co/800x1000/f8f9fa/e5e7eb?text=Image+1" onerror="this.src='https://placehold.co/800x1000/f8f9fa/a1a1aa?text=Product+Image+1'" alt="Product View 1" class="w-full h-full object-cover">
                                 </div>
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="PE2.png" alt="Product View 2" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="https://placehold.co/800x1000/f8f9fa/e5e7eb?text=Image+2" onerror="this.src='https://placehold.co/800x1000/f8f9fa/a1a1aa?text=Product+Image+2'" alt="Product View 2" class="w-full h-full object-cover">
                                 </div>
-                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden">
-                                   <img src="PE3.png" alt="Product View 3" class="w-full h-full object-cover">
+                                <div class="w-full flex-shrink-0 aspect-[4/5] md:aspect-[3/4] snap-center snap-always flex items-center justify-center relative overflow-hidden bg-gray-100">
+                                   <img src="https://placehold.co/800x1000/f8f9fa/e5e7eb?text=Image+3" onerror="this.src='https://placehold.co/800x1000/f8f9fa/a1a1aa?text=Product+Image+3'" alt="Product View 3" class="w-full h-full object-cover">
                                 </div>
                             </div>
                             
@@ -728,53 +774,99 @@
                             </div>
                         </div>
                         
-                        <div class="flex-1 flex flex-col py-4 md:py-8 lg:sticky lg:top-32 h-fit">
-                            <h2 class="text-3xl md:text-4xl font-serif uppercase tracking-widest mb-3 text-gray-900">${PRODUCT.name}</h2>
+                        <div class="flex-1 flex flex-col py-2 lg:sticky lg:top-28 h-fit">
+                            <h2 class="text-xl md:text-2xl font-serif uppercase tracking-widest mb-2 text-gray-900 leading-tight">${PRODUCT.name}</h2>
                             
-                            <div class="flex items-center text-[#D30000] mb-6 gap-[2px]">
-                                <span class="font-bold text-lg mr-2">${PRODUCT.rating}</span> ${starsHTML}
-                                <span class="text-gray-400 text-xs ml-2 uppercase tracking-widest">(${PRODUCT.reviews} Reviews)</span>
+                            <!-- Rating & Reviews Jump Link -->
+                            <div class="flex flex-col items-start mb-4">
+                                <div class="flex items-center text-[#D30000] gap-[2px]">
+                                    <span class="font-bold text-base mr-1">${PRODUCT.rating}</span> ${starsHTML}
+                                    <span class="text-gray-400 text-xs ml-2 uppercase tracking-widest">(${PRODUCT.reviews})</span>
+                                </div>
+                                <button onclick="scrollToReviews()" class="text-[11px] text-gray-500 hover:text-[#D30000] underline tracking-widest uppercase font-medium mt-1.5 transition-colors">View customer reviews</button>
                             </div>
                             
-                            <p class="text-gray-600 leading-relaxed font-light mb-10 text-base md:text-lg">${PRODUCT.description}</p>
+                            <p class="text-gray-600 leading-relaxed font-light mb-6 text-sm">${PRODUCT.description}</p>
                             
-                            <p class="text-[10px] uppercase tracking-widest font-bold text-green-600 mb-3">SELECT YOUR PACKAGE</p>
+                            <p class="text-[10px] uppercase tracking-widest font-bold text-gray-900 mb-3 border-b border-gray-100 pb-2">SELECT YOUR PACKAGE</p>
                             
-                            <!-- Direct to Checkout Options -->
-                            <div class="flex flex-col gap-4 w-full mb-8">
-                                <button onclick="selectOption(2, 19.99)" class="w-full border-2 border-gray-200 hover:border-[#D30000] p-4 md:p-5 rounded-sm flex justify-between items-center transition-all duration-300 group bg-white shadow-sm hover:shadow-md relative overflow-hidden">
-                                    <div class="flex flex-col text-left relative z-10">
-                                        <span class="font-serif text-lg md:text-xl text-gray-900 group-hover:text-[#D30000] transition-colors font-medium">Buy 2 Items</span>
-                                        <span class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest mt-1">Standard Pack</span>
+                            <!-- Package Options -->
+                            <div class="flex flex-col gap-3 w-full mb-6">
+                                
+                                <!-- Option 1 -->
+                                <button id="pack-2" onclick="selectOption(2, 19.99, 'pack-2')" class="package-option w-full border-2 border-gray-200 p-3 md:p-4 rounded-md flex justify-between items-center transition-all bg-white relative hover:border-gray-300">
+                                    <div class="flex flex-col text-left">
+                                        <span class="font-serif text-base md:text-lg text-gray-900 font-medium">Buy 2 Pairs</span>
+                                        <span class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Standard Pack</span>
                                     </div>
-                                    <span class="text-xl md:text-2xl font-semibold text-gray-900 relative z-10 group-hover:text-[#D30000] transition-colors">$19.99</span>
-                                    <div class="absolute inset-0 bg-red-50/0 group-hover:bg-red-50/50 transition-colors duration-300"></div>
+                                    <span class="text-lg md:text-xl font-semibold text-gray-900">$19.99</span>
                                 </button>
                                 
-                                <button onclick="selectOption(4, 28.99)" class="w-full border-2 border-[#D30000] p-4 md:p-5 rounded-sm flex justify-between items-center transition-all duration-300 group bg-red-50/30 hover:bg-red-50/60 shadow-md relative overflow-hidden">
-                                    <div class="absolute top-0 right-0 bg-[#D30000] text-white text-[8px] md:text-[9px] uppercase tracking-widest font-bold px-3 py-1 rounded-bl-sm">Best Value</div>
-                                    <div class="flex flex-col text-left relative z-10">
-                                        <span class="font-serif text-lg md:text-xl text-gray-900 transition-colors font-medium">Buy 4 Items</span>
-                                        <span class="text-[10px] md:text-xs text-green-600 uppercase tracking-widest font-bold mt-1">Save 27% Instantly</span>
+                                <!-- Option 2 (Best Value with Animated Border & Timer) -->
+                                <div class="relative p-[2px] rounded-md anim-border shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="selectOption(4, 28.99, 'pack-4-inner')">
+                                    <div id="pack-4-inner" class="package-option w-full bg-white rounded-[4px] p-3 md:p-4 flex justify-between items-center relative transition-colors h-full border-2 border-transparent">
+                                        
+                                        <!-- Top Badge -->
+                                        <div class="absolute top-0 right-0 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-[9px] uppercase tracking-widest font-bold px-2 py-1 rounded-bl-sm rounded-tr-[3px] flex items-center gap-1 shadow-sm">
+                                            Best Value <i class="ph-bold ph-timer ml-1"></i><span id="offer-timer">05:00</span>
+                                        </div>
+                                        
+                                        <div class="flex flex-col text-left mt-2">
+                                            <span class="font-serif text-base md:text-lg text-gray-900 font-medium">Buy 4 Pairs</span>
+                                            <span class="text-[10px] text-orange-600 uppercase tracking-widest font-bold mt-1">Save 27% Instantly</span>
+                                        </div>
+                                        <span class="text-lg md:text-xl font-semibold text-gray-900 mt-2">$28.99</span>
                                     </div>
-                                    <span class="text-xl md:text-2xl font-semibold text-[#D30000] relative z-10">$28.99</span>
+                                </div>
+
+                                <!-- Option 3 (Sold Out) -->
+                                <button disabled class="w-full border-2 border-red-100 bg-red-50/50 p-3 md:p-4 rounded-md flex justify-between items-center opacity-70 cursor-not-allowed relative">
+                                    <div class="flex flex-col text-left">
+                                        <span class="font-serif text-base md:text-lg text-gray-400 font-medium line-through decoration-red-200">6 Box Package</span>
+                                        <span class="text-[10px] text-[#D30000] uppercase tracking-widest font-bold mt-1 flex items-center gap-1"><i class="ph-bold ph-x"></i> Sold Out</span>
+                                    </div>
+                                    <span class="text-lg md:text-xl font-semibold text-gray-400 line-through decoration-red-200">$39.99</span>
+                                </button>
+                                
+                            </div>
+
+                            <!-- Explicit Free Shipping Box -->
+                            <div class="bg-green-50/70 border border-green-200/60 rounded-md p-3 mb-2 flex items-center justify-center gap-2 shadow-sm">
+                                <i class="ph-fill ph-truck text-green-600 text-xl"></i>
+                                <span class="text-green-700 text-[11px] font-bold tracking-widest uppercase mt-[2px]">Free Express Shipping Applied</span>
+                            </div>
+
+                            <!-- Proceed Button (Initially Hidden) -->
+                            <div id="next-btn-container" class="hidden mt-2">
+                                <button onclick="proceedToDelivery()" class="w-full bg-[#D30000] text-white uppercase tracking-widest text-sm font-semibold py-4 rounded-sm shadow-xl hover:bg-[#a00000] transition-colors flex justify-center items-center gap-2">
+                                    Next Step <i class="ph ph-arrow-right text-lg"></i>
                                 </button>
                             </div>
                             
-                            <div class="border-t border-gray-100 pt-6 mt-2">
-                                <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between mb-2">
-                                    <span>Shipping</span> <span class="text-green-600 font-bold">Complimentary</span>
-                                </p>
-                                <p class="text-xs text-gray-500 tracking-wider uppercase flex justify-between">
+                            <div class="border-t border-gray-100 pt-4 mt-6">
+                                <p class="text-[10px] text-gray-500 tracking-wider uppercase flex justify-between">
                                     <span>Returns</span> <span>Within 30 Days</span>
                                 </p>
                             </div>
                             
-                            <!-- Customer Reviews Section -->
-                            <div class="mt-12 pt-10 border-t border-gray-900">
-                                <h3 class="text-xl font-serif uppercase tracking-widest mb-2 text-gray-900">Customer Reviews</h3>
-                                <p class="text-sm text-gray-500 mb-6 tracking-wide">Based on ${PRODUCT.reviews} verified reviews</p>
-                                <div>
+                            <!-- Customer Reviews Section (Collapsible) -->
+                            <div id="reviews-section" class="mt-10 pt-8 border-t border-gray-900">
+                                <div class="flex justify-between items-end mb-4">
+                                    <div>
+                                        <h3 class="text-lg font-serif uppercase tracking-widest mb-1 text-gray-900">Customer Reviews</h3>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex gap-[2px] text-[#D30000] text-sm">${starsHTML}</div>
+                                            <span class="font-bold text-gray-900 text-sm">${PRODUCT.rating}</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-[10px] text-gray-500 tracking-wide uppercase text-right pb-1">${PRODUCT.reviews} verified reviews</p>
+                                </div>
+                                
+                                <button id="toggle-reviews-btn" onclick="toggleReviews()" class="w-full py-3 border border-gray-200 text-gray-700 uppercase tracking-widest text-[11px] font-semibold rounded-sm hover:bg-gray-50 transition-colors mb-4">
+                                    Show All Reviews
+                                </button>
+
+                                <div id="reviews-container" class="hidden flex-col gap-2 mt-4 fade-in">
                                     ${reviewsHTML}
                                 </div>
                             </div>
@@ -794,7 +886,7 @@
             const totalPaid = "$" + selectedOrder.price.toFixed(2);
 
             return `
-                <div class="max-w-xl mx-auto py-12 px-4 fade-in">
+                <div class="max-w-xl mx-auto py-10 px-4 fade-in">
                     
                     <div class="bg-gray-50 p-6 md:px-10 md:pt-10 md:pb-6 rounded-sm mb-2 border border-gray-100 shadow-sm relative overflow-visible">
 
@@ -802,9 +894,10 @@
                         <div class="bg-white border border-gray-200 p-4 mb-8 flex justify-between items-center rounded-sm">
                             <div>
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Your Selection</p>
-                                <p class="font-serif text-gray-900 font-medium">${selectedOrder.productName} (x${selectedOrder.quantity})</p>
+                                <p class="font-serif text-gray-900 font-medium text-sm md:text-base">${selectedOrder.productName}</p>
+                                <p class="text-xs text-gray-500 mt-1">Qty: ${selectedOrder.quantity} Pairs</p>
                             </div>
-                            <div class="text-right">
+                            <div class="text-right shrink-0 ml-4">
                                 <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Total</p>
                                 <p class="text-lg text-[#D30000] font-bold">${totalPaid}</p>
                             </div>
@@ -813,8 +906,8 @@
                         <!-- Payment Step Waiting Header -->
                         <div id="checkout-waiting-header" class="hidden flex-col items-center justify-center w-full mb-8 border-b border-gray-200 pb-8">
                             <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
-                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
-                            <p class="text-xs text-gray-500 uppercase tracking-widest mb-8">We're almost there</p>
+                            <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Checkout / Payment</h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest mb-8">Securely complete your order</p>
                         </div>
                         
                         <!-- STEP 1: Delivery Details -->
@@ -824,17 +917,17 @@
                             <form id="delivery-form" class="space-y-6" onsubmit="handleDeliverySubmit(event)">
                                 <div>
                                     <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Full Name *</label>
-                                    <input type="text" id="customerName" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="Jane Doe">
+                                    <input type="text" id="customerName" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300 text-sm md:text-base" placeholder="Jane Doe">
                                 </div>
 
                                 <div>
                                     <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Email (For Tracking) *</label>
-                                    <input type="email" id="email" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="jane@example.com">
+                                    <input type="email" id="email" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300 text-sm md:text-base" placeholder="jane@example.com">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Street Address *</label>
-                                    <input type="text" id="address" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="123 Luxury Lane">
+                                    <input type="text" id="address" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300 text-sm md:text-base" placeholder="123 Luxury Lane">
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-6">
@@ -861,7 +954,7 @@
 
                                     <div class="col-span-1">
                                         <label class="block text-[10px] font-semibold tracking-widest uppercase text-gray-500 mb-1">Postal / Zip *</label>
-                                        <input type="text" id="zip" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="10001">
+                                        <input type="text" id="zip" required autocomplete="off" class="w-full border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300 text-sm md:text-base" placeholder="10001">
                                     </div>
                                 </div>
 
@@ -871,13 +964,13 @@
                                         <select id="phoneCode" required class="w-24 md:w-28 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 cursor-pointer mr-2 text-xs md:text-sm shrink-0">
                                             <option value="" disabled selected>Code</option>
                                         </select>
-                                        <input type="tel" id="phone" required autocomplete="off" oninput="this.value=this.value.replace(/[^0-9]/g,'')" class="min-w-0 flex-1 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300" placeholder="0000000000">
+                                        <input type="tel" id="phone" required autocomplete="off" oninput="this.value=this.value.replace(/[^0-9]/g,'')" class="min-w-0 flex-1 border-b border-gray-300 py-2 bg-transparent focus:outline-none focus:border-[#D30000] transition-colors text-gray-900 placeholder-gray-300 text-sm md:text-base" placeholder="0000000000">
                                     </div>
                                 </div>
                                 
                                 <div class="pt-6 flex justify-center overflow-visible">
-                                    <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center min-w-[160px] shadow-lg hover:bg-[#a00000]">
-                                        Proceed to Payment <i class="ph ph-arrow-right ml-2 text-lg"></i>
+                                    <button type="submit" id="next-btn" class="bg-[#D30000] text-white uppercase tracking-widest text-xs font-semibold py-4 px-12 transition-all duration-500 transform flex items-center justify-center w-full md:w-auto min-w-[200px] shadow-lg hover:bg-[#a00000] rounded-sm">
+                                        Continue to Checkout <i class="ph ph-arrow-right ml-2 text-lg"></i>
                                     </button>
                                 </div>
                             </form>
@@ -885,22 +978,19 @@
 
                         <!-- STEP 2: Payment Details -->
                         <div id="payment-step" class="hidden fade-in">
-                            <h2 class="text-2xl font-serif uppercase tracking-widest text-center mb-8 text-gray-900">Secure Payment</h2>
-                            
                             <div id="paypal-ui-container">
                                 <p class="text-xs text-center text-gray-500 mb-8 tracking-widest uppercase">Select your payment method below to complete the order</p>
                                 <div class="relative z-0">
                                     <div id="paypal-button-container" class="min-h-[55px]"></div>
                                 </div>
 
-                                <!-- Crypto Payment Divider & Button -->
                                 <div class="flex items-center justify-center space-x-4 my-6">
                                     <hr class="flex-grow border-gray-200">
                                     <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">OR</span>
                                     <hr class="flex-grow border-gray-200">
                                 </div>
 
-                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md">
+                                <button onclick="openCryptoPopup()" class="w-full bg-gray-900 text-white flex items-center justify-center gap-2 py-3.5 text-sm tracking-widest uppercase font-semibold hover:bg-black transition-colors shadow-md rounded-sm">
                                     <i class="ph ph-coin text-xl"></i> Pay with Crypto
                                 </button>
                             </div>
@@ -909,14 +999,14 @@
                     </div>
 
                     <div id="delivery-back" class="text-center mt-6">
-                        <button onclick="navigate('product')" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                        <button onclick="navigate('product')" class="text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
                             <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Product
                         </button>
                     </div>
                     
                     <div id="payment-back" class="text-center mt-6 hidden">
-                        <button onclick="goBackToDelivery()" class="text-sm tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
-                            <i class="ph ph-arrow-left inline-block mr-1"></i> Back to Delivery Details
+                        <button onclick="goBackToDelivery()" class="text-xs tracking-widest uppercase text-gray-500 hover:text-[#D30000] transition-colors duration-300 border-b border-transparent hover:border-[#D30000] pb-1">
+                            <i class="ph ph-arrow-left inline-block mr-1"></i> Edit Delivery Details
                         </button>
                     </div>
                 </div>
@@ -943,7 +1033,6 @@
                     
                     <div class="bg-white p-6 md:p-8 rounded-sm border border-gray-100 shadow-xl text-center">
                         
-                        <!-- Payment Waiting Header -->
                         <div class="flex flex-col items-center justify-center w-full mb-8 border-b border-gray-100 pb-8">
                             <i class="ph ph-spinner animate-spin text-[40px] text-[#D30000] mb-4"></i>
                             <h3 class="text-xl font-serif text-gray-900 tracking-wide text-center mb-1">Waiting for your payment...</h3>
@@ -993,7 +1082,6 @@
         }
 
         function renderThankYou() {
-            // Calculate Date 10 days from now
             const deliveryDate = new Date();
             deliveryDate.setDate(deliveryDate.getDate() + 10);
             const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -1007,7 +1095,7 @@
                     <h2 class="text-4xl font-serif tracking-widest uppercase mb-6 text-gray-900">Thank You!</h2>
                     <p class="text-xl text-gray-600 mb-8 font-light">Your elegant order has been placed successfully.</p>
                     
-                    <div class="bg-gray-50 p-8 border border-gray-100 text-left mb-10 shadow-sm">
+                    <div class="bg-gray-50 p-8 border border-gray-100 text-left mb-10 shadow-sm rounded-sm">
                         <div class="mb-6">
                             <p class="text-xs tracking-widest uppercase text-gray-400 mb-1">Estimated Delivery</p>
                             <p class="text-lg text-gray-900 font-serif">${formattedDate}</p>
