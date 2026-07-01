@@ -1,418 +1,331 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Like Photo USA | Avant-Garde Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Hamid's Tibetan Kitchen | Srinagar</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Syne:wght@400..800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'void': '#0a0a0a',
-                        'bone': '#e8e8e3',
-                        'acid': '#ccff00',
-                    },
-                    fontFamily: {
-                        'display': ['"Bodoni Moda"', 'serif'],
-                        'mono-sans': ['"Syne"', 'sans-serif'],
-                    },
-                    spacing: {
-                        '128': '32rem',
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <!-- Choosing Cormorant Garamond for dramatic flair, Oswald for stark contrast, DM Sans for readability -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400&family=Oswald:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
         :root {
-            --noise-url: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+            --color-bg: #0a0908; /* Very deep charcoal/brown */
+            --color-text: #e8e6df; /* Warm bone white */
+            --color-chili: #b82811; /* Deep striking red */
+            --color-gold: #c4994f; /* Muted gold */
+            
+            --font-display: 'Cormorant Garamond', serif;
+            --font-sub: 'Oswald', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
         }
 
         body {
-            background-color: theme('colors.void');
-            color: theme('colors.bone');
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
             overflow-x: hidden;
-            cursor: crosshair;
+            background-image: radial-gradient(circle at 50% 0%, #1a1815 0%, transparent 70%);
         }
 
-        /* Texture Overlay */
-        .noise-overlay {
+        ::selection {
+            background-color: var(--color-chili);
+            color: var(--color-text);
+        }
+
+        /* SVG Noise Overlay for tactile texture */
+        .noise-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             pointer-events: none;
-            z-index: 50;
+            z-index: 9999;
             opacity: 0.04;
-            background-image: var(--noise-url);
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Typography tweaks */
-        .text-outline {
-            color: transparent;
-            -webkit-text-stroke: 1px theme('colors.bone');
-        }
+        .font-display { font-family: var(--font-display); }
+        .font-sub { font-family: var(--font-sub); letter-spacing: 0.1em; text-transform: uppercase; }
         
-        .text-outline:hover {
-            color: theme('colors.acid');
-            -webkit-text-stroke: 1px theme('colors.acid');
-            transition: all 0.3s ease;
-        }
+        .text-chili { color: var(--color-chili); }
+        .text-gold { color: var(--color-gold); }
+        .bg-chili { background-color: var(--color-chili); }
 
-        /* Animations */
-        @keyframes revealUp {
-            0% { transform: translateY(100%); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes imageReveal {
-            0% { clip-path: inset(100% 0 0 0); transform: scale(1.1); filter: grayscale(100%); }
-            100% { clip-path: inset(0 0 0 0); transform: scale(1); filter: grayscale(0%); }
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        @keyframes slowPan {
-            0% { transform: scale(1.05) translate(0, 0); }
-            100% { transform: scale(1.1) translate(-2%, 2%); }
-        }
-
-        .animate-reveal-up {
-            animation: revealUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .animate-image-reveal {
-            animation: imageReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        
-        .marquee-track {
-            display: flex;
-            width: 200%;
-            animation: marquee 20s linear infinite;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: theme('colors.void');
-        }
-        ::-webkit-scrollbar-thumb {
-            background: theme('colors.bone');
-        }
-
-        /* Image hover effects */
-        .img-container {
-            overflow: hidden;
-            position: relative;
-        }
-        .img-container img {
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease;
-        }
-        .img-container:hover img {
-            transform: scale(1.05);
-            filter: contrast(120%) brightness(80%);
-        }
-        .img-container::after {
-            content: 'VIEW';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: theme('colors.acid');
-            color: theme('colors.void');
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            padding: 1rem 2rem;
-            border-radius: 999px;
+        /* Animation Classes */
+        .reveal-up {
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            pointer-events: none;
-            mix-blend-mode: exclusion;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
         }
-        .img-container:hover::after {
-            transform: translate(-50%, -50%) scale(1);
+        .reveal-up.in-view {
             opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .reveal-image {
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .reveal-image.in-view {
+            clip-path: inset(0 0 0 0);
+        }
+
+        /* Stagger delays */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* Custom image treatment for moody vibe */
+        .img-moody {
+            filter: grayscale(20%) contrast(1.2) brightness(0.8);
+            transition: filter 0.5s ease;
+        }
+        .img-moody:hover {
+            filter: grayscale(0%) contrast(1) brightness(0.9);
+        }
+
+        /* Typography sizing overrides for massive impact */
+        .hero-title {
+            font-size: clamp(4rem, 12vw, 12rem);
+            line-height: 0.85;
+            letter-spacing: -0.02em;
+        }
+        .section-title {
+            font-size: clamp(3rem, 8vw, 7rem);
+            line-height: 0.9;
+        }
+
+        /* Decorative elements */
+        .vertical-line {
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--color-gold), transparent);
+            opacity: 0.3;
+        }
+        
+        .custom-border {
+            border: 1px solid rgba(232, 230, 223, 0.1);
         }
     </style>
 </head>
-<body class="font-mono-sans antialiased">
-    
-    <div class="noise-overlay"></div>
+<body class="antialiased selection:bg-red-900 selection:text-white">
 
-    <header class="fixed top-0 w-full z-50 border-b border-bone/10 bg-void/60 backdrop-blur-lg">
-        <div class="w-full flex justify-between items-center p-6 lg:px-12 text-bone">
-            <div class="overflow-hidden">
-                <a href="#" class="font-display text-2xl md:text-3xl font-black uppercase tracking-widest animate-reveal-up block" style="animation-delay: 0.1s;">
-                    Like<span class="text-acid">.</span>
-                </a>
+    <!-- Global Noise Texture -->
+    <div class="noise-bg"></div>
+
+    <nav class="fixed w-full z-50 mix-blend-difference p-6 md:p-10 flex justify-between items-start pointer-events-none">
+        <div class="font-sub text-xs pointer-events-auto cursor-pointer hover:text-chili transition-colors">
+            Est. / Srinagar<br>
+            Tibetan Colony
+        </div>
+        <div class="font-sub text-xs text-right pointer-events-auto flex flex-col gap-2">
+            <a href="#menu" class="hover:text-chili transition-colors">The Menu</a>
+            <a href="#visit" class="hover:text-chili transition-colors">Visit Us</a>
+        </div>
+    </nav>
+
+    <header class="relative min-h-screen flex items-center pt-20 pb-10">
+        <div class="absolute inset-0 z-0 overflow-hidden reveal-image in-view" style="transition-duration: 2s;">
+            <!-- Deep, moody textural background image -->
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2000&auto=format&fit=crop" 
+                 alt="Atmospheric kitchen" 
+                 class="w-full h-full object-cover opacity-20 filter grayscale blur-[2px] scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0908] via-transparent to-[#0a0908]"></div>
+        </div>
+
+        <div class="container mx-auto px-6 md:px-12 relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-12 flex flex-col justify-center">
+                <span class="font-sub text-gold text-sm md:text-base mb-4 reveal-up in-view">Hawal - Sangeen Darwaza Rd</span>
+                <h1 class="font-display hero-title font-light italic text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-500 reveal-up delay-100 in-view">
+                    Hamid's
+                </h1>
+                <h1 class="font-display hero-title font-semibold ml-0 md:ml-[10vw] reveal-up delay-200 in-view">
+                    Tibetan Kitchen.
+                </h1>
             </div>
-            <nav class="hidden md:flex gap-12 text-xs font-black tracking-[0.2em] uppercase overflow-hidden">
-                <a href="#work" class="hover:text-acid transition-colors hover:-translate-y-1 transform inline-block duration-300 animate-reveal-up" style="animation-delay: 0.2s;">Work</a>
-                <a href="#about" class="hover:text-acid transition-colors hover:-translate-y-1 transform inline-block duration-300 animate-reveal-up" style="animation-delay: 0.3s;">About</a>
-                <a href="#reviews" class="hover:text-acid transition-colors hover:-translate-y-1 transform inline-block duration-300 animate-reveal-up" style="animation-delay: 0.35s;">Reviews</a>
-                <a href="#contact" class="hover:text-acid transition-colors hover:-translate-y-1 transform inline-block duration-300 animate-reveal-up" style="animation-delay: 0.4s;">Contact</a>
-            </nav>
-            <button class="md:hidden text-bone uppercase text-xs font-bold tracking-widest hover:text-acid transition-colors">Menu</button>
+            
+            <div class="md:col-span-4 md:col-start-8 mt-12 md:mt-24 reveal-up delay-300 in-view">
+                <p class="font-body text-sm md:text-base text-gray-400 leading-relaxed">
+                    A hidden culinary haven in the heart of Badaamwari. Serving authentic, soul-warming Tibetan recipes passed down through generations.
+                </p>
+                <div class="mt-8 pt-6 border-t border-gray-800 flex items-center gap-4">
+                    <div class="w-2 h-2 rounded-full bg-chili animate-pulse"></div>
+                    <span class="font-sub text-xs tracking-widest text-gray-500">Currently Open</span>
+                </div>
+            </div>
         </div>
     </header>
 
-    <section class="relative h-[100svh] flex flex-col justify-center items-center overflow-hidden bg-void pt-20">
-        <!-- Intense Background Image -->
-        <div class="absolute inset-0 z-0 w-full h-full pointer-events-none">
-            <!-- Vignette/Darken overlay for depth -->
-            <div class="absolute inset-0 bg-gradient-to-b from-void/95 via-void/60 to-void/95 z-10"></div>
-            <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=2500&auto=format&fit=crop" alt="Hero Editorial" class="object-cover object-top w-full h-full filter grayscale contrast-125 animate-[slowPan_20s_ease-in-out_infinite_alternate]" />
-        </div>
-
-        <!-- Gigantic Blend-Mode Typography -->
-        <div class="relative z-20 w-full flex flex-col items-center justify-center pointer-events-none mix-blend-exclusion px-4">
-            <h1 class="font-display text-[26vw] md:text-[22vw] leading-[0.75] font-black uppercase tracking-tighter text-white text-center animate-reveal-up" style="animation-delay: 0.5s;">
-                LIKE<br/>PHOTO
-            </h1>
-        </div>
-
-        <!-- Floating Detail Elements -->
-        <div class="absolute bottom-12 left-6 lg:left-12 z-30">
-            <p class="text-bone/80 text-[0.65rem] md:text-xs font-bold uppercase tracking-[0.3em] leading-loose max-w-xs animate-reveal-up" style="animation-delay: 1s;">
-                Unfiltered reality.<br/>
-                Editorial & Fashion.<br/>
-                <span class="text-acid">Los Angeles, CA</span>
-            </p>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-12 right-6 lg:right-12 z-30 flex flex-col items-end animate-reveal-up" style="animation-delay: 1.2s;">
-            <div class="text-bone/50 text-[0.6rem] font-bold uppercase tracking-[0.4em] mb-4 rotate-90 origin-right translate-x-3">Scroll</div>
-            <div class="w-[1px] h-16 bg-gradient-to-b from-acid to-transparent animate-pulse"></div>
-        </div>
-    </section>
-
-    <div class="w-full overflow-hidden border-y border-void py-6 bg-acid text-void z-20 relative">
-        <div class="marquee-track font-display text-4xl md:text-5xl uppercase tracking-tighter font-black whitespace-nowrap">
-            <span>AVANT-GARDE PORTFOLIO • EST. 2026 • AVANT-GARDE PORTFOLIO • EST. 2026 • AVANT-GARDE PORTFOLIO • EST. 2026 • </span>
-            <span>AVANT-GARDE PORTFOLIO • EST. 2026 • AVANT-GARDE PORTFOLIO • EST. 2026 • AVANT-GARDE PORTFOLIO • EST. 2026 • </span>
-        </div>
-    </div>
-
-    <section id="work" class="py-32 px-6 lg:px-12 bg-void relative">
-        <div class="flex justify-between items-end mb-24 border-b border-bone/20 pb-8">
-            <h2 class="font-display text-5xl md:text-8xl uppercase tracking-tighter">Selected <br/><span class="text-outline">Works</span></h2>
-            <p class="text-acid font-bold tracking-widest uppercase text-sm hidden md:block">01 / Portfolio</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-x-6 gap-y-24">
-            
-            <!-- Project 1: Large Asymmetric -->
-            <div class="col-span-1 md:col-span-8 flex flex-col group">
-                <div class="h-[70vh] w-full img-container mb-6">
-                    <img src="https://images.unsplash.com/photo-1618244972963-dbee1a7edc95?q=80&w=2000&auto=format&fit=crop" alt="Project 1" class="w-full h-full object-cover object-top filter grayscale group-hover:grayscale-0 transition duration-700" loading="lazy">
-                </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-display text-4xl uppercase mb-2 group-hover:text-acid transition-colors">Neon Nights</h3>
-                        <p class="text-sm font-bold tracking-widest text-bone/50 uppercase">Editorial Campaign</p>
-                    </div>
-                    <span class="font-display text-2xl opacity-30">01</span>
-                </div>
-            </div>
-
-            <!-- Project 2: Smaller, offset -->
-            <div class="col-span-1 md:col-span-4 md:mt-48 flex flex-col group">
-                <div class="h-[50vh] w-full img-container mb-6">
-                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop" alt="Project 2" class="w-full h-full object-cover object-center filter grayscale group-hover:grayscale-0 transition duration-700" loading="lazy">
-                </div>
-                 <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-display text-2xl uppercase mb-2 group-hover:text-acid transition-colors">Vogue Envy</h3>
-                        <p class="text-xs font-bold tracking-widest text-bone/50 uppercase">High Fashion</p>
-                    </div>
-                    <span class="font-display text-xl opacity-30">02</span>
-                </div>
-            </div>
-
-            <!-- Project 3: Full Width Banner style -->
-             <div class="col-span-1 md:col-span-12 flex flex-col group mt-12">
-                <div class="h-[60vh] w-full img-container mb-6 relative">
-                     <div class="absolute inset-0 bg-acid/20 mix-blend-overlay z-10 group-hover:opacity-0 transition-opacity duration-500"></div>
-                    <img src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?q=80&w=2000&auto=format&fit=crop" alt="Project 3" class="w-full h-full object-cover object-center" loading="lazy">
-                </div>
-                 <div class="flex justify-between items-end">
-                    <div>
-                        <h3 class="font-display text-5xl md:text-7xl uppercase mb-2 group-hover:text-acid transition-colors">Urban Decay</h3>
-                        <p class="text-sm font-bold tracking-widest text-bone/50 uppercase">Documentary Series / NYC</p>
-                    </div>
-                    <span class="font-display text-4xl opacity-30">03</span>
-                </div>
-            </div>
-            
-            <!-- Project 4 & 5: Side by side split -->
-            <div class="col-span-1 md:col-span-6 flex flex-col group">
-                <div class="aspect-square w-full img-container mb-6">
-                    <img src="https://images.unsplash.com/photo-1604004555489-723a93d6ce74?q=80&w=1000&auto=format&fit=crop" alt="Project 4" class="w-full h-full object-cover object-center filter grayscale group-hover:grayscale-0 transition duration-700" loading="lazy">
-                </div>
-                <div>
-                    <h3 class="font-display text-3xl uppercase mb-2 group-hover:text-acid transition-colors">Skin & Bone</h3>
-                    <p class="text-xs font-bold tracking-widest text-bone/50 uppercase">Portraiture</p>
-                </div>
-            </div>
-
-            <div class="col-span-1 md:col-span-6 flex flex-col group md:mt-24">
-                <div class="aspect-[3/4] w-full img-container mb-6">
-                    <img src="https://images.unsplash.com/photo-1588117260148-b47818741c74?q=80&w=1000&auto=format&fit=crop" alt="Project 5" class="w-full h-full object-cover object-center filter grayscale group-hover:grayscale-0 transition duration-700" loading="lazy">
-                </div>
-                <div>
-                    <h3 class="font-display text-3xl uppercase mb-2 group-hover:text-acid transition-colors">Silhouettes</h3>
-                    <p class="text-xs font-bold tracking-widest text-bone/50 uppercase">Studio Lighting</p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="about" class="py-32 px-6 lg:px-12 bg-bone text-void relative overflow-hidden">
-        <!-- Giant background text -->
-        <div class="absolute -left-10 top-32 font-display text-[20vw] leading-none text-void/5 whitespace-nowrap pointer-events-none select-none">
-            MANIFESTO
-        </div>
-        <div class="absolute right-[-10%] bottom-32 font-display text-[20vw] leading-none text-void/5 whitespace-nowrap pointer-events-none select-none">
-            TRUTH
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10">
-            <div class="col-span-1 lg:col-span-5 relative">
-                <div class="lg:sticky lg:top-32 z-20">
-                    <h2 class="font-display text-5xl md:text-7xl uppercase tracking-tighter mb-8 leading-[0.9]">
-                        We do not <br/>
-                        take photos.<br/>
-                        <span class="text-acid bg-void px-2">We Make</span><br/>
-                        Statements.
+    <section class="py-24 md:py-40 relative">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="relative z-10 order-2 lg:order-1 reveal-up">
+                    <h2 class="font-display section-title mb-8 leading-none">
+                        Crafted <br>
+                        <span class="italic text-gray-500 font-light">&</span> Folded.
                     </h2>
-                    
-                    <div class="relative w-full aspect-[4/3] mt-12 group">
-                        <img src="https://images.unsplash.com/photo-1554046920-90dc5823ca0b?q=80&w=1000&auto=format&fit=crop" alt="Studio Setup" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 transition-all duration-700 group-hover:grayscale-0" loading="lazy">
-                        <!-- Floating secondary image -->
-                        <div class="absolute -bottom-10 -right-6 w-1/2 aspect-square border-4 border-bone bg-bone shadow-2xl overflow-hidden group-hover:-translate-y-4 transition-transform duration-500">
-                             <img src="https://images.unsplash.com/photo-1516961642265-531546e84af2?q=80&w=800&auto=format&fit=crop" alt="Film" class="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-110">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-span-1 lg:col-span-6 lg:col-start-7 lg:mt-32 space-y-16">
-                <!-- Text block 1 -->
-                <p class="text-xl md:text-4xl font-display font-medium leading-tight text-void">
-                    Like Photo USA was founded on a simple principle: beauty without edge is boring. We reject the over-processed, plastic aesthetic of modern commercial photography in favor of raw texture, harsh shadows, and undeniable truth.
-                </p>
-                
-                <!-- Editorial Image Break -->
-                <div class="w-full h-[45vh] overflow-hidden relative img-container mt-8">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1200&auto=format&fit=crop" alt="Model Portrait" class="w-full h-full object-cover object-top grayscale transition-transform duration-700 hover:scale-105">
-                </div>
-
-                <div class="w-full h-px bg-void/20"></div>
-                
-                <!-- Text block 2 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <p class="text-sm font-bold tracking-widest uppercase leading-loose text-void/90">
-                        Led by creative director Julian Vance, our studio operates at the intersection of high fashion and street reality. We have collaborated with avant-garde designers, independent musicians, and global brands looking to shed their corporate skin.
+                    <p class="font-body text-lg md:text-xl text-gray-300 leading-relaxed max-w-md">
+                        Every momo is a testament to patience. We specialize in the meticulous art of Tibetan street comfort—steaming dumplings and simmering broths that cut through the valley's chill.
                     </p>
-                    <p class="text-sm font-bold tracking-widest uppercase leading-loose text-void/90">
-                        Our process is analog at heart, even when digital in execution. We believe in getting it right in the camera, in the moment of tension between the lens and the subject.
+                    <p class="font-body text-sm text-gray-500 mt-6 max-w-sm">
+                        "Great service, awesome food taste, and the best atmosphere in the colony."
                     </p>
                 </div>
-
-                <!-- Collage Layout -->
-                <div class="flex flex-row gap-6 items-end mt-12">
-                    <div class="w-2/3 h-72 overflow-hidden img-container group">
-                        <img src="https://images.unsplash.com/photo-1605808360022-725b82098d62?q=80&w=1000&auto=format&fit=crop" alt="Texture" class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0">
-                    </div>
-                    <div class="w-1/3 aspect-[3/4] overflow-hidden img-container group">
-                        <img src="https://images.unsplash.com/photo-1506434304574-fa3bd96906a5?q=80&w=800&auto=format&fit=crop" alt="Abstract" class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0">
-                    </div>
-                </div>
-
-                <!-- Client List Block -->
-                <div class="pt-16 pb-12 bg-void text-bone p-8 md:p-12 -mx-6 lg:mx-0 relative mt-16 shadow-2xl">
-                    <!-- Accent corner -->
-                    <div class="absolute top-0 right-0 w-12 h-12 bg-acid"></div>
-                    <h4 class="font-display text-3xl uppercase mb-8 border-b border-bone/20 pb-4">Selected Clients</h4>
-                    <ul class="grid grid-cols-2 gap-y-6 gap-x-4 font-bold tracking-widest uppercase text-xs text-bone/80">
-                        <li class="hover:text-acid transition-colors cursor-crosshair">Balenciaga (Editorial)</li>
-                        <li class="hover:text-acid transition-colors cursor-crosshair">Dazed Magazine</li>
-                        <li class="hover:text-acid transition-colors cursor-crosshair">Acne Studios</li>
-                        <li class="hover:text-acid transition-colors cursor-crosshair">A24 Films</li>
-                        <li class="hover:text-acid transition-colors cursor-crosshair">SSENSE</li>
-                        <li class="hover:text-acid transition-colors cursor-crosshair">Vice Media</li>
-                    </ul>
+                
+                <div class="relative order-1 lg:order-2 h-[50vh] md:h-[70vh] w-full reveal-image">
+                    <!-- Placeholder representing handcrafted food -->
+                    <img src="https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=1000&auto=format&fit=crop" 
+                         alt="Handcrafting Dumplings" 
+                         class="w-full h-full object-cover img-moody absolute right-0 md:-right-12 top-0 md:-top-12 z-0">
+                    <!-- Abstract geometric element breaking the frame -->
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-chili z-10 mix-blend-multiply opacity-80"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="reviews" class="py-32 px-6 lg:px-12 bg-void text-bone relative overflow-hidden border-t border-bone/10">
-        <!-- Massive 5.0 rating graphic -->
-        <div class="absolute left-[-10%] top-1/2 -translate-y-1/2 font-display text-[50vw] leading-none text-void/5 font-black mix-blend-exclusion pointer-events-none select-none" style="-webkit-text-stroke: 2px rgba(232, 232, 227, 0.1);">
-            5.0
-        </div>
-        
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 border-b border-bone/20 pb-8 relative z-10 gap-8">
-            <h2 class="font-display text-5xl md:text-8xl uppercase tracking-tighter">Client <br/><span class="text-outline">Echoes</span></h2>
-            <div class="md:text-right">
-                <p class="text-acid font-bold tracking-widest uppercase text-sm flex items-center md:justify-end gap-2">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                    Google Maps Rating
-                </p>
-                <p class="text-xs tracking-wider uppercase opacity-50 mt-1">Based on authenticated feedback</p>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 relative z-10">
-            <!-- Quote 1 -->
-            <div class="border-l-2 border-acid pl-6 hover:-translate-y-2 transition-transform duration-500">
-                <p class="font-display text-xl md:text-2xl mb-8 leading-snug">"Their expertise in website creation and photography has not only transformed my online presence but also significantly boosted my sales."</p>
-                <p class="text-xs font-bold uppercase tracking-widest text-acid">— Carmen Sisneros</p>
-            </div>
+    <section id="menu" class="py-24 relative custom-border border-l-0 border-r-0 bg-[#0d0c0b]">
+        <div class="container mx-auto px-6 md:px-12">
             
-            <!-- Quote 2 -->
-            <div class="border-l-2 border-bone/30 pl-6 hover:border-acid transition-colors duration-500 hover:-translate-y-2 transform">
-                <p class="font-display text-xl md:text-2xl mb-8 leading-snug">"...I must say, they surpassed all my expectations. From the moment I contacted them, their professionalism and dedication were evident."</p>
-                <p class="text-xs font-bold uppercase tracking-widest text-bone/70">— El Potro Restaurant</p>
+            <div class="mb-20 flex flex-col md:flex-row justify-between items-end reveal-up">
+                <h2 class="font-display section-title">The Offerings.</h2>
+                <span class="font-sub text-gold mb-2 md:mb-6">Authentic Recipes</span>
             </div>
 
-            <!-- Quote 3 -->
-            <div class="border-l-2 border-bone/30 pl-6 hover:border-acid transition-colors duration-500 hover:-translate-y-2 transform">
-                <p class="font-display text-xl md:text-2xl mb-8 leading-snug">"As a restaurant owner, I was searching for a reliable and talented team to capture the essence of my establishment, and Like Photo USA surpassed all expectations."</p>
-                <p class="text-xs font-bold uppercase tracking-widest text-bone/70">— Maura Amador</p>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-y-20 md:gap-8">
+                
+                <!-- Menu Item 1: The Classic Momos -->
+                <div class="md:col-span-7 relative group reveal-up delay-100">
+                    <div class="overflow-hidden h-[60vh] w-full relative">
+                        <img src="https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?q=80&w=1000&auto=format&fit=crop" 
+                             alt="Steaming Momos" 
+                             class="w-full h-full object-cover img-moody transform group-hover:scale-105 transition duration-700">
+                    </div>
+                    <div class="absolute -bottom-10 left-4 md:left-10 bg-[#0a0908] p-6 pr-12 border border-gray-800">
+                        <h3 class="font-display text-4xl mb-2">Signature Momos</h3>
+                        <p class="font-body text-sm text-gray-400 mb-4 max-w-xs">Hand-pleated, bursting with savory fillings, served steaming hot from the bamboo basket.</p>
+                        <span class="font-sub text-chili text-sm">Our defining dish</span>
+                    </div>
+                </div>
+
+                <!-- Spacer for broken grid -->
+                <div class="hidden md:block md:col-span-1"></div>
+
+                <!-- Menu Item 2: Thukpa / Soups -->
+                <div class="md:col-span-4 flex flex-col justify-center mt-12 md:mt-32 reveal-up delay-200">
+                    <div class="overflow-hidden h-[40vh] w-full mb-6 relative">
+                         <img src="https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=800&auto=format&fit=crop" 
+                             alt="Hot Broth" 
+                             class="w-full h-full object-cover img-moody">
+                    </div>
+                    <h3 class="font-display text-3xl mb-2">Restorative Broths</h3>
+                    <p class="font-body text-sm text-gray-400">Rich, slow-simmered soups that perfectly complement the valley's crisp air. <i>"Tasty momos and the soup too."</i></p>
+                </div>
+
+            </div>
+
+            <!-- Chilli Sauce Note - Addressing feedback creatively -->
+            <div class="mt-32 border border-gray-800 p-8 md:p-12 relative overflow-hidden reveal-up">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-chili rounded-full filter blur-[100px] opacity-20 translate-x-1/2 -translate-y-1/2"></div>
+                <div class="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h4 class="font-sub text-xl text-chili mb-4">The Quest for Fire</h4>
+                        <h3 class="font-display text-3xl md:text-5xl mb-4 italic">Perfecting the Paste.</h3>
+                    </div>
+                    <div>
+                        <p class="font-body text-gray-300">
+                            We listen to our guests. While our momos steal the show, we are currently in the kitchen obsessively refining our signature chili sauce. Expect a bolder, more complex heat on your next visit. We believe in continuous evolution.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-24 md:py-32 relative overflow-hidden">
+        <!-- Decorative large typography in background -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[20vw] text-white opacity-[0.02] whitespace-nowrap pointer-events-none select-none italic font-light z-0">
+            Hospitality
+        </div>
+
+        <div class="container mx-auto px-6 md:px-12 relative z-10">
+            <div class="max-w-3xl mx-auto text-center reveal-up">
+                <div class="text-chili text-6xl font-display leading-none mb-6">"</div>
+                <h3 class="font-display text-3xl md:text-5xl leading-tight mb-8">
+                    The staff makes you feel absolutely welcome and ensures a remarkably smooth experience from start to finish.
+                </h3>
+                <span class="font-sub text-sm tracking-widest text-gray-500 uppercase">— Guest Experience</span>
             </div>
         </div>
     </section>
 
-    <footer id="contact" class="bg-void border-t border-bone/10 pt-32 pb-12 px-6 lg:px-12 relative overflow-hidden">
-        <!-- Giant background texture element -->
-        <div class="absolute right-0 bottom-0 w-1/2 h-full bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-acid/10 via-void to-void pointer-events-none"></div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 relative z-10 mb-32">
-            <div>
-                <h2 class="font-display text-5xl md:text-8xl uppercase tracking-tighter mb-6">Let's <br/><span class="text-outline">Shoot.</span></h2>
-                <a href="mailto:booking@likephotousa.com" class="inline-block text-2xl md:text-4xl font-display text-acid border-b-2 border-acid/30 hover:border-acid transition-colors pb-2">booking@likephotousa.com</a>
+    <!-- Footer / Visit Section -->
+    <footer id="visit" class="bg-black pt-20 pb-10 border-t border-gray-900 relative">
+        <div class="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+            
+            <div class="md:col-span-5 reveal-up">
+                <h2 class="font-display text-5xl md:text-7xl mb-6">Find Us.</h2>
+                <p class="font-body text-gray-400 max-w-sm mb-8">
+                    Step off the main road and into a space where tradition meets warmth.
+                </p>
             </div>
 
-            <div class="flex flex-col justify-end space-y-10 md:items-end text-left md:text-right">
+            <div class="md:col-span-3 md:col-start-7 reveal-up delay-100 flex flex-col gap-8">
                 <div>
-                    <h5 class="text-xs font-bold tracking-widest text-bone/70 uppercase mb-2">Direct Line</h5>
-                    <a href="tel:+14709096063" class="block font-display text-2xl md:text-3xl font-black text-bone hover:text-acid transition-colors mb-1">+1 470-909-6063</a>
-                    <p class="font-bold tracking-wider uppercase text-sm text-acid flex items-center md:justify-end gap-2">
-                        <span class="relative
+                    <h4 class="font-sub text-gold mb-3 text-sm">Location</h4>
+                    <p class="font-body text-gray-300 leading-relaxed">
+                        Hawal - Sangeen Darwaza Rd,<br>
+                        Tibetan Colony, Badaamwari,<br>
+                        Srinagar, Jammu and Kashmir<br>
+                        190003
+                    </p>
+                </div>
+            </div>
+
+            <div class="md:col-span-3 reveal-up delay-200 flex flex-col gap-8">
+                 <div>
+                    <h4 class="font-sub text-gold mb-3 text-sm">Experience</h4>
+                    <p class="font-body text-gray-300 leading-relaxed">
+                        Dine-in atmosphere.<br>
+                        Takeaway available.<br>
+                        Authentic Tibetan Cuisine.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 md:px-12 pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center font-sub text-xs text-gray-600">
+            <p>&copy; 2026 Hamid's Tibetan Kitchen.</p>
+            <p class="mt-2 md:mt-0">Srinagar, J&K</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Intersection Observer for staggered scroll reveals
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        // Optional: Stop observing once revealed
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Select all elements that need to be revealed
+            const revealElements = document.querySelectorAll('.reveal-up, .reveal-image');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
