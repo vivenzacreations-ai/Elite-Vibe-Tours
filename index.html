@@ -1,743 +1,638 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevFlow — Zero-Config Local API Mocking & AI Schema Synthesis</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        obsidian: '#06070a',
-                        surface: '#0d0f17',
-                        accent: '#6366f1',
-                        cyanGlow: '#06b6d4',
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-8px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            background-color: #050508;
-            color: #f8fafc;
-            overflow-x: hidden;
-        }
-
-        /* Subtle Ambient Grid */
-        .bg-grid {
-            background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, #000 70%, transparent 110%);
-        }
-
-        /* Liquid Glass Navbar & Cards */
-        .liquid-glass {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-        }
-
-        .glass-card {
-            background: rgba(15, 18, 28, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .glass-card:hover {
-            border-color: rgba(99, 102, 241, 0.4);
-            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.12), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050508;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
-        }
-
-        .glow-effect {
-            position: absolute;
-            border-radius: 9999px;
-            filter: blur(110px);
-            z-index: -1;
-            opacity: 0.45;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JKBOSE — CARBON WAR ROOM · 5-Day Emergency Overdrive</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#050505;color:#EAE6DF;line-height:1.5;-webkit-font-smoothing:antialiased}
+  /* carbon grain */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")}
+ 
+  .topbar{background:#0A0A0B;color:#EAE6DF;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(220,20,60,0.25);position:sticky;top:0;z-index:30;backdrop-filter:blur(10px)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{width:36px;height:36px;background:#DC143C;color:#fff;display:grid;place-items:center;font-weight:900;font-size:12px;letter-spacing:.06em;border-radius:10px;box-shadow:0 0 20px rgba(220,20,60,0.5)}
+  .brand b{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#fff}
+  .brand span{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#8A8480;display:block;margin-top:1px}
+  .top-actions{display:flex;align-items:center;gap:8px}
+  .chip{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:999px;border:1px solid rgba(220,20,60,0.3);background:rgba(220,20,60,0.1);color:#FF6B81}
+  .chip.live{border-color:rgba(220,20,60,0.7);background:rgba(220,20,60,0.2);color:#FF4757}
+  .chip.live::before{content:"●";margin-right:6px;color:#DC143C;animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+ 
+  .wrap{max-width:1200px;margin:0 auto;padding:20px;position:relative}
+ 
+  /* Fuel Room / Tate Quote Banner */
+  .tate-banner{
+    background:linear-gradient(135deg, #0D0D0E 0%, #141417 100%);
+    border:1px solid rgba(220,20,60,0.28);
+    border-radius:20px;
+    padding:18px 22px;
+    margin-bottom:16px;
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:16px;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .tate-banner::after{content:"";position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(circle at 100% 50%, rgba(220,20,60,0.15), transparent 70%);pointer-events:none}
+  .tate-quote{font-style:italic;font-size:14px;color:#D4D0C8;line-height:1.5;font-family:Georgia,serif}
+  .tate-quote b{color:#DC143C;font-style:normal;font-family:Inter,sans-serif;letter-spacing:.08em;font-size:10px;display:block;margin-bottom:4px;text-transform:uppercase}
+  .tate-slots{display:flex;gap:8px}
+  .tate-slot{width:64px;height:64px;border-radius:12px;border:1.5px dashed rgba(220,20,60,0.4);background:rgba(220,20,60,0.05);display:grid;place-items:center;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8A8480;text-align:center;padding:4px;cursor:pointer;transition:all .2s}
+  .tate-slot:hover{border-color:#DC143C;color:#FF4757;background:rgba(220,20,60,0.12)}
+ 
+  /* Hero Command Card */
+  .command{
+    background:#0D0D0E;
+    color:#EAE6DF;
+    border-radius:22px;
+    overflow:hidden;
+    border:1px solid rgba(220,20,60,0.3);
+    position:relative;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    min-height:280px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(220,20,60,0.08);
+  }
+  .command::after{content:"";position:absolute;inset:0;background:
+    radial-gradient(600px 300px at 20% 0%, rgba(220,20,60,0.22), transparent 60%),
+    radial-gradient(500px 400px at 90% 20%, rgba(0,255,163,0.08), transparent 60%),
+    radial-gradient(400px 300px at 50% 100%, rgba(138,43,226,0.1), transparent 70%);
+    pointer-events:none}
+  .cmd-left{padding:26px 28px 22px;position:relative;z-index:1}
+  .kicker{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .kicker i{width:32px;height:2px;background:#DC143C;display:block;box-shadow:0 0 8px #DC143C}
+  .kicker span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;color:#FF4757}
+  .cmd-left h1{font-family:Georgia,Times,serif;font-size:34px;line-height:1.05;letter-spacing:-.03em;font-weight:900;color:#FFF}
+  .cmd-left h1 em{font-weight:400;font-style:italic;color:#FF4757}
+  .cmd-left p{margin-top:12px;font-size:13px;line-height:1.6;color:#A8A29E;max-width:520px}
+  .cmd-left p strong{color:#FFF}
+  .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .meta{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#D4D0C8}
+  .meta b{color:#00FFA3}
+ 
+  .cmd-right{position:relative;z-index:1;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));border-left:1px solid rgba(255,255,255,0.08);padding:18px;display:flex;flex-direction:column;gap:12px}
+  .panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px;backdrop-filter:blur(8px)}
+  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .panel-head span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#8A8480}
+  .panel-head b{font-size:11px;font-weight:900;color:#FFF}
+  .big-num{font-size:28px;font-weight:900;letter-spacing:-.04em;line-height:1;color:#FFF}
+  .big-num small{font-size:13px;opacity:.5}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .stat{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px}
+  .stat label{font-size:8px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#8A8480;display:block;margin-bottom:4px}
+  .stat strong{font-size:18px;font-weight:900;letter-spacing:-.03em}
+  .bar{height:6px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;margin-top:8px}
+  .fill{height:100%;background:#DC143C;border-radius:999px;transition:width .5s ease;box-shadow:0 0 10px #DC143C}
+  .fill.gold{background:linear-gradient(90deg,#00FFA3,#DC143C)}
+  .bar-label{display:flex;justify-content:space-between;margin-top:6px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8A8480}
+  .bar-label b{color:#FFF}
+ 
+  /* control strip */
+  .control{
+    margin-top:14px;
+    background:#0D0D0E;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:16px;
+    padding:12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .control-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .day-switch{display:flex;gap:6px;background:#050505;border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:4px}
+  .day-switch button{appearance:none;border:none;background:transparent;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border-radius:999px;cursor:pointer;color:#8A8480;transition:all .2s}
+  .day-switch button.active{background:#DC143C;color:#fff;box-shadow:0 0 14px rgba(220,20,60,0.6)}
+  .control-right{display:flex;gap:8px;align-items:center}
+  .btn{appearance:none;border:1px solid #DC143C;background:#DC143C;color:#fff;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:10px 16px;border-radius:999px;cursor:pointer;box-shadow:0 0 14px rgba(220,20,60,0.4);transition:all .2s}
+  .btn:hover{background:#FF1E42;box-shadow:0 0 20px rgba(220,20,60,0.8)}
+  .btn.secondary{background:#141417;color:#FFF;border-color:rgba(255,255,255,0.15);box-shadow:none}
+  .btn.ghost{background:#0D0D0E;color:#D4D0C8;border-color:rgba(255,255,255,0.1);box-shadow:none}
+  .hint{font-size:11px;color:#8A8480}
+  .hint b{color:#FFF}
+ 
+  /* layout */
+  .board{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:16px}
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
+  .legend span{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);padding:6px 12px;border-radius:999px;color:#D4D0C8}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .dot.phy{background:#3B82F6;box-shadow:0 0 8px #3B82F6}.dot.che{background:#F59E0B;box-shadow:0 0 8px #F59E0B}.dot.mat{background:#10B981;box-shadow:0 0 8px #10B981}.dot.rev{background:#8B5CF6;box-shadow:0 0 8px #8B5CF6}.dot.brk{background:#6B7280}
+ 
+  .timeline{position:relative;padding-left:30px}
+  .timeline::before{content:"";position:absolute;left:10px;top:10px;bottom:10px;width:2px;background:linear-gradient(180deg,#DC143C, rgba(220,20,60,0.1));border-radius:999px}
+  .block{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;margin-bottom:12px;overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+  .block::before{content:"";position:absolute;left:-23px;top:22px;width:10px;height:10px;border-radius:50%;border:2px solid #0D0D0E;background:#3B82F6;z-index:1}
+  .block.phy::before{background:#3B82F6;box-shadow:0 0 10px #3B82F6}
+  .block.che::before{background:#F59E0B;box-shadow:0 0 10px #F59E0B}
+  .block.mat::before{background:#10B981;box-shadow:0 0 10px #10B981}
+  .block.rev::before{background:#8B5CF6;box-shadow:0 0 10px #8B5CF6}
+  .block.brk{border-style:dashed;background:#09090A}
+  .block-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px 10px}
+  .head-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .time{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;font-weight:900;letter-spacing:.03em;background:#141417;color:#FFF;padding:6px 10px;border-radius:9px;border:1px solid rgba(255,255,255,0.08)}
+  .block.brk .time{background:#0D0D0E;color:#8A8480;border:1px solid rgba(255,255,255,0.05)}
+  .subj{font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid}
+  .phy .subj{background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.3);color:#60A5FA}
+  .che .subj{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);color:#FBBF24}
+  .mat .subj{background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3);color:#34D399}
+  .rev .subj{background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.3);color:#A78BFA}
+  .brk .subj{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.08);color:#8A8480}
+  .dur{font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8A8480}
+  .btitle{padding:0 16px 2px;font-size:15px;font-weight:900;letter-spacing:-.02em;color:#FFF}
+  .btitle small{font-weight:700;color:#8A8480;font-size:12px}
+  .tasks{list-style:none;padding:8px 16px 12px}
+  .tasks li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.06);font-size:12.8px;line-height:1.5;color:#D4D0C8}
+  .tasks li:last-child{border-bottom:none}
+  .tasks li input[type="checkbox"]{appearance:none;width:19px;height:19px;min-width:19px;border:1.6px solid rgba(255,255,255,0.25);border-radius:6px;background:#141417;display:grid;place-items:center;cursor:pointer;margin-top:1px;transition:all .15s}
+  .tasks li input[type="checkbox"]:checked{background:#DC143C;border-color:#DC143C;box-shadow:0 0 10px rgba(220,20,60,0.6)}
+  .tasks li input[type="checkbox"]:checked::after{content:"✓";color:#fff;font-size:11px;font-weight:900;line-height:1}
+  .tasks li.checked{opacity:.45;text-decoration:line-through;text-decoration-color:#DC143C}
+  .tasks li b{color:#FFF}
+  .tasks li em{font-style:normal;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:1px 7px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#D4D0C8;white-space:nowrap}
+  .goal{margin:0 16px 14px;background:#141417;border:1px dashed rgba(220,20,60,0.3);border-radius:12px;padding:9px 12px;display:flex;gap:9px;align-items:center;font-size:11.5px;color:#A8A29E}
+  .goal strong{color:#FFF}
+ 
+  /* right rail */
+  .rail{position:sticky;top:76px;align-self:start;display:flex;flex-direction:column;gap:14px}
+  .card{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+  .card h3{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:#FFF}
+  .card h3 i{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-style:normal;font-size:13px}
+  .checklist{list-style:none}
+  .checklist li{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12.5px;color:#D4D0C8}
+  .checklist li:last-child{border-bottom:none}
+  .checklist li input[type="checkbox"]{appearance:none;width:19px;height:19px;min-width:19px;border:1.6px solid rgba(255,255,255,0.25);border-radius:6px;background:#141417;display:grid;place-items:center;cursor:pointer;margin-top:1px}
+  .checklist li input[type="checkbox"]:checked{background:#00FFA3;border-color:#00FFA3;box-shadow:0 0 10px rgba(0,255,163,0.6)}
+  .checklist li input[type="checkbox"]:checked::after{content:"✓";color:#000;font-size:11px;font-weight:900}
+  .checklist li.checked{opacity:.45;text-decoration:line-through}
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .rule{background:#141417;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px}
+  .rule strong{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:900;display:block;margin-bottom:4px;color:#FF4757}
+  .rule p{font-size:11.5px;color:#A8A29E;line-height:1.5}
+ 
+  .roadmap{margin-top:16px;background:#0D0D0E;color:#EAE6DF;border-radius:18px;padding:16px;border:1px solid rgba(220,20,60,0.3);position:relative;overflow:hidden}
+  .roadmap::after{content:"";position:absolute;inset:0;background:radial-gradient(500px 200px at 80% 0%, rgba(220,20,60,0.15), transparent 60%);pointer-events:none}
+  .roadmap h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#FF4757;margin-bottom:12px;display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}
+  .roadmap-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;position:relative;z-index:1}
+  .daypill{background:#141417;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:11px 9px;cursor:pointer;transition:all .18s;position:relative}
+  .daypill:hover{border-color:rgba(220,20,60,0.5);transform:translateY(-1px)}
+  .daypill.active{background:#DC143C;border-color:#DC143C;color:#fff;box-shadow:0 0 15px rgba(220,20,60,0.5)}
+  .daypill.done{background:rgba(0,255,163,0.15);border-color:rgba(0,255,163,0.35)}
+  .daypill.done::after{content:"✓";position:absolute;top:7px;right:7px;width:18px;height:18px;background:#00FFA3;color:#000;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:900}
+  .daypill small{font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:900;color:#8A8480}
+  .daypill.active small{color:rgba(255,255,255,0.85)}
+  .daypill strong{display:block;font-size:11px;font-weight:900;margin:4px 0 6px;line-height:1.25;color:#FFF}
+  .daypill p{font-size:10px;line-height:1.45;color:#A8A29E}
+  .daypill p b{color:#FFF}
+  .daypill .mini{height:3px;background:rgba(255,255,255,0.1);border-radius:999px;margin-top:8px;overflow:hidden}
+  .daypill .fillmini{height:100%;background:#DC143C;border-radius:999px;transition:width .4s}
+  .daypill.done .fillmini{background:#00FFA3}
+  .daypill.active .fillmini{background:#fff}
+ 
+  .footer{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .footer p{font-size:11px;color:#8A8480}
+ 
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;place-items:center;z-index:50;padding:20px}
+  .overlay.show{display:grid}
+  .modal{background:#0D0D0E;border:1px solid rgba(220,20,60,0.4);border-radius:22px;max-width:460px;width:100%;padding:26px 24px 20px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.8), 0 0 30px rgba(220,20,60,0.3);animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes pop{0%{transform:scale(.88);opacity:0}100%{transform:scale(1);opacity:1}}
+  .badge{width:56px;height:56px;border-radius:50%;background:rgba(0,255,163,0.15);border:2px solid #00FFA3;color:#00FFA3;display:grid;place-items:center;font-size:26px;margin:0 auto 14px}
+  .modal h2{font-family:Georgia,serif;font-size:26px;letter-spacing:-.02em;color:#FFF}
+  .modal h2 em{color:#DC143C;font-style:italic;font-weight:400}
+  .modal p{font-size:13px;color:#A8A29E;margin-top:8px;line-height:1.6}
+  .modal-actions{display:flex;gap:10px;margin-top:18px}
+  .modal-actions .btn{flex:1;justify-content:center}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:40;display:none}
+  .confetti.show{display:block}
+ 
+  @media(max-width:980px){
+    .command{grid-template-columns:1fr}
+    .cmd-right{border-left:none;border-top:1px solid rgba(255,255,255,0.08)}
+    .board{grid-template-columns:1fr}
+    .rail{position:static}
+    .cmd-left h1{font-size:28px}
+    .roadmap-grid{grid-template-columns:1fr 1fr}
+    .tate-banner{grid-template-columns:1fr}
+  }
+  @media print{
+    body{background:#fff;color:#000}.topbar,.control,.footer,.overlay,.confetti,.tate-banner{display:none!important}
+    .command,.block,.card{background:#fff!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}
+    .block,.card{break-inside:avoid}
+  }
+</style>
 </head>
-<body class="antialiased selection:bg-indigo-500 selection:text-white relative">
-
-    <!-- Ambient Background Glows -->
-    <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
-    <div class="glow-effect bg-indigo-600/30 w-[500px] h-[500px] top-[-150px] left-[15%] animate-pulse-slow"></div>
-    <div class="glow-effect bg-cyan-500/20 w-[450px] h-[450px] top-[200px] right-[10%]"></div>
-
-    <!-- Liquid Glass Floating Header -->
-    <header class="fixed top-5 left-0 right-0 z-50 px-4 sm:px-6 flex justify-center">
-        <nav class="liquid-glass rounded-full px-5 py-2.5 flex items-center justify-between w-full max-w-5xl">
-            <!-- Brand Logo -->
-            <a href="#" class="flex items-center gap-2.5 group">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <span class="font-bold text-lg tracking-tight text-white">DevFlow</span>
-                <span class="text-[11px] font-mono bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full">v2.4.0</span>
-            </a>
-
-            <!-- Navigation Links -->
-            <div class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
-                <a href="#features" class="hover:text-white transition">Architecture</a>
-                <a href="#sandbox" class="hover:text-white transition">Live Sandbox</a>
-                <a href="#benchmarks" class="hover:text-white transition">Benchmarks</a>
-                <a href="#docs" class="hover:text-white transition">CLI Docs</a>
-            </div>
-
-            <!-- Right Actions -->
-            <div class="flex items-center gap-3">
-                <a href="https://github.com" target="_blank" class="flex items-center gap-2 text-xs font-mono bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 px-3.5 py-1.5 rounded-full transition">
-                    <svg class="w-4 h-4 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
-                    </svg>
-                    <span>Star</span>
-                    <span class="bg-white/10 text-white px-1.5 py-0.5 rounded text-[10px]">1,248</span>
-                </a>
-                <a href="#sandbox" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold bg-white text-slate-950 hover:bg-slate-200 px-4 py-2 rounded-full transition shadow-lg shadow-white/10">
-                    <span>Try Interactive CLI</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                </a>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <main class="relative z-10 pt-36 pb-20 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div class="text-center max-w-4xl mx-auto">
-            <!-- Announcement Pill -->
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-950/60 border border-indigo-500/30 text-xs font-medium text-indigo-300 mb-8 backdrop-blur-md">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-                <span class="w-2 h-2 rounded-full bg-cyan-400 -ml-4"></span>
-                <span>New in v2.4: Local AI Edge-Case Synthesis & GraphQL AST Mocking</span>
-                <a href="#sandbox" class="text-white underline underline-offset-2 ml-1 hover:text-cyan-300">Explore &rarr;</a>
-            </div>
-
-            <!-- Main Headline -->
-            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-6">
-                Zero-Config Local API Mocking <br class="hidden sm:inline" />
-                <span class="bg-gradient-to-r from-indigo-400 via-cyan-300 to-teal-200 bg-clip-text text-transparent">at Sub-Millisecond Speed.</span>
-            </h1>
-
-            <p class="text-base sm:text-lg lg:text-xl text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed mb-10">
-                DevFlow intercepts TypeScript interfaces, OpenAPI specs, and GraphQL queries directly from your codebase to spin up deterministic, edge-case-ready local mock servers with zero backend dependencies.
-            </p>
-
-            <!-- Install Command Bar & CTA -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                <div onclick="copyInstallCommand()" class="group cursor-pointer liquid-glass rounded-xl px-5 py-3.5 flex items-center gap-4 border border-white/15 hover:border-indigo-500/50 transition w-full sm:w-auto justify-between">
-                    <div class="flex items-center gap-3 font-mono text-sm">
-                        <span class="text-indigo-400 select-none">$</span>
-                        <span class="text-slate-100" id="install-cmd">npx @devflow/cli@latest init</span>
-                    </div>
-                    <button class="text-xs font-mono text-slate-400 group-hover:text-white flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded border border-white/10 transition" id="copy-badge">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                        <span id="copy-text">Copy</span>
-                    </button>
-                </div>
-
-                <a href="#sandbox" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-semibold text-sm shadow-lg shadow-indigo-600/25 flex items-center justify-center gap-2 transition">
-                    <span>Launch Live Playground</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
-            </div>
+<body>
+<div class="topbar">
+  <div class="brand"><div class="mark">490+</div><div><b>CARBON WAR ROOM</b><span>Class 11 · 5-Day Emergency Overdrive</span></div></div>
+  <div class="top-actions"><span class="chip live">Emergency Protocol Active</span><span class="chip" id="topDay">Day 1 / 5</span></div>
+</div>
+ 
+<div class="wrap">
+  <!-- Tate Fuel Room Banner -->
+  <div class="tate-banner">
+    <div class="tate-quote">
+      <b>Tate Fuel Room</b>
+      "You are exactly where you put yourself. Vlogs won’t write your derivations. Zero excuses. 16 hours today or regret for 6 months."
+    </div>
+    <div class="tate-slots">
+      <div class="tate-slot" onclick="alert('Drop your Tate image file here or replace with base64 img tag')">TATE<br>#1</div>
+      <div class="tate-slot" onclick="alert('Drop your Tate image file here or replace with base64 img tag')">FOCUS<br>#2</div>
+    </div>
+  </div>
+ 
+  <div class="command">
+    <div class="cmd-left">
+      <div class="kicker"><i></i><span id="kicker">Day 1 of 5 — The Emergency Crush</span></div>
+      <h1 id="heroTitle">Day 1 wasted is paid for with <em>18-hour blood</em> today.</h1>
+      <small id="heroSub" style="display:block;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#00FFA3">29 October — Overdrive Mode · 16.5H Effective</small>
+      <p id="heroDesc"><strong>Units + Mole + Motion + Sets Combined</strong> — Because you lost 2 days to vlogs, Day 1 and Day 2 are now merged into a single atomic block. No margin for error.</p>
+      <div class="meta-row">
+        <span class="meta">Window <b>18H</b></span>
+        <span class="meta">Sleep <b>6H Fixed</b></span>
+        <span class="meta">Blocks <b>7</b></span>
+        <span class="meta">Mode <b style="color:#DC143C">ULTRA-BRUTAL</b></span>
+      </div>
+    </div>
+    <div class="cmd-right">
+      <div class="panel">
+        <div class="panel-head"><span>Today</span><b id="panelDate">29 Oct · Wed</b></div>
+        <div class="grid2">
+          <div class="stat"><label>Day Progress</label><strong class="big-num" id="bigDay">0%</strong><div class="bar"><div class="fill" id="fillDay"></div></div><div class="bar-label"><span id="labelDay">0 / 0</span><span>Today</span></div></div>
+          <div class="stat"><label>5-Day Progress</label><strong class="big-num" id="bigWar">0%</strong><div class="bar"><div class="fill gold" id="fillWar"></div></div><div class="bar-label"><span id="labelWar">0 / 5</span><span>Emergency War</span></div></div>
         </div>
-
-        <!-- Interactive Terminal Emulator Showcase -->
-        <div class="max-w-5xl mx-auto">
-            <div class="glass-card rounded-2xl overflow-hidden border border-white/15 shadow-2xl">
-                <!-- Window Top Bar -->
-                <div class="bg-slate-900/90 px-4 py-3 border-b border-white/10 flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
-                        <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
-                        <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
-                        <span class="ml-3 text-xs font-mono text-slate-400">devflow-daemon — zsh — 110×32</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="flex items-center gap-1.5 text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            Proxy Active: :4040
-                        </span>
-                        <button onclick="simulateRequest()" class="text-xs font-mono bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/40 px-3 py-1 rounded-md transition">
-                            + Trigger Request
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Terminal Body -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 bg-[#07090e] font-mono text-xs sm:text-sm">
-                    <!-- Left: CLI Output Stream -->
-                    <div class="lg:col-span-7 p-5 border-b lg:border-b-0 lg:border-r border-white/10 space-y-2.5 min-h-[320px] max-h-[360px] overflow-y-auto" id="terminal-logs">
-                        <div class="text-slate-400">$ devflow start --watch ./src/types --synthesize-edge-cases</div>
-                        <div class="text-emerald-400">✔ Parsed 24 TypeScript interfaces &amp; 3 OpenAPI specs in 14ms</div>
-                        <div class="text-cyan-400">⚡ Local Mock Gateway listening on http://localhost:4040</div>
-                        <div class="text-slate-500">──────────────────────────────────────────────────────────</div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px]">200 OK</span>
-                            <span class="text-slate-300">GET /api/v1/users/profile</span>
-                            <span class="text-slate-500 ml-auto">0.8ms</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[11px]">201 CREATED</span>
-                            <span class="text-slate-300">POST /api/v1/checkout/session</span>
-                            <span class="text-slate-500 ml-auto">1.4ms</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[11px]">429 RATE_LIMIT</span>
-                            <span class="text-slate-300">POST /api/v1/auth/verify <span class="text-amber-400/80 text-xs">[Chaos Mode]</span></span>
-                            <span class="text-slate-500 ml-auto">0.4ms</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[11px]">200 OK</span>
-                            <span class="text-slate-300">POST /graphql <span class="text-cyan-400/80 text-xs">(Query: GetWorkspaceMetrics)</span></span>
-                            <span class="text-slate-500 ml-auto">1.1ms</span>
-                        </div>
-                    </div>
-
-                    <!-- Right: Live AST Inspector -->
-                    <div class="lg:col-span-5 p-5 bg-[#0a0d14] flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center justify-between text-xs text-slate-400 mb-3 pb-2 border-b border-white/5">
-                                <span>INFERRED TYPE DEFINITION</span>
-                                <span class="text-indigo-400">src/types/user.ts</span>
-                            </div>
-                            <pre class="text-xs leading-relaxed text-slate-300 overflow-x-auto"><span class="text-purple-400">export interface</span> <span class="text-amber-300">UserSession</span> {
-  <span class="text-cyan-300">id</span>: <span class="text-emerald-300">string</span>; <span class="text-slate-500">// @mock: uuid.v4()</span>
-  <span class="text-cyan-300">email</span>: <span class="text-emerald-300">string</span>;
-  <span class="text-cyan-300">plan</span>: <span class="text-amber-200">'free'</span> | <span class="text-amber-200">'pro'</span> | <span class="text-amber-200">'enterprise'</span>;
-  <span class="text-cyan-300">rateLimitRemaining</span>: <span class="text-emerald-300">number</span>;
-  <span class="text-cyan-300">permissions</span>: <span class="text-emerald-300">string</span>[];
-}</pre>
-                        </div>
-
-                        <div class="mt-4 pt-3 border-t border-white/10">
-                            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1.5">
-                                <span>Zero-Telemetry Local Engine</span>
-                                <span class="text-emerald-400">Memory: 18.4 MB</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                                <div class="bg-gradient-to-r from-indigo-500 to-cyan-400 w-1/4 h-full rounded-full"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="panel" style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+        <div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:#8A8480">Next Unlock</div><div style="font-size:13px;font-weight:900;margin-top:2px;color:#FFF" id="nextUnlock">Day 2 · Laws + Atom + Trig →</div></div>
+        <div style="width:38px;height:38px;border-radius:50%;background:#DC143C;display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 0 12px #DC143C">→</div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="control">
+    <div class="control-left">
+      <div class="day-switch" id="daySwitch"></div>
+      <span class="hint">Tick 100% → <b>auto-advances</b> to next day + confetti</span>
+    </div>
+    <div class="control-right">
+      <button class="btn ghost" id="prevBtn">← Prev</button>
+      <button class="btn ghost" id="nextBtn">Next →</button>
+      <button class="btn secondary" onclick="window.print()">🖨 Print Day</button>
+      <button class="btn" id="resetBtn">Reset Day</button>
+    </div>
+  </div>
+ 
+  <div class="legend"><span><i class="dot phy"></i> Physics</span><span><i class="dot che"></i> Chemistry</span><span><i class="dot mat"></i> Maths</span><span><i class="dot rev"></i> Revision</span><span><i class="dot brk"></i> Break</span></div>
+ 
+  <div class="board">
+    <div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+    <div class="rail">
+      <div class="card" id="checkCard"></div>
+      <div class="card">
+        <h3><i style="background:rgba(220,20,60,0.15);color:#FF4757;border:1px solid rgba(220,20,60,0.4)">⚡</i> Emergency Rules</h3>
+        <div class="rules" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="rule"><strong>📵 Phone Locked</strong><p>Hand phone to parents or lock in drawer. Vlogs cost you 2 days.</p></div>
+          <div class="rule"><strong>✍️ Write 3×</strong><p>Derivations & numerical formulas written 3 times or zero marks.</p></div>
+          <div class="rule"><strong>⏱ 15-Min Rule</strong><p>Stuck >15 min? Flag red, skip, return at night.</p></div>
+          <div class="rule"><strong>🛏 6H Iron Sleep</strong><p>12:00–6:00am fixed. No all-nighters or brain dies.</p></div>
         </div>
-
-        <!-- Ecosystem Reach & Impact Metrics Bar -->
-        <div id="benchmarks" class="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
-            <div class="glass-card rounded-xl p-5 text-center">
-                <div class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">45.2k+</div>
-                <div class="text-xs font-mono uppercase tracking-wider text-indigo-400 mt-1">Monthly npm Downloads</div>
-                <div class="text-[11px] text-slate-500 mt-1">+28% MoM organic growth</div>
-            </div>
-            <div class="glass-card rounded-xl p-5 text-center">
-                <div class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">1,248</div>
-                <div class="text-xs font-mono uppercase tracking-wider text-cyan-400 mt-1">GitHub Stars</div>
-                <div class="text-[11px] text-slate-500 mt-1">64 active open-source contributors</div>
-            </div>
-            <div class="glass-card rounded-xl p-5 text-center">
-                <div class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">0.8ms</div>
-                <div class="text-xs font-mono uppercase tracking-wider text-emerald-400 mt-1">Median Mock Latency</div>
-                <div class="text-[11px] text-slate-500 mt-1">Rust-backed local HTTP router</div>
-            </div>
-            <div class="glass-card rounded-xl p-5 text-center">
-                <div class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">100%</div>
-                <div class="text-xs font-mono uppercase tracking-wider text-purple-400 mt-1">Offline &amp; MIT Licensed</div>
-                <div class="text-[11px] text-slate-500 mt-1">Zero telemetry or cloud lock-in</div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Interactive Schema Sandbox Section -->
-    <section id="sandbox" class="py-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-10">
-        <div class="text-center max-w-3xl mx-auto mb-14">
-            <span class="text-xs font-mono uppercase tracking-widest text-indigo-400">Interactive Playground</span>
-            <h2 class="text-3xl sm:text-4xl font-bold mt-2 mb-4">Test Live Schema Synthesis &amp; Chaos Injection</h2>
-            <p class="text-slate-400 text-sm sm:text-base">
-                Select an endpoint and toggle edge-case presets below to see how DevFlow dynamically synthesizes realistic payloads and network conditions on the fly.
-            </p>
-        </div>
-
-        <div class="glass-card rounded-2xl p-6 sm:p-8 border border-white/15 max-w-5xl mx-auto">
-            <div class="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-white/10">
-                <!-- Endpoint Selector -->
-                <div class="flex flex-wrap items-center gap-2">
-                    <button onclick="selectEndpoint('users')" id="btn-users" class="px-4 py-2 rounded-lg text-xs font-mono font-medium bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition">
-                        GET /api/v1/users
-                    </button>
-                    <button onclick="selectEndpoint('payments')" id="btn-payments" class="px-4 py-2 rounded-lg text-xs font-mono font-medium bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition">
-                        POST /api/v1/billing/charge
-                    </button>
-                    <button onclick="selectEndpoint('graphql')" id="btn-graphql" class="px-4 py-2 rounded-lg text-xs font-mono font-medium bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition">
-                        POST /graphql (DeploymentTree)
-                    </button>
-                </div>
-
-                <!-- Simulation Mode Selector -->
-                <div class="flex items-center gap-2 bg-slate-900/90 p-1 rounded-lg border border-white/10">
-                    <button onclick="setSimMode('normal')" id="mode-normal" class="px-3 py-1.5 rounded-md text-xs font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition">
-                        200 Realistic
-                    </button>
-                    <button onclick="setSimMode('edge')" id="mode-edge" class="px-3 py-1.5 rounded-md text-xs font-mono text-slate-400 hover:text-white transition">
-                        Boundary / Nulls
-                    </button>
-                    <button onclick="setSimMode('chaos')" id="mode-chaos" class="px-3 py-1.5 rounded-md text-xs font-mono text-slate-400 hover:text-white transition">
-                        503 Chaos Fault
-                    </button>
-                </div>
-            </div>
-
-            <!-- Output Viewer -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                <div class="lg:col-span-5 space-y-4">
-                    <div class="p-4 rounded-xl bg-slate-900/70 border border-white/5">
-                        <div class="text-xs font-mono text-slate-400 mb-2">ACTIVE CLI FLAGS</div>
-                        <div class="font-mono text-xs text-cyan-300 bg-black/40 p-3 rounded-lg border border-white/5" id="sandbox-cli-flag">
-                            devflow mock --route "/api/v1/users" --seed 8492 --locale en_US
-                        </div>
-                    </div>
-
-                    <div class="p-4 rounded-xl bg-slate-900/70 border border-white/5 space-y-3">
-                        <div class="text-xs font-mono text-slate-400">RESPONSE METADATA</div>
-                        <div class="flex justify-between text-xs font-mono">
-                            <span class="text-slate-400">HTTP Status:</span>
-                            <span class="text-emerald-400 font-semibold" id="meta-status">200 OK</span>
-                        </div>
-                        <div class="flex justify-between text-xs font-mono">
-                            <span class="text-slate-400">Synthesizer Engine:</span>
-                            <span class="text-indigo-300">AST + Deterministic Faker</span>
-                        </div>
-                        <div class="flex justify-between text-xs font-mono">
-                            <span class="text-slate-400">Execution Time:</span>
-                            <span class="text-slate-200" id="meta-latency">0.74 ms</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-7 bg-[#06080d] rounded-xl p-5 border border-white/10 relative">
-                    <div class="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
-                        <span class="text-xs font-mono text-slate-400">SYNTHESIZED JSON PAYLOAD</span>
-                        <span class="text-[11px] font-mono text-slate-500">application/json; charset=utf-8</span>
-                    </div>
-                    <pre id="sandbox-json" class="font-mono text-xs sm:text-sm text-emerald-300 overflow-x-auto leading-relaxed max-h-[280px]"></pre>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Core Architecture Bento Grid -->
-    <section id="features" class="py-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-10">
-        <div class="text-center max-w-3xl mx-auto mb-14">
-            <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">Built for Modern Frontend Teams</span>
-            <h2 class="text-3xl sm:text-4xl font-bold mt-2 mb-4">Why 45,000+ Developers Rely on DevFlow</h2>
-            <p class="text-slate-400 text-sm sm:text-base">
-                Eliminate brittle staging environments and hardcoded JSON fixtures. DevFlow bridges the gap between frontend velocity and backend API readiness.
-            </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <!-- Feature 1 -->
-            <div class="glass-card rounded-2xl p-7 md:col-span-2 flex flex-col justify-between">
-                <div>
-                    <div class="w-10 h-10 rounded-lg bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Native TypeScript &amp; OpenAPI AST Compiler</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        Point DevFlow at your `types/` directory, Zod schemas, or Swagger specifications. Our hot-reloading daemon parses your AST in real time—the moment you save a new property in VS Code, the mock endpoint updates instantaneously.
-                    </p>
-                </div>
-                <div class="bg-black/50 rounded-xl p-3.5 border border-white/10 font-mono text-xs text-slate-300 flex items-center justify-between">
-                    <span><span class="text-emerald-400">HMR</span> Updated `InvoiceSchema` &rarr; 14 mock routes synced</span>
-                    <span class="text-slate-500">2ms ago</span>
-                </div>
-            </div>
-
-            <!-- Feature 2 -->
-            <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-                <div>
-                    <div class="w-10 h-10 rounded-lg bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Automated Edge-Case Synthesis</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">
-                        Catch UI regressions before production. Automatically test empty arrays, unicode overflow strings, expired JWTs, and slow 3G network throttling with a single CLI flag.
-                    </p>
-                </div>
-                <div class="mt-6 pt-4 border-t border-white/10 flex items-center gap-2 text-xs font-mono text-cyan-300">
-                    <span>--chaos-rate=0.15</span>
-                    <span class="ml-auto px-2 py-0.5 bg-cyan-500/10 rounded">Built-in</span>
-                </div>
-            </div>
-
-            <!-- Feature 3 -->
-            <div class="glass-card rounded-2xl p-7 flex flex-col justify-between">
-                <div>
-                    <div class="w-10 h-10 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">100% Private &amp; Offline</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">
-                        Proprietary schemas never leave your machine. DevFlow runs completely locally with zero account signups, zero cloud sync requirements, and zero telemetry.
-                    </p>
-                </div>
-                <div class="mt-6 pt-4 border-t border-white/10 text-xs font-mono text-emerald-400">
-                    ✔ Air-gapped CI/CD Ready
-                </div>
-            </div>
-
-            <!-- Feature 4 -->
-            <div class="glass-card rounded-2xl p-7 md:col-span-2 flex flex-col justify-between">
-                <div>
-                    <div class="w-10 h-10 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-5">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Drop-in Adapters for Next.js, Vite, Remix &amp; Playwright</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        Integrate with your existing frontend stack in under 30 seconds. Use our lightweight Vite plugin or spin up ephemeral mock servers inside GitHub Actions for deterministic Playwright and Cypress E2E test suites.
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-white/5 border border-white/10 text-slate-300">Next.js App Router</span>
-                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-white/5 border border-white/10 text-slate-300">Vite 6 Plugin</span>
-                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-white/5 border border-white/10 text-slate-300">Remix Loader Proxy</span>
-                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-white/5 border border-white/10 text-slate-300">Playwright Fixtures</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Documentation / Config Preview -->
-    <section id="docs" class="py-16 px-4 sm:px-6 max-w-5xl mx-auto relative z-10">
-        <div class="glass-card rounded-2xl p-8 border border-indigo-500/20">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                <div class="lg:col-span-5">
-                    <span class="text-xs font-mono uppercase tracking-wider text-indigo-400">Zero Boilerplate</span>
-                    <h3 class="text-2xl font-bold mt-1 mb-3">Optional `devflow.config.ts` when you need granular control.</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        Out of the box, DevFlow requires zero configuration files. When your team scales, drop a strongly-typed config file in your repo root to customize stateful mutations, latency curves, and proxy passthrough rules.
-                    </p>
-                    <div class="space-y-2 text-xs font-mono text-slate-300">
-                        <div class="flex items-center gap-2">
-                            <span class="text-emerald-400">✓</span> Stateful in-memory CRUD persistence
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-emerald-400">✓</span> Partial proxy fallback to staging URLs
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-emerald-400">✓</span> Deterministic seed replay for CI failures
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-7 bg-[#06080d] rounded-xl p-5 border border-white/10 font-mono text-xs leading-relaxed overflow-x-auto">
-<pre class="text-slate-300"><span class="text-purple-400">import</span> { defineConfig } <span class="text-purple-400">from</span> <span class="text-emerald-300">'@devflow/cli'</span>;
-
-<span class="text-purple-400">export default</span> <span class="text-indigo-300">defineConfig</span>({
-  <span class="text-cyan-300">port</span>: <span class="text-amber-300">4040</span>,
-  <span class="text-cyan-300">schemaDir</span>: <span class="text-emerald-300">'./src/schemas'</span>,
-  <span class="text-cyan-300">stateful</span>: <span class="text-amber-300">true</span>,
-  <span class="text-cyan-300">synthesis</span>: {
-    <span class="text-cyan-300">seed</span>: <span class="text-amber-300">202610</span>,
-    <span class="text-cyan-300">edgeCaseProbability</span>: <span class="text-amber-300">0.10</span>, <span class="text-slate-500">// 10% boundary values</span>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="roadmap">
+    <h3><span>5-Day Emergency War (29 Oct → 02 Nov)</span><span style="font-weight:600;text-transform:none;letter-spacing:.02em;color:#8A8480;font-size:11px">Auto-advances on 100%</span></h3>
+    <div class="roadmap-grid" id="roadmap"></div>
+    <p style="margin-top:12px;font-size:11px;color:#8A8480;line-height:1.5;position:relative;z-index:1">You lost 2 days. Now <b style="color:#FFF">5 days</b> compress 7 days of material. Physics exam on Nov 7 is fixed. We execute without hesitation.</p>
+  </div>
+ 
+  <div class="footer"><p>Carbon War Room · Emergency Overdrive · Phone in another room.</p><p style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:#00FFA3">Built for 490+ Mission</p></div>
+</div>
+ 
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="badge">✓</div>
+    <h2 id="modalTitle">Day 1 <em>Crushed.</em></h2>
+    <p id="modalDesc">All tasks ticked. Day 2 unlocks now.</p>
+    <div class="modal-actions"><button class="btn secondary" id="stayBtn">Stay Here</button><button class="btn" id="goBtn">Go to Next →</button></div>
+  </div>
+</div>
+<canvas class="confetti" id="confetti"></canvas>
+ 
+<script>
+const DAYS=[
+  {
+    id:1, date:"29 Oct · Wed", pill:"Day 1 / 5", kicker:"Day 1 — Emergency Catch-Up (Units + Mole + Motion)",
+    title:"Vlogs are over. <em>Zero room</em><br>for hesitation today.",
+    sub:"29 October — 6:00 AM to 12:00 AM · 16.5H Effective Overdrive",
+    desc:"<strong>Units & Measurements + Mole Concept + Straight Line Motion</strong> — Catching up lost time. We fuse Day 1 and part of Day 2 into today so you are back on schedule.",
+    roadTitle:"Units + Mole + Motion", roadDesc:"Lost time recovered. <b>15 marks</b> secured.",
+    next:"Day 2 · Laws + Atom + Trig →",
+    checkTitle:"Sleep Checklist — Emergency Day 1",
+    checklist:[
+      "Physics: Units dimensions memorized + equations of motion calculus derivation written 2× blind",
+      "Chemistry: Mole concept Molarity/Molality + limiting reagent numericals done",
+      "Mathematics: Sets + Relations 15 questions solved",
+      "Formula sheet updated with today's boxes",
+      "3 litres water & phone untouched during study blocks"
+    ],
+    blocks:[
+      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake · Cold Water · Formula Glance",tasks:["No phone — leave it in another room","Splash cold water, stretch, sit at desk by 6:15","Glance base dimensions + SI units table"]},
+      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h · Overdrive",title:"Units & Dimensions + Error Analysis",small:"Quick 5 marks",tasks:["Memorize dimensions of 15 derived quantities (Planck constant, torque, stress, surface tension)","Solve <b>5× dimensional correctness</b> problems (van der Waals, Stokes law)","Solve <b>5× % error numericals</b> (radius 3% → volume error)","Solve <b>8 PYQs</b> (2023, 2024X, 2025A) Section A/B"],goal:"Dimensional analysis mastered in under 3 hours."},
+      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk · Breathe",tasks:["Walk outside, no screens, hydrate"]},
+      {time:"9:20 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"3 h",title:"Some Basic Concepts — Mole Concept",small:"Numerical Factory",tasks:["Master <b>n = W/M</b>, Molarity, Molality, Mole Fraction conversions","Solve <b>5 limiting reagent numericals</b> (the ones examiners love)","Solve <b>6 PYQ numericals</b> from Chem 2023–2025","Write all formulas on p.1 of Chemistry notebook"],goal:"Limiting reagent solved in 3 minutes blind."},
+      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Proper Lunch & 20-Min Nap",tasks:["Eat properly — no skipping","Power nap 20 min sharp — alarm at 12:55"]},
+      {time:"1:00 — 4:00",subj:"Physics · Block 3",cls:"phy",dur:"3 h",title:"Motion in a Straight Line + Calculus Derivations",small:"Tier 1 Repeater",tasks:["Derive <b>v = u + at</b>, <b>s = ut + ½at²</b>, <b>v² = u² + 2as</b> by calculus — 1× seeing, 1× blind","Solve <b>6 numericals</b> on velocity-time graphs and relative velocity","Box final formulas in Physics Notebook"],goal:"Calculus derivation written without looking once."},
+      {time:"4:00 — 4:20",subj:"Break",cls:"brk",dur:"20 min",title:"Tea · Stretch",tasks:["Step away from desk, clear eyes"]},
+      {time:"4:20 — 7:00",subj:"Mathematics · Block 4",cls:"mat",dur:"2h 40m",title:"Sets & Relations — Speed Run",small:"5 marks secured",tasks:["Sets: roster/set-builder form, Venn diagrams, power set operations","Relations: domain, range, reflexive, symmetric, transitive","Solve <b>15 PYQs</b> from Maths 2023–2025 (Section A/B)"],goal:"Sets and Relations finished completely."},
+      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep & Walk",tasks:["Light walk, mental reset"]},
+      {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Mole Concept Writing Drill + PYQs",tasks:["Close book — write all mole formulas and limiting reagent steps blind","Solve <b>4 extra PYQs</b> (Section C 3-marks)","Correct with red pen — rewrite errors"],goal:"Writing drill locks chemistry into muscle memory."},
+      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation & A4 Formula Sheet",small:"Lock today's gains",tasks:["<b>10:00–10:45</b> Make <b>A4 Formula Sheet Day 1</b> (Physics dimensions + Mole formulas)","<b>10:45–11:30</b> Write calculus equations of motion derivation fully blind","<b>11:30–12:00</b> Review mistakes, set 6:00 AM alarm, sleep sharp"],goal:"Day 1 deficit wiped out. Back on track."}
+    ]
   },
-  <span class="text-cyan-300">proxyFallback</span>: <span class="text-emerald-300">'https://staging-api.internal.dev'</span>
-});</pre>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-white/10 mt-16 py-12 px-4 sm:px-6 relative z-10 bg-black/40">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-                <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-400 flex items-center justify-center">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <span class="font-bold text-white">DevFlow</span>
-                <span class="text-xs text-slate-500 font-mono">Open-Source Developer Tooling • MIT License</span>
-            </div>
-
-            <div class="flex items-center gap-6 text-xs font-mono text-slate-400">
-                <a href="#features" class="hover:text-white transition">Architecture</a>
-                <a href="#sandbox" class="hover:text-white transition">Playground</a>
-                <a href="https://npmjs.com" target="_blank" class="hover:text-white transition">npm (@devflow/cli)</a>
-                <a href="https://github.com" target="_blank" class="hover:text-white transition">GitHub (1.2k ★)</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Interactive Scripts -->
-    <script>
-        // Copy Install Command
-        function copyInstallCommand() {
-            const cmd = document.getElementById('install-cmd').innerText;
-            navigator.clipboard.writeText(cmd);
-            const copyText = document.getElementById('copy-text');
-            copyText.innerText = 'Copied!';
-            copyText.classList.add('text-emerald-400');
-            setTimeout(() => {
-                copyText.innerText = 'Copy';
-                copyText.classList.remove('text-emerald-400');
-            }, 2000);
-        }
-
-        // Live Terminal Log Injector
-        const sampleRequests = [
-            { status: '200 OK', color: 'emerald', method: 'GET /api/v1/organizations/members', time: '0.6ms' },
-            { status: '201 CREATED', color: 'indigo', method: 'POST /api/v1/webhooks/dispatch', time: '1.2ms' },
-            { status: '422 UNPROCESSABLE', color: 'amber', method: 'PATCH /api/v1/users/settings [Edge Case: Empty Payload]', time: '0.5ms' },
-            { status: '200 OK', color: 'emerald', method: 'POST /graphql (Mutation: RotateApiKey)', time: '0.9ms' }
-        ];
-        let reqIndex = 0;
-
-        function simulateRequest() {
-            const container = document.getElementById('terminal-logs');
-            const item = sampleRequests[reqIndex % sampleRequests.length];
-            reqIndex++;
-
-            const row = document.createElement('div');
-            row.className = 'flex items-center gap-2 animate-pulse';
-            row.innerHTML = `
-                <span class="px-1.5 py-0.5 rounded bg-${item.color}-500/20 text-${item.color}-300 text-[11px]">${item.status}</span>
-                <span class="text-slate-200">${item.method}</span>
-                <span class="text-slate-500 ml-auto">${item.time}</span>
-            `;
-            container.appendChild(row);
-            container.scrollTop = container.scrollHeight;
-            setTimeout(() => row.classList.remove('animate-pulse'), 600);
-        }
-
-        // Interactive Sandbox Data & State
-        let currentEndpoint = 'users';
-        let currentMode = 'normal';
-
-        const payloads = {
-            users: {
-                normal: {
-                    flag: 'devflow mock --route "/api/v1/users" --seed 8492 --locale en_US',
-                    status: '200 OK',
-                    statusColor: 'text-emerald-400',
-                    latency: '0.74 ms',
-                    json: {
-                        "id": "usr_94810294a8f",
-                        "email": "elena.rostova@acme-corp.dev",
-                        "plan": "enterprise",
-                        "rateLimitRemaining": 4980,
-                        "permissions": ["read:clusters", "write:deployments", "admin:billing"],
-                        "createdAt": "2026-10-16T07:15:22.000Z"
-                    }
-                },
-                edge: {
-                    flag: 'devflow mock --route "/api/v1/users" --edge-cases=boundary',
-                    status: '200 OK (Boundary Synthesized)',
-                    statusColor: 'text-amber-400',
-                    latency: '0.89 ms',
-                    json: {
-                        "id": "usr_00000000000",
-                        "email": "test+unicode_🔥_overflow_string@sub.domain.example.co.uk",
-                        "plan": "free",
-                        "rateLimitRemaining": 0,
-                        "permissions": [],
-                        "createdAt": "1970-01-01T00:00:00.000Z"
-                    }
-                },
-                chaos: {
-                    flag: 'devflow mock --route "/api/v1/users" --chaos-fault=503',
-                    status: '503 SERVICE UNAVAILABLE',
-                    statusColor: 'text-rose-400',
-                    latency: '0.31 ms',
-                    json: {
-                        "error": "UPSTREAM_GATEWAY_TIMEOUT",
-                        "message": "Simulated Chaos Fault injected by DevFlow Daemon",
-                        "retryAfterMs": 3000,
-                        "traceId": "df_trace_9928174e"
-                    }
-                }
-            },
-            payments: {
-                normal: {
-                    flag: 'devflow mock --route "/api/v1/billing/charge" --stateful',
-                    status: '201 CREATED',
-                    statusColor: 'text-emerald-400',
-                    latency: '1.12 ms',
-                    json: {
-                        "transactionId": "txn_live_883920194",
-                        "amountCents": 4900,
-                        "currency": "USD",
-                        "status": "succeeded",
-                        "receiptUrl": "http://localhost:4040/receipts/txn_live_883920194"
-                    }
-                },
-                edge: {
-                    flag: 'devflow mock --route "/api/v1/billing/charge" --edge-cases=boundary',
-                    status: '200 OK (Zero-Amount Edge Case)',
-                    statusColor: 'text-amber-400',
-                    latency: '0.95 ms',
-                    json: {
-                        "transactionId": "txn_edge_MAX_SAFE_INT",
-                        "amountCents": 9007199254740991,
-                        "currency": "JPY",
-                        "status": "requires_3d_secure_verification",
-                        "receiptUrl": null
-                    }
-                },
-                chaos: {
-                    flag: 'devflow mock --route "/api/v1/billing/charge" --chaos-fault=402',
-                    status: '402 PAYMENT REQUIRED',
-                    statusColor: 'text-rose-400',
-                    latency: '0.42 ms',
-                    json: {
-                        "error": "CARD_DECLINED_INSUFFICIENT_FUNDS",
-                        "declineCode": "generic_decline",
-                        "simulatedBy": "@devflow/cli chaos-engine"
-                    }
-                }
-            },
-            graphql: {
-                normal: {
-                    flag: 'devflow graphql --schema ./schema.graphql --operation DeploymentTree',
-                    status: '200 OK',
-                    statusColor: 'text-emerald-400',
-                    latency: '1.05 ms',
-                    json: {
-                        "data": {
-                            "workspace": {
-                                "id": "ws_prod_01",
-                                "activeDeployments": [
-                                    { "id": "dep_991", "region": "ap-south-1", "healthy": true },
-                                    { "id": "dep_992", "region": "eu-central-1", "healthy": true }
-                                ]
-                            }
-                        }
-                    }
-                },
-                edge: {
-                    flag: 'devflow graphql --schema ./schema.graphql --nullability-stress',
-                    status: '200 OK (Partial GraphQL Errors)',
-                    statusColor: 'text-amber-400',
-                    latency: '1.18 ms',
-                    json: {
-                        "data": {
-                            "workspace": {
-                                "id": "ws_prod_01",
-                                "activeDeployments": null
-                            }
-                        },
-                        "errors": [
-                            {
-                                "message": "Cannot return null for non-nullable field Workspace.activeDeployments",
-                                "path": ["workspace", "activeDeployments"]
-                            }
-                        ]
-                    }
-                },
-                chaos: {
-                    flag: 'devflow graphql --chaos-fault=rate_limit',
-                    status: '429 TOO MANY REQUESTS',
-                    statusColor: 'text-rose-400',
-                    latency: '0.29 ms',
-                    json: {
-                        "errors": [
-                            {
-                                "message": "GraphQL Query Complexity Exceeded (Max: 1000, Actual: 4820)",
-                                "extensions": { "code": "QUERY_COMPLEXITY_LIMIT" }
-                            }
-                        ]
-                    }
-                }
-            }
-        };
-
-        function renderSandbox() {
-            const data = payloads[currentEndpoint][currentMode];
-            document.getElementById('sandbox-cli-flag').innerText = data.flag;
-            const statusEl = document.getElementById('meta-status');
-            statusEl.innerText = data.status;
-            statusEl.className = `${data.statusColor} font-semibold`;
-            document.getElementById('meta-latency').innerText = data.latency;
-            document.getElementById('sandbox-json').innerText = JSON.stringify(data.json, null, 2);
-        }
-
-        function selectEndpoint(ep) {
-            currentEndpoint = ep;
-            ['users', 'payments', 'graphql'].forEach(id => {
-                const btn = document.getElementById('btn-' + id);
-                if (id === ep) {
-                    btn.className = 'px-4 py-2 rounded-lg text-xs font-mono font-medium bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 transition';
-                } else {
-                    btn.className = 'px-4 py-2 rounded-lg text-xs font-mono font-medium bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition';
-                }
-            });
-            renderSandbox();
-        }
-
-        function setSimMode(mode) {
-            currentMode = mode;
-            ['normal', 'edge', 'chaos'].forEach(m => {
-                const btn = document.getElementById('mode-' + m);
-                if (m === mode) {
-                    btn.className = 'px-3 py-1.5 rounded-md text-xs font-mono bg-indigo-500/30 text-white border border-indigo-500/40 transition';
-                } else {
-                    btn.className = 'px-3 py-1.5 rounded-md text-xs font-mono text-slate-400 hover:text-white transition';
-                }
-            });
-            renderSandbox();
-        }
-
-        // Initialize Sandbox on load
-        renderSandbox();
-    </script>
+  {
+    id:2, date:"30 Oct · Thu", pill:"Day 2 / 5", kicker:"Day 2 — Laws of Motion & Atomic Structure",
+    title:"Newton’s laws and Bohr’s atom<br>are <em>pure repeaters.</em>",
+    sub:"30 October — Laws of Motion + Structure of Atom + Trig P1",
+    desc:"Physics <strong>Laws of Motion</strong> (friction, banking of roads — 7 marks), Chemistry <strong>Structure of Atom</strong> (quantum numbers, Bohr radius/energy), Maths <strong>Trigonometric Functions P1</strong>.",
+    roadTitle:"Laws + Atom + Trig P1", roadDesc:"Banking + Bohr + Trig identities",
+    next:"Day 3 · Energy + Bonding + Trig P2 →",
+    checkTitle:"Sleep Checklist — Emergency Day 2",
+    checklist:[
+      "Physics: F=ma derived + banking tanθ=v²/rg proved + 8 PYQs",
+      "Chemistry: Bohr energy E=-13.6/n² eV + 4 quantum numbers understood",
+      "Mathematics: Trig compound/double angle formulas + 12 Qs solved",
+      "A4 sheet updated with Banking & Bohr formulas",
+      "Red pen corrections completed"
+    ],
+    blocks:[
+      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake · Glance Banking + Quantum",tasks:["Glance banking formula tanθ=v²/rg and Bohr energy formula"]},
+      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Laws of Motion — Friction & Banking",small:"7 Marks Guaranteed",tasks:["Derive <b>F = ma</b> from Newton's 2nd law","Derive <b>banking of road tanθ = v²/rg</b> with free-body diagram — 1x blind","Solve <b>8 PYQs</b> on friction coefficient and banked curves (2022-2025)"],goal:"Banking derivation flawless in 3 minutes."},
+      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate, stretch"]},
+      {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"Structure of Atom — Bohr & Quantum Numbers",small:"6-7 Marks",tasks:["Bohr model: <b>E = -13.6 Z²/n² eV</b>, radius formula + 3 numericals","Master <b>4 Quantum Numbers (n, l, m, s)</b> + shapes of s, p, d orbitals","Solve <b>4 PYQs</b> on atomic structure (2023-2025)"],goal:"Quantum numbers table memorized cold."},
+      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + 20 Min Nap",tasks:["Proper meal, alarm set"]},
+      {time:"1:00 — 4:00",subj:"Mathematics · Block 3",cls:"mat",dur:"3 h",title:"Trigonometric Functions — Part 1",small:"10-12 Marks Chapter",tasks:["Compound angles: sin(A±B), cos(A±B), tan(A±B)","Double angle formulas sin2A, cos2A, tan2A — memorize all","Solve <b>15 PYQs</b> from Maths 2023-2025"],goal:"Trig identities at fingertips."},
+      {time:"4:00 — 4:20",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk outside"]},
+      {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Friction & Recoil Numerical Blitz",tasks:["Re-solve banking and friction PYQs blind","Solve <b>5 fresh numericals</b> on inclined plane acceleration and recoil velocity"],goal:"Numericals solved without peeking at solutions."},
+      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
+      {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Atomic Structure Writing Drill",tasks:["Draw s, p, d orbital shapes blind","Write electronic configurations of Cu and Cr + quantum number sets","Correct mistakes in red"],goal:"Orbital shapes and exceptions written perfectly."},
+      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 sheet with Banking + Bohr + Trig formulas","Write banking derivation fully blind","Sleep sharp at 12:00"],goal:"Day 2 locked in memory."}
+    ]
+  },
+  {
+    id:3, date:"31 Oct · Fri", pill:"Day 3 / 5", kicker:"Day 3 — Energy, Bonds & Rotation",
+    title:"Work-Energy theorem is <em>one proof.</em><br>VSEPR is <em>one shape table.</em>",
+    sub:"31 October — Work-Energy + VSEPR + Rotation Basics",
+    desc:"Physics <strong>Work, Energy & Power</strong> (theorem W=ΔKE) + <strong>Rotation</strong> (MI parallel/perpendicular axes), Chemistry <strong>Chemical Bonding</strong> (VSEPR, hybridization), Maths <strong>Complex Numbers & Trig P2</strong>.",
+    roadTitle:"Energy + Bonding + Rotation", roadDesc:"Theorem + VSEPR + MI",
+    next:"Day 4 selectors →",
+    checkTitle:"Sleep Checklist — Emergency Day 3",
+    checklist:[
+      "Physics: Work-Energy theorem derived 2× + Parallel/Perpendicular axis theorems",
+      "Chemistry: VSEPR shape table (NH3, H2O, SF6, PCl5) + hybridization",
+      "Mathematics: Complex numbers modulus/argument + Trig P2 Qs solved",
+      "A4 sheet updated with Theorem & MI theorems",
+      "Blind writing completed"
+    ],
+    blocks:[
+      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake & Glance",tasks:["Glance Work-Energy theorem and VSEPR angles"]},
+      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Work-Energy Theorem + Rotation Theorems",small:"Tier 1 Repeater",tasks:["Derive <b>Work-Energy Theorem W = ΔKE</b> — 1x seeing, 1x blind","Prove <b>Parallel axis theorem I = Ic + Md²</b> and <b>Perpendicular axis theorem</b>","Solve <b>6 PYQs</b> on work-energy and moment of inertia"],goal:"Both rotational theorems derived cleanly."},
+      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate"]},
+      {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"Chemical Bonding — VSEPR & Hybridization",small:"7-8 Marks",tasks:["Master VSEPR geometries: NH₃, H₂O, SF₆, PCl₅, XeF₄","Hybridization sp, sp², sp³ calculation shortcuts + 4 PYQs","Write full bonding summary on notebook p.3"],goal:"VSEPR shapes and angles mugged completely."},
+      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + Nap",tasks:["Nap 20 min"]},
+      {time:"1:00 — 4:00",subj:"Mathematics · Block 3",cls:"mat",dur:"3 h",title:"Trig P2 + Complex Numbers",small:"High Scoring",tasks:["General solutions of trigonometric equations (sin x = 0, etc.)","Complex numbers: modulus, argument, polar form, quadratic roots","Solve <b>12 PYQs</b> (2023-2025)"],goal:"Complex numbers & general solutions mastered."},
+      {time:"4:00 — 4:20",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk"]},
+      {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Rotation & Energy Numericals",tasks:["Solve spring potential energy ½kx² problems + collision conservation","Practice MI calculations for ring, disc, rod"],goal:"Numerical accuracy locked."},
+      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
+      {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Bonding Writing Drill",tasks:["Write VSEPR table completely blind","Solve 4 hybridization PYQs without peeking","Correct in red pen"],goal:"Zero hesitation on bonding questions."},
+      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 formula sheet with Work-Energy & MI","Write Parallel Axis Theorem fully blind","Sleep sharp at 12:00"],goal:"Day 3 secured."}
+    ]
+  },
+  {
+    id:4, date:"01 Nov · Sat", pill:"Day 4 / 5", kicker:"Day 4 — Thermo, Waves & Calculus",
+    title:"Carnot efficiency and SHM energy<br>are <em>guaranteed exam questions.</em>",
+    sub:"01 November — Thermodynamics + SHM/Waves + Limits & Derivatives",
+    desc:"Physics <strong>Thermodynamics</strong> (Cp-Cv=R, Carnot engine η=1-T2/T1) + <strong>SHM & Waves</strong> (energy = ½kA², Doppler effect), Maths <strong>Limits & Derivatives</strong>.",
+    roadTitle:"Thermo + SHM + Limits", roadDesc:"Carnot + SHM energy + Limits",
+    next:"Day 5 final push →",
+    checkTitle:"Sleep Checklist — Emergency Day 4",
+    checklist:[
+      "Physics: Cp-Cv=R derived + Carnot efficiency formula + SHM energy + Doppler",
+      "Chemistry: Chemical Thermodynamics (Hess law, ΔG) + Equilibrium Kp/Kc",
+      "Mathematics: Limits 0/0 form + Derivatives by first principle (8 Qs)",
+      "A4 sheet updated with Carnot & SHM formulas",
+      "Night blind derivation completed"
+    ],
+    blocks:[
+      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake & Glance",tasks:["Glance Carnot efficiency formula and SHM energy"]},
+      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Thermodynamics + SHM & Waves",small:"10 Marks Combined",tasks:["Derive <b>Cp - Cv = R</b> and <b>Carnot Efficiency η = 1 - T₂/T₁</b>","Derive <b>SHM total energy = ½kA²</b> and pendulum time period T=2π√(l/g)","Solve <b>8 PYQs</b> on Carnot cycle and SHM energy (2022-2025)"],goal:"Carnot and SHM derivations bulletproof."},
+      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate"]},
+      {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"Thermodynamics & Equilibrium",small:"6-7 Marks",tasks:["Hess’s Law of constant heat summation + Gibbs free energy ΔG = ΔH - TΔS","Relation between <b>Kp and Kc: Kp = Kc(RT)^Δn</b> + Le Chatelier principle","Solve <b>5 PYQ numericals</b>"],goal:"Kp/Kc derivation and numericals clear."},
+      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + Nap",tasks:["Nap 20 min"]},
+      {time:"1:00 — 4:00",subj:"Mathematics · Block 3",cls:"mat",dur:"3 h",title:"Limits & Derivatives — Easiest 8 Marks",small:"High Accuracy",tasks:["Limits: algebraic & trigonometric standard limits (lim x→0 sinx/x = 1)","First principle derivatives of sin x, cos x, xⁿ","Solve <b>10 PYQs</b> (2023-2025)"],goal:"Limits & derivatives questions solved in under 2 mins each."},
+      {time:"4:00 — 4:20",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk"]},
+      {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Thermo & Waves Numerical Blitz",tasks:["Solve Carnot engine temperature conversion numericals (e.g., 500K to 300K)","Solve Doppler frequency shift numericals"],goal:"Numerical speed tested under clock."},
+      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
+      {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Equilibrium & Thermo Writing Drill",tasks:["Write Kp=Kc(RT)^Δn derivation blind","Solve 3 Le Chatelier equilibrium shift questions without peeking"],goal:"Equilibrium logic locked."},
+      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 formula sheet with Carnot + SHM + Limits","Write Carnot efficiency derivation blind","Sleep sharp at 12:00"],goal:"Day 4 locked in."}
+    ]
+  },
+  {
+    id:5, date:"02 Nov · Sun", pill:"Day 5 / 5 — Final Overdrive", kicker:"Day 5 — Fluids, GOC, English & Mock Seal",
+    title:"Bernoulli's theorem and GOC<br>seal your <em>emergency victory.</em>",
+    sub:"02 November — Fluids/Solids + GOC/Hydrocarbons + English Exam Prep",
+    desc:"Physics <strong>Mechanical Properties of Fluids</strong> (Bernoulli's theorem, Stokes law), Chemistry <strong>GOC & Hydrocarbons</strong> (IUPAC nomenclature, Wurtz reaction, ozonolysis — 10 marks), Evening <strong>General English 5-year PYQs & formats</strong> for tomorrow's exam.",
+    roadTitle:"Fluids + GOC + English", roadDesc:"Bernoulli + IUPAC + English",
+    next:"Ready for Nov 3 English Exam →",
+    checkTitle:"Day 5 — Final Emergency Checklist",
+    checklist:[
+      "Physics: Bernoulli's theorem P + ½ρv² + ρgh = const + Stokes law vt",
+      "Chemistry: IUPAC naming 10 rules + Wurtz reaction + ozonolysis",
+      "Mathematics: Quick formula review across all chapters",
+      "FULL REVISION: Read all A4 formula sheets 1-5 blind",
+      "Evening English: 5-year PYQs + Letter/Notice/Essay formats memorized"
+    ],
+    blocks:[
+      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake & Glance",tasks:["Glance Bernoulli equation and IUPAC functional group priority table"]},
+      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Mechanical Properties of Fluids & Solids",small:"Bernoulli Theorem",tasks:["Derive <b>Bernoulli's Equation P + ½ρv² + ρgh = constant</b> with application (Venturimeter)","Derive <b>Stokes Law & Terminal Velocity vt = 2r²g(ρ - σ) / 9η</b>","Solve <b>6 PYQs</b> on surface tension, excess pressure (2T/r), and Bernoulli"],goal:"Bernoulli derivation mastered completely."},
+      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate"]},
+      {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"GOC & Hydrocarbons — The 10-Mark Factory",small:"Every Year Repeater",tasks:["Master IUPAC naming rules + practice 10 complex organic names","Master Hydrocarbon preparations: <b>Wurtz reaction</b>, <b>Kolbe electrolysis</b>, <b>Ozonolysis of alkenes</b>","Solve <b>6 PYQs</b> on organic conversions and mechanisms"],goal:"Ozonolysis and Wurtz reactions clear and reproducible."},
+      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + Nap",tasks:["Nap 20 min"]},
+      {time:"1:00 — 3:30",subj:"Full Revision · Block 3",cls:"rev",dur:"2.5 h",title:"All A4 Sheets Recall & Weakness Patching",small:"Emergency Sweep",tasks:["<b>90 min:</b> Read all 5 A4 formula sheets — close book and recall every box","<b>60 min:</b> Re-solve 3 weakest numericals from Physics & Chemistry"],goal:"Total command over formulas."},
+      {time:"3:30 — 3:50",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk outside"]},
+      {time:"3:50 — 7:00",subj:"General English · Block 4",cls:"che",dur:"3.1 h",title:"General English Exam Prep (Tomorrow Nov 3)",small:"70 Marks Theory + 30 Writing",tasks:["Solve <b>5-year General English PYQs</b> (2021-2025) Section A & B","Memorize formats for <b>Formal Letter, Notice, Report, and Essay</b>","Read 2 sample unseen reading comprehension passages"],goal:"English exam formats and grammar rules locked for tomorrow."},
+      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner",tasks:["Relax with family"]},
+      {time:"7:30 — 10:00",subj:"Final Mock Recall · Block 5",cls:"rev",dur:"2.5 h",title:"Physics & Chemistry Final Confidence Check",tasks:["<b>90 min:</b> Pick Physics 2025 paper — solve Section A+B under 60-min timer","<b>60 min:</b> List your gap-day targets for Physics exam (Nov 7)"],goal:"Ready for the storm."},
+      {time:"10:00 — 11:30",subj:"Seal & Sleep · Block 6",cls:"rev",dur:"1.5 h",title:"Rest for English Exam Tomorrow",small:"Exam Eve",tasks:["Stack all 5 A4 formula sheets together","Review English letter format one last time","Sleep sharp at 11:30 PM — exam is tomorrow morning!"],goal:"Emergency Overdrive complete. You are ready."}
+    ]
+  }
+];
+ 
+let currentDay = parseInt(localStorage.getItem('carbon-currentDay')||'1');
+let completedDays = JSON.parse(localStorage.getItem('carbon-completed')||'[]');
+ 
+const getProg = (id)=>{
+  try{const s=JSON.parse(localStorage.getItem('carbon-day-'+id)||'null');if(!s)return{done:0,total:0,pct:0};const tot=s.length;const don=s.filter(Boolean).length;return{done:don,total:tot,pct:tot?Math.round(don/tot*100):0}}catch(e){return{done:0,total:0,pct:0}}
+};
+const saveProg=(id,arr)=>localStorage.setItem('carbon-day-'+id, JSON.stringify(arr));
+ 
+function render(){
+  const d=DAYS.find(x=>x.id===currentDay);
+  document.getElementById('kicker').textContent=d.kicker;
+  document.getElementById('heroTitle').innerHTML=d.title;
+  document.getElementById('heroSub').textContent=d.sub;
+  document.getElementById('heroDesc').innerHTML=d.desc;
+  document.getElementById('topDay').textContent=d.pill;
+  document.getElementById('panelDate').textContent=d.date;
+  document.getElementById('nextUnlock').textContent=d.next;
+ 
+  // day switch
+  const ds=document.getElementById('daySwitch'); ds.innerHTML='';
+  DAYS.forEach(day=>{
+    const b=document.createElement('button');
+    b.textContent='D'+day.id;
+    b.className=day.id===currentDay?'active':'';
+    b.title=day.roadTitle;
+    b.onclick=()=>{currentDay=day.id;localStorage.setItem('carbon-currentDay',currentDay);render();window.scrollTo({top:0,behavior:'smooth'})};
+    ds.appendChild(b);
+  });
+ 
+  // timeline
+  const tl=document.getElementById('timeline'); tl.innerHTML='';
+  let totalChecks=0; d.blocks.forEach(b=> totalChecks+=b.tasks.length); totalChecks+=d.checklist.length;
+  let saved=JSON.parse(localStorage.getItem('carbon-day-'+currentDay)||'null');
+  if(!saved || saved.length!==totalChecks){
+    const ns=new Array(totalChecks).fill(false);
+    if(saved) for(let i=0;i<Math.min(saved.length,totalChecks);i++) ns[i]=saved[i];
+    saved=ns; saveProg(currentDay,saved);
+  }
+  let fi=0;
+  d.blocks.forEach(block=>{
+    const el=document.createElement('div'); el.className='block '+block.cls;
+    let html=`<div class="block-head"><div class="head-left"><span class="time">${block.time}</span><span class="subj">${block.subj}</span></div><span class="dur">${block.dur}</span></div>`;
+    html+=`<div class="btitle">${block.title}${block.small?` <small>· ${block.small}</small>`:''}</div>`;
+    html+=`<ul class="tasks">`;
+    block.tasks.forEach(t=>{
+      const cur=fi++;
+      const ch=saved[cur]?'checked':'';
+      const cl=saved[cur]?' class="checked"':'';
+      html+=`<li${cl}><input type="checkbox" data-fi="${cur}" ${ch}><span>${t}</span></li>`;
+    });
+    html+=`</ul>`;
+    if(block.goal) html+=`<div class="goal">🎯 <span><strong>Goal —</strong> ${block.goal}</span></div>`;
+    el.innerHTML=html; tl.appendChild(el);
+  });
+ 
+  // checkCard
+  const cc=document.getElementById('checkCard');
+  let chtml=`<h3><i style="background:rgba(0,255,163,0.15);color:#00FFA3;border:1px solid rgba(0,255,163,0.4)">✓</i> ${d.checkTitle}</h3><ul class="checklist">`;
+  d.checklist.forEach(item=>{
+    const cur=fi++;
+    const ch=saved[cur]?'checked':'';
+    const cl=saved[cur]?' class="checked"':'';
+    chtml+=`<li${cl}><input type="checkbox" data-fi="${cur}" ${ch}><span>${item}</span></li>`;
+  });
+  chtml+=`</ul><div style="margin-top:12px;background:#141417;border:1px dashed rgba(220,20,60,0.3);border-radius:10px;padding:8px 10px;font-size:11px;color:#A8A29E">💡 Tip: Tick as you go — <b style="color:#FFF">100% auto-advances</b> with confetti.</div>`;
+  cc.innerHTML=chtml;
+ 
+  // listeners
+  document.querySelectorAll('input[type="checkbox"][data-fi]').forEach(c=> c.addEventListener('change', onCheck));
+ 
+  // roadmap
+  const rg=document.getElementById('roadmap'); rg.innerHTML='';
+  DAYS.forEach(day=>{
+    const prog=getProg(day.id);
+    const isActive=day.id===currentDay, isDone=completedDays.includes(day.id);
+    const div=document.createElement('div');
+    div.className='daypill'+(isActive?' active':'')+(isDone?' done':'');
+    div.innerHTML=`<small>Day ${day.id} · ${day.date.split('·')[0].trim()}</small><strong>${day.roadTitle}</strong><p>${day.roadDesc}</p><div class="mini"><div class="fillmini" style="width:${prog.pct}%"></div></div>`;
+    div.onclick=()=>{currentDay=day.id;localStorage.setItem('carbon-currentDay',currentDay);render();window.scrollTo({top:0,behavior:'smooth'})};
+    rg.appendChild(div);
+  });
+ 
+  updateProg();
+}
+ 
+function onCheck(e){
+  const fi=parseInt(e.target.dataset.fi);
+  const d=DAYS.find(x=>x.id===currentDay);
+  let total=0; d.blocks.forEach(b=> total+=b.tasks.length); total+=d.checklist.length;
+  let saved=JSON.parse(localStorage.getItem('carbon-day-'+currentDay)||'[]');
+  if(saved.length!==total) saved=new Array(total).fill(false);
+  saved[fi]=e.target.checked; saveProg(currentDay,saved);
+  const li=e.target.closest('li'); if(li) li.classList.toggle('checked', e.target.checked);
+  updateProg(); maybeComplete();
+}
+ 
+function updateProg(){
+  const prog=getProg(currentDay);
+  document.getElementById('fillDay').style.width=prog.pct+'%';
+  document.getElementById('bigDay').textContent=prog.pct+'%';
+  document.getElementById('labelDay').textContent=prog.done+' / '+prog.total;
+  const done=completedDays.length, warPct=Math.round(done/5*100);
+  document.getElementById('fillWar').style.width=warPct+'%';
+  document.getElementById('bigWar').textContent=warPct+'%';
+  document.getElementById('labelWar').textContent=done+' / 5';
+  document.getElementById('prevBtn').disabled=currentDay===1; document.getElementById('nextBtn').disabled=currentDay===5;
+  document.getElementById('prevBtn').style.opacity=currentDay===1?'.4':'1';
+  document.getElementById('nextBtn').style.opacity=currentDay===5?'.4':'1';
+}
+ 
+let completing=false;
+function maybeComplete(){
+  if(completing) return;
+  const prog=getProg(currentDay);
+  if(prog.total>0 && prog.pct===100 && !completedDays.includes(currentDay)){
+    completing=true;
+    completedDays.push(currentDay); localStorage.setItem('carbon-completed', JSON.stringify(completedDays));
+    updateProg(); render(); showCelebration();
+  }
+}
+function showCelebration(){
+  const d=DAYS.find(x=>x.id===currentDay), nxt=DAYS.find(x=>x.id===currentDay+1);
+  document.getElementById('modalTitle').innerHTML=`Day ${d.id} <em>Crushed.</em>`;
+  if(nxt){
+    document.getElementById('modalDesc').textContent=`All tasks ticked. Emergency overdrive continues. Day ${nxt.id} unlocks now.`;
+    document.getElementById('goBtn').textContent=`Go to Day ${nxt.id} →`;
+    document.getElementById('goBtn').style.display='inline-flex';
+  } else {
+    document.getElementById('modalDesc').textContent=`5-Day Emergency Overdrive complete. You have conquered the backlog. English exam tomorrow morning!`;
+    document.getElementById('goBtn').style.display='none';
+  }
+  document.getElementById('overlay').classList.add('show');
+  launchConfetti();
+  setTimeout(()=>{ if(document.getElementById('overlay').classList.contains('show') && nxt) goNext(); }, 3500);
+}
+function launchConfetti(){
+  const c=document.getElementById('confetti'); c.classList.add('show'); c.width=innerWidth; c.height=innerHeight;
+  const ctx=c.getContext('2d');
+  const pcs=Array.from({length:90},()=>({x:Math.random()*c.width,y:Math.random()*-c.height,w:6+Math.random()*8,h:8+Math.random()*8,vx:-2+Math.random()*4,vy:2+Math.random()*5,rot:Math.random()*360,vr:-6+Math.random()*12,color:['#DC143C','#3B82F6','#00FFA3','#F59E0B','#8B5CF6','#FFF'][Math.floor(Math.random()*6)]}));
+  let t=0; (function frame(){ ctx.clearRect(0,0,c.width,c.height); pcs.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.vy+=0.12;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore()}); t++; if(t<180) requestAnimationFrame(frame); else{c.classList.remove('show');ctx.clearRect(0,0,c.width,c.height)}})();
+}
+function goNext(){ if(currentDay<5){currentDay++;localStorage.setItem('carbon-currentDay',currentDay);document.getElementById('overlay').classList.remove('show');completing=false;render();scrollTo({top:0,behavior:'smooth'})} else {document.getElementById('overlay').classList.remove('show');completing=false}}
+function goPrev(){ if(currentDay>1){currentDay--;localStorage.setItem('carbon-currentDay',currentDay);completing=false;render();scrollTo({top:0,behavior:'smooth'})}}
+document.getElementById('goBtn').onclick=goNext;
+document.getElementById('stayBtn').onclick=()=>{document.getElementById('overlay').classList.remove('show');completing=false};
+document.getElementById('overlay').onclick=e=>{if(e.target.id==='overlay'){e.currentTarget.classList.remove('show');completing=false}};
+document.getElementById('prevBtn').onclick=goPrev;
+document.getElementById('nextBtn').onclick=goNext;
+document.getElementById('resetBtn').onclick=()=>{
+  if(confirm(`Reset all ticks for Day ${currentDay}?`)){
+    localStorage.removeItem('carbon-day-'+currentDay);
+    completedDays=completedDays.filter(id=>id!==currentDay);
+    localStorage.setItem('carbon-completed', JSON.stringify(completedDays));
+    completing=false; render();
+  }
+};
+render();
+</script>
 </body>
 </html>
+ 
