@@ -8,9 +8,8 @@
   :root{color-scheme:dark}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#050505;color:#EAE6DF;line-height:1.5;-webkit-font-smoothing:antialiased}
-  /* carbon grain */
   body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")}
-
+  
   .topbar{background:#0A0A0B;color:#EAE6DF;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(220,20,60,0.25);position:sticky;top:0;z-index:30;backdrop-filter:blur(10px)}
   .brand{display:flex;align-items:center;gap:12px}
   .mark{width:36px;height:36px;background:#DC143C;color:#fff;display:grid;place-items:center;font-weight:900;font-size:12px;letter-spacing:.06em;border-radius:10px;box-shadow:0 0 20px rgba(220,20,60,0.5)}
@@ -19,663 +18,307 @@
   .top-actions{display:flex;align-items:center;gap:8px}
   .chip{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:999px;border:1px solid rgba(220,20,60,0.3);background:rgba(220,20,60,0.1);color:#FF6B81}
   .chip.live{border-color:rgba(220,20,60,0.7);background:rgba(220,20,60,0.2);color:#FF4757}
-  .chip.live::before{content:"●";margin-right:6px;color:#DC143C;animation:pulse 1s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
 
-  /* ADVANCED ANIMATIONS */
   @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-  @keyframes borderGlow{0%,100%{border-color:rgba(220,20,60,0.3)}50%{border-color:rgba(220,20,60,0.8)}}
-  @keyframes scanLine{0%{top:-2px}100%{top:100%}}
-  @keyframes fadeInUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
-  @keyframes taskComplete{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
-  @keyframes glowPulse{0%,100%{box-shadow:0 0 5px #DC143C,0 0 10px #DC143C}50%{box-shadow:0 0 20px #DC143C,0 0 30px #DC143C}}
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-  @keyframes energyPulse{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
-  @keyframes gridMove{0%{background-position:0 0}100%{background-position:40px 40px}}
-
-  .command{animation:borderGlow 3s ease-in-out infinite}
-  .command::before{content:"";position:absolute;inset:-1px;background:linear-gradient(90deg,transparent,rgba(220,20,60,0.4),transparent);background-size:200% 100%;animation:shimmer 3s linear infinite;border-radius:23px;z-index:-1}
-  .block{opacity:1!important;visibility:visible!important;transition:opacity .4s ease}
-  .block:nth-child(1){transition-delay:.1s}
-  .block:nth-child(2){transition-delay:.2s}
-  .block:nth-child(3){transition-delay:.3s}
-  .block:nth-child(4){transition-delay:.4s}
-  .block:nth-child(5){transition-delay:.5s}
-  .block:nth-child(6){transition-delay:.6s}
-  .block::after{content:"";position:absolute;top:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#DC143C,transparent);animation:scanLine 2s linear infinite;display:none}
-  .block:hover::after{display:block}
-  .block.completed{border-color:rgba(0,255,163,0.4);box-shadow:0 0 15px rgba(0,255,163,0.2)}
-  .tasks li input[type="checkbox"]:checked{animation:taskComplete .3s ease}
-  .tasks li.checked{animation:glowPulse 2s ease infinite}
-  .tate-slot{animation:float 3s ease-in-out infinite}
-  .tate-slot:nth-child(2){animation-delay:.5s}
-  .stat{opacity:1!important;visibility:visible!important;transition:opacity .5s ease}
-  .stat:nth-child(2){transition-delay:.4s}
-  .fill{background:linear-gradient(90deg,#DC143C,#FF4757,#DC143C);background-size:200% auto;animation:shimmer 2s linear infinite}
-  .fill.gold{background:linear-gradient(90deg,#00FFA3,#00D4AA,#00FFA3);background-size:200% auto;animation:shimmer 2s linear infinite}
-  .daypill{transition:all .3s ease}
-  .daypill:hover{animation:glowPulse 1.5s ease infinite}
-  .chip.live{animation:energyPulse 2s ease infinite}
-  .mark{animation:glowPulse 2s ease infinite}
-  .kicker i{animation:pulse 1.5s ease infinite}
-
-  /* SCANNING BACKGROUND */
-  body::after{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(transparent 50%,rgba(220,20,60,0.02) 50%);background-size:100% 4px;animation:gridMove 20s linear infinite;z-index:-1}
+  @keyframes glowPulse{0%,100%{box-shadow:0 0 5px #DC143C}50%{box-shadow:0 0 20px #DC143C}}
 
   .wrap{max-width:1200px;margin:0 auto;padding:20px;position:relative}
-
-  /* Fuel Room / Tate Quote Banner */
-  .tate-banner{
-    background:linear-gradient(135deg, #0D0D0E 0%, #141417 100%);
-    border:1px solid rgba(220,20,60,0.28);
-    border-radius:20px;
-    padding:18px 22px;
-    margin-bottom:16px;
-    display:grid;
-    grid-template-columns:1fr auto;
-    gap:16px;
-    align-items:center;
-    position:relative;
-    overflow:hidden;
-  }
-  .tate-banner::after{content:"";position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(circle at 100% 50%, rgba(220,20,60,0.15), transparent 70%);pointer-events:none}
+  .tate-banner{background:linear-gradient(135deg, #0D0D0E 0%, #141417 100%);border:1px solid rgba(220,20,60,0.28);border-radius:20px;padding:18px 22px;margin-bottom:16px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;position:relative;overflow:hidden;}
   .tate-quote{font-style:italic;font-size:14px;color:#D4D0C8;line-height:1.5;font-family:Georgia,serif}
   .tate-quote b{color:#DC143C;font-style:normal;font-family:Inter,sans-serif;letter-spacing:.08em;font-size:10px;display:block;margin-bottom:4px;text-transform:uppercase}
   .tate-slots{display:flex;gap:8px}
-  .tate-slot{width:64px;height:64px;border-radius:12px;border:1.5px dashed rgba(220,20,60,0.4);background:rgba(220,20,60,0.05);display:grid;place-items:center;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8A8480;text-align:center;padding:4px;cursor:pointer;transition:all .2s}
-  .tate-slot:hover{border-color:#DC143C;color:#FF4757;background:rgba(220,20,60,0.12)}
+  .tate-slot{width:64px;height:64px;border-radius:12px;border:1.5px dashed rgba(220,20,60,0.4);background:rgba(220,20,60,0.05);display:grid;place-items:center;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8A8480;text-align:center;padding:4px}
 
-  /* Hero Command Card */
-  .command{
-    background:#0D0D0E;
-    color:#EAE6DF;
-    border-radius:22px;
-    overflow:hidden;
-    border:1px solid rgba(220,20,60,0.3);
-    position:relative;
-    display:grid;
-    grid-template-columns:1.15fr .85fr;
-    min-height:280px;
-    box-shadow:0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(220,20,60,0.08);
-  }
-  .command::after{content:"";position:absolute;inset:0;background:
-    radial-gradient(600px 300px at 20% 0%, rgba(220,20,60,0.22), transparent 60%),
-    radial-gradient(500px 400px at 90% 20%, rgba(0,255,163,0.08), transparent 60%),
-    radial-gradient(400px 300px at 50% 100%, rgba(138,43,226,0.1), transparent 70%);
-    pointer-events:none}
-  .cmd-left{padding:26px 28px 22px;position:relative;z-index:1}
+  .command{background:#0D0D0E;border-radius:22px;border:1px solid rgba(220,20,60,0.3);display:grid;grid-template-columns:1.15fr .85fr;min-height:260px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
+  .cmd-left{padding:26px 28px 22px;}
   .kicker{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .kicker i{width:32px;height:2px;background:#DC143C;display:block;box-shadow:0 0 8px #DC143C}
+  .kicker i{width:32px;height:2px;background:#DC143C;display:block;}
   .kicker span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;color:#FF4757}
-  .cmd-left h1{font-family:Georgia,Times,serif;font-size:34px;line-height:1.05;letter-spacing:-.03em;font-weight:900;color:#FFF}
-  .cmd-left h1 em{font-weight:400;font-style:italic;color:#FF4757}
-  .cmd-left p{margin-top:12px;font-size:13px;line-height:1.6;color:#A8A29E;max-width:520px}
-  .cmd-left p strong{color:#FFF}
-  .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-  .meta{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#D4D0C8}
-  .meta b{color:#00FFA3}
-
-  .cmd-right{position:relative;z-index:1;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));border-left:1px solid rgba(255,255,255,0.08);padding:18px;display:flex;flex-direction:column;gap:12px}
-  .panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px;backdrop-filter:blur(8px)}
-  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-  .panel-head span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#8A8480}
-  .panel-head b{font-size:11px;font-weight:900;color:#FFF}
-  .big-num{font-size:28px;font-weight:900;letter-spacing:-.04em;line-height:1;color:#FFF}
-  .big-num small{font-size:13px;opacity:.5}
+  .cmd-left h1{font-family:Georgia,serif;font-size:32px;line-height:1.1;font-weight:900;color:#FFF}
+  .cmd-left h1 em{color:#FF4757;font-style:italic}
+  .cmd-left p{margin-top:12px;font-size:13.5px;color:#A8A29E;max-width:520px}
+  .cmd-right{background:rgba(255,255,255,0.02);border-left:1px solid rgba(255,255,255,0.08);padding:18px;display:flex;flex-direction:column;gap:12px}
+  .panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px;}
+  .panel-head{display:flex;justify-content:space-between;margin-bottom:10px;font-size:10px;text-transform:uppercase;font-weight:900;color:#8A8480}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .stat{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px}
-  .stat label{font-size:8px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#8A8480;display:block;margin-bottom:4px}
-  .stat strong{font-size:18px;font-weight:900;letter-spacing:-.03em}
+  .stat label{font-size:8px;text-transform:uppercase;font-weight:900;color:#8A8480;display:block;margin-bottom:4px}
+  .big-num{font-size:24px;font-weight:900;color:#FFF;display:block}
   .bar{height:6px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;margin-top:8px}
-  .fill{height:100%;background:#DC143C;border-radius:999px;transition:width .5s ease;box-shadow:0 0 10px #DC143C}
-  .fill.gold{background:linear-gradient(90deg,#00FFA3,#DC143C)}
-  .bar-label{display:flex;justify-content:space-between;margin-top:6px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8A8480}
-  .bar-label b{color:#FFF}
+  .fill{height:100%;background:#DC143C;width:0%;transition:width 0.4s ease}
+  .fill.gold{background:#00FFA3}
 
-  /* control strip */
-  .control{
-    margin-top:14px;
-    background:#0D0D0E;
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:16px;
-    padding:12px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    flex-wrap:wrap;
-  }
-  .control-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .control{margin-top:14px;background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:12px;display:flex;justify-content:space-between;align-items:center;}
   .day-switch{display:flex;gap:6px;background:#050505;border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:4px}
-  .day-switch button{appearance:none;border:none;background:transparent;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border-radius:999px;cursor:pointer;color:#8A8480;transition:all .2s}
-  .day-switch button.active{background:#DC143C;color:#fff;box-shadow:0 0 14px rgba(220,20,60,0.6)}
-  .control-right{display:flex;gap:8px;align-items:center}
-  .btn{appearance:none;border:1px solid #DC143C;background:#DC143C;color:#fff;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:10px 16px;border-radius:999px;cursor:pointer;box-shadow:0 0 14px rgba(220,20,60,0.4);transition:all .2s}
-  .btn:hover{background:#FF1E42;box-shadow:0 0 20px rgba(220,20,60,0.8)}
-  .btn.secondary{background:#141417;color:#FFF;border-color:rgba(255,255,255,0.15);box-shadow:none}
-  .btn.ghost{background:#0D0D0E;color:#D4D0C8;border-color:rgba(255,255,255,0.1);box-shadow:none}
-  .hint{font-size:11px;color:#8A8480}
-  .hint b{color:#FFF}
+  .day-switch button{border:none;background:transparent;font-size:11px;font-weight:900;padding:8px 14px;border-radius:999px;cursor:pointer;color:#8A8480}
+  .day-switch button.active{background:#DC143C;color:#fff}
+  .btn{border:1px solid #DC143C;background:#DC143C;color:#fff;font-size:11px;font-weight:900;padding:10px 16px;border-radius:999px;cursor:pointer;text-transform:uppercase;}
 
-  /* layout */
   .board{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:16px}
-  .legend{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
-  .legend span{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);padding:6px 12px;border-radius:999px;color:#D4D0C8}
-  .dot{width:8px;height:8px;border-radius:50%}
-  .dot.phy{background:#3B82F6;box-shadow:0 0 8px #3B82F6}.dot.che{background:#F59E0B;box-shadow:0 0 8px #F59E0B}.dot.mat{background:#10B981;box-shadow:0 0 8px #10B981}.dot.rev{background:#8B5CF6;box-shadow:0 0 8px #8B5CF6}.dot.brk{background:#6B7280}
-
   .timeline{position:relative;padding-left:30px}
-  .timeline::before{content:"";position:absolute;left:10px;top:10px;bottom:10px;width:2px;background:linear-gradient(180deg,#DC143C, rgba(220,20,60,0.1));border-radius:999px}
-  .block{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;margin-bottom:12px;overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
-  .block::before{content:"";position:absolute;left:-23px;top:22px;width:10px;height:10px;border-radius:50%;border:2px solid #0D0D0E;background:#3B82F6;z-index:1}
-  .block.phy::before{background:#3B82F6;box-shadow:0 0 10px #3B82F6}
-  .block.che::before{background:#F59E0B;box-shadow:0 0 10px #F59E0B}
-  .block.mat::before{background:#10B981;box-shadow:0 0 10px #10B981}
-  .block.rev::before{background:#8B5CF6;box-shadow:0 0 10px #8B5CF6}
-  .block.brk{border-style:dashed;background:#09090A}
-  .block-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px 10px}
-  .head-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .time{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;font-weight:900;letter-spacing:.03em;background:#141417;color:#FFF;padding:6px 10px;border-radius:9px;border:1px solid rgba(255,255,255,0.08)}
-  .block.brk .time{background:#0D0D0E;color:#8A8480;border:1px solid rgba(255,255,255,0.05)}
-  .subj{font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:999px;border:1px solid}
-  .phy .subj{background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.3);color:#60A5FA}
-  .che .subj{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);color:#FBBF24}
-  .mat .subj{background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3);color:#34D399}
-  .rev .subj{background:rgba(139,92,246,0.12);border-color:rgba(139,92,246,0.3);color:#A78BFA}
-  .brk .subj{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.08);color:#8A8480}
-  .dur{font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8A8480}
-  .btitle{padding:0 16px 2px;font-size:15px;font-weight:900;letter-spacing:-.02em;color:#FFF}
-  .btitle small{font-weight:700;color:#8A8480;font-size:12px}
-  .tasks{list-style:none;padding:8px 16px 12px}
-  .tasks li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.06);font-size:12.8px;line-height:1.5;color:#D4D0C8}
-  .tasks li:last-child{border-bottom:none}
-  .tasks li input[type="checkbox"]{appearance:none;width:19px;height:19px;min-width:19px;border:1.6px solid rgba(255,255,255,0.25);border-radius:6px;background:#141417;display:grid;place-items:center;cursor:pointer;margin-top:1px;transition:all .15s}
-  .tasks li input[type="checkbox"]:checked{background:#DC143C;border-color:#DC143C;box-shadow:0 0 10px rgba(220,20,60,0.6)}
-  .tasks li input[type="checkbox"]:checked::after{content:"✓";color:#fff;font-size:11px;font-weight:900;line-height:1}
-  .tasks li.checked{opacity:.45;text-decoration:line-through;text-decoration-color:#DC143C}
-  .tasks li b{color:#FFF}
-  .tasks li em{font-style:normal;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:1px 7px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#D4D0C8;white-space:nowrap}
-  .goal{margin:0 16px 14px;background:#141417;border:1px dashed rgba(220,20,60,0.3);border-radius:12px;padding:9px 12px;display:flex;gap:9px;align-items:center;font-size:11.5px;color:#A8A29E}
-  .goal strong{color:#FFF}
+  .timeline::before{content:"";position:absolute;left:10px;top:10px;bottom:10px;width:2px;background:rgba(220,20,60,0.2)}
+  .block{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;margin-bottom:12px;overflow:hidden;position:relative}
+  .block::before{content:"";position:absolute;left:-24px;top:22px;width:10px;height:10px;border-radius:50%;background:#3B82F6;z-index:1}
+  .block.che::before{background:#F59E0B}
+  .block.mat::before{background:#10B981}
+  .block.rev::before{background:#8B5CF6}
+  .block.brk::before{background:#6B7280}
+  
+  .block-head{padding:14px 16px 10px;display:flex;justify-content:space-between;align-items:center}
+  .time{font-family:monospace;font-size:11px;background:#141417;padding:4px 8px;border-radius:6px;color:#FFF}
+  .subj{font-size:10px;font-weight:900;text-transform:uppercase;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,0.1)}
+  .btitle{padding:0 16px 10px;font-size:16px;font-weight:900;color:#FFF}
+  .tasks{list-style:none;padding:0 16px 16px}
+  .tasks li{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:#D4D0C8;cursor:pointer}
+  .tasks li input{width:18px;height:18px;accent-color:#DC143C;cursor:pointer}
+  .tasks li.checked{opacity:0.5;text-decoration:line-through}
+  .goal{margin:0 16px 16px;background:#141417;padding:10px;border-radius:8px;font-size:11px;color:#00FFA3}
 
-  /* right rail */
-  .rail{position:sticky;top:76px;align-self:start;display:flex;flex-direction:column;gap:14px}
-  .card{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
-  .card h3{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:#FFF}
-  .card h3 i{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-style:normal;font-size:13px}
+  .card{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;margin-bottom:14px}
+  .card h3{font-size:11px;text-transform:uppercase;margin-bottom:12px;color:#FF4757}
   .checklist{list-style:none}
-  .checklist li{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12.5px;color:#D4D0C8}
-  .checklist li:last-child{border-bottom:none}
-  .checklist li input[type="checkbox"]{appearance:none;width:19px;height:19px;min-width:19px;border:1.6px solid rgba(255,255,255,0.25);border-radius:6px;background:#141417;display:grid;place-items:center;cursor:pointer;margin-top:1px}
-  .checklist li input[type="checkbox"]:checked{background:#00FFA3;border-color:#00FFA3;box-shadow:0 0 10px rgba(0,255,163,0.6)}
-  .checklist li input[type="checkbox"]:checked::after{content:"✓";color:#000;font-size:11px;font-weight:900}
-  .checklist li.checked{opacity:.45;text-decoration:line-through}
+  .checklist li{display:flex;gap:10px;padding:8px 0;font-size:12px;color:#D4D0C8;border-bottom:1px solid rgba(255,255,255,0.05)}
   .rules{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .rule{background:#141417;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px}
-  .rule strong{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:900;display:block;margin-bottom:4px;color:#FF4757}
-  .rule p{font-size:11.5px;color:#A8A29E;line-height:1.5}
+  .rule{background:#141417;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.05)}
+  .rule strong{font-size:10px;color:#FF4757;display:block;margin-bottom:4px}
+  .rule p{font-size:10.5px;color:#8A8480}
 
-  .roadmap{margin-top:16px;background:#0D0D0E;color:#EAE6DF;border-radius:18px;padding:16px;border:1px solid rgba(220,20,60,0.3);position:relative;overflow:hidden}
-  .roadmap::after{content:"";position:absolute;inset:0;background:radial-gradient(500px 200px at 80% 0%, rgba(220,20,60,0.15), transparent 60%);pointer-events:none}
-  .roadmap h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#FF4757;margin-bottom:12px;display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}
-  .roadmap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;position:relative;z-index:1}
-  .daypill{background:#141417;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:11px 9px;cursor:pointer;transition:all .18s;position:relative}
-  .daypill:hover{border-color:rgba(220,20,60,0.5);transform:translateY(-1px)}
-  .daypill.active{background:#DC143C;border-color:#DC143C;color:#fff;box-shadow:0 0 15px rgba(220,20,60,0.5)}
-  .daypill.done{background:rgba(0,255,163,0.15);border-color:rgba(0,255,163,0.35)}
-  .daypill.done::after{content:"✓";position:absolute;top:7px;right:7px;width:18px;height:18px;background:#00FFA3;color:#000;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:900}
-  .daypill small{font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:900;color:#8A8480}
-  .daypill.active small{color:rgba(255,255,255,0.85)}
-  .daypill strong{display:block;font-size:11px;font-weight:900;margin:4px 0 6px;line-height:1.25;color:#FFF}
-  .daypill p{font-size:10px;line-height:1.45;color:#A8A29E}
-  .daypill p b{color:#FFF}
-  .daypill .mini{height:3px;background:rgba(255,255,255,0.1);border-radius:999px;margin-top:8px;overflow:hidden}
-  .daypill .fillmini{height:100%;background:#DC143C;border-radius:999px;transition:width .4s}
-  .daypill.done .fillmini{background:#00FFA3}
-  .daypill.active .fillmini{background:#fff}
-
-  .footer{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-  .footer p{font-size:11px;color:#8A8480}
-
-  /* modal */
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;place-items:center;z-index:50;padding:20px}
-  .overlay.show{display:grid}
-  .modal{background:#0D0D0E;border:1px solid rgba(220,20,60,0.4);border-radius:22px;max-width:460px;width:100%;padding:26px 24px 20px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.8), 0 0 30px rgba(220,20,60,0.3);animation:pop .35s cubic-bezier(.34,1.56,.64,1)}
-  @keyframes pop{0%{transform:scale(.88);opacity:0}100%{transform:scale(1);opacity:1}}
-  .badge{width:56px;height:56px;border-radius:50%;background:rgba(0,255,163,0.15);border:2px solid #00FFA3;color:#00FFA3;display:grid;place-items:center;font-size:26px;margin:0 auto 14px}
-  .modal h2{font-family:Georgia,serif;font-size:26px;letter-spacing:-.02em;color:#FFF}
-  .modal h2 em{color:#DC143C;font-style:italic;font-weight:400}
-  .modal p{font-size:13px;color:#A8A29E;margin-top:8px;line-height:1.6}
-  .modal-actions{display:flex;gap:10px;margin-top:18px}
-  .modal-actions .btn{flex:1;justify-content:center}
-  .confetti{position:fixed;inset:0;pointer-events:none;z-index:40;display:none}
-  .confetti.show{display:block}
-  .block-prog{opacity:.8}
-  .tasks li{transition:all .15s ease}
-  .tasks li:hover{background:rgba(255,255,255,0.02);border-radius:4px;padding-left:4px}
-
-  @media(max-width:980px){
-    .command{grid-template-columns:1fr}
-    .cmd-right{border-left:none;border-top:1px solid rgba(255,255,255,0.08)}
-    .board{grid-template-columns:1fr}
-    .rail{position:static}
-    .cmd-left h1{font-size:28px}
-    .roadmap-grid{grid-template-columns:1fr 1fr}
-    .tate-banner{grid-template-columns:1fr}
-  }
-  @media print{
-    body{background:#fff;color:#000}.topbar,.control,.footer,.overlay,.confetti,.tate-banner{display:none!important}
-    .command,.block,.card{background:#fff!important;color:#000!important;border:1px solid #ccc!important;box-shadow:none!important}
-    .block,.card{break-inside:avoid}
+  @media(max-width:900px){
+    .command, .board{grid-template-columns:1fr}
+    .cmd-right{border-left:none;border-top:1px solid rgba(255,255,255,0.1)}
   }
 </style>
 </head>
 <body>
+
 <div class="topbar">
-  <div class="brand"><div class="mark">490+</div><div><b>CARBON WAR ROOM</b><span>Class 11 · 4-Day Final Sprint</span></div></div>
-  <div class="top-actions"><span class="chip live">4-Day Sprint Active</span><span class="chip" id="topDay">Day 1 / 4</span><span class="chip" id="examCountdown" style="color:#FFD700;border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.1)">Exam in --h</span></div>
+  <div class="brand"><div class="mark">490+</div><div><b>CARBON WAR ROOM</b><span>JKBOSE Class 11 Sprint</span></div></div>
+  <div class="top-actions">
+    <span class="chip live" id="timer">Loading...</span>
+    <span class="chip" id="topDay">Day 1/4</span>
+  </div>
 </div>
 
 <div class="wrap">
-  <!-- Tate Fuel Room Banner -->
   <div class="tate-banner">
-    <div class="tate-quote">
-      <b>Tate Fuel Room</b>
-      "You are exactly where you put yourself. Vlogs won’t write your derivations. Zero excuses. 16 hours today or regret for 6 months."
-    </div>
-    <div class="tate-slots">
-      <div class="tate-slot" onclick="alert('Drop your Tate image file here or replace with base64 img tag')">TATE<br>#1</div>
-      <div class="tate-slot" onclick="alert('Drop your Tate image file here or replace with base64 img tag')">FOCUS<br>#2</div>
-    </div>
+    <div class="tate-quote"><b>Tate Fuel Room</b>"Vlogs won’t write your derivations. You lost 2 days. Now you pay the price in sweat or you pay it in failure. Work."</div>
+    <div class="tate-slots"><div class="tate-slot">FOCUS</div><div class="tate-slot">WAR</div></div>
   </div>
 
   <div class="command">
     <div class="cmd-left">
-      <div class="kicker"><i></i><span id="kicker">Day 1 of 5 — The Emergency Crush</span></div>
-      <h1 id="heroTitle">Day 1 wasted is paid for with <em>18-hour blood</em> today.</h1>
-      <small id="heroSub" style="display:block;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#00FFA3">29 October — Overdrive Mode · 16.5H Effective</small>
-      <p id="heroDesc"><strong>Units + Mole + Motion + Sets Combined</strong> — Because you lost 2 days to vlogs, Day 1 and Day 2 are now merged into a single atomic block. No margin for error.</p>
-      <div class="meta-row">
-        <span class="meta">Window <b>18H</b></span>
-        <span class="meta">Sleep <b>6H Fixed</b></span>
-        <span class="meta">Blocks <b>7</b></span>
-        <span class="meta">Mode <b style="color:#DC143C">ULTRA-BRUTAL</b></span>
+      <div class="kicker"><i></i><span id="dayLabel">Day 1 — Laws & Atoms</span></div>
+      <h1 id="mainTitle">Laws of Motion & <em>Atomic Structure</em></h1>
+      <p id="mainDesc">Banking, Bohr, and Trig identities are high-confidence repeaters. Focus on the 7-mark derivations today.</p>
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <span class="chip">Effective: 16.5H</span>
+        <span class="chip">Mode: Brutal</span>
       </div>
     </div>
     <div class="cmd-right">
       <div class="panel">
-        <div class="panel-head"><span>Today</span><b id="panelDate">29 Oct · Wed</b></div>
+        <div class="panel-head"><span>Daily Target</span><span id="currDate">29 Oct</span></div>
         <div class="grid2">
-          <div class="stat"><label>Day Progress</label><strong class="big-num" id="bigDay">0%</strong><div class="bar"><div class="fill" id="fillDay"></div></div><div class="bar-label"><span id="labelDay">0 / 0</span><span>Today</span></div></div>
-          <div class="stat"><label>5-Day Progress</label><strong class="big-num" id="bigWar">0%</strong><div class="bar"><div class="fill gold" id="fillWar"></div></div><div class="bar-label"><span id="labelWar">0 / 5</span><span>Emergency War</span></div></div>
+          <div class="stat"><label>Day Progress</label><strong class="big-num" id="dayPerc">0%</strong><div class="bar"><div class="fill" id="dayFill"></div></div></div>
+          <div class="stat"><label>Sprint Total</label><strong class="big-num" id="warPerc">0%</strong><div class="bar"><div class="fill gold" id="warFill"></div></div></div>
         </div>
-      </div>
-      <div class="panel" style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-        <div><div style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:#8A8480">Next Unlock</div><div style="font-size:13px;font-weight:900;margin-top:2px;color:#FFF" id="nextUnlock">Day 2 · Laws + Atom + Trig →</div></div>
-        <div style="width:38px;height:38px;border-radius:50%;background:#DC143C;display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 0 12px #DC143C">→</div>
       </div>
     </div>
   </div>
 
   <div class="control">
-    <div class="control-left">
-      <div class="day-switch" id="daySwitch"></div>
-      <span class="hint">Tick 100% → <b>auto-advances</b> to next day + confetti</span>
+    <div class="day-switch" id="daySwitch">
+      <button onclick="switchDay(0)" id="btn0" class="active">Day 1</button>
+      <button onclick="switchDay(1)" id="btn1">Day 2</button>
+      <button onclick="switchDay(2)" id="btn2">Day 3</button>
+      <button onclick="switchDay(3)" id="btn3">Day 4</button>
     </div>
-    <div class="control-right">
-      <button class="btn ghost" id="prevBtn">← Prev</button>
-      <button class="btn ghost" id="nextBtn">Next →</button>
-      <button class="btn secondary" onclick="window.print()">🖨 Print Day</button>
-      <button class="btn" id="resetBtn">Reset Day</button>
-    </div>
+    <button class="btn" onclick="resetProgress()">Reset All</button>
   </div>
 
-  <div class="legend"><span><i class="dot phy"></i> Physics</span><span><i class="dot che"></i> Chemistry</span><span><i class="dot mat"></i> Maths</span><span><i class="dot rev"></i> Revision</span><span><i class="dot brk"></i> Break</span></div>
-
   <div class="board">
-    <div>
-      <div class="timeline" id="timeline"></div>
-    </div>
+    <div class="timeline" id="timeline"></div>
     <div class="rail">
-      <div class="card" id="checkCard"></div>
       <div class="card">
-        <h3><i style="background:rgba(220,20,60,0.15);color:#FF4757;border:1px solid rgba(220,20,60,0.4)">⚡</i> Emergency Rules</h3>
-        <div class="rules" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div class="rule"><strong>📵 Phone Locked</strong><p>Hand phone to parents or lock in drawer. Vlogs cost you 2 days.</p></div>
-          <div class="rule"><strong>✍️ Write 3×</strong><p>Derivations & numerical formulas written 3 times or zero marks.</p></div>
-          <div class="rule"><strong>⏱ 15-Min Rule</strong><p>Stuck >15 min? Flag red, skip, return at night.</p></div>
-          <div class="rule"><strong>🛏 6H Iron Sleep</strong><p>12:00–6:00am fixed. No all-nighters or brain dies.</p></div>
+        <h3>⚡ Sprint Rules</h3>
+        <div class="rules">
+          <div class="rule"><strong>Hand Phone</strong><p>Lock phone in another room.</p></div>
+          <div class="rule"><strong>Write 3x</strong><p>Derive blind 3 times or skip.</p></div>
         </div>
+      </div>
+      <div class="card">
+        <h3>✅ Sleep Checklist</h3>
+        <ul class="checklist" id="checklist"></ul>
       </div>
     </div>
   </div>
-
-  <div class="roadmap">
-    <h3><span>4-Day Final Sprint (29 Oct → 02 Nov)</span><span style="font-weight:600;text-transform:none;letter-spacing:.02em;color:#8A8480;font-size:11px">Auto-advances on 100%</span></h3>
-    <div class="roadmap-grid" id="roadmap"></div>
-    <p style="margin-top:12px;font-size:11px;color:#8A8480;line-height:1.5;position:relative;z-index:1">You lost 2 days. Now <b style="color:#FFF">4 days</b> compress 7 days of material. Physics exam on Nov 7 is fixed. We execute without hesitation.</p>
-  </div>
-
-  <div class="footer"><p>Carbon War Room · Emergency Overdrive · Phone in another room.</p><p style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:#00FFA3">Built for 490+ Mission</p></div>
 </div>
-
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <div class="badge">✓</div>
-    <h2 id="modalTitle">Day 1 <em>Crushed.</em></h2>
-    <p id="modalDesc">All tasks ticked. Day 2 unlocks now.</p>
-    <div class="modal-actions"><button class="btn secondary" id="stayBtn">Stay Here</button><button class="btn" id="goBtn">Go to Next →</button></div>
-  </div>
-</div>
-<canvas class="confetti" id="confetti"></canvas>
 
 <script>
-const DAYS=[
+const DATA = [
   {
-    id:1, date:"29 Oct · Wed", pill:"Day 1 / 4", kicker:"Day 1 — Laws of Motion & Atomic Structure",
-    title:"You already banked Units & Mole.<br><em>Now spend today on the 7-mark bank.</em>",
-    sub:"29 October — Laws of Motion + Structure of Atom + Trig P1",
-    desc:"Physics <strong>Laws of Motion</strong> (friction, banking of roads — 7 marks), Chemistry <strong>Structure of Atom</strong> (quantum numbers, Bohr radius/energy), Maths <strong>Trigonometric Functions P1</strong>. You already finished Units & Measurements, Mole Concept and Sets — today we build on that.",
-    roadTitle:"Laws + Atom + Trig P1", roadDesc:"Banking + Bohr + Trig identities",
-    next:"Day 2 · Energy + Bonding + Rotation →",
-    checkTitle:"Sleep Checklist — Day 1",
-    checklist:[
-      "Physics: F=ma derived + banking tanθ=v²/rg proved + 8 PYQs",
-      "Chemistry: Bohr energy E=-13.6/n² eV + 4 quantum numbers understood",
-      "Mathematics: Trig compound/double angle formulas + 12 Qs solved",
-      "A4 sheet updated with Banking & Bohr formulas",
-      "Red pen corrections completed"
+    date: "29 Oct · Wed",
+    kicker: "Day 1 — Laws & Atoms",
+    title: "Laws of Motion & <em>Atomic Structure</em>",
+    desc: "Physics Laws of Motion (Banking/Friction) + Chem Structure of Atom (Bohr/Quantum) + Trig P1.",
+    blocks: [
+      {time:"06:30-09:30", subj:"Physics", cls:"phy", title:"Laws of Motion", tasks:["Derive F=ma vector form","Derive Banking (tanθ=v²/rg) blind","Solve 8 PYQs on friction/recoil"], goal:"Banking derivation must be perfect."},
+      {time:"09:50-12:30", subj:"Chemistry", cls:"che", title:"Atomic Structure", tasks:["Bohr Formulas (E, r, v)","4 Quantum Numbers Table","Cu/Cr Configurations & s,p,d shapes"], goal:"Quantum numbers table memorized cold."},
+      {time:"13:00-16:00", subj:"Maths", cls:"mat", title:"Trigonometry P1", tasks:["Compound/Double angle formulas","Memorize all 20+ identities","15 PYQs (2023-2025)"], goal:"No formula peeking allowed."},
+      {time:"19:30-22:00", subj:"Chemistry", cls:"che", title:"Writing Drill", tasks:["Draw orbital shapes blind","Write 10 electron configs","Red pen corrections"], goal:"Identify mistakes in shapes."},
+      {time:"22:00-00:00", subj:"Revision", cls:"rev", title:"Night Consolidation", tasks:["A4 Formula sheet update","Write Banking derivation 1 last time","Prep desk for Day 2"]}
     ],
-    blocks:[
-      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake · Glance Banking + Quantum",tasks:["No phone — leave it in another room","Glance banking formula tanθ=v²/rg and Bohr energy formula"]},
-      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Laws of Motion — Friction & Banking",small:"7 Marks Guaranteed",tasks:["Derive <b>F = ma</b> from Newton's 2nd law","Derive <b>banking of road tanθ = v²/rg</b> with free-body diagram — 1x blind","Solve <b>8 PYQs</b> on friction coefficient and banked curves (2022-2025)"],goal:"Banking derivation flawless in 3 minutes."},
-      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate, stretch"]},
-      {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"Structure of Atom — Bohr & Quantum Numbers",small:"6-7 Marks",tasks:["Bohr model: <b>E = -13.6 Z²/n² eV</b>, radius formula + 3 numericals","Master <b>4 Quantum Numbers (n, l, m, s)</b> + shapes of s, p, d orbitals","Solve <b>4 PYQs</b> on atomic structure (2023-2025)"],goal:"Quantum numbers table memorized cold."},
-      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + 20 Min Nap",tasks:["Proper meal, alarm set"]},
-      {time:"1:00 — 4:00",subj:"Mathematics · Block 3",cls:"mat",dur:"3 h",title:"Trigonometric Functions — Part 1",small:"10-12 Marks Chapter",tasks:["Compound angles: sin(A±B), cos(A±B), tan(A±B)","Double angle formulas sin2A, cos2A, tan2A — memorize all","Solve <b>15 PYQs</b> from Maths 2023-2025"],goal:"Trig identities at fingertips."},
-      {time:"4:00 — 4:20",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk outside"]},
-      {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Friction & Recoil Numerical Blitz",tasks:["Re-solve banking and friction PYQs blind","Solve <b>5 fresh numericals</b> on inclined plane acceleration and recoil velocity"],goal:"Numericals solved without peeking at solutions."},
-      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
-      {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Atomic Structure Writing Drill",tasks:["Draw s, p, d orbital shapes blind","Write electronic configurations of Cu and Cr + quantum number sets","Correct mistakes in red"],goal:"Orbital shapes and exceptions written perfectly."},
-      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 sheet with Banking + Bohr + Trig formulas","Write banking derivation fully blind","Sleep sharp at 12:00"],goal:"Day 1 locked in memory."}
-    ]
+    checks: ["Banking proof written blind?","Quantum number table done?","Trig identities memorized?","A4 sheet updated?"]
   },
   {
-    id:2, date:"30 Oct · Thu", pill:"Day 2 / 4", kicker:"Day 2 — Energy, Bonds & Rotation",
-    title:"Work-Energy theorem is <em>one proof.</em><br>VSEPR is <em>one shape table.</em>",
-    sub:"30 October — Work-Energy + VSEPR + Rotation Basics",
-    desc:"Physics <strong>Work, Energy & Power</strong> (theorem W=ΔKE) + <strong>Rotation</strong> (MI parallel/perpendicular axes), Chemistry <strong>Chemical Bonding</strong> (VSEPR, hybridization), Maths <strong>Complex Numbers & Trig P2</strong>.",
-    roadTitle:"Energy + Bonding + Rotation", roadDesc:"Theorem + VSEPR + MI",
-    next:"Day 3 · Thermo + SHM + Equilibrium →",
-    checkTitle:"Sleep Checklist — Day 2",
-    checklist:[
-      "Physics: Work-Energy theorem derived 2× + Parallel/Perpendicular axis theorems",
-      "Chemistry: VSEPR shape table (NH3, H2O, SF6, PCl5) + hybridization",
-      "Mathematics: Complex numbers modulus/argument + Trig P2 Qs solved",
-      "A4 sheet updated with Theorem & MI theorems",
-      "Blind writing completed"
+    date: "30 Oct · Thu",
+    kicker: "Day 2 — Energy & Bonding",
+    title: "Work-Energy & <em>Chemical Bonding</em>",
+    desc: "Physics Work-Energy Theorem + Rotation (MI) + Chem Bonding (VSEPR/Hybrid) + Complex Numbers.",
+    blocks: [
+      {time:"06:30-09:30", subj:"Physics", cls:"phy", title:"Work & Rotation", tasks:["Derive Work-Energy Theorem","Parallel & Perpendicular Axis Theorems","Solve 6 PYQs (Moment of Inertia)"], goal:"Rotation theorems are 5-mark gold."},
+      {time:"09:50-12:30", subj:"Chemistry", cls:"che", title:"Chemical Bonding", tasks:["VSEPR Geometries (NH3, H2O, SF6)","Hybridization (sp, sp2, sp3)","4 PYQs on Bonding"], goal:"Shape table must be flawless."},
+      {time:"13:00-16:00", subj:"Maths", cls:"mat", title:"Complex & Trig P2", tasks:["General solutions (sinx=0)","Complex Modulus/Argument/Polar","12 PYQs Mixed"], goal:"Speed: Solve Complex in 3 mins."},
+      {time:"19:30-22:00", subj:"Chemistry", cls:"che", title:"Bonding Drill", tasks:["Write VSEPR table blind","Bond angle memorization","Hybridization calculation drill"]}
     ],
-    blocks:[
-      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake & Glance",tasks:["Glance Work-Energy theorem and VSEPR angles"]},
-      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Work-Energy Theorem + Rotation Theorems",small:"Tier 1 Repeater",tasks:["Derive <b>Work-Energy Theorem W = ΔKE</b> — 1x seeing, 1x blind","Prove <b>Parallel axis theorem I = Ic + Md²</b> and <b>Perpendicular axis theorem</b>","Solve <b>6 PYQs</b> on work-energy and moment of inertia"],goal:"Both rotational theorems derived cleanly."},
-      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate"]},
-      {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"Chemical Bonding — VSEPR & Hybridization",small:"7-8 Marks",tasks:["Master VSEPR geometries: NH₃, H₂O, SF₆, PCl₅, XeF₄","Hybridization sp, sp², sp³ calculation shortcuts + 4 PYQs","Write full bonding summary on notebook p.3"],goal:"VSEPR shapes and angles mugged completely."},
-      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + Nap",tasks:["Nap 20 min"]},
-      {time:"1:00 — 4:00",subj:"Mathematics · Block 3",cls:"mat",dur:"3 h",title:"Trig P2 + Complex Numbers",small:"High Scoring",tasks:["General solutions of trigonometric equations (sin x = 0, etc.)","Complex numbers: modulus, argument, polar form, quadratic roots","Solve <b>12 PYQs</b> (2023-2025)"],goal:"Complex numbers & general solutions mastered."},
-      {time:"4:00 — 4:20",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk"]},
-      {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Rotation & Energy Numericals",tasks:["Solve spring potential energy ½kx² problems + collision conservation","Practice MI calculations for ring, disc, rod"],goal:"Numerical accuracy locked."},
-      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
-      {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Bonding Writing Drill",tasks:["Write VSEPR table completely blind","Solve 4 hybridization PYQs without peeking","Correct in red pen"],goal:"Zero hesitation on bonding questions."},
-      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 formula sheet with Work-Energy & MI","Write Parallel Axis Theorem fully blind","Sleep sharp at 12:00"],goal:"Day 2 secured."}
-    ]
+    checks: ["Work-Energy theorem derived?","MI theorems understood?","VSEPR table drawn blind?","Complex polar form mastered?"]
   },
   {
-    id:3, date:"31 Oct · Fri", pill:"Day 3 / 4", kicker:"Day 3 — Thermo, Waves & Limits",
-    title:"Carnot efficiency and SHM energy<br>are <em>guaranteed exam questions.</em>",
-    sub:"31 October — Thermodynamics + SHM/Waves + Limits & Derivatives",
-    desc:"Physics <strong>Thermodynamics</strong> (Cp-Cv=R, Carnot engine η=1-T2/T1) + <strong>SHM & Waves</strong> (energy = ½kA², Doppler effect), Maths <strong>Limits & Derivatives</strong>.",
-    roadTitle:"Thermo + SHM + Limits", roadDesc:"Carnot + SHM energy + Limits",
-    next:"Day 4 final push →",
-    checkTitle:"Sleep Checklist — Day 3",
-    checklist:[
-      "Physics: Cp-Cv=R derived + Carnot efficiency formula + SHM energy + Doppler",
-      "Chemistry: Chemical Thermodynamics (Hess law, ΔG) + Equilibrium Kp/Kc",
-      "Mathematics: Limits 0/0 form + Derivatives by first principle (8 Qs)",
-      "A4 sheet updated with Carnot & SHM formulas",
-      "Night blind derivation completed"
+    date: "31 Oct · Fri",
+    kicker: "Day 3 — Thermo & SHM",
+    title: "Thermodynamics & <em>Waves</em>",
+    desc: "Physics Thermo (Carnot) + SHM (Energy) + Chem Thermo/Equilibrium + Limits & Derivatives.",
+    blocks: [
+      {time:"06:30-09:30", subj:"Physics", cls:"phy", title:"Thermo & SHM", tasks:["Derive Cp-Cv=R","Carnot Efficiency proof","SHM Energy (1/2 kA²)","Pendulum T=2π√(l/g)"], goal:"Carnot is a 100% repeater."},
+      {time:"09:50-12:30", subj:"Chemistry", cls:"che", title:"Thermo & Equil.", tasks:["Hess Law & ΔG=ΔH-TΔS","Kp=Kc(RT)^Δn Relation","Le Chatelier Principle application"], goal:"Numerical clarity on Hess Law."},
+      {time:"13:00-16:00", subj:"Maths", cls:"mat", title:"Limits & Deriv.", tasks:["Standard Limits (sinx/x)","First Principle Derivatives (sin, cos)","10 PYQs"], goal:"First Principle steps are vital."}
     ],
-    blocks:[
-      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake & Glance",tasks:["Glance Carnot efficiency formula and SHM energy"]},
-      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Thermodynamics + SHM & Waves",small:"10 Marks Combined",tasks:["Derive <b>Cp - Cv = R</b> and <b>Carnot Efficiency η = 1 - T₂/T₁</b>","Derive <b>SHM total energy = ½kA²</b> and pendulum time period T=2π√(l/g)","Solve <b>8 PYQs</b> on Carnot cycle and SHM energy (2022-2025)"],goal:"Carnot and SHM derivations bulletproof."},
-      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate"]},
-      {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"Thermodynamics & Equilibrium",small:"6-7 Marks",tasks:["Hess’s Law of constant heat summation + Gibbs free energy ΔG = ΔH - TΔS","Relation between <b>Kp and Kc: Kp = Kc(RT)^Δn</b> + Le Chatelier principle","Solve <b>5 PYQ numericals</b>"],goal:"Kp/Kc derivation and numericals clear."},
-      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + Nap",tasks:["Nap 20 min"]},
-      {time:"1:00 — 4:00",subj:"Mathematics · Block 3",cls:"mat",dur:"3 h",title:"Limits & Derivatives — Easiest 8 Marks",small:"High Accuracy",tasks:["Limits: algebraic & trigonometric standard limits (lim x→0 sinx/x = 1)","First principle derivatives of sin x, cos x, xⁿ","Solve <b>10 PYQs</b> (2023-2025)"],goal:"Limits & derivatives questions solved in under 2 mins each."},
-      {time:"4:00 — 4:20",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk"]},
-      {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Thermo & Waves Numerical Blitz",tasks:["Solve Carnot engine temperature conversion numericals (e.g., 500K to 300K)","Solve Doppler frequency shift numericals"],goal:"Numerical speed tested under clock."},
-      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
-      {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Equilibrium & Thermo Writing Drill",tasks:["Write Kp=Kc(RT)^Δn derivation blind","Solve 3 Le Chatelier equilibrium shift questions without peeking"],goal:"Equilibrium logic locked."},
-      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 formula sheet with Carnot + SHM + Limits","Write Carnot efficiency derivation blind","Sleep sharp at 12:00"],goal:"Day 3 locked in."}
-    ]
+    checks: ["Cp-Cv derivation done?","Carnot cycle explained?","Hess law numericals solved?","First principle derivatives done?"]
   },
   {
-    id:4, date:"02 Nov · Sun", pill:"Day 4 / 4 — Final Overdrive", kicker:"Day 4 — Fluids, GOC, English & Mock Seal",
-    title:"Bernoulli's theorem and GOC<br>seal your <em>emergency victory.</em>",
-    sub:"02 November — Fluids/Solids + GOC/Hydrocarbons + English Exam Prep",
-    desc:"Physics <strong>Mechanical Properties of Fluids</strong> (Bernoulli's theorem, Stokes law), Chemistry <strong>GOC & Hydrocarbons</strong> (IUPAC nomenclature, Wurtz reaction, ozonolysis — 10 marks), Evening <strong>General English 5-year PYQs & formats</strong> for tomorrow's exam.",
-    roadTitle:"Fluids + GOC + English", roadDesc:"Bernoulli + IUPAC + English",
-    next:"Ready for Nov 3 English Exam →",
-    checkTitle:"Day 4 — Final Emergency Checklist",
-    checklist:[
-      "Physics: Bernoulli's theorem P + ½ρv² + ρgh = const + Stokes law vt",
-      "Chemistry: IUPAC naming 10 rules + Wurtz reaction + ozonolysis",
-      "Mathematics: Quick formula review across all chapters",
-      "FULL REVISION: Read all A4 formula sheets 1-4 blind",
-      "Evening English: 5-year PYQs + Letter/Notice/Essay formats memorized"
+    date: "02 Nov · Sun",
+    kicker: "Day 4 — Fluids & GOC",
+    title: "Fluids & <em>Organic/English</em>",
+    desc: "Final Overdrive. Physics Fluids + Chem GOC/Hydrocarbons + English Mock Seal.",
+    blocks: [
+      {time:"06:30-09:30", subj:"Physics", cls:"phy", title:"Fluids & Solids", tasks:["Derive Bernoulli's Theorem","Stokes Law & Terminal Velocity","6 PYQs (Surface Tension)"], goal:"Bernoulli proof is top priority."},
+      {time:"09:50-12:30", subj:"Chemistry", cls:"che", title:"GOC & Organic", tasks:["IUPAC 10 Rules","Wurtz, Kolbe, Ozonolysis","6 PYQs (Conversions)"], goal:"Master the named reactions."},
+      {time:"15:50-19:00", subj:"English", cls:"rev", title:"English Prep", tasks:["Solve 5-year PYQs","Memorize Letter/Notice formats","Read 2 unseen passages"], goal:"Ensure formats are precise."},
+      {time:"19:30-22:00", subj:"Mock", cls:"rev", title:"Seal the Sprint", tasks:["Solve Section A+B Physics (Timed)","Stack all 4 A4 Sheets","Review English Format one last time"]}
     ],
-    blocks:[
-      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake & Glance",tasks:["Glance Bernoulli equation and IUPAC functional group priority table"]},
-      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Mechanical Properties of Fluids & Solids",small:"Bernoulli Theorem",tasks:["Derive <b>Bernoulli's Equation P + ½ρv² + ρgh = constant</b> with application (Venturimeter)","Derive <b>Stokes Law & Terminal Velocity vt = 2r²g(ρ - σ) / 9η</b>","Solve <b>6 PYQs</b> on surface tension, excess pressure (2T/r), and Bernoulli"],goal:"Bernoulli derivation mastered completely."},
-      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate"]},
-      {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"GOC & Hydrocarbons — The 10-Mark Factory",small:"Every Year Repeater",tasks:["Master IUPAC naming rules + practice 10 complex organic names","Master Hydrocarbon preparations: <b>Wurtz reaction</b>, <b>Kolbe electrolysis</b>, <b>Ozonolysis of alkenes</b>","Solve <b>6 PYQs</b> on organic conversions and mechanisms"],goal:"Ozonolysis and Wurtz reactions clear and reproducible."},
-      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + Nap",tasks:["Nap 20 min"]},
-      {time:"1:00 — 3:30",subj:"Full Revision · Block 3",cls:"rev",dur:"2.5 h",title:"All A4 Sheets Recall & Weakness Patching",small:"Emergency Sweep",tasks:["<b>90 min:</b> Read all 4 A4 formula sheets — close book and recall every box","<b>60 min:</b> Re-solve 3 weakest numericals from Physics & Chemistry"],goal:"Total command over formulas."},
-      {time:"3:30 — 3:50",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk outside"]},
-      {time:"3:50 — 7:00",subj:"General English · Block 4",cls:"che",dur:"3.1 h",title:"General English Exam Prep (Tomorrow Nov 3)",small:"70 Marks Theory + 30 Writing",tasks:["Solve <b>5-year General English PYQs</b> (2021-2025) Section A & B","Memorize formats for <b>Formal Letter, Notice, Report, and Essay</b>","Read 2 sample unseen reading comprehension passages"],goal:"English exam formats and grammar rules locked for tomorrow."},
-      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner",tasks:["Relax with family"]},
-      {time:"7:30 — 10:00",subj:"Final Mock Recall · Block 5",cls:"rev",dur:"2.5 h",title:"Physics & Chemistry Final Confidence Check",tasks:["<b>90 min:</b> Pick Physics 2025 paper — solve Section A+B under 60-min timer","<b>60 min:</b> List your gap-day targets for Physics exam (Nov 7)"],goal:"Ready for the storm."},
-      {time:"10:00 — 11:30",subj:"Seal & Sleep · Block 6",cls:"rev",dur:"1.5 h",title:"Rest for English Exam Tomorrow",small:"Exam Eve",tasks:["Stack all 4 A4 formula sheets together","Review English letter format one last time","Sleep sharp at 11:30 PM — exam is tomorrow morning!"],goal:"Emergency Overdrive complete. You are ready."}
-    ]
+    checks: ["Bernoulli derived?","Wurtz/Ozonolysis memorized?","English formats checked?","Full syllabus A4 stack ready?"]
   }
 ];
 
-let currentDay = parseInt(localStorage.getItem('carbon-currentDay')||'1');
-let completedDays = JSON.parse(localStorage.getItem('carbon-completed')||'[]');
+let currentDay = 0;
+let state = JSON.parse(localStorage.getItem('jkbose_sprint_v2')) || {};
 
-const getProg = (id)=>{
-  try{const s=JSON.parse(localStorage.getItem('carbon-day-'+id)||'null');if(!s)return{done:0,total:0,pct:0};const tot=s.length;const don=s.filter(Boolean).length;return{done:don,total:tot,pct:tot?Math.round(don/tot*100):0}}catch(e){return{done:0,total:0,pct:0}}
-};
-const saveProg=(id,arr)=>localStorage.setItem('carbon-day-'+id, JSON.stringify(arr));
+function init() {
+  render();
+  startCountdown();
+}
 
-function render(){
-  const d=DAYS.find(x=>x.id===currentDay);
-  document.getElementById('kicker').textContent=d.kicker;
-  document.getElementById('heroTitle').innerHTML=d.title;
-  document.getElementById('heroSub').textContent=d.sub;
-  document.getElementById('heroDesc').innerHTML=d.desc;
-  document.getElementById('topDay').textContent=d.pill;
-  document.getElementById('panelDate').textContent=d.date;
-  document.getElementById('nextUnlock').textContent=d.next;
+function render() {
+  const day = DATA[currentDay];
+  document.getElementById('currDate').innerText = day.date;
+  document.getElementById('dayLabel').innerText = day.kicker;
+  document.getElementById('mainTitle').innerHTML = day.title;
+  document.getElementById('mainDesc').innerHTML = day.desc;
+  document.getElementById('topDay').innerText = `Day ${currentDay+1}/4`;
 
-  // day switch
-  const ds=document.getElementById('daySwitch'); ds.innerHTML='';
-  DAYS.forEach(day=>{
-    const b=document.createElement('button');
-    b.textContent='D'+day.id;
-    b.className=day.id===currentDay?'active':'';
-    b.title=day.roadTitle;
-    b.onclick=()=>{currentDay=day.id;localStorage.setItem('carbon-currentDay',currentDay);render();window.scrollTo({top:0,behavior:'smooth'})};
-    ds.appendChild(b);
+  // Render Blocks
+  let timelineHtml = '';
+  day.blocks.forEach((b, bi) => {
+    timelineHtml += `
+      <div class="block ${b.cls}">
+        <div class="block-head">
+          <span class="time">${b.time}</span>
+          <span class="subj">${b.subj}</span>
+        </div>
+        <div class="btitle">${b.title}</div>
+        <ul class="tasks">
+          ${b.tasks.map((t, ti) => {
+            const id = `d${currentDay}b${bi}t${ti}`;
+            const checked = state[id] ? 'checked' : '';
+            return `<li class="${checked}" onclick="toggle('${id}')"><input type="checkbox" ${checked}> <span>${t}</span></li>`;
+          }).join('')}
+        </ul>
+        ${b.goal ? `<div class="goal">🎯 ${b.goal}</div>` : ''}
+      </div>
+    `;
   });
+  document.getElementById('timeline').innerHTML = timelineHtml;
 
-  // timeline
-  const tl=document.getElementById('timeline'); tl.innerHTML='';
-  let totalChecks=0; d.blocks.forEach(b=> totalChecks+=b.tasks.length); totalChecks+=d.checklist.length;
-  let saved=JSON.parse(localStorage.getItem('carbon-day-'+currentDay)||'null');
-  if(!saved || saved.length!==totalChecks){
-    const ns=new Array(totalChecks).fill(false);
-    if(saved) for(let i=0;i<Math.min(saved.length,totalChecks);i++) ns[i]=saved[i];
-    saved=ns; saveProg(currentDay,saved);
+  // Render Checklist
+  let checkHtml = '';
+  day.checks.forEach((c, ci) => {
+    const id = `d${currentDay}c${ci}`;
+    const checked = state[id] ? 'checked' : '';
+    checkHtml += `<li class="${checked}" onclick="toggle('${id}')"><input type="checkbox" ${checked}> ${c}</li>`;
+  });
+  document.getElementById('checklist').innerHTML = checkHtml;
+
+  // Update Buttons
+  for(let i=0; i<4; i++) {
+    document.getElementById(`btn${i}`).className = i === currentDay ? 'active' : '';
   }
-  let fi=0;
-  d.blocks.forEach((block,bIdx)=>{
-    const el=document.createElement('div'); el.className='block '+block.cls;
-    const blockProg=getBlockProgress(block,saved,fi);
-    let html=`<div class="block-head"><div class="head-left"><span class="time">${block.time}</span><span class="subj">${block.subj}</span></div><span class="dur">${block.dur}</span></div>`;
-    html+=`<div class="btitle">${block.title}${block.small?` <small>· ${block.small}</small>`:''}<span class="block-prog" style="float:right;font-size:9px;color:#00FFA3">${blockProg}%</span></div>`;
-    html+=`<ul class="tasks">`;
-    for(let ti=0;ti<block.tasks.length;ti++){
-      const cur=fi++;
-      const ch=saved[cur]?'checked':'';
-      const cl=saved[cur]?' class="checked"':'';
-      html+=`<li${cl} style="animation-delay:${ti*0.05}s"><input type="checkbox" data-fi="${cur}" ${ch}><span>${block.tasks[ti]}</span></li>`;
-    }
-    html+=`</ul>`;
-    if(block.goal) html+=`<div class="goal">🎯 <span><strong>Goal —</strong> ${block.goal}</span></div>`;
-    el.innerHTML=html; el.style.animationDelay=`${bIdx*0.1}s`; el.style.display='block'; tl.appendChild(el);
+
+  updateProgress();
+}
+
+function toggle(id) {
+  state[id] = !state[id];
+  localStorage.setItem('jkbose_sprint_v2', JSON.stringify(state));
+  render();
+}
+
+function switchDay(idx) {
+  currentDay = idx;
+  render();
+}
+
+function updateProgress() {
+  // Day Progress
+  const dayPrefix = `d${currentDay}`;
+  const dayTasks = Object.keys(state).filter(k => k.startsWith(dayPrefix));
+  const dayTotal = DATA[currentDay].blocks.reduce((acc, b) => acc + b.tasks.length, 0) + DATA[currentDay].checks.length;
+  const dayDone = dayTasks.filter(k => state[k]).length;
+  const dayPerc = Math.round((dayDone / dayTotal) * 100) || 0;
+  document.getElementById('dayPerc').innerText = dayPerc + '%';
+  document.getElementById('dayFill').style.width = dayPerc + '%';
+
+  // Total Progress
+  let totalTasks = 0;
+  DATA.forEach(d => {
+    d.blocks.forEach(b => totalTasks += b.tasks.length);
+    totalTasks += d.checks.length;
   });
-
-  // checkCard
-  const cc=document.getElementById('checkCard');
-  let chtml=`<h3><i style="background:rgba(0,255,163,0.15);color:#00FFA3;border:1px solid rgba(0,255,163,0.4)">✓</i> ${d.checkTitle}</h3><ul class="checklist" style="display:block!important;visibility:visible!important">`;
-  d.checklist.forEach(item=>{
-    const cur=fi++;
-    const ch=saved[cur]?'checked':'';
-    const cl=saved[cur]?' class="checked"':'';
-    chtml+=`<li${cl}><input type="checkbox" data-fi="${cur}" ${ch}><span>${item}</span></li>`;
-  });
-  chtml+=`</ul><div style="margin-top:12px;background:#141417;border:1px dashed rgba(220,20,60,0.3);border-radius:10px;padding:8px 10px;font-size:11px;color:#A8A29E">💡 Tip: Tick as you go — <b style="color:#FFF">100% auto-advances</b> with confetti.</div>`;
-  cc.innerHTML=chtml;
-
-  // listeners
-  document.querySelectorAll('input[type="checkbox"][data-fi]').forEach(c=> c.addEventListener('change', onCheck));
-
-  // roadmap
-  const rg=document.getElementById('roadmap'); rg.innerHTML='';
-  DAYS.forEach(day=>{
-    const prog=getProg(day.id);
-    const isActive=day.id===currentDay, isDone=completedDays.includes(day.id);
-    const div=document.createElement('div');
-    div.className='daypill'+(isActive?' active':'')+(isDone?' done':'');
-    div.innerHTML=`<small>Day ${day.id} · ${day.date.split('·')[0].trim()}</small><strong>${day.roadTitle}</strong><p>${day.roadDesc}</p><div class="mini"><div class="fillmini" style="width:${prog.pct}%"></div></div>`;
-    div.onclick=()=>{currentDay=day.id;localStorage.setItem('carbon-currentDay',currentDay);render();window.scrollTo({top:0,behavior:'smooth'})};
-    rg.appendChild(div);
-  });
-
-  updateProg();
+  const totalDone = Object.values(state).filter(v => v).length;
+  const warPerc = Math.round((totalDone / totalTasks) * 100) || 0;
+  document.getElementById('warPerc').innerText = warPerc + '%';
+  document.getElementById('warFill').style.width = warPerc + '%';
 }
 
-function onCheck(e){
-  const fi=parseInt(e.target.dataset.fi);
-  const d=DAYS.find(x=>x.id===currentDay);
-  let total=0; d.blocks.forEach(b=> total+=b.tasks.length); total+=d.checklist.length;
-  let saved=JSON.parse(localStorage.getItem('carbon-day-'+currentDay)||'[]');
-  if(saved.length!==total) saved=new Array(total).fill(false);
-  saved[fi]=e.target.checked; saveProg(currentDay,saved);
-  const li=e.target.closest('li'); if(li) li.classList.toggle('checked', e.target.checked);
-  updateBlockProgress(); updateProg(); maybeComplete();
+function startCountdown() {
+  const target = new Date("Nov 3, 2026 10:00:00").getTime();
+  setInterval(() => {
+    const now = new Date().getTime();
+    const diff = target - now;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    document.getElementById('timer').innerText = `English in ${days}d ${hours}h`;
+  }, 1000);
 }
 
-function getBlockProgress(block,saved,fiStart){
-  let done=0;
-  for(let i=0;i<block.tasks.length;i++){if(saved[fiStart+i])done++}
-  return block.tasks.length?Math.round(done/block.tasks.length*100):0;
-}
-function updateBlockProgress(){
-  const d=DAYS.find(x=>x.id===currentDay);
-  if(!d)return;
-  const blocks=document.querySelectorAll('.block');
-  let fi=0;
-  d.blocks.forEach((block,idx)=>{
-    const prog=getBlockProgress(block,JSON.parse(localStorage.getItem('carbon-day-'+currentDay)||'[]'),fi);
-    if(blocks[idx]){
-      const progEl=blocks[idx].querySelector('.block-prog');
-      if(progEl)progEl.textContent=prog+'%';
-      if(prog===100){blocks[idx].classList.add('completed')}else{blocks[idx].classList.remove('completed')}
-    }
-    fi+=block.tasks.length;
-  });
-}
-function updateProg(){
-  const prog=getProg(currentDay);
-  document.getElementById('fillDay').style.width=prog.pct+'%';
-  document.getElementById('bigDay').textContent=prog.pct+'%';
-  document.getElementById('labelDay').textContent=prog.done+' / '+prog.total;
-  const done=completedDays.length, warPct=Math.round(done/4*100);
-  document.getElementById('fillWar').style.width=warPct+'%';
-  document.getElementById('bigWar').textContent=warPct+'%';
-  document.getElementById('labelWar').textContent=done+' / 4';
-  document.getElementById('prevBtn').disabled=currentDay===1; document.getElementById('nextBtn').disabled=currentDay===4;
-  document.getElementById('prevBtn').style.opacity=currentDay===1?'.4':'1';
-  document.getElementById('nextBtn').style.opacity=currentDay===4?'.4':'1';
-}
-
-let completing=false;
-function maybeComplete(){
-  if(completing) return;
-  const prog=getProg(currentDay);
-  if(prog.total>0 && prog.pct===100 && !completedDays.includes(currentDay)){
-    completing=true;
-    completedDays.push(currentDay); localStorage.setItem('carbon-completed', JSON.stringify(completedDays));
-    updateProg(); render(); showCelebration();
+function resetProgress() {
+  if(confirm("Wipe all progress?")) {
+    state = {};
+    localStorage.removeItem('jkbose_sprint_v2');
+    render();
   }
 }
-function showCelebration(){
-  const d=DAYS.find(x=>x.id===currentDay), nxt=DAYS.find(x=>x.id===currentDay+1);
-  document.getElementById('modalTitle').innerHTML=`Day ${d.id} <em>Crushed.</em>`;
-  if(nxt){
-    document.getElementById('modalDesc').textContent=`All tasks ticked. Emergency overdrive continues. Day ${nxt.id} unlocks now.`;
-    document.getElementById('goBtn').textContent=`Go to Day ${nxt.id} →`;
-    document.getElementById('goBtn').style.display='inline-flex';
-  } else {
-    document.getElementById('modalDesc').textContent=`4-Day Final Sprint complete. You have conquered the backlog. English exam tomorrow morning!`;
-    document.getElementById('goBtn').style.display='none';
-  }
-  document.getElementById('overlay').classList.add('show');
-  launchConfetti();
-  setTimeout(()=>{ if(document.getElementById('overlay').classList.contains('show') && nxt) goNext(); }, 3500);
-}
-function launchConfetti(){
-  const c=document.getElementById('confetti'); c.classList.add('show'); c.width=innerWidth; c.height=innerHeight;
-  const ctx=c.getContext('2d');
-  const pcs=Array.from({length:90},()=>({x:Math.random()*c.width,y:Math.random()*-c.height,w:6+Math.random()*8,h:8+Math.random()*8,vx:-2+Math.random()*4,vy:2+Math.random()*5,rot:Math.random()*360,vr:-6+Math.random()*12,color:['#DC143C','#3B82F6','#00FFA3','#F59E0B','#8B5CF6','#FFF'][Math.floor(Math.random()*6)]}));
-  let t=0; (function frame(){ ctx.clearRect(0,0,c.width,c.height); pcs.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.vy+=0.12;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore()}); t++; if(t<180) requestAnimationFrame(frame); else{c.classList.remove('show');ctx.clearRect(0,0,c.width,c.height)}})();
-}
-function goNext(){ if(currentDay<4){currentDay++;localStorage.setItem('carbon-currentDay',currentDay);document.getElementById('overlay').classList.remove('show');completing=false;render();scrollTo({top:0,behavior:'smooth'})} else {document.getElementById('overlay').classList.remove('show');completing=false}}
-function goPrev(){ if(currentDay>1){currentDay--;localStorage.setItem('carbon-currentDay',currentDay);completing=false;render();scrollTo({top:0,behavior:'smooth'})}}
-document.getElementById('goBtn').onclick=goNext;
-document.getElementById('stayBtn').onclick=()=>{document.getElementById('overlay').classList.remove('show');completing=false};
-document.getElementById('overlay').onclick=e=>{if(e.target.id==='overlay'){e.currentTarget.classList.remove('show');completing=false}};
-document.getElementById('prevBtn').onclick=goPrev;
-document.getElementById('nextBtn').onclick=goNext;
-document.getElementById('resetBtn').onclick=()=>{
-  if(confirm(`Reset all ticks for Day ${currentDay}?`)){
-    localStorage.removeItem('carbon-day-'+currentDay);
-    completedDays=completedDays.filter(id=>id!==currentDay);
-    localStorage.setItem('carbon-completed', JSON.stringify(completedDays));
-    completing=false; render();
-  }
-};
-// Live countdown to English exam (Nov 3)
-function updateCountdown(){
-  const now=new Date(),exam=new Date('2026-11-03T09:00:00');
-  const diff=exam-now;
-  const h=Math.floor(diff/3600000),d=Math.floor(diff/86400000);
-  const el=document.getElementById('examCountdown');
-  if(el&&diff>0)el.textContent=`English Exam ${d}d ${h%24}h`;
-  else if(el)el.textContent='EXAM TODAY';
-}
-setInterval(updateCountdown,60000);updateCountdown();
-render();
+
+init();
+</script>
 </body>
 </html>
