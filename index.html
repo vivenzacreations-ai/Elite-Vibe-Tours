@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JKBOSE — CARBON WAR ROOM · 5-Day Emergency Overdrive</title>
+<title>JKBOSE — CARBON WAR ROOM · 4-Day Final Sprint</title>
 <style>
   :root{color-scheme:dark}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -21,6 +21,46 @@
   .chip.live{border-color:rgba(220,20,60,0.7);background:rgba(220,20,60,0.2);color:#FF4757}
   .chip.live::before{content:"●";margin-right:6px;color:#DC143C;animation:pulse 1s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+ 
+  /* ADVANCED ANIMATIONS */
+  @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+  @keyframes borderGlow{0%,100%{border-color:rgba(220,20,60,0.3)}50%{border-color:rgba(220,20,60,0.8)}}
+  @keyframes scanLine{0%{top:-2px}100%{top:100%}}
+  @keyframes fadeInUp{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+  @keyframes taskComplete{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+  @keyframes glowPulse{0%,100%{box-shadow:0 0 5px #DC143C,0 0 10px #DC143C}50%{box-shadow:0 0 20px #DC143C,0 0 30px #DC143C}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  @keyframes energyPulse{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
+  @keyframes gridMove{0%{background-position:0 0}100%{background-position:40px 40px}}
+ 
+  .command{animation:borderGlow 3s ease-in-out infinite}
+  .command::before{content:"";position:absolute;inset:-1px;background:linear-gradient(90deg,transparent,rgba(220,20,60,0.4),transparent);background-size:200% 100%;animation:shimmer 3s linear infinite;border-radius:23px;z-index:-1}
+  .block{animation:fadeInUp .4s ease backwards}
+  .block:nth-child(1){animation-delay:.1s}
+  .block:nth-child(2){animation-delay:.2s}
+  .block:nth-child(3){animation-delay:.3s}
+  .block:nth-child(4){animation-delay:.4s}
+  .block:nth-child(5){animation-delay:.5s}
+  .block:nth-child(6){animation-delay:.6s}
+  .block::after{content:"";position:absolute;top:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#DC143C,transparent);animation:scanLine 2s linear infinite;display:none}
+  .block:hover::after{display:block}
+  .block.completed{border-color:rgba(0,255,163,0.4);box-shadow:0 0 15px rgba(0,255,163,0.2)}
+  .tasks li input[type="checkbox"]:checked{animation:taskComplete .3s ease}
+  .tasks li.checked{animation:glowPulse 2s ease infinite}
+  .tate-slot{animation:float 3s ease-in-out infinite}
+  .tate-slot:nth-child(2){animation-delay:.5s}
+  .stat{animation:fadeInUp .5s ease backwards;animation-delay:.3s}
+  .stat:nth-child(2){animation-delay:.4s}
+  .fill{background:linear-gradient(90deg,#DC143C,#FF4757,#DC143C);background-size:200% auto;animation:shimmer 2s linear infinite}
+  .fill.gold{background:linear-gradient(90deg,#00FFA3,#00D4AA,#00FFA3);background-size:200% auto;animation:shimmer 2s linear infinite}
+  .daypill{transition:all .3s ease}
+  .daypill:hover{animation:glowPulse 1.5s ease infinite}
+  .chip.live{animation:energyPulse 2s ease infinite}
+  .mark{animation:glowPulse 2s ease infinite}
+  .kicker i{animation:pulse 1.5s ease infinite}
+ 
+  /* SCANNING BACKGROUND */
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(transparent 50%,rgba(220,20,60,0.02) 50%);background-size:100% 4px;animation:gridMove 20s linear infinite;z-index:-1}
  
   .wrap{max-width:1200px;margin:0 auto;padding:20px;position:relative}
  
@@ -178,7 +218,7 @@
   .roadmap{margin-top:16px;background:#0D0D0E;color:#EAE6DF;border-radius:18px;padding:16px;border:1px solid rgba(220,20,60,0.3);position:relative;overflow:hidden}
   .roadmap::after{content:"";position:absolute;inset:0;background:radial-gradient(500px 200px at 80% 0%, rgba(220,20,60,0.15), transparent 60%);pointer-events:none}
   .roadmap h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#FF4757;margin-bottom:12px;display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}
-  .roadmap-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;position:relative;z-index:1}
+  .roadmap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;position:relative;z-index:1}
   .daypill{background:#141417;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:11px 9px;cursor:pointer;transition:all .18s;position:relative}
   .daypill:hover{border-color:rgba(220,20,60,0.5);transform:translateY(-1px)}
   .daypill.active{background:#DC143C;border-color:#DC143C;color:#fff;box-shadow:0 0 15px rgba(220,20,60,0.5)}
@@ -210,6 +250,9 @@
   .modal-actions .btn{flex:1;justify-content:center}
   .confetti{position:fixed;inset:0;pointer-events:none;z-index:40;display:none}
   .confetti.show{display:block}
+  .block-prog{opacity:.8}
+  .tasks li{transition:all .15s ease}
+  .tasks li:hover{background:rgba(255,255,255,0.02);border-radius:4px;padding-left:4px}
  
   @media(max-width:980px){
     .command{grid-template-columns:1fr}
@@ -229,8 +272,8 @@
 </head>
 <body>
 <div class="topbar">
-  <div class="brand"><div class="mark">490+</div><div><b>CARBON WAR ROOM</b><span>Class 11 · 5-Day Emergency Overdrive</span></div></div>
-  <div class="top-actions"><span class="chip live">Emergency Protocol Active</span><span class="chip" id="topDay">Day 1 / 5</span></div>
+  <div class="brand"><div class="mark">490+</div><div><b>CARBON WAR ROOM</b><span>Class 11 · 4-Day Final Sprint</span></div></div>
+  <div class="top-actions"><span class="chip live">4-Day Sprint Active</span><span class="chip" id="topDay">Day 1 / 4</span><span class="chip" id="examCountdown" style="color:#FFD700;border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.1)">Exam in --h</span></div>
 </div>
  
 <div class="wrap">
@@ -308,9 +351,9 @@
   </div>
  
   <div class="roadmap">
-    <h3><span>5-Day Emergency War (29 Oct → 02 Nov)</span><span style="font-weight:600;text-transform:none;letter-spacing:.02em;color:#8A8480;font-size:11px">Auto-advances on 100%</span></h3>
+    <h3><span>4-Day Final Sprint (29 Oct → 02 Nov)</span><span style="font-weight:600;text-transform:none;letter-spacing:.02em;color:#8A8480;font-size:11px">Auto-advances on 100%</span></h3>
     <div class="roadmap-grid" id="roadmap"></div>
-    <p style="margin-top:12px;font-size:11px;color:#8A8480;line-height:1.5;position:relative;z-index:1">You lost 2 days. Now <b style="color:#FFF">5 days</b> compress 7 days of material. Physics exam on Nov 7 is fixed. We execute without hesitation.</p>
+    <p style="margin-top:12px;font-size:11px;color:#8A8480;line-height:1.5;position:relative;z-index:1">You lost 2 days. Now <b style="color:#FFF">4 days</b> compress 7 days of material. Physics exam on Nov 7 is fixed. We execute without hesitation.</p>
   </div>
  
   <div class="footer"><p>Carbon War Room · Emergency Overdrive · Phone in another room.</p><p style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:#00FFA3">Built for 490+ Mission</p></div>
@@ -329,42 +372,13 @@
 <script>
 const DAYS=[
   {
-    id:1, date:"29 Oct · Wed", pill:"Day 1 / 5", kicker:"Day 1 — Emergency Catch-Up (Units + Mole + Motion)",
-    title:"Vlogs are over. <em>Zero room</em><br>for hesitation today.",
-    sub:"29 October — 6:00 AM to 12:00 AM · 16.5H Effective Overdrive",
-    desc:"<strong>Units & Measurements + Mole Concept + Straight Line Motion</strong> — Catching up lost time. We fuse Day 1 and part of Day 2 into today so you are back on schedule.",
-    roadTitle:"Units + Mole + Motion", roadDesc:"Lost time recovered. <b>15 marks</b> secured.",
-    next:"Day 2 · Laws + Atom + Trig →",
-    checkTitle:"Sleep Checklist — Emergency Day 1",
-    checklist:[
-      "Physics: Units dimensions memorized + equations of motion calculus derivation written 2× blind",
-      "Chemistry: Mole concept Molarity/Molality + limiting reagent numericals done",
-      "Mathematics: Sets + Relations 15 questions solved",
-      "Formula sheet updated with today's boxes",
-      "3 litres water & phone untouched during study blocks"
-    ],
-    blocks:[
-      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake · Cold Water · Formula Glance",tasks:["No phone — leave it in another room","Splash cold water, stretch, sit at desk by 6:15","Glance base dimensions + SI units table"]},
-      {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h · Overdrive",title:"Units & Dimensions + Error Analysis",small:"Quick 5 marks",tasks:["Memorize dimensions of 15 derived quantities (Planck constant, torque, stress, surface tension)","Solve <b>5× dimensional correctness</b> problems (van der Waals, Stokes law)","Solve <b>5× % error numericals</b> (radius 3% → volume error)","Solve <b>8 PYQs</b> (2023, 2024X, 2025A) Section A/B"],goal:"Dimensional analysis mastered in under 3 hours."},
-      {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk · Breathe",tasks:["Walk outside, no screens, hydrate"]},
-      {time:"9:20 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"3 h",title:"Some Basic Concepts — Mole Concept",small:"Numerical Factory",tasks:["Master <b>n = W/M</b>, Molarity, Molality, Mole Fraction conversions","Solve <b>5 limiting reagent numericals</b> (the ones examiners love)","Solve <b>6 PYQ numericals</b> from Chem 2023–2025","Write all formulas on p.1 of Chemistry notebook"],goal:"Limiting reagent solved in 3 minutes blind."},
-      {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Proper Lunch & 20-Min Nap",tasks:["Eat properly — no skipping","Power nap 20 min sharp — alarm at 12:55"]},
-      {time:"1:00 — 4:00",subj:"Physics · Block 3",cls:"phy",dur:"3 h",title:"Motion in a Straight Line + Calculus Derivations",small:"Tier 1 Repeater",tasks:["Derive <b>v = u + at</b>, <b>s = ut + ½at²</b>, <b>v² = u² + 2as</b> by calculus — 1× seeing, 1× blind","Solve <b>6 numericals</b> on velocity-time graphs and relative velocity","Box final formulas in Physics Notebook"],goal:"Calculus derivation written without looking once."},
-      {time:"4:00 — 4:20",subj:"Break",cls:"brk",dur:"20 min",title:"Tea · Stretch",tasks:["Step away from desk, clear eyes"]},
-      {time:"4:20 — 7:00",subj:"Mathematics · Block 4",cls:"mat",dur:"2h 40m",title:"Sets & Relations — Speed Run",small:"5 marks secured",tasks:["Sets: roster/set-builder form, Venn diagrams, power set operations","Relations: domain, range, reflexive, symmetric, transitive","Solve <b>15 PYQs</b> from Maths 2023–2025 (Section A/B)"],goal:"Sets and Relations finished completely."},
-      {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep & Walk",tasks:["Light walk, mental reset"]},
-      {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Mole Concept Writing Drill + PYQs",tasks:["Close book — write all mole formulas and limiting reagent steps blind","Solve <b>4 extra PYQs</b> (Section C 3-marks)","Correct with red pen — rewrite errors"],goal:"Writing drill locks chemistry into muscle memory."},
-      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation & A4 Formula Sheet",small:"Lock today's gains",tasks:["<b>10:00–10:45</b> Make <b>A4 Formula Sheet Day 1</b> (Physics dimensions + Mole formulas)","<b>10:45–11:30</b> Write calculus equations of motion derivation fully blind","<b>11:30–12:00</b> Review mistakes, set 6:00 AM alarm, sleep sharp"],goal:"Day 1 deficit wiped out. Back on track."}
-    ]
-  },
-  {
-    id:2, date:"30 Oct · Thu", pill:"Day 2 / 5", kicker:"Day 2 — Laws of Motion & Atomic Structure",
-    title:"Newton’s laws and Bohr’s atom<br>are <em>pure repeaters.</em>",
-    sub:"30 October — Laws of Motion + Structure of Atom + Trig P1",
-    desc:"Physics <strong>Laws of Motion</strong> (friction, banking of roads — 7 marks), Chemistry <strong>Structure of Atom</strong> (quantum numbers, Bohr radius/energy), Maths <strong>Trigonometric Functions P1</strong>.",
+    id:1, date:"29 Oct · Wed", pill:"Day 1 / 4", kicker:"Day 1 — Laws of Motion & Atomic Structure",
+    title:"You already banked Units & Mole.<br><em>Now spend today on the 7-mark bank.</em>",
+    sub:"29 October — Laws of Motion + Structure of Atom + Trig P1",
+    desc:"Physics <strong>Laws of Motion</strong> (friction, banking of roads — 7 marks), Chemistry <strong>Structure of Atom</strong> (quantum numbers, Bohr radius/energy), Maths <strong>Trigonometric Functions P1</strong>. You already finished Units & Measurements, Mole Concept and Sets — today we build on that.",
     roadTitle:"Laws + Atom + Trig P1", roadDesc:"Banking + Bohr + Trig identities",
-    next:"Day 3 · Energy + Bonding + Trig P2 →",
-    checkTitle:"Sleep Checklist — Emergency Day 2",
+    next:"Day 2 · Energy + Bonding + Rotation →",
+    checkTitle:"Sleep Checklist — Day 1",
     checklist:[
       "Physics: F=ma derived + banking tanθ=v²/rg proved + 8 PYQs",
       "Chemistry: Bohr energy E=-13.6/n² eV + 4 quantum numbers understood",
@@ -373,7 +387,7 @@ const DAYS=[
       "Red pen corrections completed"
     ],
     blocks:[
-      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake · Glance Banking + Quantum",tasks:["Glance banking formula tanθ=v²/rg and Bohr energy formula"]},
+      {time:"6:00 — 6:30",subj:"Warm-up",cls:"brk",dur:"30 min",title:"Wake · Glance Banking + Quantum",tasks:["No phone — leave it in another room","Glance banking formula tanθ=v²/rg and Bohr energy formula"]},
       {time:"6:30 — 9:30",subj:"Physics · Block 1",cls:"phy",dur:"3 h",title:"Laws of Motion — Friction & Banking",small:"7 Marks Guaranteed",tasks:["Derive <b>F = ma</b> from Newton's 2nd law","Derive <b>banking of road tanθ = v²/rg</b> with free-body diagram — 1x blind","Solve <b>8 PYQs</b> on friction coefficient and banked curves (2022-2025)"],goal:"Banking derivation flawless in 3 minutes."},
       {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate, stretch"]},
       {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"Structure of Atom — Bohr & Quantum Numbers",small:"6-7 Marks",tasks:["Bohr model: <b>E = -13.6 Z²/n² eV</b>, radius formula + 3 numericals","Master <b>4 Quantum Numbers (n, l, m, s)</b> + shapes of s, p, d orbitals","Solve <b>4 PYQs</b> on atomic structure (2023-2025)"],goal:"Quantum numbers table memorized cold."},
@@ -383,17 +397,17 @@ const DAYS=[
       {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Friction & Recoil Numerical Blitz",tasks:["Re-solve banking and friction PYQs blind","Solve <b>5 fresh numericals</b> on inclined plane acceleration and recoil velocity"],goal:"Numericals solved without peeking at solutions."},
       {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
       {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Atomic Structure Writing Drill",tasks:["Draw s, p, d orbital shapes blind","Write electronic configurations of Cu and Cr + quantum number sets","Correct mistakes in red"],goal:"Orbital shapes and exceptions written perfectly."},
-      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 sheet with Banking + Bohr + Trig formulas","Write banking derivation fully blind","Sleep sharp at 12:00"],goal:"Day 2 locked in memory."}
+      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 sheet with Banking + Bohr + Trig formulas","Write banking derivation fully blind","Sleep sharp at 12:00"],goal:"Day 1 locked in memory."}
     ]
   },
   {
-    id:3, date:"31 Oct · Fri", pill:"Day 3 / 5", kicker:"Day 3 — Energy, Bonds & Rotation",
+    id:2, date:"30 Oct · Thu", pill:"Day 2 / 4", kicker:"Day 2 — Energy, Bonds & Rotation",
     title:"Work-Energy theorem is <em>one proof.</em><br>VSEPR is <em>one shape table.</em>",
-    sub:"31 October — Work-Energy + VSEPR + Rotation Basics",
+    sub:"30 October — Work-Energy + VSEPR + Rotation Basics",
     desc:"Physics <strong>Work, Energy & Power</strong> (theorem W=ΔKE) + <strong>Rotation</strong> (MI parallel/perpendicular axes), Chemistry <strong>Chemical Bonding</strong> (VSEPR, hybridization), Maths <strong>Complex Numbers & Trig P2</strong>.",
     roadTitle:"Energy + Bonding + Rotation", roadDesc:"Theorem + VSEPR + MI",
-    next:"Day 4 selectors →",
-    checkTitle:"Sleep Checklist — Emergency Day 3",
+    next:"Day 3 · Thermo + SHM + Equilibrium →",
+    checkTitle:"Sleep Checklist — Day 2",
     checklist:[
       "Physics: Work-Energy theorem derived 2× + Parallel/Perpendicular axis theorems",
       "Chemistry: VSEPR shape table (NH3, H2O, SF6, PCl5) + hybridization",
@@ -412,17 +426,17 @@ const DAYS=[
       {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Rotation & Energy Numericals",tasks:["Solve spring potential energy ½kx² problems + collision conservation","Practice MI calculations for ring, disc, rod"],goal:"Numerical accuracy locked."},
       {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
       {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Bonding Writing Drill",tasks:["Write VSEPR table completely blind","Solve 4 hybridization PYQs without peeking","Correct in red pen"],goal:"Zero hesitation on bonding questions."},
-      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 formula sheet with Work-Energy & MI","Write Parallel Axis Theorem fully blind","Sleep sharp at 12:00"],goal:"Day 3 secured."}
+      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 formula sheet with Work-Energy & MI","Write Parallel Axis Theorem fully blind","Sleep sharp at 12:00"],goal:"Day 2 secured."}
     ]
   },
   {
-    id:4, date:"01 Nov · Sat", pill:"Day 4 / 5", kicker:"Day 4 — Thermo, Waves & Calculus",
+    id:3, date:"31 Oct · Fri", pill:"Day 3 / 4", kicker:"Day 3 — Thermo, Waves & Limits",
     title:"Carnot efficiency and SHM energy<br>are <em>guaranteed exam questions.</em>",
-    sub:"01 November — Thermodynamics + SHM/Waves + Limits & Derivatives",
+    sub:"31 October — Thermodynamics + SHM/Waves + Limits & Derivatives",
     desc:"Physics <strong>Thermodynamics</strong> (Cp-Cv=R, Carnot engine η=1-T2/T1) + <strong>SHM & Waves</strong> (energy = ½kA², Doppler effect), Maths <strong>Limits & Derivatives</strong>.",
     roadTitle:"Thermo + SHM + Limits", roadDesc:"Carnot + SHM energy + Limits",
-    next:"Day 5 final push →",
-    checkTitle:"Sleep Checklist — Emergency Day 4",
+    next:"Day 4 final push →",
+    checkTitle:"Sleep Checklist — Day 3",
     checklist:[
       "Physics: Cp-Cv=R derived + Carnot efficiency formula + SHM energy + Doppler",
       "Chemistry: Chemical Thermodynamics (Hess law, ΔG) + Equilibrium Kp/Kc",
@@ -441,22 +455,22 @@ const DAYS=[
       {time:"4:20 — 7:00",subj:"Physics · Block 4",cls:"phy",dur:"2h 40m",title:"Thermo & Waves Numerical Blitz",tasks:["Solve Carnot engine temperature conversion numericals (e.g., 500K to 300K)","Solve Doppler frequency shift numericals"],goal:"Numerical speed tested under clock."},
       {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner Prep",tasks:["Rest"]},
       {time:"7:30 — 10:00",subj:"Chemistry · Block 5",cls:"che",dur:"2.5 h",title:"Equilibrium & Thermo Writing Drill",tasks:["Write Kp=Kc(RT)^Δn derivation blind","Solve 3 Le Chatelier equilibrium shift questions without peeking"],goal:"Equilibrium logic locked."},
-      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 formula sheet with Carnot + SHM + Limits","Write Carnot efficiency derivation blind","Sleep sharp at 12:00"],goal:"Day 4 locked in."}
+      {time:"10:00 — 12:00",subj:"Night Revision · Block 6",cls:"rev",dur:"2 h",title:"Consolidation",tasks:["Update A4 formula sheet with Carnot + SHM + Limits","Write Carnot efficiency derivation blind","Sleep sharp at 12:00"],goal:"Day 3 locked in."}
     ]
   },
   {
-    id:5, date:"02 Nov · Sun", pill:"Day 5 / 5 — Final Overdrive", kicker:"Day 5 — Fluids, GOC, English & Mock Seal",
+    id:4, date:"02 Nov · Sun", pill:"Day 4 / 4 — Final Overdrive", kicker:"Day 4 — Fluids, GOC, English & Mock Seal",
     title:"Bernoulli's theorem and GOC<br>seal your <em>emergency victory.</em>",
     sub:"02 November — Fluids/Solids + GOC/Hydrocarbons + English Exam Prep",
     desc:"Physics <strong>Mechanical Properties of Fluids</strong> (Bernoulli's theorem, Stokes law), Chemistry <strong>GOC & Hydrocarbons</strong> (IUPAC nomenclature, Wurtz reaction, ozonolysis — 10 marks), Evening <strong>General English 5-year PYQs & formats</strong> for tomorrow's exam.",
     roadTitle:"Fluids + GOC + English", roadDesc:"Bernoulli + IUPAC + English",
     next:"Ready for Nov 3 English Exam →",
-    checkTitle:"Day 5 — Final Emergency Checklist",
+    checkTitle:"Day 4 — Final Emergency Checklist",
     checklist:[
       "Physics: Bernoulli's theorem P + ½ρv² + ρgh = const + Stokes law vt",
       "Chemistry: IUPAC naming 10 rules + Wurtz reaction + ozonolysis",
       "Mathematics: Quick formula review across all chapters",
-      "FULL REVISION: Read all A4 formula sheets 1-5 blind",
+      "FULL REVISION: Read all A4 formula sheets 1-4 blind",
       "Evening English: 5-year PYQs + Letter/Notice/Essay formats memorized"
     ],
     blocks:[
@@ -465,12 +479,12 @@ const DAYS=[
       {time:"9:30 — 9:50",subj:"Break",cls:"brk",dur:"20 min",title:"Walk",tasks:["Hydrate"]},
       {time:"9:50 — 12:30",subj:"Chemistry · Block 2",cls:"che",dur:"2h 40m",title:"GOC & Hydrocarbons — The 10-Mark Factory",small:"Every Year Repeater",tasks:["Master IUPAC naming rules + practice 10 complex organic names","Master Hydrocarbon preparations: <b>Wurtz reaction</b>, <b>Kolbe electrolysis</b>, <b>Ozonolysis of alkenes</b>","Solve <b>6 PYQs</b> on organic conversions and mechanisms"],goal:"Ozonolysis and Wurtz reactions clear and reproducible."},
       {time:"12:30 — 1:00",subj:"Lunch + Nap",cls:"brk",dur:"30 min",title:"Eat + Nap",tasks:["Nap 20 min"]},
-      {time:"1:00 — 3:30",subj:"Full Revision · Block 3",cls:"rev",dur:"2.5 h",title:"All A4 Sheets Recall & Weakness Patching",small:"Emergency Sweep",tasks:["<b>90 min:</b> Read all 5 A4 formula sheets — close book and recall every box","<b>60 min:</b> Re-solve 3 weakest numericals from Physics & Chemistry"],goal:"Total command over formulas."},
+      {time:"1:00 — 3:30",subj:"Full Revision · Block 3",cls:"rev",dur:"2.5 h",title:"All A4 Sheets Recall & Weakness Patching",small:"Emergency Sweep",tasks:["<b>90 min:</b> Read all 4 A4 formula sheets — close book and recall every box","<b>60 min:</b> Re-solve 3 weakest numericals from Physics & Chemistry"],goal:"Total command over formulas."},
       {time:"3:30 — 3:50",subj:"Break",cls:"brk",dur:"20 min",title:"Tea",tasks:["Walk outside"]},
       {time:"3:50 — 7:00",subj:"General English · Block 4",cls:"che",dur:"3.1 h",title:"General English Exam Prep (Tomorrow Nov 3)",small:"70 Marks Theory + 30 Writing",tasks:["Solve <b>5-year General English PYQs</b> (2021-2025) Section A & B","Memorize formats for <b>Formal Letter, Notice, Report, and Essay</b>","Read 2 sample unseen reading comprehension passages"],goal:"English exam formats and grammar rules locked for tomorrow."},
       {time:"7:00 — 7:30",subj:"Break",cls:"brk",dur:"30 min",title:"Dinner",tasks:["Relax with family"]},
       {time:"7:30 — 10:00",subj:"Final Mock Recall · Block 5",cls:"rev",dur:"2.5 h",title:"Physics & Chemistry Final Confidence Check",tasks:["<b>90 min:</b> Pick Physics 2025 paper — solve Section A+B under 60-min timer","<b>60 min:</b> List your gap-day targets for Physics exam (Nov 7)"],goal:"Ready for the storm."},
-      {time:"10:00 — 11:30",subj:"Seal & Sleep · Block 6",cls:"rev",dur:"1.5 h",title:"Rest for English Exam Tomorrow",small:"Exam Eve",tasks:["Stack all 5 A4 formula sheets together","Review English letter format one last time","Sleep sharp at 11:30 PM — exam is tomorrow morning!"],goal:"Emergency Overdrive complete. You are ready."}
+      {time:"10:00 — 11:30",subj:"Seal & Sleep · Block 6",cls:"rev",dur:"1.5 h",title:"Rest for English Exam Tomorrow",small:"Exam Eve",tasks:["Stack all 4 A4 formula sheets together","Review English letter format one last time","Sleep sharp at 11:30 PM — exam is tomorrow morning!"],goal:"Emergency Overdrive complete. You are ready."}
     ]
   }
 ];
@@ -514,20 +528,21 @@ function render(){
     saved=ns; saveProg(currentDay,saved);
   }
   let fi=0;
-  d.blocks.forEach(block=>{
+  d.blocks.forEach((block,bIdx)=>{
     const el=document.createElement('div'); el.className='block '+block.cls;
+    const blockProg=getBlockProgress(block,saved,fi);
     let html=`<div class="block-head"><div class="head-left"><span class="time">${block.time}</span><span class="subj">${block.subj}</span></div><span class="dur">${block.dur}</span></div>`;
-    html+=`<div class="btitle">${block.title}${block.small?` <small>· ${block.small}</small>`:''}</div>`;
+    html+=`<div class="btitle">${block.title}${block.small?` <small>· ${block.small}</small>`:''}<span class="block-prog" style="float:right;font-size:9px;color:#00FFA3">${blockProg}%</span></div>`;
     html+=`<ul class="tasks">`;
-    block.tasks.forEach(t=>{
+    for(let ti=0;ti<block.tasks.length;ti++){
       const cur=fi++;
       const ch=saved[cur]?'checked':'';
       const cl=saved[cur]?' class="checked"':'';
-      html+=`<li${cl}><input type="checkbox" data-fi="${cur}" ${ch}><span>${t}</span></li>`;
-    });
+      html+=`<li${cl} style="animation-delay:${ti*0.05}s"><input type="checkbox" data-fi="${cur}" ${ch}><span>${block.tasks[ti]}</span></li>`;
+    }
     html+=`</ul>`;
     if(block.goal) html+=`<div class="goal">🎯 <span><strong>Goal —</strong> ${block.goal}</span></div>`;
-    el.innerHTML=html; tl.appendChild(el);
+    el.innerHTML=html; el.style.animationDelay=`${bIdx*0.1}s`; tl.appendChild(el);
   });
  
   // checkCard
@@ -568,19 +583,39 @@ function onCheck(e){
   if(saved.length!==total) saved=new Array(total).fill(false);
   saved[fi]=e.target.checked; saveProg(currentDay,saved);
   const li=e.target.closest('li'); if(li) li.classList.toggle('checked', e.target.checked);
-  updateProg(); maybeComplete();
+  updateBlockProgress(); updateProg(); maybeComplete();
 }
  
+function getBlockProgress(block,saved,fiStart){
+  let done=0;
+  for(let i=0;i<block.tasks.length;i++){if(saved[fiStart+i])done++}
+  return block.tasks.length?Math.round(done/block.tasks.length*100):0;
+}
+function updateBlockProgress(){
+  const d=DAYS.find(x=>x.id===currentDay);
+  if(!d)return;
+  const blocks=document.querySelectorAll('.block');
+  let fi=0;
+  d.blocks.forEach((block,idx)=>{
+    const prog=getBlockProgress(block,JSON.parse(localStorage.getItem('carbon-day-'+currentDay)||'[]'),fi);
+    if(blocks[idx]){
+      const progEl=blocks[idx].querySelector('.block-prog');
+      if(progEl)progEl.textContent=prog+'%';
+      if(prog===100){blocks[idx].classList.add('completed')}else{blocks[idx].classList.remove('completed')}
+    }
+    fi+=block.tasks.length;
+  });
+}
 function updateProg(){
   const prog=getProg(currentDay);
   document.getElementById('fillDay').style.width=prog.pct+'%';
   document.getElementById('bigDay').textContent=prog.pct+'%';
   document.getElementById('labelDay').textContent=prog.done+' / '+prog.total;
-  const done=completedDays.length, warPct=Math.round(done/5*100);
+  const done=completedDays.length, warPct=Math.round(done/4*100);
   document.getElementById('fillWar').style.width=warPct+'%';
   document.getElementById('bigWar').textContent=warPct+'%';
-  document.getElementById('labelWar').textContent=done+' / 5';
-  document.getElementById('prevBtn').disabled=currentDay===1; document.getElementById('nextBtn').disabled=currentDay===5;
+  document.getElementById('labelWar').textContent=done+' / 4';
+  document.getElementById('prevBtn').disabled=currentDay===1; document.getElementById('nextBtn').disabled=currentDay===4;
   document.getElementById('prevBtn').style.opacity=currentDay===1?'.4':'1';
   document.getElementById('nextBtn').style.opacity=currentDay===5?'.4':'1';
 }
@@ -603,7 +638,7 @@ function showCelebration(){
     document.getElementById('goBtn').textContent=`Go to Day ${nxt.id} →`;
     document.getElementById('goBtn').style.display='inline-flex';
   } else {
-    document.getElementById('modalDesc').textContent=`5-Day Emergency Overdrive complete. You have conquered the backlog. English exam tomorrow morning!`;
+    document.getElementById('modalDesc').textContent=`4-Day Final Sprint complete. You have conquered the backlog. English exam tomorrow morning!`;
     document.getElementById('goBtn').style.display='none';
   }
   document.getElementById('overlay').classList.add('show');
@@ -616,7 +651,7 @@ function launchConfetti(){
   const pcs=Array.from({length:90},()=>({x:Math.random()*c.width,y:Math.random()*-c.height,w:6+Math.random()*8,h:8+Math.random()*8,vx:-2+Math.random()*4,vy:2+Math.random()*5,rot:Math.random()*360,vr:-6+Math.random()*12,color:['#DC143C','#3B82F6','#00FFA3','#F59E0B','#8B5CF6','#FFF'][Math.floor(Math.random()*6)]}));
   let t=0; (function frame(){ ctx.clearRect(0,0,c.width,c.height); pcs.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.vy+=0.12;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore()}); t++; if(t<180) requestAnimationFrame(frame); else{c.classList.remove('show');ctx.clearRect(0,0,c.width,c.height)}})();
 }
-function goNext(){ if(currentDay<5){currentDay++;localStorage.setItem('carbon-currentDay',currentDay);document.getElementById('overlay').classList.remove('show');completing=false;render();scrollTo({top:0,behavior:'smooth'})} else {document.getElementById('overlay').classList.remove('show');completing=false}}
+function goNext(){ if(currentDay<4){currentDay++;localStorage.setItem('carbon-currentDay',currentDay);document.getElementById('overlay').classList.remove('show');completing=false;render();scrollTo({top:0,behavior:'smooth'})} else {document.getElementById('overlay').classList.remove('show');completing=false}}
 function goPrev(){ if(currentDay>1){currentDay--;localStorage.setItem('carbon-currentDay',currentDay);completing=false;render();scrollTo({top:0,behavior:'smooth'})}}
 document.getElementById('goBtn').onclick=goNext;
 document.getElementById('stayBtn').onclick=()=>{document.getElementById('overlay').classList.remove('show');completing=false};
@@ -631,8 +666,17 @@ document.getElementById('resetBtn').onclick=()=>{
     completing=false; render();
   }
 };
+// Live countdown to English exam (Nov 3)
+function updateCountdown(){
+  const now=new Date(),exam=new Date('2026-11-03T09:00:00');
+  const diff=exam-now;
+  const h=Math.floor(diff/3600000),d=Math.floor(diff/86400000);
+  const el=document.getElementById('examCountdown');
+  if(el&&diff>0)el.textContent=`English Exam ${d}d ${h%24}h`;
+  else if(el)el.textContent='EXAM TODAY';
+}
+setInterval(updateCountdown,60000);updateCountdown();
 render();
-</script>
 </body>
 </html>
  
