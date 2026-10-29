@@ -10,7 +10,7 @@
   body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#050505;color:#EAE6DF;line-height:1.5;-webkit-font-smoothing:antialiased}
   /* carbon grain */
   body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")}
- 
+
   .topbar{background:#0A0A0B;color:#EAE6DF;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(220,20,60,0.25);position:sticky;top:0;z-index:30;backdrop-filter:blur(10px)}
   .brand{display:flex;align-items:center;gap:12px}
   .mark{width:36px;height:36px;background:#DC143C;color:#fff;display:grid;place-items:center;font-weight:900;font-size:12px;letter-spacing:.06em;border-radius:10px;box-shadow:0 0 20px rgba(220,20,60,0.5)}
@@ -21,7 +21,7 @@
   .chip.live{border-color:rgba(220,20,60,0.7);background:rgba(220,20,60,0.2);color:#FF4757}
   .chip.live::before{content:"●";margin-right:6px;color:#DC143C;animation:pulse 1s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
- 
+
   /* ADVANCED ANIMATIONS */
   @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
   @keyframes borderGlow{0%,100%{border-color:rgba(220,20,60,0.3)}50%{border-color:rgba(220,20,60,0.8)}}
@@ -32,7 +32,7 @@
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
   @keyframes energyPulse{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
   @keyframes gridMove{0%{background-position:0 0}100%{background-position:40px 40px}}
- 
+
   .command{animation:borderGlow 3s ease-in-out infinite}
   .command::before{content:"";position:absolute;inset:-1px;background:linear-gradient(90deg,transparent,rgba(220,20,60,0.4),transparent);background-size:200% 100%;animation:shimmer 3s linear infinite;border-radius:23px;z-index:-1}
   .block{animation:fadeInUp .4s ease backwards}
@@ -58,12 +58,12 @@
   .chip.live{animation:energyPulse 2s ease infinite}
   .mark{animation:glowPulse 2s ease infinite}
   .kicker i{animation:pulse 1.5s ease infinite}
- 
+
   /* SCANNING BACKGROUND */
   body::after{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(transparent 50%,rgba(220,20,60,0.02) 50%);background-size:100% 4px;animation:gridMove 20s linear infinite;z-index:-1}
- 
+
   .wrap{max-width:1200px;margin:0 auto;padding:20px;position:relative}
- 
+
   /* Fuel Room / Tate Quote Banner */
   .tate-banner{
     background:linear-gradient(135deg, #0D0D0E 0%, #141417 100%);
@@ -84,7 +84,7 @@
   .tate-slots{display:flex;gap:8px}
   .tate-slot{width:64px;height:64px;border-radius:12px;border:1.5px dashed rgba(220,20,60,0.4);background:rgba(220,20,60,0.05);display:grid;place-items:center;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8A8480;text-align:center;padding:4px;cursor:pointer;transition:all .2s}
   .tate-slot:hover{border-color:#DC143C;color:#FF4757;background:rgba(220,20,60,0.12)}
- 
+
   /* Hero Command Card */
   .command{
     background:#0D0D0E;
@@ -114,7 +114,7 @@
   .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
   .meta{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#D4D0C8}
   .meta b{color:#00FFA3}
- 
+
   .cmd-right{position:relative;z-index:1;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));border-left:1px solid rgba(255,255,255,0.08);padding:18px;display:flex;flex-direction:column;gap:12px}
   .panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px;backdrop-filter:blur(8px)}
   .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -131,7 +131,7 @@
   .fill.gold{background:linear-gradient(90deg,#00FFA3,#DC143C)}
   .bar-label{display:flex;justify-content:space-between;margin-top:6px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8A8480}
   .bar-label b{color:#FFF}
- 
+
   /* control strip */
   .control{
     margin-top:14px;
@@ -156,14 +156,14 @@
   .btn.ghost{background:#0D0D0E;color:#D4D0C8;border-color:rgba(255,255,255,0.1);box-shadow:none}
   .hint{font-size:11px;color:#8A8480}
   .hint b{color:#FFF}
- 
+
   /* layout */
   .board{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:16px}
   .legend{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
   .legend span{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);padding:6px 12px;border-radius:999px;color:#D4D0C8}
   .dot{width:8px;height:8px;border-radius:50%}
   .dot.phy{background:#3B82F6;box-shadow:0 0 8px #3B82F6}.dot.che{background:#F59E0B;box-shadow:0 0 8px #F59E0B}.dot.mat{background:#10B981;box-shadow:0 0 8px #10B981}.dot.rev{background:#8B5CF6;box-shadow:0 0 8px #8B5CF6}.dot.brk{background:#6B7280}
- 
+
   .timeline{position:relative;padding-left:30px}
   .timeline::before{content:"";position:absolute;left:10px;top:10px;bottom:10px;width:2px;background:linear-gradient(180deg,#DC143C, rgba(220,20,60,0.1));border-radius:999px}
   .block{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;margin-bottom:12px;overflow:hidden;position:relative;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
@@ -197,7 +197,7 @@
   .tasks li em{font-style:normal;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:1px 7px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#D4D0C8;white-space:nowrap}
   .goal{margin:0 16px 14px;background:#141417;border:1px dashed rgba(220,20,60,0.3);border-radius:12px;padding:9px 12px;display:flex;gap:9px;align-items:center;font-size:11.5px;color:#A8A29E}
   .goal strong{color:#FFF}
- 
+
   /* right rail */
   .rail{position:sticky;top:76px;align-self:start;display:flex;flex-direction:column;gap:14px}
   .card{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.4)}
@@ -214,7 +214,7 @@
   .rule{background:#141417;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px}
   .rule strong{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:900;display:block;margin-bottom:4px;color:#FF4757}
   .rule p{font-size:11.5px;color:#A8A29E;line-height:1.5}
- 
+
   .roadmap{margin-top:16px;background:#0D0D0E;color:#EAE6DF;border-radius:18px;padding:16px;border:1px solid rgba(220,20,60,0.3);position:relative;overflow:hidden}
   .roadmap::after{content:"";position:absolute;inset:0;background:radial-gradient(500px 200px at 80% 0%, rgba(220,20,60,0.15), transparent 60%);pointer-events:none}
   .roadmap h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:#FF4757;margin-bottom:12px;display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}
@@ -233,10 +233,10 @@
   .daypill .fillmini{height:100%;background:#DC143C;border-radius:999px;transition:width .4s}
   .daypill.done .fillmini{background:#00FFA3}
   .daypill.active .fillmini{background:#fff}
- 
+
   .footer{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
   .footer p{font-size:11px;color:#8A8480}
- 
+
   /* modal */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;place-items:center;z-index:50;padding:20px}
   .overlay.show{display:grid}
@@ -253,7 +253,7 @@
   .block-prog{opacity:.8}
   .tasks li{transition:all .15s ease}
   .tasks li:hover{background:rgba(255,255,255,0.02);border-radius:4px;padding-left:4px}
- 
+
   @media(max-width:980px){
     .command{grid-template-columns:1fr}
     .cmd-right{border-left:none;border-top:1px solid rgba(255,255,255,0.08)}
@@ -275,7 +275,7 @@
   <div class="brand"><div class="mark">490+</div><div><b>CARBON WAR ROOM</b><span>Class 11 · 4-Day Final Sprint</span></div></div>
   <div class="top-actions"><span class="chip live">4-Day Sprint Active</span><span class="chip" id="topDay">Day 1 / 4</span><span class="chip" id="examCountdown" style="color:#FFD700;border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.1)">Exam in --h</span></div>
 </div>
- 
+
 <div class="wrap">
   <!-- Tate Fuel Room Banner -->
   <div class="tate-banner">
@@ -288,7 +288,7 @@
       <div class="tate-slot" onclick="alert('Drop your Tate image file here or replace with base64 img tag')">FOCUS<br>#2</div>
     </div>
   </div>
- 
+
   <div class="command">
     <div class="cmd-left">
       <div class="kicker"><i></i><span id="kicker">Day 1 of 5 — The Emergency Crush</span></div>
@@ -316,7 +316,7 @@
       </div>
     </div>
   </div>
- 
+
   <div class="control">
     <div class="control-left">
       <div class="day-switch" id="daySwitch"></div>
@@ -329,9 +329,9 @@
       <button class="btn" id="resetBtn">Reset Day</button>
     </div>
   </div>
- 
+
   <div class="legend"><span><i class="dot phy"></i> Physics</span><span><i class="dot che"></i> Chemistry</span><span><i class="dot mat"></i> Maths</span><span><i class="dot rev"></i> Revision</span><span><i class="dot brk"></i> Break</span></div>
- 
+
   <div class="board">
     <div>
       <div class="timeline" id="timeline"></div>
@@ -349,16 +349,16 @@
       </div>
     </div>
   </div>
- 
+
   <div class="roadmap">
     <h3><span>4-Day Final Sprint (29 Oct → 02 Nov)</span><span style="font-weight:600;text-transform:none;letter-spacing:.02em;color:#8A8480;font-size:11px">Auto-advances on 100%</span></h3>
     <div class="roadmap-grid" id="roadmap"></div>
     <p style="margin-top:12px;font-size:11px;color:#8A8480;line-height:1.5;position:relative;z-index:1">You lost 2 days. Now <b style="color:#FFF">4 days</b> compress 7 days of material. Physics exam on Nov 7 is fixed. We execute without hesitation.</p>
   </div>
- 
+
   <div class="footer"><p>Carbon War Room · Emergency Overdrive · Phone in another room.</p><p style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:#00FFA3">Built for 490+ Mission</p></div>
 </div>
- 
+
 <div class="overlay" id="overlay">
   <div class="modal">
     <div class="badge">✓</div>
@@ -368,7 +368,7 @@
   </div>
 </div>
 <canvas class="confetti" id="confetti"></canvas>
- 
+
 <script>
 const DAYS=[
   {
@@ -488,15 +488,15 @@ const DAYS=[
     ]
   }
 ];
- 
+
 let currentDay = parseInt(localStorage.getItem('carbon-currentDay')||'1');
 let completedDays = JSON.parse(localStorage.getItem('carbon-completed')||'[]');
- 
+
 const getProg = (id)=>{
   try{const s=JSON.parse(localStorage.getItem('carbon-day-'+id)||'null');if(!s)return{done:0,total:0,pct:0};const tot=s.length;const don=s.filter(Boolean).length;return{done:don,total:tot,pct:tot?Math.round(don/tot*100):0}}catch(e){return{done:0,total:0,pct:0}}
 };
 const saveProg=(id,arr)=>localStorage.setItem('carbon-day-'+id, JSON.stringify(arr));
- 
+
 function render(){
   const d=DAYS.find(x=>x.id===currentDay);
   document.getElementById('kicker').textContent=d.kicker;
@@ -506,7 +506,7 @@ function render(){
   document.getElementById('topDay').textContent=d.pill;
   document.getElementById('panelDate').textContent=d.date;
   document.getElementById('nextUnlock').textContent=d.next;
- 
+
   // day switch
   const ds=document.getElementById('daySwitch'); ds.innerHTML='';
   DAYS.forEach(day=>{
@@ -517,7 +517,7 @@ function render(){
     b.onclick=()=>{currentDay=day.id;localStorage.setItem('carbon-currentDay',currentDay);render();window.scrollTo({top:0,behavior:'smooth'})};
     ds.appendChild(b);
   });
- 
+
   // timeline
   const tl=document.getElementById('timeline'); tl.innerHTML='';
   let totalChecks=0; d.blocks.forEach(b=> totalChecks+=b.tasks.length); totalChecks+=d.checklist.length;
@@ -544,7 +544,7 @@ function render(){
     if(block.goal) html+=`<div class="goal">🎯 <span><strong>Goal —</strong> ${block.goal}</span></div>`;
     el.innerHTML=html; el.style.animationDelay=`${bIdx*0.1}s`; tl.appendChild(el);
   });
- 
+
   // checkCard
   const cc=document.getElementById('checkCard');
   let chtml=`<h3><i style="background:rgba(0,255,163,0.15);color:#00FFA3;border:1px solid rgba(0,255,163,0.4)">✓</i> ${d.checkTitle}</h3><ul class="checklist">`;
@@ -556,10 +556,10 @@ function render(){
   });
   chtml+=`</ul><div style="margin-top:12px;background:#141417;border:1px dashed rgba(220,20,60,0.3);border-radius:10px;padding:8px 10px;font-size:11px;color:#A8A29E">💡 Tip: Tick as you go — <b style="color:#FFF">100% auto-advances</b> with confetti.</div>`;
   cc.innerHTML=chtml;
- 
+
   // listeners
   document.querySelectorAll('input[type="checkbox"][data-fi]').forEach(c=> c.addEventListener('change', onCheck));
- 
+
   // roadmap
   const rg=document.getElementById('roadmap'); rg.innerHTML='';
   DAYS.forEach(day=>{
@@ -571,10 +571,10 @@ function render(){
     div.onclick=()=>{currentDay=day.id;localStorage.setItem('carbon-currentDay',currentDay);render();window.scrollTo({top:0,behavior:'smooth'})};
     rg.appendChild(div);
   });
- 
+
   updateProg();
 }
- 
+
 function onCheck(e){
   const fi=parseInt(e.target.dataset.fi);
   const d=DAYS.find(x=>x.id===currentDay);
@@ -585,7 +585,7 @@ function onCheck(e){
   const li=e.target.closest('li'); if(li) li.classList.toggle('checked', e.target.checked);
   updateBlockProgress(); updateProg(); maybeComplete();
 }
- 
+
 function getBlockProgress(block,saved,fiStart){
   let done=0;
   for(let i=0;i<block.tasks.length;i++){if(saved[fiStart+i])done++}
@@ -619,7 +619,7 @@ function updateProg(){
   document.getElementById('prevBtn').style.opacity=currentDay===1?'.4':'1';
   document.getElementById('nextBtn').style.opacity=currentDay===5?'.4':'1';
 }
- 
+
 let completing=false;
 function maybeComplete(){
   if(completing) return;
@@ -679,4 +679,3 @@ setInterval(updateCountdown,60000);updateCountdown();
 render();
 </body>
 </html>
- 
