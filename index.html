@@ -1,324 +1,2343 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>JKBOSE — CARBON WAR ROOM · 4-Day Final Sprint</title>
-<style>
-  :root{color-scheme:dark}
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#050505;color:#EAE6DF;line-height:1.5;-webkit-font-smoothing:antialiased}
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")}
-  
-  .topbar{background:#0A0A0B;color:#EAE6DF;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(220,20,60,0.25);position:sticky;top:0;z-index:30;backdrop-filter:blur(10px)}
-  .brand{display:flex;align-items:center;gap:12px}
-  .mark{width:36px;height:36px;background:#DC143C;color:#fff;display:grid;place-items:center;font-weight:900;font-size:12px;letter-spacing:.06em;border-radius:10px;box-shadow:0 0 20px rgba(220,20,60,0.5)}
-  .brand b{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#fff}
-  .brand span{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#8A8480;display:block;margin-top:1px}
-  .top-actions{display:flex;align-items:center;gap:8px}
-  .chip{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:999px;border:1px solid rgba(220,20,60,0.3);background:rgba(220,20,60,0.1);color:#FF6B81}
-  .chip.live{border-color:rgba(220,20,60,0.7);background:rgba(220,20,60,0.2);color:#FF4757}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KINETIC//ROAS™ — High-Conversion Ad-Video Maker & Weekly Performance Studio</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Syne, Instrument Serif, Plus Jakarta Sans, IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
-  @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-  @keyframes glowPulse{0%,100%{box-shadow:0 0 5px #DC143C}50%{box-shadow:0 0 20px #DC143C}}
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            carbon: '#0A0A0C',
+            surface: '#121216',
+            surfaceHover: '#191920',
+            bone: '#F4F1EA',
+            boneMuted: '#9E9C96',
+            vermilion: '#FF3B1D',
+            volt: '#D4FF00',
+            emeraldSignal: '#00E676'
+          },
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            serif: ['Instrument Serif', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
 
-  .wrap{max-width:1200px;margin:0 auto;padding:20px;position:relative}
-  .tate-banner{background:linear-gradient(135deg, #0D0D0E 0%, #141417 100%);border:1px solid rgba(220,20,60,0.28);border-radius:20px;padding:18px 22px;margin-bottom:16px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;position:relative;overflow:hidden;}
-  .tate-quote{font-style:italic;font-size:14px;color:#D4D0C8;line-height:1.5;font-family:Georgia,serif}
-  .tate-quote b{color:#DC143C;font-style:normal;font-family:Inter,sans-serif;letter-spacing:.08em;font-size:10px;display:block;margin-bottom:4px;text-transform:uppercase}
-  .tate-slots{display:flex;gap:8px}
-  .tate-slot{width:64px;height:64px;border-radius:12px;border:1.5px dashed rgba(220,20,60,0.4);background:rgba(220,20,60,0.05);display:grid;place-items:center;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8A8480;text-align:center;padding:4px}
+  <style>
+    :root {
+      --bg-carbon: #0A0A0C;
+      --bg-surface: #121216;
+      --bg-surface-hover: #191920;
+      --text-bone: #F4F1EA;
+      --text-muted: #9E9C96;
+      --accent-vermilion: #FF3B1D;
+      --accent-volt: #D4FF00;
+      --hairline: rgba(244, 241, 234, 0.12);
+      --hairline-dark: rgba(10, 10, 12, 0.15);
+    }
 
-  .command{background:#0D0D0E;border-radius:22px;border:1px solid rgba(220,20,60,0.3);display:grid;grid-template-columns:1.15fr .85fr;min-height:260px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
-  .cmd-left{padding:26px 28px 22px;}
-  .kicker{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .kicker i{width:32px;height:2px;background:#DC143C;display:block;}
-  .kicker span{font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:900;color:#FF4757}
-  .cmd-left h1{font-family:Georgia,serif;font-size:32px;line-height:1.1;font-weight:900;color:#FFF}
-  .cmd-left h1 em{color:#FF4757;font-style:italic}
-  .cmd-left p{margin-top:12px;font-size:13.5px;color:#A8A29E;max-width:520px}
-  .cmd-right{background:rgba(255,255,255,0.02);border-left:1px solid rgba(255,255,255,0.08);padding:18px;display:flex;flex-direction:column;gap:12px}
-  .panel{background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px;}
-  .panel-head{display:flex;justify-content:space-between;margin-bottom:10px;font-size:10px;text-transform:uppercase;font-weight:900;color:#8A8480}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .stat{background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px}
-  .stat label{font-size:8px;text-transform:uppercase;font-weight:900;color:#8A8480;display:block;margin-bottom:4px}
-  .big-num{font-size:24px;font-weight:900;color:#FFF;display:block}
-  .bar{height:6px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;margin-top:8px}
-  .fill{height:100%;background:#DC143C;width:0%;transition:width 0.4s ease}
-  .fill.gold{background:#00FFA3}
+    * {
+      box-sizing: border-box;
+      selection-background-color: #D4FF00;
+      selection-color: #0A0A0C;
+    }
 
-  .control{margin-top:14px;background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:12px;display:flex;justify-content:space-between;align-items:center;}
-  .day-switch{display:flex;gap:6px;background:#050505;border:1px solid rgba(255,255,255,0.08);border-radius:999px;padding:4px}
-  .day-switch button{border:none;background:transparent;font-size:11px;font-weight:900;padding:8px 14px;border-radius:999px;cursor:pointer;color:#8A8480}
-  .day-switch button.active{background:#DC143C;color:#fff}
-  .btn{border:1px solid #DC143C;background:#DC143C;color:#fff;font-size:11px;font-weight:900;padding:10px 16px;border-radius:999px;cursor:pointer;text-transform:uppercase;}
+    ::selection {
+      background: var(--accent-volt);
+      color: var(--bg-carbon);
+    }
 
-  .board{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:16px}
-  .timeline{position:relative;padding-left:30px}
-  .timeline::before{content:"";position:absolute;left:10px;top:10px;bottom:10px;width:2px;background:rgba(220,20,60,0.2)}
-  .block{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;margin-bottom:12px;overflow:hidden;position:relative}
-  .block::before{content:"";position:absolute;left:-24px;top:22px;width:10px;height:10px;border-radius:50%;background:#3B82F6;z-index:1}
-  .block.che::before{background:#F59E0B}
-  .block.mat::before{background:#10B981}
-  .block.rev::before{background:#8B5CF6}
-  .block.brk::before{background:#6B7280}
-  
-  .block-head{padding:14px 16px 10px;display:flex;justify-content:space-between;align-items:center}
-  .time{font-family:monospace;font-size:11px;background:#141417;padding:4px 8px;border-radius:6px;color:#FFF}
-  .subj{font-size:10px;font-weight:900;text-transform:uppercase;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,0.1)}
-  .btitle{padding:0 16px 10px;font-size:16px;font-weight:900;color:#FFF}
-  .tasks{list-style:none;padding:0 16px 16px}
-  .tasks li{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;color:#D4D0C8;cursor:pointer}
-  .tasks li input{width:18px;height:18px;accent-color:#DC143C;cursor:pointer}
-  .tasks li.checked{opacity:0.5;text-decoration:line-through}
-  .goal{margin:0 16px 16px;background:#141417;padding:10px;border-radius:8px;font-size:11px;color:#00FFA3}
+    body {
+      background-color: var(--bg-carbon);
+      color: var(--text-bone);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-  .card{background:#0D0D0E;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;margin-bottom:14px}
-  .card h3{font-size:11px;text-transform:uppercase;margin-bottom:12px;color:#FF4757}
-  .checklist{list-style:none}
-  .checklist li{display:flex;gap:10px;padding:8px 0;font-size:12px;color:#D4D0C8;border-bottom:1px solid rgba(255,255,255,0.05)}
-  .rules{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .rule{background:#141417;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,0.05)}
-  .rule strong{font-size:10px;color:#FF4757;display:block;margin-bottom:4px}
-  .rule p{font-size:10.5px;color:#8A8480}
+    /* Subtle Film Grain Overlay */
+    .film-grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.042;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
 
-  @media(max-width:900px){
-    .command, .board{grid-template-columns:1fr}
-    .cmd-right{border-left:none;border-top:1px solid rgba(255,255,255,0.1)}
-  }
-</style>
+    /* Architectural Hairline Grid Borders */
+    .border-hairline {
+      border-color: var(--hairline);
+    }
+    .border-hairline-dark {
+      border-color: var(--hairline-dark);
+    }
+
+    /* Staggered Load Reveal Animations */
+    @keyframes revealUp {
+      0% {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal-1 { animation: revealUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both; }
+    .reveal-2 { animation: revealUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both; }
+    .reveal-3 { animation: revealUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.30s both; }
+    .reveal-4 { animation: revealUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both; }
+
+    /* Card-Shaped Video Button Styling */
+    .video-card-btn {
+      position: relative;
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--bg-surface);
+      border-radius: 28px;
+      border: 1.5px solid rgba(244, 241, 234, 0.14);
+      overflow: hidden;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.35s ease,
+                  box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 0.35s ease;
+      cursor: pointer;
+    }
+
+    .video-card-btn:hover {
+      transform: translateY(-6px) scale(1.005);
+      border-color: var(--accent-volt);
+      background: var(--bg-surface-hover);
+      box-shadow: 0 28px 60px -15px rgba(0, 0, 0, 0.85),
+                  0 0 0 1px rgba(212, 255, 0, 0.35),
+                  0 0 40px -10px rgba(255, 59, 29, 0.25);
+    }
+
+    .video-card-btn:active {
+      transform: translateY(-2px) scale(0.995);
+    }
+
+    /* Big Modern Play Orb inside Video Card Buttons */
+    .play-orb {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.3s ease,
+                  box-shadow 0.3s ease;
+    }
+
+    .video-card-btn:hover .play-orb {
+      transform: scale(1.14) rotate(-4deg);
+      background-color: var(--accent-volt);
+      color: #0A0A0C;
+      box-shadow: 0 0 35px rgba(212, 255, 0, 0.65);
+    }
+
+    .video-card-btn:hover .play-orb svg {
+      color: #0A0A0C;
+      fill: #0A0A0C;
+    }
+
+    /* Spinning Escrowed Seal */
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spin-slow {
+      animation: spinSlow 18s linear infinite;
+    }
+
+    /* Equalizer Bars Animation */
+    @keyframes eqBar {
+      0%, 100% { height: 22%; }
+      50% { height: 95%; }
+    }
+    .eq-bar-1 { animation: eqBar 0.8s ease-in-out infinite 0.1s; }
+    .eq-bar-2 { animation: eqBar 0.65s ease-in-out infinite 0.25s; }
+    .eq-bar-3 { animation: eqBar 0.9s ease-in-out infinite 0.05s; }
+    .eq-bar-4 { animation: eqBar 0.7s ease-in-out infinite 0.35s; }
+
+    /* Marquee Ticker */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 34s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    /* Custom Range Sliders for ROI Simulator */
+    input[type="range"].brutalist-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 10px;
+      background: #0A0A0C;
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type="range"].brutalist-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #FF3B1D;
+      border: 3px solid #F4F1EA;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+    input[type="range"].brutalist-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: #0A0A0C;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0A0A0C;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2A2A32;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF3B1D;
+    }
+  </style>
 </head>
-<body>
+<body class="antialiased selection:bg-volt selection:text-carbon">
 
-<div class="topbar">
-  <div class="brand"><div class="mark">490+</div><div><b>CARBON WAR ROOM</b><span>JKBOSE Class 11 Sprint</span></div></div>
-  <div class="top-actions">
-    <span class="chip live" id="timer">Loading...</span>
-    <span class="chip" id="topDay">Day 1/4</span>
-  </div>
-</div>
+  <!-- Atmospheric Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
 
-<div class="wrap">
-  <div class="tate-banner">
-    <div class="tate-quote"><b>Tate Fuel Room</b>"Vlogs won’t write your derivations. You lost 2 days. Now you pay the price in sweat or you pay it in failure. Work."</div>
-    <div class="tate-slots"><div class="tate-slot">FOCUS</div><div class="tate-slot">WAR</div></div>
-  </div>
-
-  <div class="command">
-    <div class="cmd-left">
-      <div class="kicker"><i></i><span id="dayLabel">Day 1 — Laws & Atoms</span></div>
-      <h1 id="mainTitle">Laws of Motion & <em>Atomic Structure</em></h1>
-      <p id="mainDesc">Banking, Bohr, and Trig identities are high-confidence repeaters. Focus on the 7-mark derivations today.</p>
-      <div style="display:flex;gap:10px;margin-top:20px">
-        <span class="chip">Effective: 16.5H</span>
-        <span class="chip">Mode: Brutal</span>
-      </div>
+  <!-- =====================================================================
+       FLOATING ESCROWED GUARANTEE STAMP (Bottom Left Quick Trigger)
+  ====================================================================== -->
+  <button
+    onclick="scrollToSection('guarantee-vault')"
+    aria-label="Jump to 100% Money-Back Guarantee Vault"
+    class="fixed bottom-5 left-5 z-40 hidden sm:flex items-center gap-3 bg-carbon/90 backdrop-blur-xl border-2 border-volt/80 text-bone px-4 py-2.5 rounded-full shadow-2xl hover:scale-105 hover:bg-volt hover:text-carbon transition-all duration-300 group"
+  >
+    <span class="relative flex h-8 w-8 items-center justify-center rounded-full bg-volt text-carbon group-hover:bg-carbon group-hover:text-volt transition-colors">
+      <!-- Oversized Modern Shield Check Icon -->
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="m9 12 2 2 4-4"/>
+      </svg>
+    </span>
+    <div class="text-left pr-1">
+      <div class="font-mono text-[10px] uppercase tracking-widest text-volt group-hover:text-carbon font-semibold">ZERO-RISK DOCTRINE</div>
+      <div class="text-xs font-bold tracking-tight">No Results = 100% Money Return</div>
     </div>
-    <div class="cmd-right">
-      <div class="panel">
-        <div class="panel-head"><span>Daily Target</span><span id="currDate">29 Oct</span></div>
-        <div class="grid2">
-          <div class="stat"><label>Day Progress</label><strong class="big-num" id="dayPerc">0%</strong><div class="bar"><div class="fill" id="dayFill"></div></div></div>
-          <div class="stat"><label>Sprint Total</label><strong class="big-num" id="warPerc">0%</strong><div class="bar"><div class="fill gold" id="warFill"></div></div></div>
+  </button>
+
+  <!-- =====================================================================
+       1. TOP ARCHITECTURAL COMMAND BAR
+  ====================================================================== -->
+  <header class="sticky top-0 z-40 bg-carbon/85 backdrop-blur-xl border-b border-hairline">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Left: Studio Identity + Live Weekly Sprint Status -->
+      <div class="flex items-center gap-4 lg:gap-6">
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-vermilion flex items-center justify-center text-bone shadow-lg shadow-vermilion/25 group-hover:rotate-6 transition-transform">
+            <!-- Big Modern Clapper/Play Frame Icon -->
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <rect x="2" y="4" width="20" height="16" rx="4" />
+              <polygon points="10 9 16 12 10 15 10 9" fill="currentColor" />
+            </svg>
+          </div>
+          <div>
+            <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight block leading-none">
+              KINETIC<span class="text-vermilion">//</span>ROAS<sup class="text-xs text-volt font-mono">™</sup>
+            </span>
+            <span class="font-mono text-[10px] tracking-widest uppercase text-boneMuted block mt-1">
+              AD-VIDEO PERFORMANCE LAB
+            </span>
+          </div>
+        </a>
+
+        <!-- Live Status Pill -->
+        <div class="hidden xl:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface border border-hairline">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emeraldSignal opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emeraldSignal"></span>
+          </span>
+          <span class="font-mono text-[11px] font-medium text-bone tracking-wider uppercase">
+            WEEKLY SPRINTS ACTIVE — <span class="text-volt">15+ BRANDS SCALING</span>
+          </span>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="control">
-    <div class="day-switch" id="daySwitch">
-      <button onclick="switchDay(0)" id="btn0" class="active">Day 1</button>
-      <button onclick="switchDay(1)" id="btn1">Day 2</button>
-      <button onclick="switchDay(2)" id="btn2">Day 3</button>
-      <button onclick="switchDay(3)" id="btn3">Day 4</button>
-    </div>
-    <button class="btn" onclick="resetProgress()">Reset All</button>
-  </div>
+      <!-- Center: Quick Jump Links -->
+      <nav class="hidden md:flex items-center gap-1 lg:gap-2 bg-surface/90 border border-hairline rounded-full p-1.5">
+        <a href="#work-showcase" class="px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider text-bone hover:bg-bone hover:text-carbon transition-colors">
+          Selected Reels (15+)
+        </a>
+        <a href="#client-roster" class="px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider text-boneMuted hover:text-bone transition-colors">
+          Weekly Roster
+        </a>
+        <a href="#guarantee-vault" class="px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider text-volt hover:bg-volt hover:text-carbon transition-colors font-semibold">
+          100% Refund Guarantee
+        </a>
+        <a href="#roi-simulator" class="px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider text-boneMuted hover:text-bone transition-colors">
+          ROI Calculator
+        </a>
+      </nav>
 
-  <div class="board">
-    <div class="timeline" id="timeline"></div>
-    <div class="rail">
-      <div class="card">
-        <h3>⚡ Sprint Rules</h3>
-        <div class="rules">
-          <div class="rule"><strong>Hand Phone</strong><p>Lock phone in another room.</p></div>
-          <div class="rule"><strong>Write 3x</strong><p>Derive blind 3 times or skip.</p></div>
+      <!-- Right: Oversized Pill CTA Button -->
+      <div class="flex items-center gap-3">
+        <button
+          onclick="openBriefModal()"
+          class="relative inline-flex items-center gap-3 bg-bone text-carbon hover:bg-volt font-display font-bold text-xs sm:text-sm px-5 sm:px-6 py-3.5 rounded-full transition-all duration-300 shadow-lg hover:scale-[1.02] active:scale-95 group"
+        >
+          <span>CLAIM RISK-FREE AD SPRINT</span>
+          <span class="w-7 h-7 rounded-full bg-carbon text-bone flex items-center justify-center group-hover:rotate-45 transition-transform">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M7 17L17 7M17 7H8M17 7V16"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       2. ASYMMETRIC HERO SECTION + FEATURED SHOWREEL VIDEO BUTTON CARD
+  ====================================================================== -->
+  <section class="relative border-b border-hairline overflow-hidden">
+    <!-- Subtle Architectural Grid Lines -->
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-8 py-10 sm:py-16 lg:py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+        
+        <!-- LEFT 7 COLUMNS: Editorial Headline + Uncompromising Guarantee Banner -->
+        <div class="lg:col-span-7 flex flex-col justify-between space-y-8 reveal-1">
+          
+          <div class="space-y-6">
+            <!-- Top Eyebrow Badges -->
+            <div class="flex flex-wrap items-center gap-2.5">
+              <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-vermilion/15 border border-vermilion/40 text-vermilion font-mono text-xs font-semibold uppercase tracking-wider">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+                DIRECT-RESPONSE AD ARCHITECT
+              </span>
+              <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface border border-hairline text-boneMuted font-mono text-xs uppercase tracking-wider">
+                ONGOING WEEKLY DROP CADENCE
+              </span>
+            </div>
+
+            <!-- Massive Editorial Headline -->
+            <h1 class="font-display font-extrabold text-4xl sm:text-6xl xl:text-[68px] leading-[0.97] tracking-tight text-bone">
+              WE DON’T MAKE <span class="font-serif italic font-normal text-boneMuted underline decoration-vermilion/70 decoration-2 underline-offset-8">pretty commercials.</span>
+              WE ENGINEER WEEKLY AD-VIDEOS THAT <span class="text-volt">PRINT CONVERSIONS.</span>
+            </h1>
+
+            <!-- Editorial Lead Paragraph -->
+            <p class="text-base sm:text-xl text-boneMuted max-w-2xl leading-relaxed font-normal">
+              Helping <span class="text-bone font-semibold">royaltrading.com</span>, <span class="text-bone font-semibold">Nextaniatechnologies.com</span>, <span class="text-bone font-semibold">digisoftsolutions.in</span>, <span class="text-bone font-semibold">beastagent.nextania.co</span>, <span class="text-bone font-semibold">unichildgroup.com</span> &amp; <span class="text-volt font-semibold">10+ scaling brands</span> extract maximum weekly conversions through high-velocity video ads that are still running &amp; scaling every single week.
+            </p>
+          </div>
+
+          <!-- IMPOSSIBLE-TO-MISS MONEY-BACK GUARANTEE BANNER CARD -->
+          <div class="relative rounded-[28px] bg-gradient-to-r from-[#1A1A22] via-[#15151C] to-[#1D1814] border-2 border-volt/70 p-5 sm:p-7 shadow-2xl reveal-2">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+              <div class="flex items-start sm:items-center gap-4 sm:gap-5">
+                <!-- Huge Modern Guarantee Shield Icon -->
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-volt text-carbon flex-shrink-0 flex items-center justify-center shadow-lg shadow-volt/20">
+                  <svg class="w-10 h-10 sm:w-11 sm:h-11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="m8.5 12.5 2.5 2.5 5-5" stroke-width="2.8"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-volt mb-1">
+                    <span>★ OUR CORE CONCEPT &amp; IRONCLAD PLEDGE</span>
+                  </div>
+                  <h2 class="font-display font-extrabold text-xl sm:text-2xl text-bone leading-tight">
+                    IF YOU GET NO RESULTS, WE PROVIDE A <span class="underline decoration-volt decoration-2 underline-offset-4 text-volt">100% MONEY-RETURN GUARANTEE.</span>
+                  </h2>
+                  <p class="text-xs sm:text-sm text-boneMuted mt-1.5">
+                    Either our weekly ad-videos beat your conversion baseline &amp; scale your revenue, or you get every rupee/dollar refunded. Zero risk on your balance sheet.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onclick="scrollToSection('guarantee-vault')"
+                class="w-full sm:w-auto flex-shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-surface border border-volt/50 text-volt hover:bg-volt hover:text-carbon font-mono text-xs font-bold uppercase tracking-wider transition-all"
+              >
+                <span>INSPECT TERMS</span>
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M13 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Telemetry Bar + Action Buttons -->
+          <div class="grid grid-cols-3 gap-3 sm:gap-6 pt-2 border-t border-hairline reveal-3">
+            <div>
+              <div class="font-mono text-xs uppercase text-boneMuted">ACTIVE WEEKLY PARTNERS</div>
+              <div class="font-display font-extrabold text-2xl sm:text-4xl text-bone mt-0.5">15+ <span class="text-sm font-mono text-emeraldSignal font-normal">LIVE NOW</span></div>
+            </div>
+            <div>
+              <div class="font-mono text-xs uppercase text-boneMuted">AVG. 3-SEC HOOK RATE</div>
+              <div class="font-display font-extrabold text-2xl sm:text-4xl text-volt mt-0.5">47.8%</div>
+            </div>
+            <div>
+              <div class="font-mono text-xs uppercase text-boneMuted">REFUND CLAIMS NEEDED</div>
+              <div class="font-display font-extrabold text-2xl sm:text-4xl text-bone mt-0.5">0.0% <span class="text-xs font-mono text-boneMuted font-normal">100% HIT KPI</span></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT 5 COLUMNS: OVERSIZED CARD-SHAPED VIDEO BUTTON (MASTER SHOWREEL) -->
+        <div class="lg:col-span-5 flex flex-col reveal-2">
+          <button
+            type="button"
+            onclick="openVideoModal('master-reel')"
+            class="video-card-btn h-full min-h-[480px] sm:min-h-[540px] flex flex-col justify-between p-5 sm:p-7 group relative"
+            aria-label="Play 2025 Master Conversion Ad Showreel"
+          >
+            <!-- Live Animated HTML5 Canvas Background for Master Showreel -->
+            <canvas
+              id="canvas-master-reel"
+              data-canvas-theme="master"
+              class="absolute inset-0 w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            ></canvas>
+
+            <!-- Gradient Vignette Overlay for crisp legibility -->
+            <div class="absolute inset-0 bg-gradient-to-t from-carbon via-carbon/45 to-carbon/60 pointer-events-none"></div>
+
+            <!-- Top Telemetry Row inside the Card-Shaped Video Button -->
+            <div class="relative z-10 flex items-center justify-between gap-2 w-full">
+              <div class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-carbon/85 backdrop-blur-md border border-hairline">
+                <span class="h-3 w-3 rounded-full bg-vermilion animate-pulse"></span>
+                <span class="font-mono text-xs font-bold tracking-wider uppercase text-bone">
+                  MASTER REEL // 00:48
+                </span>
+              </div>
+
+              <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-volt text-carbon font-mono text-xs font-bold uppercase tracking-wider shadow-lg">
+                <span>4.8x AVG ROAS</span>
+              </div>
+            </div>
+
+            <!-- CENTER: GIANT MODERN MAGNETIC PLAY BUTTON ORB -->
+            <div class="relative z-10 my-auto py-8 flex flex-col items-center justify-center text-center">
+              <div class="play-orb w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-vermilion text-bone flex items-center justify-center shadow-2xl border-4 border-bone/20">
+                <!-- Big Modern Play Icon -->
+                <svg class="w-11 h-11 sm:w-12 sm:h-12 ml-1.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 4.75C6 3.99 6.82 3.51 7.49 3.9L19.69 11.15C20.33 11.53 20.33 12.47 19.69 12.85L7.49 20.1C6.82 20.49 6 20.01 6 19.25V4.75Z"/>
+                </svg>
+              </div>
+              <span class="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-carbon/90 border border-bone/20 font-mono text-xs uppercase tracking-widest text-bone group-hover:border-volt group-hover:text-volt transition-colors">
+                <span>CLICK CARD TO WATCH SOUND-ON AD REEL</span>
+              </span>
+            </div>
+
+            <!-- Bottom Card Footer: Live Waveform + Client Proof Summary -->
+            <div class="relative z-10 space-y-4 w-full bg-carbon/85 backdrop-blur-xl p-4 sm:p-5 rounded-2xl border border-hairline">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <div class="font-mono text-[11px] uppercase tracking-widest text-volt font-semibold">
+                     CARD-SHAPED VIDEO TRIGGER
+                  </div>
+                  <h3 class="font-display font-extrabold text-xl sm:text-2xl text-bone leading-tight mt-0.5">
+                    2026 Weekly Performance Compilation
+                  </h3>
+                </div>
+                <!-- Animated Equalizer Icon Bars -->
+                <div class="flex items-end gap-1 h-8 px-3 py-1.5 rounded-xl bg-surface border border-hairline">
+                  <span class="w-1.5 bg-vermilion rounded-full eq-bar-1"></span>
+                  <span class="w-1.5 bg-volt rounded-full eq-bar-2"></span>
+                  <span class="w-1.5 bg-bone rounded-full eq-bar-3"></span>
+                  <span class="w-1.5 bg-vermilion rounded-full eq-bar-4"></span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-hairline text-xs font-mono text-boneMuted">
+                <span>FEATURING: ROYALTRADING • NEXTANIA • DIGISOFT • BEASTAGENT • UNICHILD</span>
+                <span class="text-bone font-semibold group-hover:text-volt">LAUNCH PLAYER ↗</span>
+              </div>
+            </div>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         CONTINUOUS CLIENT PROOF MARQUEE (15+ ACTIVE WEEKLY BRANDS)
+    ==================================================================== -->
+    <div class="border-t border-hairline bg-surface/70 py-4 overflow-hidden">
+      <div class="animate-marquee flex items-center gap-8 font-mono text-xs uppercase tracking-widest">
+        <!-- Set 1 -->
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-volt"></span> ROYALTRADING.COM <span class="text-emeraldSignal">(+312% FUNDED ACCS — WK 24)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-vermilion"></span> NEXTANIATECHNOLOGIES.COM <span class="text-volt">(4.6x PIPELINE ROAS — WK 19)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-emeraldSignal"></span> DIGISOFTSOLUTIONS.IN <span class="text-volt">(₹4.2CR+ ATTRIBUTED — WK 31)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-volt"></span> BEASTAGENT.NEXTANIA.CO <span class="text-emeraldSignal">(410+ DEMOS/MO — WK 16)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-vermilion"></span> UNICHILDGROUP.COM <span class="text-volt">(5.2x META/YT ROAS — WK 28)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-emeraldSignal"></span> +10 MORE WEEKLY PARTNER BRANDS SCALING NON-STOP</span>
+        <span class="text-boneMuted">//</span>
+        <!-- Set 2 (Duplicate for seamless loop) -->
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-volt"></span> ROYALTRADING.COM <span class="text-emeraldSignal">(+312% FUNDED ACCS — WK 24)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-vermilion"></span> NEXTANIATECHNOLOGIES.COM <span class="text-volt">(4.6x PIPELINE ROAS — WK 19)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-emeraldSignal"></span> DIGISOFTSOLUTIONS.IN <span class="text-volt">(₹4.2CR+ ATTRIBUTED — WK 31)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-volt"></span> BEASTAGENT.NEXTANIA.CO <span class="text-emeraldSignal">(410+ DEMOS/MO — WK 16)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-vermilion"></span> UNICHILDGROUP.COM <span class="text-volt">(5.2x META/YT ROAS — WK 28)</span></span>
+        <span class="text-boneMuted">//</span>
+        <span class="flex items-center gap-3 text-bone"><span class="w-2.5 h-2.5 rounded-full bg-emeraldSignal"></span> +10 MORE WEEKLY PARTNER BRANDS SCALING NON-STOP</span>
+        <span class="text-boneMuted">//</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       3. BENTO-ASYMMETRIC "CARD-SHAPED VIDEO BUTTON" PORTFOLIO SHOWCASE
+  ====================================================================== -->
+  <section id="work-showcase" class="max-w-[1440px] mx-auto px-4 sm:px-8 py-16 sm:py-24">
+    
+    <!-- Section Header + Big Modern Icon Category Filter Pills -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-10 border-b border-hairline">
+      <div>
+        <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-vermilion mb-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-vermilion"></span>
+          <span>TAP ANY CARD-SHAPED VIDEO BUTTON TO WATCH &amp; INSPECT AD ANATOMY</span>
+        </div>
+        <h2 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl tracking-tight text-bone leading-[0.98]">
+          ONGOING WEEKLY WINNERS. <br />
+          <span class="font-serif italic font-normal text-boneMuted">Every card is an instant video trigger.</span>
+        </h2>
+      </div>
+
+      <!-- Category Filter Bar with Oversized Modern Icons -->
+      <div class="flex flex-wrap items-center gap-2.5" id="portfolio-filters">
+        <button
+          onclick="filterPortfolio('all')"
+          data-filter="all"
+          class="filter-btn active inline-flex items-center gap-2.5 px-5 py-3 rounded-2xl font-mono text-xs font-bold uppercase tracking-wider bg-volt text-carbon border border-volt transition-all"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          </svg>
+          <span>ALL CAMPAIGNS (15)</span>
+        </button>
+
+        <button
+          onclick="filterPortfolio('fintech')"
+          data-filter="fintech"
+          class="filter-btn inline-flex items-center gap-2.5 px-4 py-3 rounded-2xl font-mono text-xs font-semibold uppercase tracking-wider bg-surface text-boneMuted hover:text-bone border border-hairline transition-all"
+        >
+          <svg class="w-5 h-5 text-volt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M3 3v18h18"/>
+            <path d="m19 9-5 5-4-4-3 3"/>
+          </svg>
+          <span>FINTECH &amp; TRADING</span>
+        </button>
+
+        <button
+          onclick="filterPortfolio('saas')"
+          data-filter="saas"
+          class="filter-btn inline-flex items-center gap-2.5 px-4 py-3 rounded-2xl font-mono text-xs font-semibold uppercase tracking-wider bg-surface text-boneMuted hover:text-bone border border-hairline transition-all"
+        >
+          <svg class="w-5 h-5 text-vermilion" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 2a4 4 0 0 1 4 4v2h2a2 2 0 0 1 2 2v8a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-8a2 2 0 0 1 2-2h2V6a4 4 0 0 1 4-4Z"/>
+            <circle cx="9" cy="13" r="1.5" fill="currentColor"/>
+            <circle cx="15" cy="13" r="1.5" fill="currentColor"/>
+          </svg>
+          <span>AI AGENTS &amp; SAAS</span>
+        </button>
+
+        <button
+          onclick="filterPortfolio('enterprise')"
+          data-filter="enterprise"
+          class="filter-btn inline-flex items-center gap-2.5 px-4 py-3 rounded-2xl font-mono text-xs font-semibold uppercase tracking-wider bg-surface text-boneMuted hover:text-bone border border-hairline transition-all"
+        >
+          <svg class="w-5 h-5 text-emeraldSignal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+          <span>IT &amp; CLOUD SOLUTIONS</span>
+        </button>
+
+        <button
+          onclick="filterPortfolio('consumer')"
+          data-filter="consumer"
+          class="filter-btn inline-flex items-center gap-2.5 px-4 py-3 rounded-2xl font-mono text-xs font-semibold uppercase tracking-wider bg-surface text-boneMuted hover:text-bone border border-hairline transition-all"
+        >
+          <svg class="w-5 h-5 text-volt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>EDUCATION &amp; CONSUMER</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ASYMMETRIC BENTO GRID OF GIANT CARD-SHAPED VIDEO BUTTONS -->
+    <div id="video-cards-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mt-10">
+      <!-- Populated dynamically from the rich client dataset below so filtering & canvas animations stay 100% synchronized -->
+    </div>
+
+    <!-- ===================================================================
+         +10 MORE ACTIVE WEEKLY PARTNER BRANDS (INTERACTIVE ROSTER MATRIX)
+    ==================================================================== -->
+    <div id="client-roster" class="mt-20 pt-16 border-t border-hairline">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-volt/15 border border-volt/40 text-volt font-mono text-xs font-bold uppercase tracking-wider mb-3">
+            <span>● COMPLETE 15-BRAND WEEKLY ARCHIVE</span>
+          </div>
+          <h3 class="font-display font-extrabold text-2xl sm:text-4xl text-bone">
+            +10 MORE SCALING BUSINESSES ON WEEKLY RETAINER
+          </h3>
+          <p class="text-boneMuted text-sm sm:text-base mt-1">
+            Click any partner card below to immediately launch their winning weekly Ad-Video inside the Cinema Player.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3 font-mono text-xs text-boneMuted">
+          <span class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface border border-hairline text-bone">
+            <svg class="w-4 h-4 text-vermilion" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            EVERY ROW IS A PLAYABLE AD CARD
+          </span>
         </div>
       </div>
-      <div class="card">
-        <h3>✅ Sleep Checklist</h3>
-        <ul class="checklist" id="checklist"></ul>
+
+      <!-- 10 Additional Partner Video Card Buttons Grid -->
+      <div id="ten-more-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- Injected via JS from the 10 additional partner campaigns -->
       </div>
     </div>
-  </div>
-</div>
 
-<script>
-const DATA = [
-  {
-    date: "29 Oct · Wed",
-    kicker: "Day 1 — Laws & Atoms",
-    title: "Laws of Motion & <em>Atomic Structure</em>",
-    desc: "Physics Laws of Motion (Banking/Friction) + Chem Structure of Atom (Bohr/Quantum) + Trig P1.",
-    blocks: [
-      {time:"06:30-09:30", subj:"Physics", cls:"phy", title:"Laws of Motion", tasks:["Derive F=ma vector form","Derive Banking (tanθ=v²/rg) blind","Solve 8 PYQs on friction/recoil"], goal:"Banking derivation must be perfect."},
-      {time:"09:50-12:30", subj:"Chemistry", cls:"che", title:"Atomic Structure", tasks:["Bohr Formulas (E, r, v)","4 Quantum Numbers Table","Cu/Cr Configurations & s,p,d shapes"], goal:"Quantum numbers table memorized cold."},
-      {time:"13:00-16:00", subj:"Maths", cls:"mat", title:"Trigonometry P1", tasks:["Compound/Double angle formulas","Memorize all 20+ identities","15 PYQs (2023-2025)"], goal:"No formula peeking allowed."},
-      {time:"19:30-22:00", subj:"Chemistry", cls:"che", title:"Writing Drill", tasks:["Draw orbital shapes blind","Write 10 electron configs","Red pen corrections"], goal:"Identify mistakes in shapes."},
-      {time:"22:00-00:00", subj:"Revision", cls:"rev", title:"Night Consolidation", tasks:["A4 Formula sheet update","Write Banking derivation 1 last time","Prep desk for Day 2"]}
-    ],
-    checks: ["Banking proof written blind?","Quantum number table done?","Trig identities memorized?","A4 sheet updated?"]
-  },
-  {
-    date: "30 Oct · Thu",
-    kicker: "Day 2 — Energy & Bonding",
-    title: "Work-Energy & <em>Chemical Bonding</em>",
-    desc: "Physics Work-Energy Theorem + Rotation (MI) + Chem Bonding (VSEPR/Hybrid) + Complex Numbers.",
-    blocks: [
-      {time:"06:30-09:30", subj:"Physics", cls:"phy", title:"Work & Rotation", tasks:["Derive Work-Energy Theorem","Parallel & Perpendicular Axis Theorems","Solve 6 PYQs (Moment of Inertia)"], goal:"Rotation theorems are 5-mark gold."},
-      {time:"09:50-12:30", subj:"Chemistry", cls:"che", title:"Chemical Bonding", tasks:["VSEPR Geometries (NH3, H2O, SF6)","Hybridization (sp, sp2, sp3)","4 PYQs on Bonding"], goal:"Shape table must be flawless."},
-      {time:"13:00-16:00", subj:"Maths", cls:"mat", title:"Complex & Trig P2", tasks:["General solutions (sinx=0)","Complex Modulus/Argument/Polar","12 PYQs Mixed"], goal:"Speed: Solve Complex in 3 mins."},
-      {time:"19:30-22:00", subj:"Chemistry", cls:"che", title:"Bonding Drill", tasks:["Write VSEPR table blind","Bond angle memorization","Hybridization calculation drill"]}
-    ],
-    checks: ["Work-Energy theorem derived?","MI theorems understood?","VSEPR table drawn blind?","Complex polar form mastered?"]
-  },
-  {
-    date: "31 Oct · Fri",
-    kicker: "Day 3 — Thermo & SHM",
-    title: "Thermodynamics & <em>Waves</em>",
-    desc: "Physics Thermo (Carnot) + SHM (Energy) + Chem Thermo/Equilibrium + Limits & Derivatives.",
-    blocks: [
-      {time:"06:30-09:30", subj:"Physics", cls:"phy", title:"Thermo & SHM", tasks:["Derive Cp-Cv=R","Carnot Efficiency proof","SHM Energy (1/2 kA²)","Pendulum T=2π√(l/g)"], goal:"Carnot is a 100% repeater."},
-      {time:"09:50-12:30", subj:"Chemistry", cls:"che", title:"Thermo & Equil.", tasks:["Hess Law & ΔG=ΔH-TΔS","Kp=Kc(RT)^Δn Relation","Le Chatelier Principle application"], goal:"Numerical clarity on Hess Law."},
-      {time:"13:00-16:00", subj:"Maths", cls:"mat", title:"Limits & Deriv.", tasks:["Standard Limits (sinx/x)","First Principle Derivatives (sin, cos)","10 PYQs"], goal:"First Principle steps are vital."}
-    ],
-    checks: ["Cp-Cv derivation done?","Carnot cycle explained?","Hess law numericals solved?","First principle derivatives done?"]
-  },
-  {
-    date: "02 Nov · Sun",
-    kicker: "Day 4 — Fluids & GOC",
-    title: "Fluids & <em>Organic/English</em>",
-    desc: "Final Overdrive. Physics Fluids + Chem GOC/Hydrocarbons + English Mock Seal.",
-    blocks: [
-      {time:"06:30-09:30", subj:"Physics", cls:"phy", title:"Fluids & Solids", tasks:["Derive Bernoulli's Theorem","Stokes Law & Terminal Velocity","6 PYQs (Surface Tension)"], goal:"Bernoulli proof is top priority."},
-      {time:"09:50-12:30", subj:"Chemistry", cls:"che", title:"GOC & Organic", tasks:["IUPAC 10 Rules","Wurtz, Kolbe, Ozonolysis","6 PYQs (Conversions)"], goal:"Master the named reactions."},
-      {time:"15:50-19:00", subj:"English", cls:"rev", title:"English Prep", tasks:["Solve 5-year PYQs","Memorize Letter/Notice formats","Read 2 unseen passages"], goal:"Ensure formats are precise."},
-      {time:"19:30-22:00", subj:"Mock", cls:"rev", title:"Seal the Sprint", tasks:["Solve Section A+B Physics (Timed)","Stack all 4 A4 Sheets","Review English Format one last time"]}
-    ],
-    checks: ["Bernoulli derived?","Wurtz/Ozonolysis memorized?","English formats checked?","Full syllabus A4 stack ready?"]
-  }
-];
+  </section>
 
-let currentDay = 0;
-let state = JSON.parse(localStorage.getItem('jkbose_sprint_v2')) || {};
+  <!-- =====================================================================
+       4. THE "NO RESULTS = 100% MONEY RETURN" GUARANTEE VAULT (INVERTED BONE)
+  ====================================================================== -->
+  <section id="guarantee-vault" class="bg-bone text-carbon border-y-4 border-vermilion relative overflow-hidden">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-8 py-20 sm:py-28">
+      
+      <!-- Top Manifesto Header -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pb-16 border-b border-hairline-dark">
+        <div class="lg:col-span-8 space-y-5">
+          <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-carbon text-volt font-mono text-xs font-bold uppercase tracking-widest">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+            <span>THE ZERO-BS PERFORMANCE CONTRACT</span>
+          </div>
 
-function init() {
-  render();
-  startCountdown();
-}
+          <h2 class="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight leading-[0.95] text-carbon">
+            IF YOU GET NO RESULTS, <br />
+            <span class="bg-vermilion text-bone px-3 py-0.5 rounded-2xl inline-block mt-1">100% MONEY RETURN</span>
+            <span class="font-serif italic font-normal">guaranteed.</span>
+          </h2>
 
-function render() {
-  const day = DATA[currentDay];
-  document.getElementById('currDate').innerText = day.date;
-  document.getElementById('dayLabel').innerText = day.kicker;
-  document.getElementById('mainTitle').innerHTML = day.title;
-  document.getElementById('mainDesc').innerHTML = day.desc;
-  document.getElementById('topDay').innerText = `Day ${currentDay+1}/4`;
-
-  // Render Blocks
-  let timelineHtml = '';
-  day.blocks.forEach((b, bi) => {
-    timelineHtml += `
-      <div class="block ${b.cls}">
-        <div class="block-head">
-          <span class="time">${b.time}</span>
-          <span class="subj">${b.subj}</span>
+          <p class="text-lg sm:text-xl text-carbon/80 max-w-3xl font-medium leading-relaxed">
+            Traditional agencies charge hefty retainers for "brand awareness" and vanish when ROAS tanks. We operate on one uncompromising rule: <strong class="text-carbon underline decoration-vermilion decoration-2">if our weekly ad-videos do not generate measurable conversions for your business, we refund 100% of your fee.</strong>
+          </p>
         </div>
-        <div class="btitle">${b.title}</div>
-        <ul class="tasks">
-          ${b.tasks.map((t, ti) => {
-            const id = `d${currentDay}b${bi}t${ti}`;
-            const checked = state[id] ? 'checked' : '';
-            return `<li class="${checked}" onclick="toggle('${id}')"><input type="checkbox" ${checked}> <span>${t}</span></li>`;
-          }).join('')}
-        </ul>
-        ${b.goal ? `<div class="goal">🎯 ${b.goal}</div>` : ''}
+
+        <!-- Giant Rotating Escrowed Contract Seal -->
+        <div class="lg:col-span-4 flex justify-center lg:justify-end">
+          <div class="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full bg-carbon text-bone flex items-center justify-center p-4 shadow-2xl border-4 border-vermilion">
+            <!-- Rotating SVG Text Ring -->
+            <svg class="w-full h-full spin-slow" viewBox="0 0 200 200">
+              <defs>
+                <path id="circlePath" d="M 100, 100 m -74, 0 a 74,74 0 1,1 148,0 a 74,74 0 1,1 -148,0" />
+              </defs>
+              <text fill="#D4FF00" font-family="IBM Plex Mono" font-size="11.5" font-weight="700" letter-spacing="2.8px">
+                <textPath href="#circlePath">
+                  • NO RESULTS = 100% MONEY BACK • WEEKLY AD CONVERSIONS
+                </textPath>
+              </text>
+            </svg>
+            <!-- Center Big Modern Shield Icon -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <svg class="w-14 h-14 text-vermilion" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              <span class="font-display font-extrabold text-xl text-bone mt-1">100%</span>
+              <span class="font-mono text-[10px] uppercase tracking-widest text-volt">ESCROWED REFUND</span>
+            </div>
+          </div>
+        </div>
       </div>
-    `;
-  });
-  document.getElementById('timeline').innerHTML = timelineHtml;
 
-  // Render Checklist
-  let checkHtml = '';
-  day.checks.forEach((c, ci) => {
-    const id = `d${currentDay}c${ci}`;
-    const checked = state[id] ? 'checked' : '';
-    checkHtml += `<li class="${checked}" onclick="toggle('${id}')"><input type="checkbox" ${checked}> ${c}</li>`;
-  });
-  document.getElementById('checklist').innerHTML = checkHtml;
+      <!-- 3-PILLAR RISK-REVERSAL ARCHITECTURE WITH BIG MODERN ICONS -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 py-16 border-b border-hairline-dark">
+        
+        <!-- Pillar 1 -->
+        <div class="bg-white/70 border-2 border-carbon rounded-[28px] p-7 sm:p-8 shadow-[8px_8px_0px_#0A0A0C] flex flex-col justify-between">
+          <div>
+            <div class="w-16 h-16 rounded-2xl bg-carbon text-volt flex items-center justify-center mb-6">
+              <!-- Big Modern Calendar/Velocity Icon -->
+              <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <rect x="3" y="4" width="18" height="18" rx="3"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+                <path d="m9 16 2 2 4-4"/>
+              </svg>
+            </div>
+            <div class="font-mono text-xs font-bold uppercase tracking-widest text-vermilion mb-2">STEP 01 // RELENTLESS CADENCE</div>
+            <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-carbon mb-3">
+              Weekly Ongoing Ad Drops
+            </h3>
+            <p class="text-carbon/80 text-sm sm:text-base leading-relaxed">
+              Ad fatigue kills campaigns. That’s why our clients (<span class="font-semibold">royaltrading.com</span>, <span class="font-semibold">digisoftsolutions.in</span>, <span class="font-semibold">unichildgroup.com</span>) receive fresh, battle-tested hook variations and new video creatives <strong>every single week</strong>.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-hairline-dark font-mono text-xs font-bold uppercase flex items-center justify-between">
+            <span>DELIVERY SPEED</span>
+            <span class="px-2.5 py-1 rounded-md bg-carbon text-volt">EVERY 7 DAYS</span>
+          </div>
+        </div>
 
-  // Update Buttons
-  for(let i=0; i<4; i++) {
-    document.getElementById(`btn${i}`).className = i === currentDay ? 'active' : '';
-  }
+        <!-- Pillar 2 -->
+        <div class="bg-white/70 border-2 border-carbon rounded-[28px] p-7 sm:p-8 shadow-[8px_8px_0px_#0A0A0C] flex flex-col justify-between">
+          <div>
+            <div class="w-16 h-16 rounded-2xl bg-vermilion text-bone flex items-center justify-center mb-6">
+              <!-- Big Modern Target/Crosshair Icon -->
+              <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="6"/>
+                <circle cx="12" cy="12" r="2"/>
+              </svg>
+            </div>
+            <div class="font-mono text-xs font-bold uppercase tracking-widest text-vermilion mb-2">STEP 02 // VERIFIED BENCHMARK</div>
+            <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-carbon mb-3">
+              Hard Conversion KPI Lock
+            </h3>
+            <p class="text-carbon/80 text-sm sm:text-base leading-relaxed">
+              Before we render frame one, we lock in your clear target metric: lower CPA, higher outbound CTR, or qualified demos/sales. Every script, 3-second pattern interrupt, and CTA is engineered solely for that number.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-hairline-dark font-mono text-xs font-bold uppercase flex items-center justify-between">
+            <span>NORTH STAR METRIC</span>
+            <span class="px-2.5 py-1 rounded-md bg-vermilion text-bone">NET CONVERSIONS</span>
+          </div>
+        </div>
 
-  updateProgress();
-}
+        <!-- Pillar 3 -->
+        <div class="bg-carbon text-bone border-2 border-carbon rounded-[28px] p-7 sm:p-8 shadow-[8px_8px_0px_#FF3B1D] flex flex-col justify-between">
+          <div>
+            <div class="w-16 h-16 rounded-2xl bg-volt text-carbon flex items-center justify-center mb-6">
+              <!-- Big Modern Refund Vault Icon -->
+              <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+                <path d="M12 7v5l3 3"/>
+              </svg>
+            </div>
+            <div class="font-mono text-xs font-bold uppercase tracking-widest text-volt mb-2">STEP 03 // ZERO-RISK CLAUSE</div>
+            <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-bone mb-3">
+              100% Money-Return Guarantee
+            </h3>
+            <p class="text-boneMuted text-sm sm:text-base leading-relaxed">
+              If you get no conversion lift or results from our ad-videos, simply trigger your written guarantee clause and receive a <strong class="text-volt">100% full money return</strong>. You keep the insights; we absorb 100% of the creative risk.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-hairline font-mono text-xs font-bold uppercase flex items-center justify-between text-volt">
+            <span>CLIENT RISK EXPOSURE</span>
+            <span class="px-2.5 py-1 rounded-md bg-volt text-carbon">$0.00 / ₹0</span>
+          </div>
+        </div>
 
-function toggle(id) {
-  state[id] = !state[id];
-  localStorage.setItem('jkbose_sprint_v2', JSON.stringify(state));
-  render();
-}
+      </div>
 
-function switchDay(idx) {
-  currentDay = idx;
-  render();
-}
+      <!-- =================================================================
+           INTERACTIVE WEEKLY AD ROI & GUARANTEE CERTIFICATE SIMULATOR
+      ================================================================== -->
+      <div id="roi-simulator" class="pt-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+          
+          <!-- Left 6 Columns: Sliders & Inputs -->
+          <div class="lg:col-span-6 bg-white border-2 border-carbon rounded-[28px] p-6 sm:p-9 shadow-[10px_10px_0px_#0A0A0C] flex flex-col justify-between space-y-6">
+            <div>
+              <div class="flex items-center justify-between gap-4 mb-4">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest text-vermilion">
+                  INTERACTIVE CONVERSION SIMULATOR
+                </span>
+                <!-- Currency Toggle (INR / USD) -->
+                <div class="inline-flex rounded-xl bg-bone p-1 border border-carbon/20 font-mono text-xs font-bold">
+                  <button type="button" id="curr-usd" onclick="setCurrency('USD')" class="px-3 py-1 rounded-lg bg-carbon text-volt transition-all">$ USD</button>
+                  <button type="button" id="curr-inr" onclick="setCurrency('INR')" class="px-3 py-1 rounded-lg text-carbon transition-all">₹ INR</button>
+                </div>
+              </div>
 
-function updateProgress() {
-  // Day Progress
-  const dayPrefix = `d${currentDay}`;
-  const dayTasks = Object.keys(state).filter(k => k.startsWith(dayPrefix));
-  const dayTotal = DATA[currentDay].blocks.reduce((acc, b) => acc + b.tasks.length, 0) + DATA[currentDay].checks.length;
-  const dayDone = dayTasks.filter(k => state[k]).length;
-  const dayPerc = Math.round((dayDone / dayTotal) * 100) || 0;
-  document.getElementById('dayPerc').innerText = dayPerc + '%';
-  document.getElementById('dayFill').style.width = dayPerc + '%';
+              <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-carbon">
+                Simulate Your Weekly Ad Lift &amp; Guarantee Coverage
+              </h3>
+            </div>
 
-  // Total Progress
-  let totalTasks = 0;
-  DATA.forEach(d => {
-    d.blocks.forEach(b => totalTasks += b.tasks.length);
-    totalTasks += d.checks.length;
-  });
-  const totalDone = Object.values(state).filter(v => v).length;
-  const warPerc = Math.round((totalDone / totalTasks) * 100) || 0;
-  document.getElementById('warPerc').innerText = warPerc + '%';
-  document.getElementById('warFill').style.width = warPerc + '%';
-}
+            <!-- Slider 1: Current Monthly Ad Spend -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center font-mono text-xs font-bold uppercase">
+                <span class="text-carbon/70">1. YOUR MONTHLY AD SPEND</span>
+                <span id="spend-display" class="text-lg font-display font-extrabold text-carbon bg-volt px-3 py-0.5 rounded-lg border border-carbon">$15,000 / mo</span>
+              </div>
+              <input
+                type="range"
+                id="spend-slider"
+                min="2000"
+                max="100000"
+                step="1000"
+                value="15000"
+                oninput="updateROISimulator()"
+                class="brutalist-slider"
+              />
+              <div class="flex justify-between font-mono text-[11px] text-carbon/60">
+                <span id="spend-min-label">$2K/mo</span>
+                <span id="spend-max-label">$100K+/mo</span>
+              </div>
+            </div>
 
-function startCountdown() {
-  const target = new Date("Nov 3, 2026 10:00:00").getTime();
-  setInterval(() => {
-    const now = new Date().getTime();
-    const diff = target - now;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    document.getElementById('timer').innerText = `English in ${days}d ${hours}h`;
-  }, 1000);
-}
+            <!-- Slider 2: Current Ad CTR -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center font-mono text-xs font-bold uppercase">
+                <span class="text-carbon/70">2. CURRENT VIDEO AD CTR (%)</span>
+                <span id="ctr-display" class="text-lg font-display font-extrabold text-carbon bg-bone px-3 py-0.5 rounded-lg border border-carbon">1.1% CTR</span>
+              </div>
+              <input
+                type="range"
+                id="ctr-slider"
+                min="0.4"
+                max="3.5"
+                step="0.1"
+                value="1.1"
+                oninput="updateROISimulator()"
+                class="brutalist-slider"
+              />
+              <div class="flex justify-between font-mono text-[11px] text-carbon/60">
+                <span>0.4% (Fatigued Ads)</span>
+                <span>3.5% (Strong Baseline)</span>
+              </div>
+            </div>
 
-function resetProgress() {
-  if(confirm("Wipe all progress?")) {
-    state = {};
-    localStorage.removeItem('jkbose_sprint_v2');
-    render();
-  }
-}
+            <!-- Selector 3: Weekly Ad Drop Cadence -->
+            <div class="space-y-2">
+              <label class="block font-mono text-xs font-bold uppercase text-carbon/70">
+                3. SELECT WEEKLY AD-VIDEO CADENCE
+              </label>
+              <div class="grid grid-cols-3 gap-2.5" id="cadence-buttons">
+                <button
+                  type="button"
+                  onclick="setCadence(2)"
+                  data-cadence="2"
+                  class="cadence-btn py-3 px-3 rounded-2xl border-2 border-carbon font-mono text-xs font-bold uppercase bg-bone text-carbon hover:bg-carbon hover:text-bone transition-all"
+                >
+                  2 Ads / Wk
+                </button>
+                <button
+                  type="button"
+                  onclick="setCadence(4)"
+                  data-cadence="4"
+                  class="cadence-btn py-3 px-3 rounded-2xl border-2 border-carbon font-mono text-xs font-bold uppercase bg-carbon text-volt transition-all"
+                >
+                  4 Ads / Wk ★
+                </button>
+                <button
+                  type="button"
+                  onclick="setCadence(8)"
+                  data-cadence="8"
+                  class="cadence-btn py-3 px-3 rounded-2xl border-2 border-carbon font-mono text-xs font-bold uppercase bg-bone text-carbon hover:bg-carbon hover:text-bone transition-all"
+                >
+                  8 Ads / Wk
+                </button>
+              </div>
+            </div>
+          </div>
 
-init();
-</script>
+          <!-- Right 6 Columns: Live Output + Protected Guarantee Certificate -->
+          <div class="lg:col-span-6 bg-carbon text-bone border-2 border-carbon rounded-[28px] p-6 sm:p-9 shadow-[10px_10px_0px_#FF3B1D] flex flex-col justify-between relative overflow-hidden">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-5 border-b border-hairline">
+              <div>
+                <div class="font-mono text-xs text-volt uppercase tracking-widest font-bold">
+                  LIVE PROJECTION + REFUND WARRANT
+                </div>
+                <div class="font-display font-bold text-xl text-bone mt-0.5">
+                  Based on 15+ Active Weekly Client Benchmarks
+                </div>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-emeraldSignal/20 border border-emeraldSignal text-emeraldSignal font-mono text-xs font-bold">
+                100% PROTECTED
+              </span>
+            </div>
+
+            <!-- Projected Metrics Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 my-6">
+              <div class="p-5 rounded-2xl bg-surface border border-hairline">
+                <div class="font-mono text-xs uppercase text-boneMuted">PROJECTED MONTHLY REVENUE LIFT</div>
+                <div id="proj-revenue" class="font-display font-extrabold text-3xl sm:text-4xl text-volt mt-2">+$54,200/mo</div>
+                <div class="font-mono text-[11px] text-emeraldSignal mt-1">▲ Est. 3.6x - 4.9x Creative ROAS</div>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-surface border border-hairline">
+                <div class="font-mono text-xs uppercase text-boneMuted">PROJECTED OUTBOUND CTR &amp; CPA</div>
+                <div id="proj-ctr" class="font-display font-extrabold text-3xl sm:text-4xl text-bone mt-2">3.42% CTR</div>
+                <div id="proj-cpa" class="font-mono text-[11px] text-volt mt-1">▼ -46% Lower Acquisition Cost</div>
+              </div>
+            </div>
+
+            <!-- Escrowed Guarantee Certificate Box -->
+            <div class="p-5 rounded-2xl bg-gradient-to-r from-vermilion/20 to-volt/10 border border-volt/50 space-y-3">
+              <div class="flex items-center justify-between font-mono text-xs">
+                <span class="text-volt font-bold uppercase">★ AUTO-LOCKED MONEY-RETURN CLAUSE</span>
+                <span id="cert-cadence" class="text-bone">16 NEW AD-VIDEOS / MO</span>
+              </div>
+              <p class="text-xs sm:text-sm text-bone leading-relaxed">
+                “If our <span id="cert-ads-count" class="text-volt font-bold">4 weekly ad-videos</span> do not beat your current <span id="cert-ctr-base" class="underline font-bold">1.1% CTR</span> baseline and produce verified conversions within your sprint, <strong class="text-volt">100% of your creative investment is refunded immediately.</strong>”
+              </p>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <button
+                type="button"
+                onclick="openBriefModal()"
+                class="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-3 bg-volt text-carbon hover:bg-bone font-display font-extrabold text-sm sm:text-base px-6 py-4 rounded-2xl transition-all shadow-lg"
+              >
+                <span>LOCK IN THIS GUARANTEED SPRINT</span>
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M13 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       5. FOOTER & DIRECT SPRINT LAUNCHER
+  ====================================================================== -->
+  <footer class="bg-carbon text-bone border-t border-hairline">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-8 py-16 sm:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start pb-16 border-b border-hairline">
+        
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface border border-hairline font-mono text-xs text-volt">
+            <span class="w-2 h-2 rounded-full bg-volt animate-ping"></span>
+            <span>2 SLOTS OPEN FOR THIS WEEK’S AD DROP</span>
+          </div>
+          <h2 class="font-display font-extrabold text-4xl sm:text-6xl tracking-tight leading-[0.95]">
+            READY FOR WEEKLY ADS THAT <span class="text-vermilion">CONVERT</span> OR COST YOU <span class="font-serif italic font-normal text-volt">nothing?</span>
+          </h2>
+          <p class="text-boneMuted text-base sm:text-lg max-w-2xl">
+            Join <span class="text-bone">royaltrading.com</span>, <span class="text-bone">Nextaniatechnologies.com</span>, <span class="text-bone">digisoftsolutions.in</span>, <span class="text-bone">beastagent.nextania.co</span>, <span class="text-bone">unichildgroup.com</span> and 10+ other high-growth businesses scaling with weekly performance video ads.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-2">
+            <button
+              onclick="openBriefModal()"
+              class="inline-flex items-center gap-3 bg-vermilion hover:bg-volt text-bone hover:text-carbon font-display font-extrabold text-base px-8 py-4 rounded-full transition-all shadow-xl"
+            >
+              <span>START YOUR RISK-FREE WEEK</span>
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 17L17 7M17 7H8M17 7V16"/>
+              </svg>
+            </button>
+            <button
+              onclick="openVideoModal('royaltrading')"
+              class="inline-flex items-center gap-3 bg-surface hover:bg-surfaceHover text-bone border border-hairline font-mono text-xs uppercase tracking-wider px-6 py-4 rounded-full transition-all"
+            >
+              <svg class="w-4 h-4 text-volt" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <span>WATCH #1 CONVERTING AD</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Verified Client Domains List -->
+        <div class="lg:col-span-5 bg-surface rounded-[28px] p-6 sm:p-8 border border-hairline">
+          <div class="font-mono text-xs uppercase tracking-widest text-volt font-bold mb-4">
+            VERIFIED WEEKLY AD PARTNERS (15+ ACTIVE)
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs">
+            <button onclick="openVideoModal('royaltrading')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>01. royaltrading.com</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('nextania')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>02. Nextaniatechnologies.com</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('digisoft')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>03. digisoftsolutions.in</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('beastagent')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>04. beastagent.nextania.co</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('unichild')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>05. unichildgroup.com</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('finedge')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>06. finedgecapital.io</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('velocesaas')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>07. velocesaas.com</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('nexapay')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>08. nexapay.in</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('aethercloud')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>09. aethercloud.ai</span>
+              <span>▶</span>
+            </button>
+            <button onclick="openVideoModal('scaleops')" class="text-left p-2.5 rounded-xl bg-carbon/60 hover:bg-volt hover:text-carbon transition-colors flex items-center justify-between">
+              <span>10. scaleops.co</span>
+              <span>▶</span>
+            </button>
+          </div>
+          <div class="mt-4 pt-3 border-t border-hairline flex items-center justify-between text-[11px] font-mono text-boneMuted">
+            <span>+ 5 MORE ONGOING WEEKLY CLIENTS ABOVE</span>
+            <span class="text-emeraldSignal">● 100% RETENTION</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-boneMuted">
+        <div>© 2026 KINETIC//ROAS™ PERFORMANCE AD STUDIO. ALL RIGHTS RESERVED.</div>
+        <div class="text-volt">CORE PLEDGE: NO RESULTS = 100% MONEY RETURN GUARANTEE.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       INTERACTIVE CINEMA VIDEO PLAYER MODAL (OPENS WHEN ANY CARD BUTTON IS CLICKED)
+  ====================================================================== -->
+  <div
+    id="cinema-modal"
+    class="fixed inset-0 z-50 hidden bg-carbon/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="w-full max-w-[1280px] bg-surface border-2 border-bone/20 rounded-[32px] overflow-hidden shadow-2xl my-auto">
+      
+      <!-- Modal Top Command Bar -->
+      <div class="px-5 sm:px-8 py-4 bg-carbon border-b border-hairline flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="h-3 w-3 rounded-full bg-vermilion animate-ping"></span>
+          <span id="modal-client-badge" class="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-volt">
+            ROYALTRADING.COM // WEEKLY AD SPRINT
+          </span>
+          <span id="modal-week-badge" class="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-surface border border-hairline font-mono text-[11px] text-boneMuted">
+            ONGOING WEEK 24
+          </span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Web Audio Synth Sound Toggle Button -->
+          <button
+            type="button"
+            id="modal-audio-btn"
+            onclick="toggleModalAudio()"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface hover:bg-volt hover:text-carbon border border-hairline font-mono text-xs font-bold uppercase transition-all"
+          >
+            <svg id="audio-icon" class="w-4 h-4 text-volt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+            <span id="audio-label">SYNTH AUDIO: ON</span>
+          </button>
+
+          <!-- Close Button -->
+          <button
+            type="button"
+            onclick="closeVideoModal()"
+            class="w-10 h-10 rounded-full bg-vermilion text-bone hover:bg-bone hover:text-carbon flex items-center justify-center transition-colors"
+            aria-label="Close video player"
+          >
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Body: Left 7 Cols Interactive Ad Video Canvas + Right 5 Cols Conversion Anatomy -->
+      <div class="grid grid-cols-1 lg:grid-cols-12">
+        
+        <!-- Left 7 Columns: Live Multi-Scene Ad Video Simulation -->
+        <div class="lg:col-span-7 bg-carbon p-4 sm:p-6 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-hairline">
+          
+          <!-- Aspect Ratio Video Container -->
+          <div class="relative w-full h-[320px] sm:h-[420px] rounded-2xl overflow-hidden border border-hairline bg-[#070709]">
+            <canvas id="modal-video-canvas" class="w-full h-full block"></canvas>
+
+            <!-- Floating Ad Scene Phase Indicator -->
+            <div class="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
+              <div id="modal-phase-pill" class="px-3.5 py-1.5 rounded-full bg-carbon/90 border border-volt/50 font-mono text-xs font-bold text-volt uppercase">
+                PHASE 1: 0-3s PATTERN INTERRUPT HOOK
+              </div>
+              <div id="modal-timecode" class="px-3 py-1 rounded-lg bg-carbon/90 font-mono text-xs text-bone">
+                00:04 / 00:30
+              </div>
+            </div>
+
+            <!-- Center Play/Pause Overlay Trigger -->
+            <button
+              type="button"
+              onclick="toggleModalPlayPause()"
+              class="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-vermilion/90 hover:bg-volt text-bone hover:text-carbon flex items-center justify-center shadow-lg transition-all"
+              aria-label="Play or Pause Ad Simulation"
+            >
+              <svg id="modal-play-icon" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16"/>
+                <rect x="14" y="4" width="4" height="16"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Interactive Timeline Scrubber & Scene Jump Buttons -->
+          <div class="mt-4 space-y-3">
+            <!-- Progress Bar -->
+            <div class="w-full h-2.5 bg-surface rounded-full overflow-hidden cursor-pointer border border-hairline" onclick="scrubModalVideo(event)">
+              <div id="modal-progress-bar" class="h-full bg-gradient-to-r from-vermilion to-volt w-1/3 transition-all duration-150"></div>
+            </div>
+
+            <!-- 3 Winning Ad Phases Switcher -->
+            <div class="grid grid-cols-3 gap-2 font-mono text-[11px]">
+              <button type="button" onclick="jumpToAdPhase(0)" class="p-2.5 rounded-xl bg-surface hover:bg-surfaceHover border border-hairline text-left transition-all">
+                <div class="text-volt font-bold">00:00 — THE HOOK</div>
+                <div class="text-boneMuted truncate">3-Sec Scroll Stopper</div>
+              </button>
+              <button type="button" onclick="jumpToAdPhase(1)" class="p-2.5 rounded-xl bg-surface hover:bg-surfaceHover border border-hairline text-left transition-all">
+                <div class="text-vermilion font-bold">00:08 — THE PROOF</div>
+                <div class="text-boneMuted truncate">Live Product / Demo</div>
+              </button>
+              <button type="button" onclick="jumpToAdPhase(2)" class="p-2.5 rounded-xl bg-surface hover:bg-surfaceHover border border-hairline text-left transition-all">
+                <div class="text-emeraldSignal font-bold">00:20 — THE CTA</div>
+                <div class="text-boneMuted truncate">Urgency Conversion Push</div>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right 5 Columns: Ad Conversion Breakdown & Weekly Variation Switcher -->
+        <div class="lg:col-span-5 p-5 sm:p-7 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-2">
+              <span id="modal-category" class="font-mono text-xs uppercase px-3 py-1 rounded-full bg-volt/15 text-volt font-bold">
+                FINTECH &amp; ALGO TRADING
+              </span>
+              <a
+                id="modal-client-link"
+                href="https://royaltrading.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-mono text-xs text-boneMuted hover:text-volt underline"
+              >
+                royaltrading.com ↗
+              </a>
+            </div>
+
+            <h3 id="modal-title" class="font-display font-extrabold text-2xl sm:text-3xl text-bone leading-tight">
+              Algorithmic Liquidity Hook — 3-Second Pattern Interrupt
+            </h3>
+
+            <!-- Verified Telemetry Metrics Grid -->
+            <div class="grid grid-cols-3 gap-2.5 pt-2">
+              <div class="p-3 rounded-2xl bg-carbon border border-hairline">
+                <div class="font-mono text-[10px] text-boneMuted uppercase">CONVERSION LIFT</div>
+                <div id="modal-metric-1" class="font-display font-extrabold text-lg sm:text-xl text-volt mt-0.5">+312%</div>
+              </div>
+              <div class="p-3 rounded-2xl bg-carbon border border-hairline">
+                <div class="font-mono text-[10px] text-boneMuted uppercase">3-SEC HOOK RATE</div>
+                <div id="modal-metric-2" class="font-display font-extrabold text-lg sm:text-xl text-bone mt-0.5">48.2%</div>
+              </div>
+              <div class="p-3 rounded-2xl bg-carbon border border-hairline">
+                <div class="font-mono text-[10px] text-boneMuted uppercase">CADENCE STATUS</div>
+                <div id="modal-metric-3" class="font-display font-extrabold text-lg sm:text-xl text-emeraldSignal mt-0.5">WK 24</div>
+              </div>
+            </div>
+
+            <!-- Weekly Variation Switcher -->
+            <div class="space-y-2 pt-2">
+              <div class="font-mono text-xs uppercase text-boneMuted">
+                SWITCH WEEKLY CREATIVE ITERATION:
+              </div>
+              <div class="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onclick="setAdVariation(0)"
+                  id="var-btn-0"
+                  class="py-2 px-3 rounded-xl font-mono text-xs font-bold bg-volt text-carbon transition-all"
+                >
+                  Var A: Pain Hook
+                </button>
+                <button
+                  type="button"
+                  onclick="setAdVariation(1)"
+                  id="var-btn-1"
+                  class="py-2 px-3 rounded-xl font-mono text-xs font-bold bg-carbon text-boneMuted hover:text-bone border border-hairline transition-all"
+                >
+                  Var B: Data Proof
+                </button>
+                <button
+                  type="button"
+                  onclick="setAdVariation(2)"
+                  id="var-btn-2"
+                  class="py-2 px-3 rounded-xl font-mono text-xs font-bold bg-carbon text-boneMuted hover:text-bone border border-hairline transition-all"
+                >
+                  Var C: Offer Stack
+                </button>
+              </div>
+            </div>
+
+            <!-- Why It Converted Breakdown -->
+            <div class="p-4 rounded-2xl bg-carbon/80 border border-hairline space-y-2">
+              <div class="font-mono text-xs font-bold text-vermilion uppercase">
+                WHY THIS WEEKLY AD PRINTS CONVERSIONS:
+              </div>
+              <p id="modal-breakdown" class="text-xs sm:text-sm text-boneMuted leading-relaxed">
+                Replaced slow brand intros with a high-contrast terminal P&amp;L counter in the first 1.2 seconds, paired with kinetic captions and a direct risk-free funded account challenge CTA.
+              </p>
+            </div>
+          </div>
+
+          <!-- Modal Bottom CTA with Guarantee Reminder -->
+          <div class="pt-4 border-t border-hairline space-y-3">
+            <div class="flex items-center gap-2 font-mono text-[11px] text-volt">
+              <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              <span>BACKED BY OUR 100% MONEY-RETURN GUARANTEE IF NO RESULTS</span>
+            </div>
+            <button
+              type="button"
+              onclick="closeVideoModal(); openBriefModal();"
+              class="w-full py-4 px-6 rounded-2xl bg-vermilion hover:bg-volt text-bone hover:text-carbon font-display font-extrabold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg"
+            >
+              <span>BUILD SIMILAR WEEKLY ADS FOR MY BRAND</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M13 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       INTERACTIVE BOOKING / RISK-FREE SPRINT BRIEF MODAL
+  ====================================================================== -->
+  <div
+    id="brief-modal"
+    class="fixed inset-0 z-50 hidden bg-carbon/95 backdrop-blur-2xl flex items-center justify-center p-4 overflow-y-auto"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="w-full max-w-2xl bg-surface border-2 border-volt rounded-[32px] p-6 sm:p-10 shadow-2xl my-auto relative">
+      
+      <button
+        type="button"
+        onclick="closeBriefModal()"
+        class="absolute top-6 right-6 w-10 h-10 rounded-full bg-carbon border border-hairline text-bone hover:bg-vermilion flex items-center justify-center transition-colors"
+        aria-label="Close sprint builder"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-volt/15 border border-volt/40 text-volt font-mono text-xs font-bold uppercase mb-4">
+        <span>★ ZERO-RESULTS = 100% MONEY RETURN PROTECTED</span>
+      </div>
+
+      <h3 class="font-display font-extrabold text-2xl sm:text-4xl text-bone leading-tight">
+        Launch Your First Weekly Ad Sprint
+      </h3>
+      <p class="text-sm text-boneMuted mt-1">
+        Configure your ad package below. Your 100% Money-Back Guarantee is automatically embedded in your sprint agreement.
+      </p>
+
+      <form id="sprint-form" onsubmit="submitSprintBrief(event)" class="space-y-5 mt-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-mono text-xs uppercase text-boneMuted mb-2">YOUR WEBSITE / DOMAIN *</label>
+            <input
+              type="text"
+              id="brief-domain"
+              required
+              placeholder="e.g. yourcompany.com"
+              class="w-full px-4 py-3.5 rounded-xl bg-carbon border border-hairline text-bone font-mono text-sm focus:border-volt focus:outline-none"
+            />
+          </div>
+          <div>
+            <label class="block font-mono text-xs uppercase text-boneMuted mb-2">WORK EMAIL OR WHATSAPP *</label>
+            <input
+              type="text"
+              id="brief-contact"
+              required
+              placeholder="founder@yourcompany.com"
+              class="w-full px-4 py-3.5 rounded-xl bg-carbon border border-hairline text-bone font-mono text-sm focus:border-volt focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-mono text-xs uppercase text-boneMuted mb-2">PRIMARY CONVERSION GOAL</label>
+          <select
+            id="brief-goal"
+            class="w-full px-4 py-3.5 rounded-xl bg-carbon border border-hairline text-bone font-mono text-sm focus:border-volt focus:outline-none"
+          >
+            <option value="Direct Sales / Funded Accounts (Like royaltrading.com)">Direct Sales / Funded Accounts (Like royaltrading.com)</option>
+            <option value="B2B Enterprise Pipeline & Demos (Like Nextaniatechnologies.com & digisoftsolutions.in)">B2B Enterprise Pipeline & Demos (Like Nextaniatechnologies.com & digisoftsolutions.in)</option>
+            <option value="SaaS Trials & Outbound CTR (Like beastagent.nextania.co)">SaaS Trials & Outbound CTR (Like beastagent.nextania.co)</option>
+            <option value="High-Trust Consumer Leads (Like unichildgroup.com)">High-Trust Consumer Leads (Like unichildgroup.com)</option>
+          </select>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-carbon border border-volt/50 flex items-start gap-3">
+          <input type="checkbox" id="guarantee-check" checked required class="mt-1 accent-volt w-5 h-5 rounded" />
+          <label for="guarantee-check" class="text-xs sm:text-sm text-bone leading-relaxed">
+            <strong>Include the 100% Money-Return Guarantee Clause:</strong> If our weekly ad-videos do not deliver measurable conversions or beat your baseline control, we issue a 100% full refund.
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-4 px-6 rounded-2xl bg-volt hover:bg-vermilion text-carbon hover:text-bone font-display font-extrabold text-base uppercase tracking-wider transition-all shadow-xl"
+        >
+          GENERATE GUARANTEED SPRINT BRIEF ↗
+        </button>
+      </form>
+
+      <!-- Instant Confirmation Output -->
+      <div id="sprint-confirmation" class="hidden mt-6 p-5 rounded-2xl bg-carbon border-2 border-emeraldSignal space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-xs font-bold text-emeraldSignal uppercase">● SPRINT BRIEF &amp; GUARANTEE LOCKED</span>
+          <button
+            type="button"
+            onclick="copyBriefText()"
+            class="font-mono text-xs px-3 py-1 rounded-lg bg-surface border border-hairline text-volt hover:bg-volt hover:text-carbon transition-colors"
+          >
+            COPY BRIEF
+          </button>
+        </div>
+        <p id="sprint-summary-text" class="font-mono text-xs text-bone leading-relaxed"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT: CAMPAIGN DATA, LIVE CANVAS AD PREVIEWS, MODAL & AUDIO
+  ====================================================================== -->
+  <script>
+    // ---------------------------------------------------------------------
+    // 1. PORTFOLIO DATASET (5 CORE FEATURED CLIENTS + 10 ADDITIONAL CLIENTS)
+    // ---------------------------------------------------------------------
+    const CORE_CAMPAIGNS = [
+      {
+        id: 'royaltrading',
+        client: 'royaltrading.com',
+        category: 'fintech',
+        categoryLabel: 'FINTECH & PROP TRADING',
+        colSpan: 'lg:col-span-7',
+        title: 'Algorithmic Liquidity Hook — 3-Second Pattern Interrupt Ad',
+        metricBadge: '+312% FUNDED ACCOUNTS',
+        hookRate: '48.2% HOOK',
+        roas: '5.4x ROAS',
+        weekStatus: 'ONGOING WEEKLY // WEEK 24',
+        duration: '00:34',
+        accent: '#D4FF00',
+        secondary: '#00E676',
+        hookText: 'STOP LOSING PROP CHALLENGES TO SPREAD SLIPPAGE',
+        subHookText: 'ROYALTRADING.COM // RAW ECN EXECUTION DEMO',
+        ctaText: 'GET INSTANT FUNDED ACCOUNT →',
+        breakdown: 'We replaced generic trading stock footage with a split-screen live spread comparison and a 1.2-second kinetic P&L counter. Delivered every Tuesday with 3 new hook angles, scaling funded account checkouts by +312%.'
+      },
+      {
+        id: 'nextania',
+        client: 'Nextaniatechnologies.com',
+        category: 'enterprise',
+        categoryLabel: 'ENTERPRISE CLOUD & IT',
+        colSpan: 'lg:col-span-5',
+        title: 'Enterprise Cloud Velocity — Split-Screen Agitation Reel',
+        metricBadge: '4.6x PIPELINE ROAS',
+        hookRate: '44.9% HOOK',
+        roas: '-54% CPA DROP',
+        weekStatus: 'ONGOING WEEKLY // WEEK 19',
+        duration: '00:41',
+        accent: '#FF3B1D',
+        secondary: '#38BDF8',
+        hookText: 'YOUR CLOUD BILL IS LEAKING 42% ON IDLE CLUSTERS',
+        subHookText: 'NEXTANIATECHNOLOGIES.COM // INFRASTRUCTURE AUDIT',
+        ctaText: 'DEPLOY ZERO-DOWNTIME MIGRATION →',
+        breakdown: 'Engineered for CTOs and VP Engineering buyers. Uses bold architectural motion diagrams showing legacy bottlenecks vs. Nextania Technologies deployment speed.'
+      },
+      {
+        id: 'beastagent',
+        client: 'beastagent.nextania.co',
+        category: 'saas',
+        categoryLabel: 'AUTONOMOUS AI AGENTS',
+        colSpan: 'lg:col-span-5',
+        title: 'Autonomous AI Sales Agent — Live Terminal Voice & SDR Demo',
+        metricBadge: '410+ DEMOS / MO',
+        hookRate: '52.4% HOOK',
+        roas: '3.9% OUTBOUND CTR',
+        weekStatus: 'ONGOING WEEKLY // WEEK 16',
+        duration: '00:29',
+        accent: '#00E676',
+        secondary: '#D4FF00',
+        hookText: 'WATCH 1 AI AGENT BOOK 14 MEETINGS IN 60 SECONDS',
+        subHookText: 'BEASTAGENT.NEXTANIA.CO // AUTONOMOUS PIPELINE',
+        ctaText: 'CLONE YOUR AI SALES AGENT NOW →',
+        breakdown: 'Built around a real-time terminal UI simulation showing BeastAgent qualifying leads autonomously. Weekly hook swaps keep outbound CTR above 3.9% on Meta, YouTube, and LinkedIn.'
+      },
+      {
+        id: 'digisoft',
+        client: 'digisoftsolutions.in',
+        category: 'enterprise',
+        categoryLabel: 'CUSTOM SOFTWARE & DEV',
+        colSpan: 'lg:col-span-7',
+        title: 'B2B Custom Software Rescue — Founder Direct-to-Camera + UI Motion',
+        metricBadge: '₹4.2Cr+ ATTRIBUTED REV',
+        hookRate: '51.0% HOOK',
+        roas: '4.9x B2B ROAS',
+        weekStatus: 'ONGOING WEEKLY // WEEK 31',
+        duration: '00:46',
+        accent: '#38BDF8',
+        secondary: '#D4FF00',
+        hookText: 'TIRED OF DEV AGENCIES MISSING EVERY SPRINT DEADLINE?',
+        subHookText: 'DIGISOFTSOLUTIONS.IN // SHIPPED ON SCHEDULE',
+        ctaText: 'BOOK YOUR ARCHITECTURE RESCUE →',
+        breakdown: 'Our longest-running weekly B2B series (31 weeks straight). Combines punchy founder truth-bombs with sleek UI product overlays that convert high-ticket enterprise contracts.'
+      },
+      {
+        id: 'unichild',
+        client: 'unichildgroup.com',
+        category: 'consumer',
+        categoryLabel: 'EDUCATION & CHILD GROWTH',
+        colSpan: 'lg:col-span-12',
+        title: 'Parent Trust & Future-Ready Learning — High-Emotion Story Ad Series',
+        metricBadge: '5.2x META & YT ROAS',
+        hookRate: '49.6% HOOK',
+        roas: '-61% COST PER LEAD',
+        weekStatus: 'ONGOING WEEKLY // WEEK 28',
+        duration: '00:38',
+        accent: '#F59E0B',
+        secondary: '#FF3B1D',
+        hookText: 'THE FIRST 7 YEARS SHAPE 90% OF YOUR CHILD’S CONFIDENCE',
+        subHookText: 'UNICHILDGROUP.COM // TRUSTED BY 25,000+ FAMILIES',
+        ctaText: 'CLAIM FREE CAMPUS & CURRICULUM TOUR →',
+        breakdown: 'Empathy-driven storytelling paired with crisp editorial captions and unmistakable social proof. Fresh weekly parent-testimonial mashups reduced lead costs by 61%.'
+      }
+    ];
+
+    const TEN_MORE_CAMPAIGNS = [
+      {
+        id: 'finedge',
+        client: 'finedgecapital.io',
+        category: 'fintech',
+        categoryLabel: 'ALGO WEALTH',
+        title: 'Zero-Emotion Portfolio Rebalancing Ad',
+        metricBadge: '+240% AUM INFLOW',
+        hookRate: '46.1% HOOK',
+        roas: '4.3x ROAS',
+        weekStatus: 'WEEK 21 ACTIVE',
+        duration: '00:31',
+        accent: '#D4FF00',
+        secondary: '#00E676',
+        hookText: 'WHY 89% OF RETAIL PORTFOLIOS UNDERPERFORM AFTER FEES',
+        subHookText: 'FINEDGECAPITAL.IO // QUANT ALLOCATION',
+        ctaText: 'RUN FREE PORTFOLIO X-RAY →',
+        breakdown: 'High-contrast chart visual hook that stops high-net-worth scrollers in under 2 seconds.'
+      },
+      {
+        id: 'velocesaas',
+        client: 'velocesaas.com',
+        category: 'saas',
+        categoryLabel: 'REVOPS SAAS',
+        title: 'CRM Pipeline Leakage Speed-Run Ad',
+        metricBadge: '-48% TRIAL CAC',
+        hookRate: '45.8% HOOK',
+        roas: '4.1x ROAS',
+        weekStatus: 'WEEK 14 ACTIVE',
+        duration: '00:27',
+        accent: '#FF3B1D',
+        secondary: '#D4FF00',
+        hookText: 'YOUR REPS SPEND 64% OF THEIR DAY TYPING INTO CRM FIELDS',
+        subHookText: 'VELOCESAAS.COM // 1-CLICK REVOPS',
+        ctaText: 'START 14-DAY VELOCITY TRIAL →',
+        breakdown: 'Side-by-side timer ad contrasting manual CRM entry against VeloceSaaS automation.'
+      },
+      {
+        id: 'nexapay',
+        client: 'nexapay.in',
+        category: 'fintech',
+        categoryLabel: 'B2B PAYMENTS',
+        title: 'Instant Cross-Border Settlement Hook',
+        metricBadge: '₹18Cr+ VOLUME LIFT',
+        hookRate: '47.3% HOOK',
+        roas: '5.0x ROAS',
+        weekStatus: 'WEEK 22 ACTIVE',
+        duration: '00:33',
+        accent: '#00E676',
+        secondary: '#38BDF8',
+        hookText: 'STOP PAYING 4.2% FX MARKUPS ON GLOBAL INVOICES',
+        subHookText: 'NEXAPAY.IN // ZERO-SPREAD SETTLEMENT',
+        ctaText: 'OPEN INSTANT EXPORTER ACCOUNT →',
+        breakdown: 'Uses an interactive live calculator graphic in the first 3 seconds to hook Indian SaaS and export founders.'
+      },
+      {
+        id: 'aethercloud',
+        client: 'aethercloud.ai',
+        category: 'saas',
+        categoryLabel: 'GPU CLOUD AI',
+        title: 'H100 Cluster Spin-Up in 9 Seconds Ad',
+        metricBadge: '+380% DEV SIGNUPS',
+        hookRate: '53.2% HOOK',
+        roas: '4.7x ROAS',
+        weekStatus: 'WEEK 18 ACTIVE',
+        duration: '00:25',
+        accent: '#38BDF8',
+        secondary: '#D4FF00',
+        hookText: 'DEPLOY BARE-METAL GPU CLUSTERS AT 60% LOWER COST',
+        subHookText: 'AETHERCLOUD.AI // AI INFRASTRUCTURE',
+        ctaText: 'SPIN UP GPU NODE IN 9 SECONDS →',
+        breakdown: 'Terminal benchmark race ad engineered specifically for ML engineers and AI startup CTOs.'
+      },
+      {
+        id: 'scaleops',
+        client: 'scaleops.co',
+        category: 'enterprise',
+        categoryLabel: 'DEVOPS AUTOMATION',
+        title: 'Kubernetes Auto-Healing Live Proof Ad',
+        metricBadge: '3.8x SQL PIPELINE',
+        hookRate: '43.9% HOOK',
+        roas: '3.8x ROAS',
+        weekStatus: 'WEEK 15 ACTIVE',
+        duration: '00:36',
+        accent: '#FF3B1D',
+        secondary: '#00E676',
+        hookText: 'NO MORE 3:00 AM PAGERDUTY INCIDENT ALERTS',
+        subHookText: 'SCALEOPS.CO // AUTONOMOUS K8S',
+        ctaText: 'CONNECT CLUSTER FOR FREE AUDIT →',
+        breakdown: 'Starts with the visceral sound and visual of a 3AM alert, immediately resolved by ScaleOps.'
+      },
+      {
+        id: 'kronologistics',
+        client: 'kronologistics.com',
+        category: 'enterprise',
+        categoryLabel: 'SUPPLY CHAIN AI',
+        title: '3PL Route Optimization Map Telemetry Ad',
+        metricBadge: '+195% FLEET DEMOS',
+        hookRate: '44.2% HOOK',
+        roas: '4.2x ROAS',
+        weekStatus: 'WEEK 20 ACTIVE',
+        duration: '00:35',
+        accent: '#F59E0B',
+        secondary: '#D4FF00',
+        hookText: 'CUT LAST-MILE FUEL BURN BY 27% IN 14 DAYS',
+        subHookText: 'KRONOLOGISTICS.COM // AI DISPATCH',
+        ctaText: 'SIMULATE YOUR FLEET SAVINGS →',
+        breakdown: 'Kinetic vector map animation showing real-time route compression and cost savings.'
+      },
+      {
+        id: 'zesthealth',
+        client: 'zesthealth.co',
+        category: 'consumer',
+        categoryLabel: 'D2C LONGEVITY',
+        title: 'Doctor-Backed Metabolic Reset UGC + Motion Ad',
+        metricBadge: '4.5x SCALE ROAS',
+        hookRate: '50.4% HOOK',
+        roas: '4.5x ROAS',
+        weekStatus: 'WEEK 26 ACTIVE',
+        duration: '00:32',
+        accent: '#00E676',
+        secondary: '#D4FF00',
+        hookText: '3 MORNING BIOMARKERS THAT PREDICT YOUR ENERGY CRASH',
+        subHookText: 'ZESTHEALTH.CO // CLINICAL LONGEVITY',
+        ctaText: 'TAKE 60-SEC METABOLIC QUIZ →',
+        breakdown: 'Combines authoritative medical motion graphics with fast-paced UGC hooks shipped every Monday.'
+      },
+      {
+        id: 'omniflow',
+        client: 'omniflow.io',
+        category: 'saas',
+        categoryLabel: 'WORKFLOW AI',
+        title: 'Replace 6 SaaS Subscriptions in 1 Tab Ad',
+        metricBadge: '+290% PAID TEAMS',
+        hookRate: '48.9% HOOK',
+        roas: '4.6x ROAS',
+        weekStatus: 'WEEK 17 ACTIVE',
+        duration: '00:28',
+        accent: '#D4FF00',
+        secondary: '#FF3B1D',
+        hookText: 'KILL YOUR $1,400/MO BLOATED SAAS STACK TODAY',
+        subHookText: 'OMNIFLOW.IO // UNIFIED WORKSPACE',
+        ctaText: 'IMPORT YOUR PROJECTS IN 1 CLICK →',
+        breakdown: 'Visual invoice-shredder hook that immediately resonates with founders cutting software bloat.'
+      },
+      {
+        id: 'pulsecommerce',
+        client: 'pulsecommerce.in',
+        category: 'consumer',
+        categoryLabel: 'D2C CHECKOUT',
+        title: '1-Click UPI Checkout Conversion Lift Ad',
+        metricBadge: '+64% CHECKOUT RATE',
+        hookRate: '49.1% HOOK',
+        roas: '5.1x ROAS',
+        weekStatus: 'WEEK 23 ACTIVE',
+        duration: '00:30',
+        accent: '#38BDF8',
+        secondary: '#00E676',
+        hookText: '71% OF INDIAN SHOPPERS DROP OFF AT OTP SCREENS',
+        subHookText: 'PULSECOMMERCE.IN // 2-SECOND CHECKOUT',
+        ctaText: 'INSTALL 1-CLICK CHECKOUT FREE →',
+        breakdown: 'Live smartphone screen race comparing standard 5-step checkout vs Pulse 2-second flow.'
+      },
+      {
+        id: 'apexquant',
+        client: 'apexquant.co',
+        category: 'fintech',
+        categoryLabel: 'OPTIONS ANALYTICS',
+        title: 'Institutional Order-Flow Heatmap Ad',
+        metricBadge: '+340% PRO SUBS',
+        hookRate: '51.8% HOOK',
+        roas: '5.3x ROAS',
+        weekStatus: 'WEEK 25 ACTIVE',
+        duration: '00:34',
+        accent: '#FF3B1D',
+        secondary: '#D4FF00',
+        hookText: 'SEE WHERE DARK-POOL WHALES PLACE ORDERS BEFORE OPEN',
+        subHookText: 'APEXQUANT.CO // LIVE GAMMA EXPOSURE',
+        ctaText: 'UNLOCK REAL-TIME ORDER FLOW →',
+        breakdown: 'Hypnotic real-time gamma heatmap animation that consistently achieves 50%+ 3-second hook rates.'
+      }
+    ];
+
+    const ALL_CAMPAIGNS = [
+      {
+        id: 'master-reel',
+        client: 'KINETIC//ROAS™ MASTER REEL',
+        category: 'all',
+        categoryLabel: '2026 COMPILATION REEL',
+        title: '15+ Scaling Brands — Weekly High-Conversion Ad Compilation',
+        metricBadge: '4.8x AVG ROAS',
+        hookRate: '47.8% AVG HOOK',
+        roas: '100% REFUND BACKED',
+        weekStatus: 'UPDATED EVERY WEEK',
+        duration: '00:48',
+        accent: '#FF3B1D',
+        secondary: '#D4FF00',
+        hookText: 'NO RESULTS = 100% MONEY RETURN GUARANTEE',
+        subHookText: 'ROYALTRADING • NEXTANIA • DIGISOFT • BEASTAGENT • UNICHILD',
+        ctaText: 'LAUNCH YOUR WEEKLY AD SPRINT →',
+        breakdown: 'A high-velocity supercut of our top-performing 3-second hooks, product agitation frames, and high-urgency CTAs across FinTech, AI Agents, Enterprise IT, and Consumer brands.'
+      },
+      ...CORE_CAMPAIGNS,
+      ...TEN_MORE_CAMPAIGNS
+    ];
+
+    // ---------------------------------------------------------------------
+    // 2. RENDER CORE BENTO GRID OF CARD-SHAPED VIDEO BUTTONS
+    // ---------------------------------------------------------------------
+    function renderPortfolioCards(filter = 'all') {
+      const grid = document.getElementById('video-cards-grid');
+      const filteredCore = filter === 'all'
+        ? CORE_CAMPAIGNS
+        : ALL_CAMPAIGNS.filter(c => c.id !== 'master-reel' && c.category === filter);
+
+      grid.innerHTML = filteredCore.map((item, idx) => {
+        const spanClass = filter === 'all' ? item.colSpan : (idx % 2 === 0 ? 'lg:col-span-7' : 'lg:col-span-5');
+        return `
+          <div class="${spanClass} flex">
+            <button
+              type="button"
+              onclick="openVideoModal('${item.id}')"
+              class="video-card-btn w-full min-h-[390px] sm:min-h-[430px] p-5 sm:p-7 flex flex-col justify-between group"
+              aria-label="Watch ad video for ${item.client}"
+            >
+              <!-- Custom Live Kinetic Ad Canvas for each Card Button -->
+              <canvas
+                id="card-canvas-${item.id}"
+                data-client-id="${item.id}"
+                class="card-preview-canvas absolute inset-0 w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              ></canvas>
+
+              <!-- High-Contrast Dark Gradient Vignette -->
+              <div class="absolute inset-0 bg-gradient-to-t from-carbon via-carbon/50 to-carbon/65 pointer-events-none"></div>
+
+              <!-- Top Row: Client Domain Pill + Verified Conversion Badge -->
+              <div class="relative z-10 flex flex-wrap items-center justify-between gap-2 w-full">
+                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-carbon/90 backdrop-blur-md border border-bone/20">
+                  <span class="w-2.5 h-2.5 rounded-full" style="background:${item.accent}"></span>
+                  <span class="font-mono text-xs sm:text-sm font-bold tracking-tight text-bone">${item.client}</span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <span class="px-3.5 py-1.5 rounded-full font-mono text-xs font-extrabold uppercase tracking-wider text-carbon shadow-lg" style="background:${item.accent}">
+                    ${item.metricBadge}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Center: Oversized Tactile Play Button & Hook Preview -->
+              <div class="relative z-10 my-auto py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 w-full">
+                <div class="max-w-lg space-y-2">
+                  <span class="inline-block font-mono text-[11px] uppercase tracking-widest px-2.5 py-1 rounded bg-carbon/80 text-volt border border-hairline">
+                    ${item.weekStatus}
+                  </span>
+                  <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-bone leading-tight group-hover:text-volt transition-colors">
+                    ${item.title}
+                  </h3>
+                </div>
+
+                <!-- Giant 80px Play Button Orb -->
+                <div class="play-orb w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-vermilion text-bone flex-shrink-0 flex items-center justify-center shadow-2xl border-4 border-bone/25">
+                  <svg class="w-9 h-9 sm:w-10 sm:h-10 ml-1" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 4.75C6 3.99 6.82 3.51 7.49 3.9L19.69 11.15C20.33 11.53 20.33 12.47 19.69 12.85L7.49 20.1C6.82 20.49 6 20.01 6 19.25V4.75Z"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Bottom Telemetry Bar inside Card-Shaped Video Button -->
+              <div class="relative z-10 w-full bg-carbon/90 backdrop-blur-xl rounded-2xl p-4 border border-hairline flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-xs">
+                  <span class="px-2.5 py-1 rounded-lg bg-surface text-bone font-semibold">${item.hookRate}</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface text-emeraldSignal font-semibold">${item.roas}</span>
+                  <span class="text-boneMuted hidden sm:inline">DURATION: ${item.duration}</span>
+                </div>
+
+                <div class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase text-volt group-hover:translate-x-1 transition-transform">
+                  <span>WATCH AD REEL</span>
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M5 12h14M13 5l7 7-7 7"/>
+                  </svg>
+                </div>
+              </div>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      initCardCanvases();
+    }
+
+    // ---------------------------------------------------------------------
+    // 3. RENDER "+10 MORE PARTNER BRANDS" PLAYABLE VIDEO CARDS
+    // ---------------------------------------------------------------------
+    function renderTenMoreGrid() {
+      const container = document.getElementById('ten-more-grid');
+      container.innerHTML = TEN_MORE_CAMPAIGNS.map((item, index) => `
+        <button
+          type="button"
+          onclick="openVideoModal('${item.id}')"
+          class="video-card-btn p-4 sm:p-5 flex flex-col justify-between min-h-[210px] group"
+        >
+          <div class="flex items-center justify-between gap-2 w-full">
+            <span class="font-mono text-[11px] text-boneMuted">#${index + 6} // ${item.categoryLabel}</span>
+            <span class="w-9 h-9 rounded-full bg-vermilion/20 border border-vermilion text-vermilion group-hover:bg-volt group-hover:text-carbon group-hover:border-volt flex items-center justify-center transition-all">
+              <svg class="w-4 h-4 ml-0.5" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </span>
+          </div>
+
+          <div class="my-3">
+            <div class="font-mono text-xs font-bold text-volt truncate">${item.client}</div>
+            <h4 class="font-display font-bold text-base text-bone leading-snug mt-1 line-clamp-2">
+              ${item.title}
+            </h4>
+          </div>
+
+          <div class="pt-3 border-t border-hairline flex items-center justify-between gap-2 w-full font-mono text-[11px]">
+            <span class="text-emeraldSignal font-bold">${item.metricBadge}</span>
+            <span class="text-boneMuted group-hover:text-bone">${item.duration} ▶</span>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    function filterPortfolio(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.filter === category) {
+          btn.classList.add('bg-volt', 'text-carbon', 'border-volt', 'font-bold');
+          btn.classList.remove('bg-surface', 'text-boneMuted', 'border-hairline');
+        } else {
+          btn.classList.remove('bg-volt', 'text-carbon', 'border-volt', 'font-bold');
+          btn.classList.add('bg-surface', 'text-boneMuted', 'border-hairline');
+        }
+      });
+      renderPortfolioCards(category);
+    }
+
+    // ---------------------------------------------------------------------
+    // 4. REAL-TIME 60FPS HTML5 CANVAS KINETIC PREVIEWS FOR VIDEO CARDS
+    // ---------------------------------------------------------------------
+    let cardCanvasContexts = [];
+
+    function initCardCanvases() {
+      cardCanvasContexts = [];
+      const masterCanvas = document.getElementById('canvas-master-reel');
+      if (masterCanvas) {
+        setupCanvasInstance(masterCanvas, ALL_CAMPAIGNS[0]);
+      }
+
+      document.querySelectorAll('.card-preview-canvas').forEach(canvas => {
+        const campaign = ALL_CAMPAIGNS.find(c => c.id === canvas.dataset.clientId) || CORE_CAMPAIGNS[0];
+        setupCanvasInstance(canvas, campaign);
+      });
+    }
+
+    function setupCanvasInstance(canvas, campaign) {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = Math.max(360, Math.floor(rect.width));
+      canvas.height = Math.max(260, Math.floor(rect.height));
+      const ctx = canvas.getContext('2d');
+      cardCanvasContexts.push({ canvas, ctx, campaign, offset: Math.random() * 100 });
+    }
+
+    function animateAllCardCanvases(timestamp) {
+      const t = timestamp * 0.001;
+
+      cardCanvasContexts.forEach(item => {
+        const { canvas, ctx, campaign, offset } = item;
+        const w = canvas.width;
+        const h = canvas.height;
+        const time = t + offset;
+
+        // Background studio dark gradient
+        ctx.fillStyle = '#0D0D12';
+        ctx.fillRect(0, 0, w, h);
+
+        // Subtle kinetic grid lines
+        ctx.strokeStyle = 'rgba(244, 241, 234, 0.05)';
+        ctx.lineWidth = 1;
+        const gridStep = 48;
+        const shiftX = (time * 18) % gridStep;
+        for (let x = -shiftX; x < w; x += gridStep) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
+        }
+        for (let y = 0; y < h; y += gridStep) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(w, y);
+          ctx.stroke();
+        }
+
+        // Animated conversion wave / chart line in client's brand accent
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = campaign.accent;
+        ctx.lineWidth = 2.5;
+        for (let x = 0; x <= w; x += 12) {
+          const progress = x / w;
+          const waveY = h * 0.62
+            - Math.sin(progress * 5 + time * 2.2) * 26
+            - progress * (h * 0.25);
+          if (x === 0) ctx.moveTo(x, waveY);
+          else ctx.lineTo(x, waveY);
+        }
+        ctx.stroke();
+
+        // Glowing fill under curve
+        ctx.lineTo(w, h);
+        ctx.lineTo(0, h);
+        ctx.closePath();
+        const grad = ctx.createLinearGradient(0, h * 0.2, 0, h);
+        grad.addColorStop(0, campaign.accent + '33');
+        grad.addColorStop(1, 'transparent');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.restore();
+
+        // Kinetic Ad Hook Watermark Text
+        ctx.save();
+        ctx.font = '800 13px "IBM Plex Mono", monospace';
+        ctx.fillStyle = 'rgba(244, 241, 234, 0.22)';
+        ctx.fillText(`AD HOOK // ${campaign.hookText.slice(0, 38)}...`, 22, h * 0.46);
+        ctx.restore();
+      });
+
+      requestAnimationFrame(animateAllCardCanvases);
+    }
+
+    // ---------------------------------------------------------------------
+    // 5. INTERACTIVE CINEMA PLAYER MODAL + MULTI-SCENE AD ENGINE + WEB AUDIO
+    // ---------------------------------------------------------------------
+    let activeModalCampaign = ALL_CAMPAIGNS[0];
+    let modalPlaying = true;
+    let modalTime = 0; // 0 to 30 seconds simulated ad timeline
+    let modalVariation = 0;
+    let modalAnimId = null;
+    let lastModalTick = performance.now();
+
+    // Synthesized Web Audio API Beat / Sound Pulse (zero external MP3 dependencies)
+    let audioCtx = null;
+    let modalSoundEnabled = false;
+    let nextBeatTime = 0;
+
+    function triggerSynthPulse(freq = 110, type = 'triangle', duration = 0.12) {
+      if (!modalSoundEnabled) return;
+      try {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(42, audioCtx.currentTime + duration);
+
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // Ignore audio restrictions if blocked
+      }
+    }
+
+    function toggleModalAudio() {
+      modalSoundEnabled = !modalSoundEnabled;
+      const label = document.getElementById('audio-label');
+      label.textContent = modalSoundEnabled ? 'SYNTH AUDIO: LIVE' : 'SYNTH AUDIO: MUTED';
+      if (modalSoundEnabled) {
+        triggerSynthPulse(220, 'sine', 0.18);
+      }
+    }
+
+    function openVideoModal(campaignId) {
+      const found = ALL_CAMPAIGNS.find(c => c.id === campaignId) || ALL_CAMPAIGNS[0];
+      activeModalCampaign = found;
+      modalTime = 0;
+      modalPlaying = true;
+      modalVariation = 0;
+
+      // Populate modal metadata
+      document.getElementById('modal-client-badge').textContent = `${found.client.toUpperCase()} // WEEKLY AD SPRINT`;
+      document.getElementById('modal-week-badge').textContent = found.weekStatus;
+      document.getElementById('modal-category').textContent = found.categoryLabel;
+      document.getElementById('modal-title').textContent = found.title;
+      document.getElementById('modal-metric-1').textContent = found.metricBadge.split(' ')[0];
+      document.getElementById('modal-metric-2').textContent = found.hookRate.replace(' HOOK', '');
+      document.getElementById('modal-metric-3').textContent = found.roas.split(' ')[0];
+      document.getElementById('modal-breakdown').textContent = found.breakdown;
+
+      const clientLink = document.getElementById('modal-client-link');
+      const cleanDomain = found.client.includes('.') ? found.client : 'royaltrading.com';
+      clientLink.textContent = `${cleanDomain} ↗`;
+      clientLink.href = `https://${cleanDomain}`;
+
+      setAdVariation(0);
+
+      const modal = document.getElementById('cinema-modal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      resizeModalCanvas();
+      lastModalTick = performance.now();
+      if (modalAnimId) cancelAnimationFrame(modalAnimId);
+      modalAnimId = requestAnimationFrame(renderModalVideoLoop);
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('cinema-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      modalSoundEnabled = false;
+      if (modalAnimId) cancelAnimationFrame(modalAnimId);
+    }
+
+    function resizeModalCanvas() {
+      const canvas = document.getElementById('modal-video-canvas');
+      if (!canvas) return;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = Math.max(480, Math.floor(rect.width));
+      canvas.height = Math.max(300, Math.floor(rect.height));
+    }
+
+    function toggleModalPlayPause() {
+      modalPlaying = !modalPlaying;
+      const icon = document.getElementById('modal-play-icon');
+      if (modalPlaying) {
+        icon.innerHTML = `<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>`;
+        lastModalTick = performance.now();
+      } else {
+        icon.innerHTML = `<polygon points="5 3 19 12 5 21 5 3"/>`;
+      }
+    }
+
+    function jumpToAdPhase(phaseIndex) {
+      if (phaseIndex === 0) modalTime = 0.2;
+      if (phaseIndex === 1) modalTime = 8.2;
+      if (phaseIndex === 2) modalTime = 20.2;
+      triggerSynthPulse(180, 'triangle', 0.14);
+    }
+
+    function scrubModalVideo(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+      modalTime = pct * 30;
+    }
+
+    function setAdVariation(vIdx) {
+      modalVariation = vIdx;
+      modalTime = 0;
+      [0, 1, 2].forEach(i => {
+        const btn = document.getElementById(`var-btn-${i}`);
+        if (i === vIdx) {
+          btn.className = 'py-2 px-3 rounded-xl font-mono text-xs font-bold bg-volt text-carbon transition-all';
+        } else {
+          btn.className = 'py-2 px-3 rounded-xl font-mono text-xs font-bold bg-carbon text-boneMuted hover:text-bone border border-hairline transition-all';
+        }
+      });
+      triggerSynthPulse(240, 'sine', 0.1);
+    }
+
+    function renderModalVideoLoop(now) {
+      const dt = (now - lastModalTick) / 1000;
+      lastModalTick = now;
+
+      if (modalPlaying) {
+        modalTime += dt;
+        if (modalTime >= 30) modalTime = 0;
+
+        // Trigger rhythmic synth beat every 0.65 seconds if audio toggled on
+        if (modalSoundEnabled && now > nextBeatTime) {
+          triggerSynthPulse(modalTime < 8 ? 130 : (modalTime < 20 ? 165 : 210), 'triangle', 0.11);
+          nextBeatTime = now + 620;
+        }
+      }
+
+      // Update UI progress bar & phase label
+      const pct = (modalTime / 30) * 100;
+      document.getElementById('modal-progress-bar').style.width = `${pct}%`;
+
+      const secFormatted = String(Math.floor(modalTime)).padStart(2, '0');
+      document.getElementById('modal-timecode').textContent = `00:${secFormatted} / 00:30`;
+
+      const phasePill = document.getElementById('modal-phase-pill');
+      let currentPhase = 0;
+      if (modalTime < 8) {
+        currentPhase = 0;
+        phasePill.textContent = 'PHASE 1: 0-3s PATTERN-INTERRUPT HOOK';
+        phasePill.style.color = '#D4FF00';
+      } else if (modalTime < 20) {
+        currentPhase = 1;
+        phasePill.textContent = 'PHASE 2: AGITATION & LIVE PRODUCT PROOF';
+        phasePill.style.color = '#FF3B1D';
+      } else {
+        currentPhase = 2;
+        phasePill.textContent = 'PHASE 3: RISK-FREE CONVERSION CTA';
+        phasePill.style.color = '#00E676';
+      }
+
+      // Draw multi-scene kinetic ad on the modal canvas
+      const canvas = document.getElementById('modal-video-canvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+
+        ctx.fillStyle = '#08080C';
+        ctx.fillRect(0, 0, w, h);
+
+        // Animated background rings & grid
+        ctx.strokeStyle = 'rgba(244, 241, 234, 0.07)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 40) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
+        }
+
+        // Dynamic radial glow
+        const rad = ctx.createRadialGradient(w * 0.5, h * 0.5, 10, w * 0.5, h * 0.5, w * 0.55);
+        rad.addColorStop(0, activeModalCampaign.accent + '28');
+        rad.addColorStop(1, 'transparent');
+        ctx.fillStyle = rad;
+        ctx.fillRect(0, 0, w, h);
+
+        const variationPrefixes = [
+          '[VARIATION A // PAIN HOOK]',
+          '[VARIATION B // DATA PROOF]',
+          '[VARIATION C // FOUNDER GUARANTEE]'
+        ];
+
+        // Top Variation Tag
+        ctx.font = '600 12px "IBM Plex Mono", monospace';
+        ctx.fillStyle = activeModalCampaign.accent;
+        ctx.textAlign = 'center';
+        ctx.fillText(`${variationPrefixes[modalVariation]} — ${activeModalCampaign.client.toUpperCase()}`, w / 2, 76);
+
+        // Scene-specific Kinetic Typography & Telemetry Graphics
+        if (currentPhase === 0) {
+          // PHASE 1: BOLD 3-SECOND HOOK
+          ctx.font = '800 24px "Syne", sans-serif';
+          ctx.fillStyle = '#F4F1EA';
+          wrapCanvasText(ctx, activeModalCampaign.hookText, w / 2, h * 0.44, w * 0.82, 32);
+
+          // Animated Hook Retention Meter
+          const barW = Math.min(340, w * 0.7);
+          ctx.fillStyle = 'rgba(255,255,255,0.1)';
+          ctx.fillRect((w - barW) / 2, h * 0.68, barW, 10);
+          ctx.fillStyle = activeModalCampaign.accent;
+          ctx.fillRect((w - barW) / 2, h * 0.68, barW * (0.65 + 0.3 * Math.sin(now * 0.005)), 10);
+
+          ctx.font = '600 12px "IBM Plex Mono", monospace';
+          ctx.fillStyle = '#D4FF00';
+          ctx.fillText(`LIVE 3-SEC SCROLL STOP RATE: ${activeModalCampaign.hookRate}`, w / 2, h * 0.76);
+        } else if (currentPhase === 1) {
+          // PHASE 2: LIVE PRODUCT / CONVERSION TELEMETRY GRAPH
+          ctx.font = '800 20px "Syne", sans-serif';
+          ctx.fillStyle = '#F4F1EA';
+          ctx.fillText(activeModalCampaign.subHookText, w / 2, h * 0.30);
+
+          // Draw rising bar chart proof
+          const bars = 7;
+          const totalChartW = Math.min(360, w * 0.72);
+          const startX = (w - totalChartW) / 2;
+          for (let i = 0; i < bars; i++) {
+            const bh = 28 + i * 16 + Math.sin(now * 0.006 + i) * 8;
+            const bx = startX + i * (totalChartW / bars);
+            ctx.fillStyle = i >= bars - 2 ? activeModalCampaign.accent : 'rgba(244,241,234,0.22)';
+            ctx.fillRect(bx, h * 0.72 - bh, (totalChartW / bars) - 10, bh);
+          }
+
+          ctx.font = '700 15px "IBM Plex Mono", monospace';
+          ctx.fillStyle = '#00E676';
+          ctx.fillText(`VERIFIED CAMPAIGN LIFT: ${activeModalCampaign.metricBadge}`, w / 2, h * 0.82);
+        } else {
+          // PHASE 3: IRRESISTIBLE CTA + MONEY-BACK GUARANTEE STAMP
+          ctx.font = '800 22px "Syne", sans-serif';
+          ctx.fillStyle = '#D4FF00';
+          ctx.fillText(activeModalCampaign.ctaText, w / 2, h * 0.42);
+
+          // Draw glowing CTA Pill on canvas
+          const pillW = Math.min(360, w * 0.76);
+          ctx.fillStyle = '#FF3B1D';
+          ctx.beginPath();
+          ctx.roundRect((w - pillW) / 2, h * 0.50, pillW, 46, 23);
+          ctx.fill();
+
+          ctx.font = '700 13px "IBM Plex Mono", monospace';
+          ctx.fillStyle = '#F4F1EA';
+          ctx.fillText('CLICK TO CLAIM + 100% MONEY-BACK GUARANTEE', w / 2, h * 0.50 + 28);
+
+          ctx.font = '500 12px "IBM Plex Mono", monospace';
+          ctx.fillStyle = '#9E9C96';
+          ctx.fillText(`STILL SCALING EVERY WEEK: ${activeModalCampaign.weekStatus}`, w / 2, h * 0.76);
+        }
+      }
+
+      modalAnimId = requestAnimationFrame(renderModalVideoLoop);
+    }
+
+    function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(' ');
+      let line = '';
+      let lines = [];
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0) {
+          lines.push(line);
+          line = words[n] + ' ';
+        } else {
+          line = testLine;
+        }
+      }
+      lines.push(line);
+      lines.forEach((l, i) => {
+        ctx.fillText(l.trim(), x, y + i * lineHeight);
+      });
+    }
+
+    // ---------------------------------------------------------------------
+    // 6. INTERACTIVE ROI & GUARANTEE CALCULATOR LOGIC
+    // ---------------------------------------------------------------------
+    let currentCurrency = 'USD';
+    let selectedCadence = 4;
+
+    function setCurrency(curr) {
+      currentCurrency = curr;
+      const usdBtn = document.getElementById('curr-usd');
+      const inrBtn = document.getElementById('curr-inr');
+      if (curr === 'USD') {
+        usdBtn.className = 'px-3 py-1 rounded-lg bg-carbon text-volt transition-all';
+        inrBtn.className = 'px-3 py-1 rounded-lg text-carbon transition-all';
+        document.getElementById('spend-min-label').textContent = '$2K/mo';
+        document.getElementById('spend-max-label').textContent = '$100K+/mo';
+      } else {
+        inrBtn.className = 'px-3 py-1 rounded-lg bg-carbon text-volt transition-all';
+        usdBtn.className = 'px-3 py-1 rounded-lg text-carbon transition-all';
+        document.getElementById('spend-min-label').textContent = '₹1.6L/mo';
+        document.getElementById('spend-max-label').textContent = '₹85L+/mo';
+      }
+      updateROISimulator();
+    }
+
+    function setCadence(num) {
+      selectedCadence = num;
+      document.querySelectorAll('.cadence-btn').forEach(btn => {
+        if (Number(btn.dataset.cadence) === num) {
+          btn.className = 'cadence-btn py-3 px-3 rounded-2xl border-2 border-carbon font-mono text-xs font-bold uppercase bg-carbon text-volt transition-all';
+        } else {
+          btn.className = 'cadence-btn py-3 px-3 rounded-2xl border-2 border-carbon font-mono text-xs font-bold uppercase bg-bone text-carbon hover:bg-carbon hover:text-bone transition-all';
+        }
+      });
+      updateROISimulator();
+    }
+
+    function updateROISimulator() {
+      const spendUSD = Number(document.getElementById('spend-slider').value);
+      const baseCTR = Number(document.getElementById('ctr-slider').value);
+
+      const cadenceMultiplier = selectedCadence === 2 ? 2.8 : (selectedCadence === 4 ? 3.6 : 4.4);
+      const projectedRevenueUSD = Math.round(spendUSD * cadenceMultiplier);
+      const projectedCTR = (baseCTR * (selectedCadence === 2 ? 2.3 : (selectedCadence === 4 ? 2.9 : 3.3))).toFixed(2);
+      const cpaDrop = selectedCadence === 2 ? 36 : (selectedCadence === 4 ? 48 : 57);
+
+      if (currentCurrency === 'USD') {
+        document.getElementById('spend-display').textContent = `$${spendUSD.toLocaleString()} / mo`;
+        document.getElementById('proj-revenue').textContent = `+$${projectedRevenueUSD.toLocaleString()}/mo`;
+      } else {
+        const spendINR = Math.round(spendUSD * 84);
+        const revINR = Math.round(projectedRevenueUSD * 84);
+        document.getElementById('spend-display').textContent = `₹${spendINR.toLocaleString('en-IN')} / mo`;
+        document.getElementById('proj-revenue').textContent = `+₹${revINR.toLocaleString('en-IN')}/mo`;
+      }
+
+      document.getElementById('ctr-display').textContent = `${baseCTR.toFixed(1)}% CTR`;
+      document.getElementById('proj-ctr').textContent = `${projectedCTR}% CTR`;
+      document.getElementById('proj-cpa').textContent = `▼ -${cpaDrop}% Lower Acquisition Cost`;
+      document.getElementById('cert-cadence').textContent = `${selectedCadence * 4} NEW AD-VIDEOS / MO`;
+      document.getElementById('cert-ads-count').textContent = `${selectedCadence} weekly ad-videos`;
+      document.getElementById('cert-ctr-base').textContent = `${baseCTR.toFixed(1)}% CTR`;
+    }
+
+    // ---------------------------------------------------------------------
+    // 7. BRIEF BUILDER MODAL & HELPERS
+    // ---------------------------------------------------------------------
+    function openBriefModal() {
+      document.getElementById('brief-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBriefModal() {
+      document.getElementById('brief-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function submitSprintBrief(e) {
+      e.preventDefault();
+      const domain = document.getElementById('brief-domain').value.trim();
+      const contact = document.getElementById('brief-contact').value.trim();
+      const goal = document.getElementById('brief-goal').value;
+
+      const summary = `GUARANTEED AD SPRINT BRIEF // CLIENT: ${domain} | CONTACT: ${contact} | GOAL: ${goal} | CADENCE: ${selectedCadence} Ads/Week | PLEDGE: 100% Money-Return Guarantee if no measurable results.`;
+      const confBox = document.getElementById('sprint-confirmation');
+      document.getElementById('sprint-summary-text').textContent = summary;
+      confBox.classList.remove('hidden');
+    }
+
+    function copyBriefText() {
+      const text = document.getElementById('sprint-summary-text').textContent;
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      document.body.removeChild(temp);
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize on Window Load
+    window.addEventListener('load', () => {
+      renderPortfolioCards('all');
+      renderTenMoreGrid();
+      updateROISimulator();
+      requestAnimationFrame(animateAllCardCanvases);
+    });
+
+    window.addEventListener('resize', () => {
+      initCardCanvases();
+      resizeModalCanvas();
+    });
+  </script>
 </body>
 </html>
